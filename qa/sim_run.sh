@@ -27,7 +27,7 @@ while true; do
   if [ $moving = 0 ] && grep -q "QA GPS START" "$OUT/log.txt"; then
     moving=1
     # headless simulators ignore 'simctl location start', so step the location ourselves: 10 m every second
-    ( for p in $(python3 qa/sim_waypoints.py 10); do xcrun simctl location "$UDID" set "$p" >/dev/null 2>&1; sleep 1; done ) &
+    ( for p in $(python3 qa/sim_waypoints.py 10); do xcrun simctl location "$UDID" set "$p" >/dev/null 2>&1; sleep 0.5; done ) &
     MOVER=$!
     echo "[runner] moving route started" >> "$OUT/runner.txt"
   fi

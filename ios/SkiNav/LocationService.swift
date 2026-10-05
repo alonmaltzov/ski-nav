@@ -67,15 +67,30 @@ final class LocationService: NSObject, ObservableObject, CLLocationManagerDelega
 
     func stop() {
         isTracking = false
-        manager.stopUpdatingLocation()
-        manager.allowsBackgroundLocationUpdates = false
+        updates?.cancel(); updates = nil
+        background?.invalidate(); background = nil
+        probe?.invalidate(); probe = nil
     }
 
+    private var updates: Task<Void, Never>?
+    private var background: CLBackgroundActivitySession?
+
+    /// iOS 17 live updates: about one fix per second, kept alive with the phone locked by a background session.
     private func begin() {
+        guard updates == nil else { return }
         print("[app] location updates on, auth=\(manager.authorizationStatus.rawValue)")
-        manager.allowsBackgroundLocationUpdates = true
-        manager.showsBackgroundLocationIndicator = true
-        manager.startUpdatingLocation()
+        background = CLBackgroundActivitySession()
+        updates = Task { [weak self] in
+            do {
+                for try await u in CLLocationUpdate.liveUpdates(.fitness) {
+                    if Task.isCancelled { break }
+                    guard let self, let l = u.location else { continue }
+                    self.received([l])
+                }
+            } catch {
+                print("[app] location updates stopped:", error.localizedDescription)
+            }
+        }
         if ProcessInfo.processInfo.arguments.contains("-qaTour"), probe == nil {
             // QA only: what CoreLocation holds right now, independent of delegate callbacks
             probe = Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { [weak self] _ in
@@ -113,6 +128,10 @@ final class LocationService: NSObject, ObservableObject, CLLocationManagerDelega
     }
 
     func locationManager(_ m: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        received(locations)
+    }
+
+    private func received(_ locations: [CLLocation]) {
         let fixes = locations.filter { $0.horizontalAccuracy >= 0 }.map(Fix.init)
         logCount += locations.count
         if logCount <= 40, let l = locations.last {
