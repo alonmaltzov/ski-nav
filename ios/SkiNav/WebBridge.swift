@@ -4,7 +4,12 @@ import WebKit
 /// Connects the web app (index.html) to native code.
 /// JS -> native: window.webkit.messageHandlers.skinav.postMessage({cmd: ...})
 /// native -> JS: window.__native.fixes([...]) and window.__native.event(name)
-final class WebBridge: NSObject, WKScriptMessageHandler {
+final class WebBridge: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
+    func webView(_ w: WKWebView, didFinish n: WKNavigation!) { print("[app] page finished loading") }
+    func webView(_ w: WKWebView, didFail n: WKNavigation!, withError e: Error) { print("[app] load failed:", e.localizedDescription) }
+    func webView(_ w: WKWebView, didFailProvisionalNavigation n: WKNavigation!, withError e: Error) { print("[app] load failed:", e.localizedDescription) }
+    func webViewWebContentProcessDidTerminate(_ w: WKWebView) { print("[app] web content crashed, reloading"); w.reload() }
+
     static let shared = WebBridge()
     weak var webView: WKWebView?
     private var pageReady = false
@@ -19,6 +24,8 @@ final class WebBridge: NSObject, WKScriptMessageHandler {
             LocationService.shared.start()
         case "stop":
             LocationService.shared.stop()
+        case "log":
+            print("[web]", body["msg"] ?? "")
         case "plan":
             // today's steps, forwarded to the watch so it can show "next step" on the wrist
             WatchLink.shared.sendPlan(body)
@@ -55,6 +62,18 @@ struct WebAppView: UIViewRepresentable {
     func makeUIView(context: Context) -> WKWebView {
         let config = WKWebViewConfiguration()
         config.userContentController.add(WebBridge.shared, name: "skinav")
+        // forward JS errors and console output to the Xcode console
+        let logJS = """
+        (function(){
+          const post = m => { try { window.webkit.messageHandlers.skinav.postMessage({cmd:'log', msg: String(m).slice(0, 800)}); } catch(e){} };
+          window.addEventListener('error', e => post('ERROR ' + e.message + ' @' + (e.filename||'').split('/').pop() + ':' + e.lineno));
+          window.addEventListener('unhandledrejection', e => post('REJECT ' + (e.reason && (e.reason.stack || e.reason))));
+          ['error','warn'].forEach(k => { const o = console[k]; console[k] = function(){ post(k.toUpperCase() + ' ' + Array.from(arguments).join(' ')); o.apply(console, arguments); }; });
+          document.addEventListener('DOMContentLoaded', () => post('DOM ready, title=' + document.title));
+          window.addEventListener('load', () => post('page loaded, map=' + !!document.querySelector('.maplibregl-canvas')));
+        })();
+        """
+        config.userContentController.addUserScript(WKUserScript(source: logJS, injectionTime: .atDocumentStart, forMainFrameOnly: true))
         config.allowsInlineMediaPlayback = true
         let web = WKWebView(frame: .zero, configuration: config)
         web.isOpaque = false
@@ -69,8 +88,12 @@ struct WebAppView: UIViewRepresentable {
         if #available(iOS 16.4, *) { web.isInspectable = true }
         #endif
         WebBridge.shared.webView = web
+        web.navigationDelegate = WebBridge.shared
         if let url = Bundle.main.url(forResource: "index", withExtension: "html", subdirectory: "www") {
+            print("[app] loading", url.path, (try? FileManager.default.attributesOfItem(atPath: url.path)[.size]) ?? "?")
             web.loadFileURL(url, allowingReadAccessTo: url.deletingLastPathComponent())
+        } else {
+            print("[app] ERROR www/index.html is missing from the app bundle. Run ./setup.sh again.")
         }
         return web
     }

@@ -27,6 +27,19 @@ jobs:
           ls -la "$APP/www" && echo "::notice::Web app size $(du -h $APP/www/index.html | cut -f1)"
           grep -c "warning:" build.log | xargs -I{} echo "::notice::{} warnings"
           grep "warning:" build.log | grep -v "/dd/" | sort -u | head -15 | while read -r l; do echo "::warning::$l"; done
+      - name: Run in an iPhone simulator and capture the app's console
+        working-directory: ios
+        run: |
+          UDID=$(xcrun simctl list devices available -j | python3 -c "import json,sys; d=json.load(sys.stdin)['devices']; print(next(x['udid'] for k,v in d.items() if 'iOS' in k for x in v if 'iPhone' in x['name']))")
+          xcrun simctl boot "$UDID" || true
+          xcrun simctl bootstatus "$UDID" -b
+          xcrun simctl install "$UDID" dd/Build/Products/Debug-iphonesimulator/SkiNav.app
+          (xcrun simctl launch --console-pty "$UDID" com.alonmaltzov.SkiNav > app.log 2>&1 &)
+          sleep 40
+          xcrun simctl io "$UDID" screenshot shot.png || true
+          grep -E "\[app\]|\[web\]" app.log | head -60 | while read -r l; do echo "::notice::$l"; done
+          echo "::notice::app.log lines: $(wc -l < app.log)"
+          tail -25 app.log | while read -r l; do echo "::notice::tail: $l"; done
       - name: Report errors
         if: failure()
         working-directory: ios
