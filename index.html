@@ -56,6 +56,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--f-ui);margin:0;over
 .speed.paused #spd{color:var(--muted)}
 .mapbtns{position:absolute;right:12px;top:12px;display:grid;gap:8px;z-index:500}
 .mbtn{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:700 .78rem var(--f-ui);display:grid;place-items:center;box-shadow:0 2px 8px rgb(0 0 0/.12)}
+.mbtn.compass{font-size:.68rem;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 35%,transparent)}
 .mbtn[aria-pressed="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
 .offroute{position:absolute;left:12px;right:68px;top:12px;z-index:500;background:var(--bad);color:#fff;font-weight:700;padding:10px 12px;border-radius:12px;font-size:.95rem}
 .unused-cutoff{position:absolute;left:12px;right:68px;top:12px;z-index:499;background:var(--warn);color:#fff;font-weight:700;padding:10px 12px;border-radius:12px;font-size:.95rem}
@@ -655,12 +656,23 @@ function onOrient(e){
   const so = (screen.orientation && screen.orientation.angle) || window.orientation || 0;  // landscape correction
   heading=(h+so+360)%360; compassOn=true; drawCone();
 }
+/* compass only on demand: double-tap ME to turn on, tap ME again (or wait 2 min) to turn off */
+let compassWanted=false, compassTimer=null, lastOrient=0;
+function onOrientThrottled(e){ const n=performance.now(); if(n-lastOrient<120) return; lastOrient=n; onOrient(e); }
 function enableCompass(){
+  compassWanted=true; $('followBtn').classList.add('compass'); $('followBtn').textContent='ME ◎';
+  clearTimeout(compassTimer); compassTimer=setTimeout(disableCompass, 120000);
   try{
     if(typeof DeviceOrientationEvent!=='undefined' && typeof DeviceOrientationEvent.requestPermission==='function'){
-      DeviceOrientationEvent.requestPermission().then(r=>{ if(r==='granted') window.addEventListener('deviceorientation', onOrient, true); }).catch(()=>{});
-    } else { window.addEventListener('deviceorientationabsolute', onOrient, true); window.addEventListener('deviceorientation', onOrient, true); }
-  }catch(e){}
+      DeviceOrientationEvent.requestPermission().then(r=>{ if(r==='granted' && compassWanted) window.addEventListener('deviceorientation', onOrientThrottled, true); else disableCompass(); }).catch(disableCompass);
+    } else { window.addEventListener('deviceorientationabsolute', onOrientThrottled, true); window.addEventListener('deviceorientation', onOrientThrottled, true); }
+  }catch(e){ disableCompass(); }
+}
+function disableCompass(){
+  compassWanted=false; compassOn=false; clearTimeout(compassTimer);
+  window.removeEventListener('deviceorientation', onOrientThrottled, true); window.removeEventListener('deviceorientationabsolute', onOrientThrottled, true);
+  $('followBtn').classList.remove('compass'); $('followBtn').textContent='ME';
+  if(!st.last) heading=null; drawCone();   // fall back to direction of travel
 }
 function bearingTo(a,b){ const t=Math.PI/180, y=Math.sin((b[1]-a[1])*t)*Math.cos(b[0]*t), x=Math.cos(a[0]*t)*Math.sin(b[0]*t)-Math.sin(a[0]*t)*Math.cos(b[0]*t)*Math.cos((b[1]-a[1])*t); return (Math.atan2(y,x)/t+360)%360; }
 function setYou(ll, accm){ you.setLngLat([ll[1],ll[0]]); if(!youOn){ you.addTo(map); youOn=true; } youEl.style.boxShadow='0 0 0 '+Math.min(30,Math.max(4,(accm||8)/2))+'px color-mix(in srgb,var(--accent) 22%,transparent)'; }
@@ -669,7 +681,12 @@ function centerOn(ll){ map.jumpTo({center:[ll[1],ll[0]], zoom:Math.max(map.getZo
 function setFollow(on){ follow=on; $('followBtn').setAttribute('aria-pressed', on?'true':'false'); }
 map.on('dragstart',()=>setFollow(false));
 map.on('rotate', drawCone);
-$('followBtn').onclick=()=>{ if(!compassOn) enableCompass(); setFollow(true); if(st.last) map.easeTo({center:[st.last.lon,st.last.lat], zoom:Math.max(map.getZoom(),15)}); };
+let lastMeTap=0;
+$('followBtn').onclick=()=>{
+  const n=Date.now(), dbl = n-lastMeTap < 380; lastMeTap = dbl ? 0 : n;
+  if(compassWanted && !dbl){ disableCompass(); }
+  else if(dbl && !compassWanted){ enableCompass(); }
+  setFollow(true); if(st.last) map.easeTo({center:[st.last.lon,st.last.lat], zoom:Math.max(map.getZoom(),15)}); };
 $('fitBtn').onclick=()=>{ setFollow(false); map.fitBounds(view==='prog'?scopeBounds:routeBounds,{padding:PAD, pitch: is3D?55:0}); };
 function focusStep(){
   const s=steps[cur]; if(!s) return;
@@ -1035,7 +1052,7 @@ function stopGPS(){
   try{ wakeLock && wakeLock.release(); }catch(e){} wakeLock=null;
   persist(); renderStats(); renderSchedule();
 }
-$('goBtn').onclick=()=>{ if(mode!=='gps' && mode!=='sim') enableCompass(); if(mode==='gps') stopGPS(); else if(mode==='sim') stopSim(); else startGPS(); };
+$('goBtn').onclick=()=>{ if(mode==='gps') stopGPS(); else if(mode==='sim') stopSim(); else startGPS(); };
 
 /* ---------- test replay ---------- */
 let simTimer=null, simX=30, simDrift=false, simClock=0, simTrack=null, simI=0, simSnap=null;
