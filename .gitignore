@@ -1,0 +1,5 @@
+qa-out/
+ios/SkiNav/www/*.html
+ios/SkiNav/www/*.js
+ios/dd/
+ios/*.xcodeproj/

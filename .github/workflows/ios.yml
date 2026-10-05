@@ -1,10 +1,32 @@
-name: Build iPhone + Watch
+name: Build + QA
 on:
   push:
-    paths: ['ios/**', 'index.html', '.github/workflows/ios.yml']
+    branches: [main]
+    paths: ['ios/**', 'index.html', 'nyc.html', 'qa/**', '.github/workflows/ios.yml']
   workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: qa
+  cancel-in-progress: true
 jobs:
-  build:
+  web-qa:
+    name: QA in headless Chrome (iPhone 16 + SE sizes)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - name: Install Playwright
+        run: pip install playwright && python -m playwright install --with-deps chromium
+      - name: Run tour
+        run: python qa/run_web.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: qa-web, path: qa-out }
+
+  ios-qa:
+    name: Build iPhone + Watch, QA in iOS Simulator
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
@@ -12,39 +34,59 @@ jobs:
         run: brew install xcodegen && xcodebuild -version
       - name: Generate project
         working-directory: ios
-        run: cp ../index.html SkiNav/www/index.html && xcodegen generate
+        run: |
+          mkdir -p SkiNav/www
+          cp ../index.html SkiNav/www/index.html
+          cp ../nyc.html SkiNav/www/nyc.html
+          cp ../qa/tour.js SkiNav/www/qa-tour.js
+          xcodegen generate
       - name: Build (simulator, no signing)
         working-directory: ios
         run: |
           set -o pipefail
           xcodebuild -project SkiNav.xcodeproj -scheme SkiNav -configuration Debug \
             -destination 'generic/platform=iOS Simulator' -derivedDataPath dd CODE_SIGNING_ALLOWED=NO build 2>&1 | tee build.log
-      - name: Check the watch app is inside the iPhone app
+      - name: Check the bundle
         working-directory: ios
         run: |
           APP=dd/Build/Products/Debug-iphonesimulator/SkiNav.app
           ls "$APP/Watch" && echo "::notice::Watch app embedded: $(ls $APP/Watch)"
-          ls -la "$APP/www" && echo "::notice::Web app size $(du -h $APP/www/index.html | cut -f1)"
-          grep -c "warning:" build.log | xargs -I{} echo "::notice::{} warnings"
-          grep "warning:" build.log | grep -v "/dd/" | sort -u | head -15 | while read -r l; do echo "::warning::$l"; done
-      - name: Run in an iPhone simulator and capture the app's console
-        working-directory: ios
-        run: |
-          UDID=$(xcrun simctl list devices available -j | python3 -c "import json,sys; d=json.load(sys.stdin)['devices']; print(next(x['udid'] for k,v in d.items() if 'iOS' in k for x in v if 'iPhone' in x['name']))")
-          xcrun simctl boot "$UDID" || true
-          xcrun simctl bootstatus "$UDID" -b
-          xcrun simctl install "$UDID" dd/Build/Products/Debug-iphonesimulator/SkiNav.app
-          (xcrun simctl launch --console-pty "$UDID" com.alonmaltzov.SkiNav > app.log 2>&1 &)
-          sleep 40
-          xcrun simctl io "$UDID" screenshot shot.png || true
-          grep -E "\[app\]|\[web\]" app.log | head -60 | while read -r l; do echo "::notice::$l"; done
-          echo "::notice::app.log lines: $(wc -l < app.log)"
-          tail -25 app.log | while read -r l; do echo "::notice::tail: $l"; done
-      - name: Report errors
+          ls -la "$APP/www"
+          for f in index.html nyc.html qa-tour.js; do test -f "$APP/www/$f" || { echo "::error::$f missing from app bundle"; exit 1; }; done
+          mkdir -p ../qa-out/ios-sim
+          grep "warning:" build.log | grep -v "/dd/" | sort -u | head -20 > ../qa-out/ios-sim/build-warnings.txt || true
+      - name: Run QA tour in the simulator
+        run: bash qa/sim_run.sh ios/dd/Build/Products/Debug-iphonesimulator/SkiNav.app qa-out/ios-sim
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: qa-ios, path: qa-out }
+      - name: Report build errors
         if: failure()
         working-directory: ios
         run: |
-          grep -E "error:|warning: .*(deprecated|unavailable)" build.log | sort -u | head -40 | while read -r line; do
-            echo "::error::${line//$'\n'/ }"
-          done
-          tail -60 build.log | while read -r line; do echo "::notice::${line}"; done
+          grep -E "error:" build.log | sort -u | head -40 | while read -r line; do echo "::error::${line}"; done
+
+  report:
+    name: Publish QA report
+    needs: [web-qa, ios-qa]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { path: dl }
+      - name: Merge and summarise
+        run: |
+          mkdir -p qa-out
+          for d in dl/*/; do cp -R "$d"* qa-out/ 2>/dev/null || true; done
+          echo "commit: $GITHUB_SHA" > qa-out/COMMIT.txt
+          echo "web-qa: ${{ needs.web-qa.result }} · ios-qa: ${{ needs.ios-qa.result }}" >> qa-out/COMMIT.txt
+          python3 qa/report.py
+          cat qa-out/REPORT.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Push to qa-reports branch
+        run: |
+          cd qa-out
+          git init -q -b qa-reports
+          git add -A
+          git -c user.name="ski-nav QA" -c user.email="qa@users.noreply.github.com" commit -qm "QA for ${GITHUB_SHA::7}"
+          git push -qf "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" qa-reports

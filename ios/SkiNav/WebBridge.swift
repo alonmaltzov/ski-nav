@@ -9,6 +9,19 @@ final class WebBridge: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
     func webView(_ w: WKWebView, didFail n: WKNavigation!, withError e: Error) { print("[app] load failed:", e.localizedDescription) }
     func webView(_ w: WKWebView, didFailProvisionalNavigation n: WKNavigation!, withError e: Error) { print("[app] load failed:", e.localizedDescription) }
     func webViewWebContentProcessDidTerminate(_ w: WKWebView) { print("[app] web content crashed, reloading"); w.reload() }
+    func webView(_ w: WKWebView, didStartProvisionalNavigation n: WKNavigation!) { pageReady = false }
+
+    /// Pages inside the app (index.html, nyc.html) open in place; anything on the internet opens in Safari.
+    func webView(_ w: WKWebView, decidePolicyFor action: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard let url = action.request.url else { return decisionHandler(.allow) }
+        if url.isFileURL || url.scheme == "about" || url.scheme == "blob" || url.scheme == "data" { return decisionHandler(.allow) }
+        if action.navigationType == .linkActivated, ["http", "https", "mailto", "tel", "maps"].contains(url.scheme ?? "") {
+            print("[app] opening outside the app:", url.absoluteString)
+            UIApplication.shared.open(url)
+            return decisionHandler(.cancel)
+        }
+        decisionHandler(.allow)
+    }
 
     static let shared = WebBridge()
     weak var webView: WKWebView?
@@ -74,6 +87,13 @@ struct WebAppView: UIViewRepresentable {
         })();
         """
         config.userContentController.addUserScript(WKUserScript(source: logJS, injectionTime: .atDocumentStart, forMainFrameOnly: true))
+        // Automated QA: launched with -qaTour (by CI or Xcode scheme arguments) the app walks through every screen by itself
+        if ProcessInfo.processInfo.arguments.contains("-qaTour"),
+           let url = Bundle.main.url(forResource: "qa-tour", withExtension: "js", subdirectory: "www"),
+           let js = try? String(contentsOf: url, encoding: .utf8) {
+            print("[app] QA tour enabled")
+            config.userContentController.addUserScript(WKUserScript(source: "window.__QA_WAIT=2500;\n" + js, injectionTime: .atDocumentEnd, forMainFrameOnly: true))
+        }
         config.allowsInlineMediaPlayback = true
         let web = WKWebView(frame: .zero, configuration: config)
         web.isOpaque = false

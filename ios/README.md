@@ -22,13 +22,21 @@ so GPS stays on with the screen off, and shows speed, km, max, vertical, LIFT an
    Team: pick your name. Repeat for target **SkiNavWatch**.
    If it says the bundle ID is taken, change `com.alonmaltzov` to something unique in both targets.
 
-## Try it on the Mac first (Simulator)
+## Testing without skiing
 
-Pressing Run with a simulator selected opens a virtual iPhone. To fake a ski day:
-1. Run the app in the simulator, tap **Start tracking** and allow location.
-2. In Xcode, bottom bar > location arrow icon (Simulate Location) > **Avoriaz-Day1** or **NYC-Practice**.
-3. Watch the blue dot move, steps advance, lifts pause the speed. In the app menu, pick the
-   matching day (Avoriaz Day 1, or NYC practice via the "Practice in NYC" link).
+There are three layers. You only need to do the last one by hand.
+
+1. **Automatic QA (every push, no action needed).** GitHub runs the app in headless Chrome at iPhone 16
+   and iPhone SE sizes, and inside the real iPhone app in an iOS Simulator with a GPS route moving down
+   the first Avoriaz runs. It opens every screen, measures every button (Apple's 44pt minimum, bigger for
+   the in-run buttons), checks nothing is covered or off screen, replays a ski day, tests GPS and the NYC
+   link, and screenshots each screen. The report lands on the `qa-reports` branch (REPORT.md + PNGs).
+2. **Simulator by hand (optional).** Run in Xcode with an iPhone simulator. Menu > **Test mode** >
+   **Start replay** fakes a skier with no GPS at all. For the real GPS path: tap **Start tracking**, then
+   Xcode bottom bar > location arrow > **Avoriaz-Day1** or **NYC-Practice**.
+   To watch the automatic tour yourself: Product > Scheme > Edit Scheme > Run > Arguments > add `-qaTour`.
+3. **On your iPhone, outside (the part only you can do).** NYC practice day: lock the phone in your
+   pocket for 20+ minutes, then check km, max speed, steps advancing, and the Runs map.
 
 ## Install on your iPhone and Watch
 
