@@ -18,7 +18,15 @@ jobs:
         run: |
           set -o pipefail
           xcodebuild -project SkiNav.xcodeproj -scheme SkiNav -configuration Debug \
-            -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build 2>&1 | tee build.log
+            -destination 'generic/platform=iOS Simulator' -derivedDataPath dd CODE_SIGNING_ALLOWED=NO build 2>&1 | tee build.log
+      - name: Check the watch app is inside the iPhone app
+        working-directory: ios
+        run: |
+          APP=dd/Build/Products/Debug-iphonesimulator/SkiNav.app
+          ls "$APP/Watch" && echo "::notice::Watch app embedded: $(ls $APP/Watch)"
+          ls -la "$APP/www" && echo "::notice::Web app size $(du -h $APP/www/index.html | cut -f1)"
+          grep -c "warning:" build.log | xargs -I{} echo "::notice::{} warnings"
+          grep "warning:" build.log | grep -v "/dd/" | sort -u | head -15 | while read -r l; do echo "::warning::$l"; done
       - name: Report errors
         if: failure()
         working-directory: ios
