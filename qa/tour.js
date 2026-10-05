@@ -192,6 +192,8 @@
       const raw = [];
       const orig = window.__native && window.__native.fixes;
       if (orig) window.__native.fixes = function (arr) { try { arr.forEach(f => raw.push(f)); } catch (e) {} return orig.apply(this, arguments); };
+      post('QA GPS START');   // the simulator runner starts the moving route now
+      await sleep(1500);
       await tap('goBtn', 1000);
       await sleep(15000); await screen('gps-tracking');
       await sleep(15000);

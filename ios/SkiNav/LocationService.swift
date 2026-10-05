@@ -31,6 +31,7 @@ final class LocationService: NSObject, ObservableObject, CLLocationManagerDelega
     private var pending: [Fix] = []
     private let queue = DispatchQueue(label: "skinav.location")
     @Published private(set) var isTracking = false
+    private var logCount = 0
 
     private var trackURL: URL {
         let day = ISO8601DateFormatter.string(from: Date(), timeZone: .current, formatOptions: [.withFullDate])
@@ -70,6 +71,7 @@ final class LocationService: NSObject, ObservableObject, CLLocationManagerDelega
     }
 
     private func begin() {
+        print("[app] location updates on, auth=\(manager.authorizationStatus.rawValue)")
         manager.allowsBackgroundLocationUpdates = true
         manager.showsBackgroundLocationIndicator = true
         manager.startUpdatingLocation()
@@ -103,6 +105,10 @@ final class LocationService: NSObject, ObservableObject, CLLocationManagerDelega
 
     func locationManager(_ m: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let fixes = locations.filter { $0.horizontalAccuracy >= 0 }.map(Fix.init)
+        logCount += locations.count
+        if logCount <= 40, let l = locations.last {
+            print("[app] gps #\(logCount) \(String(format: "%.5f,%.5f", l.coordinate.latitude, l.coordinate.longitude)) acc=\(Int(l.horizontalAccuracy)) speed=\(String(format: "%.1f", l.speed)) batch=\(locations.count)")
+        }
         guard !fixes.isEmpty else { return }
         queue.sync { pending.append(contentsOf: fixes) }
         save(fixes)

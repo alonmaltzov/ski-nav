@@ -21,12 +21,14 @@ xcrun simctl location "$UDID" set 46.193310,6.768150 || true
 # app prints [app] / [web] lines; the tour logs QA SCREEN / AUDIT / RESULT / DONE
 xcrun simctl launch --console-pty --terminate-running-process "$UDID" "$BUNDLE" -qaTour > "$OUT/log.txt" 2>&1 &
 LPID=$!
-# skier moving down the first runs at ~36 km/h, for the GPS part of the tour
-sleep 20
-xcrun simctl location "$UDID" start --speed=10 --interval=1 $(python3 qa/sim_waypoints.py) || echo "[app] simctl location start failed" >> "$OUT/log.txt"
-
-seen=0; start=$(date +%s)
+seen=0; start=$(date +%s); moving=0
 while true; do
+  # skier moving down the first runs at ~36 km/h, started when the tour reaches its GPS part
+  if [ $moving = 0 ] && grep -q "QA GPS START" "$OUT/log.txt"; then
+    moving=1
+    if xcrun simctl location "$UDID" start --speed=10 --interval=1 $(python3 qa/sim_waypoints.py) > "$OUT/simctl-location.txt" 2>&1
+    then echo "[runner] moving route started" >> "$OUT/runner.txt"; else echo "[app] ERROR simctl location start failed: $(cat $OUT/simctl-location.txt)" >> "$OUT/log.txt"; fi
+  fi
   n=$(grep -c "QA SCREEN" "$OUT/log.txt" 2>/dev/null || echo 0)
   while [ "$seen" -lt "$n" ]; do
     seen=$((seen+1))
