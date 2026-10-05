@@ -227,6 +227,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
     <div class="legend" id="legend" aria-hidden="true"><span><i class="lg-run"></i>Ski down ›</span><span><i class="lg-lift"></i>Lift up »</span></div>
     <div class="mapbtns">
       <button class="mbtn" id="followBtn" type="button" aria-pressed="true" title="Follow my location">ME</button>
+      <button class="mbtn" id="compassBtn" type="button" aria-pressed="false" title="Show which way I'm facing" aria-label="Compass"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z" fill="currentColor"/></svg></button>
       <button class="mbtn" id="fitBtn" type="button" title="Show whole route">ALL</button>
       <button class="mbtn" id="dimBtn" type="button" aria-pressed="false" title="Switch 2D / 3D">3D</button>
       <button class="mbtn" id="placesBtn" type="button" aria-pressed="false" title="Places on the map" aria-label="Places on the map"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 21s-6.5-6.2-6.5-11A6.5 6.5 0 0 1 18.5 10c0 4.8-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg></button>
@@ -660,7 +661,7 @@ function onOrient(e){
 let compassWanted=false, compassTimer=null, lastOrient=0;
 function onOrientThrottled(e){ const n=performance.now(); if(n-lastOrient<120) return; lastOrient=n; onOrient(e); }
 function enableCompass(){
-  compassWanted=true; $('followBtn').classList.add('compass'); $('followBtn').textContent='ME ◎';
+  compassWanted=true; $('compassBtn').setAttribute('aria-pressed','true');
   clearTimeout(compassTimer); compassTimer=setTimeout(disableCompass, 120000);
   try{
     if(typeof DeviceOrientationEvent!=='undefined' && typeof DeviceOrientationEvent.requestPermission==='function'){
@@ -671,7 +672,7 @@ function enableCompass(){
 function disableCompass(){
   compassWanted=false; compassOn=false; clearTimeout(compassTimer);
   window.removeEventListener('deviceorientation', onOrientThrottled, true); window.removeEventListener('deviceorientationabsolute', onOrientThrottled, true);
-  $('followBtn').classList.remove('compass'); $('followBtn').textContent='ME';
+  $('compassBtn').setAttribute('aria-pressed','false');
   if(!st.last) heading=null; drawCone();   // fall back to direction of travel
 }
 function bearingTo(a,b){ const t=Math.PI/180, y=Math.sin((b[1]-a[1])*t)*Math.cos(b[0]*t), x=Math.cos(a[0]*t)*Math.sin(b[0]*t)-Math.sin(a[0]*t)*Math.cos(b[0]*t)*Math.cos((b[1]-a[1])*t); return (Math.atan2(y,x)/t+360)%360; }
@@ -681,11 +682,8 @@ function centerOn(ll){ map.jumpTo({center:[ll[1],ll[0]], zoom:Math.max(map.getZo
 function setFollow(on){ follow=on; $('followBtn').setAttribute('aria-pressed', on?'true':'false'); }
 map.on('dragstart',()=>setFollow(false));
 map.on('rotate', drawCone);
-let lastMeTap=0;
+$('compassBtn').onclick=()=>{ if(compassWanted) disableCompass(); else enableCompass(); };
 $('followBtn').onclick=()=>{
-  const n=Date.now(), dbl = n-lastMeTap < 380; lastMeTap = dbl ? 0 : n;
-  if(compassWanted && !dbl){ disableCompass(); }
-  else if(dbl && !compassWanted){ enableCompass(); }
   setFollow(true); if(st.last) map.easeTo({center:[st.last.lon,st.last.lat], zoom:Math.max(map.getZoom(),15)}); };
 $('fitBtn').onclick=()=>{ setFollow(false); map.fitBounds(view==='prog'?scopeBounds:routeBounds,{padding:PAD, pitch: is3D?55:0}); };
 function focusStep(){
@@ -833,6 +831,7 @@ function selectDay(i){
   routeBounds = dayBounds(); buildMarkers(); hideYou();
   view='nav'; applyView(); renderDayBar(); renderStats(); renderStep();
   setFollow(false); map.fitBounds(routeBounds,{padding:PAD, pitch: is3D?55:0});
+  sendPlanToWatch();
 }
 
 /* ---------- black runs option ---------- */
@@ -1026,12 +1025,37 @@ function onFix(p){
   if(st.fixes % 5 === 0){ persist(); renderStep(); }
 }
 
+/* ---------- native iPhone app bridge (background GPS) ---------- */
+const NATIVE = !!(window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.skinav);
+const toNative = msg => { try{ window.webkit.messageHandlers.skinav.postMessage(msg); }catch(e){} };
+window.__native = {
+  fixes(arr){
+    if(mode!=='gps' || !arr || !arr.length) return;
+    const many = arr.length > 20;   // catching up after the phone was locked: skip map work until the end
+    for(const c of arr){ const f=follow; if(many) follow=false; onFix(c); follow=f; }
+    const l=arr[arr.length-1]; setPill('GPS ±'+Math.round(l.acc)+' m', l.acc<=30?'live':'');
+    if(many){ renderStep(); if(follow) centerOn([l.lat,l.lon]); }
+    renderStats();
+  },
+  event(name){ if(name==='denied'){ setPill('Location blocked','err'); $('nMeta').textContent='Location is off for Ski Nav. Settings > Ski Nav > Location > Always.'; } }
+};
+function sendPlanToWatch(){
+  if(!NATIVE) return;
+  toNative({cmd:'plan', day:DAY.day, title:DAY.title, steps: steps.map(s=>({ l:stepLabel(s), t:s.type, c:stepColor(s), len:s.len||0,
+    s:[s.coords[0][0], s.coords[0][1]], e:[s.coords[s.coords.length-1][0], s.coords[s.coords.length-1][1]], at:s.at||'' }))});
+}
+
 /* ---------- real GPS ---------- */
 let watchId=null, wakeLock=null, mode='off';
 function setPill(text, cls){ const g=$('gpsPill'); g.textContent=text; g.className='pill'+(cls?' '+cls:''); }
 async function keepAwake(){ try{ if('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen'); }catch(e){} }
 document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible' && mode!=='off') keepAwake(); });
 function startGPS(){
+  if(NATIVE){
+    stopSim(); mode='gps'; st.last=null; st.sm=null; st.prevSp=null; st.ema=null; st.lastT=null;
+    setPill('Finding GPS…','live'); $('goBtn').textContent='Stop'; $('goBtn').classList.add('stop');
+    toNative({cmd:'start'}); sendPlanToWatch(); keepAwake(); return;
+  }
   if(!('geolocation' in navigator)){ setPill('No GPS here','err'); return; }
   stopSim();
   mode='gps'; st.last=null; st.sm=null; st.prevSp=null; st.ema=null; st.lastT=null;
@@ -1046,6 +1070,7 @@ function startGPS(){
   }, {enableHighAccuracy:true, maximumAge:0, timeout:20000});
 }
 function stopGPS(){
+  if(NATIVE) toNative({cmd:'stop'});
   if(watchId!=null) navigator.geolocation.clearWatch(watchId); watchId=null;
   st.lastT=null; st.speed=0; mode='off'; setPill('GPS off');
   $('goBtn').textContent='Start tracking'; $('goBtn').classList.remove('stop');
@@ -1117,6 +1142,7 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>
 window.__ski = { map, st, get steps(){return steps;}, get cur(){return cur;}, get di(){return di;}, startSim, stopSim, onFix, setX:x=>simX=x, selectDay, groupStats, openProgress, closeProgress, skied:()=>skiedWays.size };
 
 renderUnits(); renderDayBar(); renderStats(); renderStep(); applyView();
+if(NATIVE){ toNative({cmd:'ready'}); sendPlanToWatch(); }
 setInterval(()=>{ if(mode!=='off'){ renderStats(); renderSchedule(); } }, 1000);
 })();
 </script>
