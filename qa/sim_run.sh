@@ -26,8 +26,10 @@ while true; do
   # skier moving down the first runs at ~36 km/h, started when the tour reaches its GPS part
   if [ $moving = 0 ] && grep -q "QA GPS START" "$OUT/log.txt"; then
     moving=1
-    if xcrun simctl location "$UDID" start --speed=10 --interval=1 $(python3 qa/sim_waypoints.py) > "$OUT/simctl-location.txt" 2>&1
-    then echo "[runner] moving route started" >> "$OUT/runner.txt"; else echo "[app] ERROR simctl location start failed: $(cat $OUT/simctl-location.txt)" >> "$OUT/log.txt"; fi
+    # headless simulators ignore 'simctl location start', so step the location ourselves: 10 m every second
+    ( for p in $(python3 qa/sim_waypoints.py 10); do xcrun simctl location "$UDID" set "$p" >/dev/null 2>&1; sleep 1; done ) &
+    MOVER=$!
+    echo "[runner] moving route started" >> "$OUT/runner.txt"
   fi
   n=$(grep -c "QA SCREEN" "$OUT/log.txt" 2>/dev/null || echo 0)
   while [ "$seen" -lt "$n" ]; do
@@ -40,7 +42,7 @@ while true; do
   [ $(( $(date +%s) - start )) -gt 480 ] && { echo '[web] QA RESULT {"check":"tour finished in time","ok":false,"detail":"timeout after 8 min"}' >> "$OUT/log.txt"; break; }
   sleep 0.3
 done
-xcrun simctl location "$UDID" clear || true
+kill ${MOVER:-0} 2>/dev/null; xcrun simctl location "$UDID" clear || true
 xcrun simctl io "$UDID" screenshot "$OUT/99-final.png" >/dev/null 2>&1 || true
 kill $LPID 2>/dev/null || true
 echo "QA screens captured: $seen"
