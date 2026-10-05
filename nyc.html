@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:0}html,body{margin:0}[hidden]{display:none!important}</style></head><body><title>Avoriaz Ski Nav</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><style>html,body{margin:0}[hidden]{display:none!important}</style></head><body><title>Avoriaz Ski Nav</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Ski Nav">
@@ -22,13 +22,13 @@
 :root[data-theme="dark"]{
   --bg:#0b1218; --panel:#131d26; --ink:#eaf1f6; --muted:#8fa1af; --line:#24323e;
   --accent:#4c93ff; --route:#ff7a45; --p-black:#e8e8e8; --lift:#c3ccd4; --mapbg:#16212b; --shade:#04080c; --contour:#3d5163; --forest:#1d3326; --water:#244a66; --road:#3a4855; --roadcase:#1c2630; --bld:#34404b; --bldline:#4a5764; color-scheme:dark}
-html,body{height:100%;touch-action:manipulation;-webkit-text-size-adjust:100%;overscroll-behavior:none}
+html,body{height:100%;overflow:hidden;position:fixed;inset:0;width:100%;touch-action:manipulation;-webkit-text-size-adjust:100%;overscroll-behavior:none}
 *{-webkit-tap-highlight-color:transparent}
 button,a{touch-action:manipulation}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-ui);margin:0;overflow:hidden;-webkit-user-select:none;user-select:none}
-.app{height:100%;display:grid;grid-template-rows:auto 1fr auto}
+.app{position:fixed;inset:0;display:grid;grid-template-rows:auto 1fr auto;overflow:hidden}
 /* top instrument */
-.top{background:var(--panel);border-bottom:1px solid var(--line);padding:10px 16px 10px;display:grid;gap:8px}
+.top{background:var(--panel);border-bottom:1px solid var(--line);padding:calc(8px + env(safe-area-inset-top,0px)) 16px 10px;display:grid;gap:8px}
 .speedrow{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
 .speed{font-family:var(--f-num);font-weight:700;font-size:5.2rem;line-height:.82;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 .speed small{font-size:1.3rem;font-weight:600;color:var(--muted);margin-left:6px;letter-spacing:.04em}
@@ -83,7 +83,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--f-ui);margin:0;over
 button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 /* steps sheet */
 .sheet{position:fixed;inset:0;z-index:1000;background:rgb(0 0 0/.35);display:flex;align-items:flex-end}
-.sheetin{background:var(--panel);width:100%;max-height:78%;border-radius:18px 18px 0 0;padding:14px 16px calc(16px + env(safe-area-inset-bottom,0px));overflow:auto;display:grid;gap:4px;align-content:start}
+.sheetin{box-sizing:border-box;overflow-x:hidden;overscroll-behavior:contain;animation:sheetup .22s cubic-bezier(.2,.8,.2,1);background:var(--panel);width:100%;max-height:78%;border-radius:18px 18px 0 0;padding:14px 16px calc(16px + env(safe-area-inset-bottom,0px));overflow:auto;display:grid;gap:4px;align-content:start}
 .sheethead{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
 .sheethead h3{margin:0;font:700 1.3rem var(--f-num)}
 .srow{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:8px 6px;border-radius:10px;border:0;background:none;color:var(--ink);text-align:left;font:inherit;width:100%}
@@ -122,13 +122,18 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .homebanner{position:absolute;left:12px;right:68px;top:12px;z-index:499;background:var(--warn);color:#fff;padding:10px 12px;border-radius:12px;font-size:.9rem;line-height:1.3}
 .homebanner b{display:block;font-size:.98rem}
 /* drawer */
-.drawer{position:fixed;inset:0;z-index:1100;background:rgb(0 0 0/.38);display:flex}
-.drawerin{background:var(--panel);width:min(380px,90%);height:100%;overflow:auto;padding:calc(16px + env(safe-area-inset-top,0px)) 16px calc(20px + env(safe-area-inset-bottom,0px));display:grid;gap:14px;align-content:start;box-shadow:4px 0 24px rgb(0 0 0/.2)}
-.drawerhead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.drawer{position:fixed;inset:0;z-index:1100;background:rgb(0 0 0/.38);display:flex;animation:fade .18s ease-out}
+@keyframes fade{from{background:rgb(0 0 0/0)}}
+@keyframes slidein{from{transform:translateX(-100%)}}
+@keyframes sheetup{from{transform:translateY(100%)}}
+.drawerin{background:var(--panel);width:min(360px,86vw);height:100%;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;box-sizing:border-box;animation:slidein .22s cubic-bezier(.2,.8,.2,1);padding:calc(16px + env(safe-area-inset-top,0px)) 16px calc(20px + env(safe-area-inset-bottom,0px));display:grid;gap:14px;align-content:start;box-shadow:4px 0 24px rgb(0 0 0/.2)}
+.drawerhead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;min-width:0}
+.drawerin>*{min-width:0;max-width:100%}
+.xbtn{width:36px;height:36px;flex:none;border-radius:50%;border:0;background:var(--bg);color:var(--ink);font:700 1.1rem var(--f-ui);display:grid;place-items:center}
 .drawerhead h2{margin:0;font:700 1.6rem/1 var(--f-num)}
 .drawerhead p{margin:4px 0 0;color:var(--muted);font-size:.85rem}
 .sect{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-top:4px}
-.daycard{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;padding:10px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);text-align:left;font:inherit;width:100%}
+.daycard{box-sizing:border-box;display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:center;padding:10px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);text-align:left;font:inherit;width:100%}
 .daycard.sel{border-color:var(--accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 30%,transparent)}
 .daynum{width:46px;height:52px;border-radius:10px;background:var(--panel);border:1px solid var(--line);display:grid;place-items:center;text-align:center;line-height:1}
 .daynum small{display:block;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
@@ -139,7 +144,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .dayinfo .tag{color:#fff;font-size:.62rem}
 .tag{display:inline-block;font:700 .62rem/1 var(--f-ui);letter-spacing:.08em;text-transform:uppercase;padding:4px 6px;border-radius:6px;background:var(--accent);color:#fff;margin-left:6px;vertical-align:2px}
 .tag.done{background:var(--ok)}
-.goalcard{display:grid;gap:8px;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);text-align:left;font:inherit;width:100%}
+.goalcard{box-sizing:border-box;display:grid;gap:8px;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);text-align:left;font:inherit;width:100%}
 .goalcard .big{font:700 1.7rem/1 var(--f-num)}
 .goalcard .sub{font-size:.8rem;color:var(--muted)}
 .bar{height:8px;border-radius:4px;background:color-mix(in srgb,var(--muted) 22%,transparent);overflow:hidden;display:flex}
@@ -280,7 +285,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
   <nav class="drawerin" aria-label="Week menu">
     <div class="drawerhead">
       <div><h2 id="tripTitle">Avoriaz week</h2><p id="tripSub">Sun Jan 17 to Fri Jan 22 · L'Amara</p></div>
-      <button class="btn ghost" id="drawerClose" type="button" style="height:38px">Close</button>
+      <button class="xbtn" id="drawerClose" type="button" aria-label="Close menu">✕</button>
     </div>
     <div class="sect">Plan</div>
     <div id="dayList" style="display:grid;gap:8px"></div>
@@ -291,15 +296,15 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
       <div class="bar"><i class="b" id="goalBarDone"></i><i class="p" id="goalBarPlan"></i></div>
       <span class="sub" id="goalSub">The plan covers 0. Tap to see the map.</span>
     </button>
-    <button class="btn ghost" id="menuRunsList" type="button" style="height:42px;width:100%">See every run in the plan, day by day</button>
+    <button class="btn ghost" id="menuRunsList" type="button" style="height:42px;width:100%;box-sizing:border-box">See every run in the plan, day by day</button>
     <div class="sect">Settings</div>
-    <div class="toggle" style="display:grid;gap:8px"><span>Plan style<small>Each style is its own 6-day plan. Your skied runs carry over.</small></span>
+    <div class="toggle" style="display:grid;gap:8px;box-sizing:border-box"><span>Plan style<small>Each style is its own 6-day plan. Your skied runs carry over.</small></span>
       <div class="chips" id="styleSeg"><button type="button" data-v="red" aria-pressed="true">Reds first</button><button type="button" data-v="std" aria-pressed="false">Blue &amp; red</button><button type="button" data-v="black" aria-pressed="false">With blacks</button></div></div>
     <div class="setrow">
       <button type="button" id="unitBtn">Switch to miles</button>
       <button type="button" id="simBtn">Test mode</button>
     </div>
-    <a class="btn ghost" id="otherApp" href="#" style="display:grid;place-items:center;text-decoration:none;height:42px">Practice in NYC</a>
+    <a class="btn ghost" id="otherApp" href="#" style="display:grid;place-items:center;text-decoration:none;height:42px;box-sizing:border-box;color:var(--ink)">Practice in NYC</a>
     <p class="note">Routes come from OpenStreetMap piste data and terrain. Chairs and gondolas only, no T-bars, every lift is ridden up. Check lift status on the day.</p>
   </nav>
 </div>
@@ -1142,8 +1147,6 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>
 
 /* app-like: no page zoom from double-tap or pinch outside the map */
 ['gesturestart','gesturechange'].forEach(ev=>document.addEventListener(ev, e=>{ if(!e.target.closest('#map')) e.preventDefault(); }, {passive:false}));
-let lastTouchEnd=0;
-document.addEventListener('touchend', e=>{ const n=Date.now(); if(n-lastTouchEnd<350 && !e.target.closest('#map')) e.preventDefault(); lastTouchEnd=n; }, {passive:false});
 
 /* expose for automated tests */
 window.__ski = { map, st, get steps(){return steps;}, get cur(){return cur;}, get di(){return di;}, startSim, stopSim, onFix, setX:x=>simX=x, selectDay, groupStats, openProgress, closeProgress, skied:()=>skiedWays.size };
