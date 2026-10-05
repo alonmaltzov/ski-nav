@@ -10,7 +10,8 @@ cp ../nyc.html SkiNav/www/nyc.html
 cp ../qa/tour.js SkiNav/www/qa-tour.js
 if [ "${1:-}" = "--no-watch" ]; then
   # phone only: same project, but the iPhone app doesn't embed (or need to sign) the Watch app
-  sed '/^    dependencies:/,/target: SkiNavWatch/d' project.yml > .project-phone.yml
+  awk '/^  SkiNavWatch:/{skip=1} /^schemes:/{skip=0} /^    dependencies:/{dep=1; next} dep&&/target: SkiNavWatch/{dep=0; next} /SkiNavWatch: all/{next} !skip' project.yml > .project-phone.yml
+  rm -rf SkiNav.xcodeproj
   xcodegen generate --spec .project-phone.yml --project .
   rm .project-phone.yml
   echo "Phone-only project (no Watch app). Run ./setup.sh without --no-watch to bring the Watch back."
