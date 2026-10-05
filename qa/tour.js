@@ -188,11 +188,22 @@
 
     // real GPS path (native only: the simulator feeds a moving location)
     if (NATIVE) {
+      // record the raw fixes iOS hands over, to tell "simulator not moving" apart from "app ignores movement"
+      const raw = [];
+      const orig = window.__native && window.__native.fixes;
+      if (orig) window.__native.fixes = function (arr) { try { arr.forEach(f => raw.push(f)); } catch (e) {} return orig.apply(this, arguments); };
       await tap('goBtn', 1000);
       await sleep(15000); await screen('gps-tracking');
-      await sleep(10000);
+      await sleep(15000);
+      if (orig) window.__native.fixes = orig;
       const km = parseFloat(txt('dist')) || 0;
-      result('native GPS reaches the web app', /live|gps/i.test(txt('gpsPill')) || km > 0 || +txt('spd') > 0, `pill="${txt('gpsPill')}" km=${txt('dist')} speed=${txt('spd')} max=${txt('maxv')}`);
+      const m = (a, b) => { const R = 6371000, r = Math.PI / 180, dLa = (b.lat - a.lat) * r, dLo = (b.lon - a.lon) * r; return 2 * R * Math.asin(Math.sqrt(Math.sin(dLa / 2) ** 2 + Math.cos(a.lat * r) * Math.cos(b.lat * r) * Math.sin(dLo / 2) ** 2)); };
+      let path = 0; for (let i = 1; i < raw.length; i++) path += m(raw[i - 1], raw[i]);
+      const sp = raw.map(f => f.speed).filter(v => v != null);
+      const rawInfo = `${raw.length} fixes, raw path ${Math.round(path)} m, speeds ${sp.length ? Math.min(...sp).toFixed(1) + '..' + Math.max(...sp).toFixed(1) + ' m/s' : 'none'}, acc ${raw.length ? Math.round(raw[raw.length - 1].acc) : '-'} m, alt ${raw.length ? raw[raw.length - 1].alt : '-'}`;
+      result('native GPS fixes arrive', raw.length > 5, rawInfo);
+      result('simulator route is moving (test harness)', path > 100, rawInfo);
+      result('moving GPS turns into km and speed', path < 100 || km > 0.05, `km=${txt('dist')} speed=${txt('spd')} max=${txt('maxv')} pill="${txt('gpsPill')}" vs raw path ${Math.round(path)} m`);
       await tap('goBtn', 800);
     }
 
