@@ -1,0 +1,246 @@
+import Foundation
+import HealthKit
+import CoreLocation
+import WatchConnectivity
+import WatchKit
+
+/// One step of today's plan, as sent by the phone.
+struct PlanStep: Codable, Identifiable {
+    var id: Int { idx }
+    var idx: Int = 0
+    let l: String        // label, e.g. "Take Prolays chair"
+    let t: String        // "run" | "lift" | "end"
+    let c: String        // colour: blue, red, black, green, lift, end
+    let len: Double
+    let s: [Double]      // start [lat, lon]
+    let e: [Double]      // end [lat, lon]
+    let at: String
+}
+
+struct Plan: Codable {
+    let day: Int
+    let title: String
+    var steps: [PlanStep]
+}
+
+/// The ski day on the wrist: a Downhill Skiing workout (keeps GPS on with the screen off),
+/// live speed / distance / max / vertical, lift detection, and the next step of the plan.
+@MainActor
+final class SkiSession: NSObject, ObservableObject {
+    // live numbers
+    @Published var running = false
+    @Published var speedKmh: Double = 0
+    @Published var maxKmh: Double = 0
+    @Published var distanceKm: Double = 0
+    @Published var verticalM: Double = 0
+    @Published var onLift = false
+    @Published var gpsOK = false
+    @Published var elapsed: TimeInterval = 0
+    @Published var message: String?
+
+    // plan
+    @Published var plan: Plan?
+    @Published var current = 0
+
+    private let health = HKHealthStore()
+    private var session: HKWorkoutSession?
+    private var builder: HKLiveWorkoutBuilder?
+    private let location = CLLocationManager()
+    private var last: CLLocation?
+    private var altRef: Double?
+    private var altHistory: [(Date, Double)] = []
+    private var prevSpeed: Double?
+    private var stepDistance: Double = 0
+    private var startDate: Date?
+    private var timer: Timer?
+
+    override init() {
+        super.init()
+        location.delegate = self
+        location.desiredAccuracy = kCLLocationAccuracyBest
+        location.activityType = .fitness
+        if WCSession.isSupported() {
+            WCSession.default.delegate = self
+            WCSession.default.activate()
+        }
+        if let data = UserDefaults.standard.data(forKey: "plan"), let p = try? JSONDecoder().decode(Plan.self, from: data) {
+            plan = p
+        }
+        current = UserDefaults.standard.integer(forKey: "current")
+    }
+
+    var step: PlanStep? {
+        guard let p = plan, current < p.steps.count else { return nil }
+        return p.steps[current]
+    }
+    var nextStep: PlanStep? {
+        guard let p = plan, current + 1 < p.steps.count else { return nil }
+        return p.steps[current + 1]
+    }
+
+    // MARK: start / stop
+
+    func start() {
+        let share: Set<HKSampleType> = [HKObjectType.workoutType(),
+                                         HKQuantityType(.distanceDownhillSnowSports),
+                                         HKQuantityType(.activeEnergyBurned)]
+        let read: Set<HKObjectType> = [HKObjectType.workoutType(), HKQuantityType(.heartRate),
+                                       HKQuantityType(.distanceDownhillSnowSports)]
+        health.requestAuthorization(toShare: share, read: read) { [weak self] ok, _ in
+            Task { @MainActor in
+                guard let self else { return }
+                self.location.requestWhenInUseAuthorization()
+                self.beginWorkout(healthOK: ok)
+            }
+        }
+    }
+
+    private func beginWorkout(healthOK: Bool) {
+        let cfg = HKWorkoutConfiguration()
+        cfg.activityType = .downhillSkiing
+        cfg.locationType = .outdoor
+        do {
+            let s = try HKWorkoutSession(healthStore: health, configuration: cfg)
+            let b = s.associatedWorkoutBuilder()
+            b.dataSource = HKLiveWorkoutDataSource(healthStore: health, workoutConfiguration: cfg)
+            session = s; builder = b
+            let now = Date()
+            s.startActivity(with: now)
+            b.beginCollection(withStart: now) { _, _ in }
+        } catch {
+            // without HealthKit the watch still tracks, but only while the screen is on
+            message = "Workout not allowed: tracking only while the screen is on."
+        }
+        startDate = Date()
+        running = true
+        location.startUpdatingLocation()
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+            Task { @MainActor in
+                guard let self, let s = self.startDate else { return }
+                self.elapsed = Date().timeIntervalSince(s)
+            }
+        }
+    }
+
+    func stop() {
+        running = false
+        location.stopUpdatingLocation()
+        timer?.invalidate(); timer = nil
+        session?.end()
+        let b = builder
+        b?.endCollection(withEnd: Date()) { _, _ in
+            b?.finishWorkout { _, _ in }
+        }
+        builder = nil
+        session = nil
+    }
+
+    func nextManually() { advance() }
+    func previousManually() { if current > 0 { current -= 1; stepDistance = 0; saveCurrent() } }
+
+    private func advance() {
+        guard let p = plan, current < p.steps.count - 1 else { return }
+        current += 1
+        stepDistance = 0
+        saveCurrent()
+        WKInterfaceDevice.current().play(.directionUp)
+    }
+
+    private func saveCurrent() { UserDefaults.standard.set(current, forKey: "current") }
+
+    // MARK: per-fix logic (same rules as the phone app)
+
+    fileprivate func handle(_ loc: CLLocation) {
+        guard loc.horizontalAccuracy >= 0 else { return }
+        gpsOK = loc.horizontalAccuracy <= 30
+        let good = loc.horizontalAccuracy <= 30
+
+        // lift: climbing steadily (> 0.4 m/s over ~10 s) or riding the lift the plan expects
+        if loc.verticalAccuracy >= 0 {
+            altHistory.append((loc.timestamp, loc.altitude))
+            altHistory.removeAll { loc.timestamp.timeIntervalSince($0.0) > 30 }
+        }
+        var rate: Double?
+        if let first = altHistory.first, loc.timestamp.timeIntervalSince(first.0) >= 8 {
+            rate = (loc.altitude - first.1) / loc.timestamp.timeIntervalSince(first.0)
+        }
+        let plannedLift = step?.t == "lift" && distance(to: step!.s, from: loc) > 25 && loc.speed > 1.5
+        if !onLift {
+            onLift = (rate ?? 0) > 0.4 || plannedLift
+        } else if !plannedLift, let r = rate, r < 0.1 {
+            onLift = false
+        }
+
+        if let prev = last, good {
+            let d = loc.distance(from: prev)
+            let dt = loc.timestamp.timeIntervalSince(prev.timestamp)
+            let sp = loc.speed >= 0 ? loc.speed : d / max(dt, 0.1)
+            if onLift {
+                speedKmh = 0; prevSpeed = nil
+                stepDistance += d
+            } else if dt > 0, d / dt < 45, sp >= 0.6, d > 3 {
+                let dd = min(d * 1.2, sp * dt + 0.5)
+                distanceKm += dd / 1000
+                stepDistance += dd
+                speedKmh = speedKmh == 0 ? sp * 3.6 : speedKmh * 0.55 + sp * 3.6 * 0.45
+                if let p = prevSpeed { maxKmh = max(maxKmh, min(sp, p) * 3.6) }
+                prevSpeed = sp
+            } else if dt > 4 {
+                speedKmh *= 0.5
+            }
+        }
+        if good { last = loc }
+
+        // vertical skied: count descents only, 5 m hysteresis, not on lifts
+        if loc.verticalAccuracy >= 0, good {
+            if onLift { altRef = loc.altitude }
+            else if let ref = altRef {
+                if loc.altitude < ref - 5 { verticalM += ref - loc.altitude; altRef = loc.altitude }
+                else if loc.altitude > ref + 5 { altRef = loc.altitude }
+            } else { altRef = loc.altitude }
+        }
+
+        // next step: reached the end of this one (loops need most of their length done first)
+        if let s = step, s.t != "end" {
+            let isLoop = distance(between: s.s, s.e) < 80
+            if distance(to: s.e, from: loc) < max(35, loc.horizontalAccuracy) && (!isLoop || stepDistance > 0.6 * s.len) {
+                advance()
+            }
+        }
+    }
+
+    private func distance(to p: [Double], from loc: CLLocation) -> Double {
+        guard p.count == 2 else { return .infinity }
+        return CLLocation(latitude: p[0], longitude: p[1]).distance(from: loc)
+    }
+    private func distance(between a: [Double], _ b: [Double]) -> Double {
+        guard a.count == 2, b.count == 2 else { return .infinity }
+        return CLLocation(latitude: a[0], longitude: a[1]).distance(from: CLLocation(latitude: b[0], longitude: b[1]))
+    }
+
+    fileprivate func receive(planData: Data) {
+        guard var p = try? JSONDecoder().decode(Plan.self, from: planData) else { return }
+        for i in p.steps.indices { p.steps[i].idx = i }
+        let newDay = plan?.day != p.day
+        plan = p
+        UserDefaults.standard.set(try? JSONEncoder().encode(p), forKey: "plan")
+        if newDay { current = 0; stepDistance = 0; saveCurrent() }
+    }
+}
+
+extension SkiSession: CLLocationManagerDelegate {
+    nonisolated func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        Task { @MainActor in for l in locations { self.handle(l) } }
+    }
+    nonisolated func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {}
+}
+
+extension SkiSession: WCSessionDelegate {
+    nonisolated func session(_ session: WCSession, activationDidCompleteWith state: WCSessionActivationState, error: Error?) {
+        let ctx = session.receivedApplicationContext
+        if let data = ctx["plan"] as? Data { Task { @MainActor in self.receive(planData: data) } }
+    }
+    nonisolated func session(_ session: WCSession, didReceiveApplicationContext ctx: [String: Any]) {
+        if let data = ctx["plan"] as? Data { Task { @MainActor in self.receive(planData: data) } }
+    }
+}

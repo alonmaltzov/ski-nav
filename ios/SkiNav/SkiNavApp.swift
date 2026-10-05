@@ -1,0 +1,22 @@
+import SwiftUI
+
+@main
+struct SkiNavApp: App {
+    @StateObject private var location = LocationService.shared
+    @Environment(\.scenePhase) private var phase
+
+    init() {
+        WatchLink.shared.activate()
+    }
+
+    var body: some Scene {
+        WindowGroup {
+            WebAppView()
+                .ignoresSafeArea()
+                .onChange(of: phase) { _, newPhase in
+                    // when we come back to the foreground, hand the web app everything recorded while locked
+                    if newPhase == .active { WebBridge.shared.flush() }
+                }
+        }
+    }
+}
