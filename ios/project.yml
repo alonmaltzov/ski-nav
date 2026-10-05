@@ -18,7 +18,9 @@ targets:
     platform: iOS
     sources:
       - path: SkiNav
-        excludes: ["www/**"]
+        excludes: ["www/**", "Simulate/**"]
+      - path: SkiNav/Simulate
+        buildPhase: none
       - path: SkiNav/www
         type: folder
         buildPhase: resources

@@ -22,6 +22,14 @@ so GPS stays on with the screen off, and shows speed, km, max, vertical, LIFT an
    Team: pick your name. Repeat for target **SkiNavWatch**.
    If it says the bundle ID is taken, change `com.alonmaltzov` to something unique in both targets.
 
+## Try it on the Mac first (Simulator)
+
+Pressing Run with a simulator selected opens a virtual iPhone. To fake a ski day:
+1. Run the app in the simulator, tap **Start tracking** and allow location.
+2. In Xcode, bottom bar > location arrow icon (Simulate Location) > **Avoriaz-Day1** or **NYC-Practice**.
+3. Watch the blue dot move, steps advance, lifts pause the speed. In the app menu, pick the
+   matching day (Avoriaz Day 1, or NYC practice via the "Practice in NYC" link).
+
 ## Install on your iPhone and Watch
 
 1. Plug the iPhone into the Mac with a cable and tap **Trust** on the phone.
