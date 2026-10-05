@@ -611,9 +611,13 @@ function smallArrow(){
   return { width:w, height:h, data:x.getImageData(0,0,w,h).data };
 }
 map.on('styleimagemissing', e=>{
-  if(e.id==='arr-run'||e.id==='arr-lift') map.addImage(e.id, arrowImage(e.id==='arr-run'?'run':'lift'), {pixelRatio:2});
-  else if(e.id==='arr-sm') map.addImage(e.id, smallArrow(), {pixelRatio:2});
-  else if(e.id.startsWith('poi-')) map.addImage(e.id, poiImage(e.id.slice(4)), {pixelRatio:2});
+  if(!e.id || map.hasImage(e.id)) return;
+  try{
+    if(e.id==='arr-run'||e.id==='arr-lift') map.addImage(e.id, arrowImage(e.id==='arr-run'?'run':'lift'), {pixelRatio:2});
+    else if(e.id==='arr-sm') map.addImage(e.id, smallArrow(), {pixelRatio:2});
+    else if(e.id.startsWith('poi-')) map.addImage(e.id, poiImage(e.id.slice(4)), {pixelRatio:2});
+    else { console.warn('map icon missing: '+e.id); map.addImage(e.id, {width:1,height:1,data:new Uint8Array(4)}); }
+  }catch(err){ console.warn('map icon '+e.id+' failed: '+err.message); }
 });
 /* home and après pins, always visible */
 function pin(label, sub, lon, lat, cls){ const el=document.createElement('div'); el.className='pin '+cls; el.innerHTML='<b></b><span></span>'; el.querySelector('b').textContent=label; el.querySelector('span').textContent=sub; return new maplibregl.Marker({element:el, anchor:'bottom'}).setLngLat([lon,lat]).addTo(map); }

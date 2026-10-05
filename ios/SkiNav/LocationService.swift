@@ -1,5 +1,6 @@
 import Foundation
 import CoreLocation
+import UIKit
 
 /// One GPS reading, in the shape the web app's onFix() expects.
 struct Fix: Codable {
@@ -75,7 +76,15 @@ final class LocationService: NSObject, ObservableObject, CLLocationManagerDelega
         manager.allowsBackgroundLocationUpdates = true
         manager.showsBackgroundLocationIndicator = true
         manager.startUpdatingLocation()
+        if ProcessInfo.processInfo.arguments.contains("-qaTour"), probe == nil {
+            // QA only: what CoreLocation holds right now, independent of delegate callbacks
+            probe = Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { [weak self] _ in
+                guard let self, let l = self.manager.location else { return }
+                print("[app] probe \(String(format: "%.5f,%.5f", l.coordinate.latitude, l.coordinate.longitude)) age=\(Int(-l.timestamp.timeIntervalSinceNow))s callbacks=\(self.logCount) state=\(UIApplication.shared.applicationState.rawValue)")
+            }
+        }
     }
+    private var probe: Timer?
 
     /// Hand over everything collected since the last call.
     func drain() -> [Fix] {
