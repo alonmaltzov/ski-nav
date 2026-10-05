@@ -1060,7 +1060,7 @@ window.__native = {
     if(many){ renderStep(); if(follow) centerOn([l.lat,l.lon]); }
     renderStats();
   },
-  event(name){ if(name==='denied'){ setPill('Location blocked','err'); $('nMeta').textContent='Location is off for Ski Nav. Settings > Ski Nav > Location > Always.'; } }
+  event(name){ if(name==='tracking' && mode!=='gps'){ console.warn('page restarted while tracking; resuming GPS'); startGPS(); return; } if(name==='denied'){ setPill('Location blocked','err'); $('nMeta').textContent='Location is off for Ski Nav. Settings > Ski Nav > Location > Always.'; } }
 };
 function sendPlanToWatch(){
   if(!NATIVE) return;

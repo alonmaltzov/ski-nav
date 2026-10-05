@@ -32,6 +32,11 @@ final class WebBridge: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
         switch cmd {
         case "ready":
             pageReady = true
+            // the page can be restarted by iOS (memory); if we were tracking, tell it to carry on
+            if LocationService.shared.isTracking {
+                print("[app] page reloaded during tracking, resuming")
+                send(event: "tracking")
+            }
             flush()
         case "start":
             LocationService.shared.start()
