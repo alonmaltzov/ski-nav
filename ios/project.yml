@@ -95,3 +95,9 @@ schemes:
         SkiNav: all
         SkiNavWidgets: all
         SkiNavWatch: all
+  SkiNavWatch:
+    build:
+      targets:
+        SkiNavWatch: all
+    run:
+      config: Debug
