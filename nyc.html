@@ -982,6 +982,15 @@ function renderStep(){
   else $('nThen').textContent='Last step. Enjoy the après.';
   renderSchedule();
   drawRoute(); renderList();
+  nativeStep();
+}
+/* tell the iPhone app which step we're on (lock-screen Live Activity + native lift detection) */
+let nativeStepKey=null;
+function nativeStep(){
+  const h = window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.skinav; if(!h) return;   // runs during load, before NATIVE exists
+  const s=steps[cur]; if(!s) return;
+  const k=di+':'+cur; if(k===nativeStepKey) return; nativeStepKey=k;
+  try{ h.postMessage({cmd:'step', label:stepLabel(s), color:stepColor(s), lift: s.type==='lift' ? s.coords : null}); }catch(e){}
 }
 function renderList(){
   const box = $('stepList'); box.textContent='';
@@ -1096,7 +1105,7 @@ function startGPS(){
   if(NATIVE){
     stopSim(); mode='gps'; st.last=null; st.sm=null; st.prevSp=null; st.ema=null; st.lastT=null;
     setPill('Finding GPS…','live'); $('goBtn').textContent='Stop'; $('goBtn').classList.add('stop');
-    toNative({cmd:'start'}); sendPlanToWatch(); keepAwake(); return;
+    toNative({cmd:'start', base:{distM:st.dist||0, maxMps:st.max||0, vertM:st.vert||0, elapsedS:st.elapsed||0}}); nativeStepKey=null; nativeStep(); sendPlanToWatch(); keepAwake(); return;
   }
   if(!('geolocation' in navigator)){ setPill('No GPS here','err'); return; }
   stopSim();
@@ -1187,7 +1196,7 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>
 window.__ski = { map, st, get steps(){return steps;}, get cur(){return cur;}, get di(){return di;}, startSim, stopSim, onFix, setX:x=>simX=x, selectDay, groupStats, openProgress, closeProgress, skied:()=>skiedWays.size };
 
 renderUnits(); renderDayBar(); renderStats(); renderStep(); applyView();
-if(NATIVE){ toNative({cmd:'ready'}); sendPlanToWatch(); }
+if(NATIVE){ toNative({cmd:'ready'}); toNative({cmd:'ctx', lifts: liftLines, title: DAY.title}); sendPlanToWatch(); nativeStep(); }
 setInterval(()=>{ if(mode!=='off'){ renderStats(); renderSchedule(); } }, 1000);
 })();
 </script>

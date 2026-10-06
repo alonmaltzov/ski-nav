@@ -67,6 +67,7 @@ final class LocationService: NSObject, ObservableObject, CLLocationManagerDelega
 
     func stop() {
         isTracking = false
+        SkiDay.shared.end()
         updates?.cancel(); updates = nil
         background?.invalidate(); background = nil
         probe?.invalidate(); probe = nil
@@ -183,6 +184,8 @@ final class LocationService: NSObject, ObservableObject, CLLocationManagerDelega
             print("[app] gps #\(logCount) \(String(format: "%.5f,%.5f", l.coordinate.latitude, l.coordinate.longitude)) acc=\(Int(l.horizontalAccuracy)) speed=\(String(format: "%.1f", l.speed)) batch=\(locations.count)")
         }
         guard !fixes.isEmpty else { return }
+        // native totals: keep counting while the page is asleep (phone locked) and feed the lock screen
+        SkiDay.shared.ingest(fixes.map { GeoFix(lat: $0.lat, lon: $0.lon, acc: $0.acc, alt: $0.alt, speed: $0.speed, t: $0.t) })
         queue.sync { pending.append(contentsOf: fixes) }
         save(fixes)
         DispatchQueue.main.async { WebBridge.shared.flushIfActive() }
