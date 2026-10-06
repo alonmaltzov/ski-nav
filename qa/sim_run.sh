@@ -12,16 +12,30 @@ pref=[x for x in c if '16' in x['name'] and 'Plus' not in x['name'] and 'Max' no
 print(pref[0]['udid'])")
 NAME=$(xcrun simctl list devices | grep "$UDID" | sed 's/ (.*//' | xargs)
 echo "Simulator: $NAME ($UDID)"; echo "$NAME" > "$OUT/device.txt"
-# a paired Apple Watch simulator, to test phone -> watch sync (plan + live stats)
+# a paired Apple Watch simulator, to test phone -> watch sync (plan + live stats).
+# Prefer a phone/watch pair the machine already has; otherwise create and pair a watch.
 WATCH=""
-WRT=$(xcrun simctl list runtimes -j | python3 -c "import json,sys; r=[x for x in json.load(sys.stdin)['runtimes'] if x['platform']=='watchOS' and x.get('isAvailable')]; print(r[-1]['identifier'] if r else '')")
-WDT=$(xcrun simctl list devicetypes -j | python3 -c "import json,sys; d=[x for x in json.load(sys.stdin)['devicetypes'] if 'Apple Watch' in x['name']]; print(d[-1]['identifier'] if d else '')")
-if [ -n "$WRT" ] && [ -n "$WDT" ]; then
-  xcrun simctl shutdown "$UDID" 2>/dev/null || true
-  WATCH=$(xcrun simctl create "QA Watch" "$WDT" "$WRT" 2>/dev/null || true)
-  if [ -n "$WATCH" ] && xcrun simctl pair "$WATCH" "$UDID" >/dev/null 2>&1; then echo "Paired watch $WATCH ($WRT)"; else echo "[app] watch pairing failed" >> "$OUT/runner.txt"; WATCH=""; fi
+PAIR=$(xcrun simctl list pairs -j | python3 -c "
+import json,sys
+p=json.load(sys.stdin).get('pairs',{})
+ok=[(v['phone']['udid'],k,v['watch']['udid'],v['phone'].get('name','')) for k,v in p.items() if 'iPhone' in v['phone'].get('name','')]
+pref=[x for x in ok if '16' in x[3]] or ok
+print(' '.join(pref[0][:3]) if pref else '')")
+echo "[runner] existing pairs pick: ${PAIR:-none}" >> "$OUT/runner.txt"
+if [ -n "$PAIR" ]; then
+  UDID=$(echo $PAIR | cut -d' ' -f1); PAIRID=$(echo $PAIR | cut -d' ' -f2); WATCH=$(echo $PAIR | cut -d' ' -f3)
+  xcrun simctl pair_activate "$PAIRID" >>"$OUT/runner.txt" 2>&1 || true
+  NAME=$(xcrun simctl list devices | grep "$UDID" | sed 's/ (.*//' | xargs); echo "$NAME" > "$OUT/device.txt"
+  echo "Using existing pair: phone $UDID ($NAME), watch $WATCH"
 else
-  echo "[runner] no watchOS simulator runtime on this machine" >> "$OUT/runner.txt"
+  WRT=$(xcrun simctl list runtimes -j | python3 -c "import json,sys; r=[x for x in json.load(sys.stdin)['runtimes'] if x['platform']=='watchOS' and x.get('isAvailable')]; print(r[-1]['identifier'] if r else '')")
+  WDT=$(xcrun simctl list devicetypes -j | python3 -c "import json,sys; d=[x for x in json.load(sys.stdin)['devicetypes'] if x['name'].startswith('Apple Watch Series')]; print(d[-1]['identifier'] if d else '')")
+  echo "[runner] watch runtime=$WRT type=$WDT" >> "$OUT/runner.txt"
+  if [ -n "$WRT" ] && [ -n "$WDT" ]; then
+    xcrun simctl shutdown "$UDID" >/dev/null 2>&1 || true
+    WATCH=$(xcrun simctl create "QA Watch" "$WDT" "$WRT" 2>>"$OUT/runner.txt" || true)
+    if [ -z "$WATCH" ] || ! xcrun simctl pair "$WATCH" "$UDID" >>"$OUT/runner.txt" 2>&1; then echo "[app] watch pairing failed" >> "$OUT/runner.txt"; WATCH=""; fi
+  fi
 fi
 xcrun simctl boot "$UDID" 2>/dev/null || true
 xcrun simctl bootstatus "$UDID" -b
