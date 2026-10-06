@@ -453,7 +453,7 @@ let variant = WEEKS[store.variant] ? store.variant : 'red';
 let WEEK = WEEKS[variant];
 const dayKey = d => variant+':'+d;
 let placeCats = store.places || {food:1, drink:1, park:1, fun:1, view:0, svc:0};
-function persist(){ try{ store.units=units; store.variant=variant; store.places=placeCats; store.di=di; store.days[dayKey(WEEK[di].day)]={cur, dist:st.dist, vert:st.vert, max:st.max, elapsed:st.elapsed}; store.vis=visToStore(); store.skied=[...skiedWays]; localStorage.setItem(KEY, JSON.stringify(store)); }catch(e){} }
+function persist(){ try{ store.units=units; store.variant=variant; store.places=placeCats; store.di=di; store.days[dayKey(WEEK[di].day)]={cur, dist:st.dist, vert:st.vert, max:st.max, elapsed:st.elapsed, trail:st.trail}; store.vis=visToStore(); store.skied=[...skiedWays]; localStorage.setItem(KEY, JSON.stringify(store)); }catch(e){} }
 
 /* pick the day: today's date during the trip, else last viewed, else day 1 */
 const TRIP = CONFIG.trip;
@@ -468,7 +468,7 @@ function loadDay(i){
   steps = DAY.steps.map((s,k)=>({...s, i:k}));
   steps.push({type:'end', name:DAY.end.name, coords:[[DAY.end.lat,DAY.end.lon,null]], len:0, i:steps.length, at:DAY.arrive});
   const sd = store.days[dayKey(DAY.day)] || {};
-  cur = Math.min(sd.cur||0, steps.length-1); st.dist=sd.dist||0; st.vert=sd.vert||0; st.max=sd.max||0; st.elapsed=sd.elapsed||0;
+  cur = Math.min(sd.cur||0, steps.length-1); st.trail=Array.isArray(sd.trail)?sd.trail:[]; st.dist=sd.dist||0; st.vert=sd.vert||0; st.max=sd.max||0; st.elapsed=sd.elapsed||0;
   st.last=null; st.lastT=null; st.sm=null; st.altRef=null; st.onLift=false; st.ema=null; st.prevSp=null; st.offSince=null;
 }
 loadDay(di);
@@ -520,6 +520,23 @@ const poiFC = { type:'FeatureCollection', features: POIS.map(([c,n,lon,lat,x,alt
 function catsOn(){ const on=Object.keys(placeCats).filter(k=>placeCats[k]); return on.length?on:['none']; }
 function poiFilter(){ return ['all', ['in',['get','c'],['literal',catsOn()]], ['any',['==',['get','mtn'],1],['!=',['get','c'],'food']]]; }
 function poiValleyFilter(){ return ['all', ['in',['get','c'],['literal',catsOn()]], ['==',['get','c'],'food'], ['==',['get','mtn'],0]]; }
+/* where I've been: a trail of every good fix (~8 m apart), lifts drawn faint; kept per day */
+const TRAIL = '#7c3aed';
+function trailFC(){
+  const f=[]; let seg=null;
+  for(const q of (st.trail||[])){ const lift=q[2]===1; if(!seg || seg.lift!==lift){ const prev = seg && seg.c.length ? seg.c[seg.c.length-1] : null; seg={lift, c: prev?[prev]:[]}; f.push(seg); } seg.c.push([q[1],q[0]]); }
+  return { type:'FeatureCollection', features: f.filter(s=>s.c.length>1).map(s=>({type:'Feature', properties:{lift:s.lift}, geometry:{type:'LineString', coordinates:s.c}})) };
+}
+let trailDirty=0, trailT=0;
+function drawTrail(now){ if(!mapReady || !map.getSource('trail')) return; const n=performance.now(); if(!now && n-trailT<1500){ trailDirty=1; return; } trailT=n; trailDirty=0; map.getSource('trail').setData(trailFC()); }
+function addTrail(ll, lift){
+  const tr=st.trail||(st.trail=[]); const l=tr[tr.length-1];
+  if(l && hav([l[0],l[1]], ll) < 8 && (l[2]===1)===lift) return;
+  tr.push([+ll[0].toFixed(6), +ll[1].toFixed(6), lift?1:0]);
+  if(tr.length>20000) tr.splice(0, tr.length-20000);
+  drawTrail(false);
+}
+setInterval(()=>{ if(trailDirty) drawTrail(true); }, 2000);
 function styleFor(){
   const t=T();
   const diffColor = ['match',['get','d'],'nov',t.green,'eas',t.blue,'int',t.red,'adv',t.black,'exp',t.black,t.blue];
@@ -531,6 +548,7 @@ function styleFor(){
       contours:{ type:'geojson', data:CONTOURS },
       pistes:{ type:'geojson', data:pisteFC },
       route:{ type:'geojson', data:{type:'FeatureCollection',features:[]} },
+      trail:{ type:'geojson', data:trailFC() },
       forest:{ type:'geojson', data:detailFC.forest }, water:{ type:'geojson', data:detailFC.water }, roads:{ type:'geojson', data:detailFC.roads },
       bld:{ type:'geojson', data:detailFC.bld }, places:{ type:'geojson', data:detailFC.places }, pois:{ type:'geojson', data:poiFC }
     },
@@ -553,9 +571,11 @@ function styleFor(){
       // progress view layers (hidden while navigating)
       { id:'goal-plan', type:'line', source:'pistes', filter:['==',['get','plan'],1], layout:{visibility:'none','line-cap':'round','line-join':'round'}, paint:{'line-color':t.route,'line-width':9,'line-opacity':['case',SK,0,0]} },
       { id:'goal-left', type:'line', source:'pistes', filter:['all',['==',['get','goal'],1],['in',['get','d'],['literal',GOALCOL().map(c=>({blue:'eas',red:'int',black:'adv'})[c]).concat(variant!=='std'&&variant!=='red'?['exp']:[])]]], layout:{visibility:'none','line-cap':'round','line-join':'round'}, paint:{'line-color':diffColor,'line-width':['interpolate',['linear'],['zoom'],11,1.6,15,3.2],'line-opacity':['case',SK,0,.85],'line-dasharray':[1.6,1.2]} },
-      { id:'goal-done-case', type:'line', source:'pistes', filter:['==',['get','goal'],1], layout:{visibility:'none','line-cap':'round','line-join':'round'}, paint:{'line-color':'#ffffff','line-width':['interpolate',['linear'],['zoom'],11,5,15,9],'line-opacity':['case',SK,1,0]} },
-      { id:'goal-done', type:'line', source:'pistes', filter:['==',['get','goal'],1], layout:{visibility:'none','line-cap':'round','line-join':'round'}, paint:{'line-color':diffColor,'line-width':['interpolate',['linear'],['zoom'],11,3,15,5.5],'line-opacity':['case',SK,1,0]} },
+      { id:'goal-done-case', type:'line', source:'pistes', filter:['==',['get','k'],'R'], layout:{visibility:'none','line-cap':'round','line-join':'round'}, paint:{'line-color':'#ffffff','line-width':['interpolate',['linear'],['zoom'],11,5,15,9],'line-opacity':['case',SK,1,0]} },
+      { id:'goal-done', type:'line', source:'pistes', filter:['==',['get','k'],'R'], layout:{visibility:'none','line-cap':'round','line-join':'round'}, paint:{'line-color':diffColor,'line-width':['interpolate',['linear'],['zoom'],11,3,15,5.5],'line-opacity':['case',SK,1,0]} },
       // route
+      { id:'trail-case', type:'line', source:'trail', filter:['!',['get','lift']], layout:{'line-cap':'round','line-join':'round'}, paint:{'line-color':'#ffffff','line-width':['interpolate',['linear'],['zoom'],11,4,16,8],'line-opacity':.9} },
+      { id:'trail', type:'line', source:'trail', layout:{'line-cap':'round','line-join':'round'}, paint:{'line-color':TRAIL,'line-width':['interpolate',['linear'],['zoom'],11,2,16,4.5],'line-opacity':['case',['get','lift'],.55,1],'line-dasharray':[1,0]} },
       { id:'route-glow', type:'line', source:'route', filter:['get','active'], layout:{'line-cap':'round','line-join':'round'}, paint:{'line-color':t.route,'line-width':18,'line-blur':3,'line-opacity':.55} },
       { id:'route-case', type:'line', source:'route', layout:{'line-cap':'round','line-join':'round'}, paint:{'line-color':'#ffffff','line-width':['case',['get','active'],11,8],'line-opacity':['case',['get','done'],.3,1]} },
       { id:'route', type:'line', source:'route', filter:['!',['get','lift']], layout:{'line-cap':'round','line-join':'round'}, paint:{'line-color':['match',['get','col'],'green',t.green,'red',t.red,'black',t.black,t.blue],'line-width':['case',['get','active'],6.5,5],'line-opacity':['case',['get','done'],.3,1]} },
@@ -750,7 +770,8 @@ function climbingRate(p){
 
 /* ---------- run coverage: which blue/red runs have we skied ---------- */
 const goalWays = []; // {bi, gi, pts:[[lat,lon]], len}
-BG.forEach((b,bi)=>{ if(b[5]<0) return; const c=b[3]; const pts=[c[0]]; let L=0;
+BG.forEach((b,bi)=>{ if(b[0]!=='R') return; const c=b[3];   // every run, planned or not: skiing anything marks it
+ const pts=[c[0]]; let L=0;
   for(let i=0;i<c.length-1;i++){ const d=hav(c[i],c[i+1]); L+=d; const n=Math.max(1,Math.round(d/20)); for(let k=1;k<=n;k++) pts.push([c[i][0]+(c[i+1][0]-c[i][0])*k/n, c[i][1]+(c[i+1][1]-c[i][1])*k/n]); }
   goalWays.push({bi, gi:b[5], pts, len:L}); });
 const wayByBi = new Map(goalWays.map((w,i)=>[w.bi,i]));
@@ -1069,6 +1090,7 @@ function onFix(p){
   if(p.alt!=null && good && st.onLift) st.altRef=p.alt;
   if(p.alt!=null && good && !st.onLift){ if(st.altRef==null) st.altRef=p.alt; if(p.alt < st.altRef-5){ st.vert += st.altRef-p.alt; st.altRef=p.alt; } else if(p.alt > st.altRef+5) st.altRef=p.alt; }
   if(good && !st.onLift) markCoverage(ll, p.acc);
+  if(good) addTrail(st.sm ? [st.sm.lat, st.sm.lon] : ll, !!st.onLift);
   updateProgress(p);
   renderStats();
   if(st.fixes % 5 === 0){ persist(); renderStep(); }
@@ -1151,7 +1173,7 @@ function buildTrack(){
 function startSim(){
   if(mode==='gps') stopGPS();
   stopSim();
-  simSnap = { vis: visToStore(), skied:[...skiedWays], day:{dist:st.dist, vert:st.vert, max:st.max, elapsed:st.elapsed, cur} };
+  simSnap = { vis: visToStore(), skied:[...skiedWays], day:{dist:st.dist, vert:st.vert, max:st.max, elapsed:st.elapsed, cur, trail:st.trail.slice()} };
   simTrack=buildTrack(); simI=0; mode='sim'; simDrift=false;
   st.dist=0; st.vert=0; st.max=0; st.elapsed=0; st.last=null; st.lastT=null; st.sm=null; st.altRef=null; st.onLift=false; altHist.length=0; st.ema=null; st.prevSp=null; st.stepDist=0; cur=0;
   simClock = new Date().setHours(Math.floor(CONFIG.dayStart/60), CONFIG.dayStart%60, 0, 0);
@@ -1181,7 +1203,7 @@ document.querySelectorAll('#simSheet [data-x]').forEach(b=>b.onclick=()=>{ simX=
 $('simStart').onclick=()=>{ $('simSheet').hidden=true; startSim(); };
 $('simOff').onclick=()=>{
   stopSim();
-  if(simSnap){ store.vis=simSnap.vis; store.skied=simSnap.skied; visFromStore(); const d=simSnap.day; st.dist=d.dist; st.vert=d.vert; st.max=d.max; st.elapsed=d.elapsed; cur=d.cur; simSnap=null; }
+  if(simSnap){ store.vis=simSnap.vis; store.skied=simSnap.skied; visFromStore(); const d=simSnap.day; st.dist=d.dist; st.vert=d.vert; st.max=d.max; st.elapsed=d.elapsed; cur=d.cur; st.trail=d.trail||[]; drawTrail(true); simSnap=null; }
   st.last=null; $('offroute').hidden=true; $('homeBanner').hidden=true; $('sched').hidden=true;
   persist(); paintSkied(); renderStats(); renderStep(); renderProgress(); hideYou(); map.fitBounds(routeBounds,{padding:PAD}); $('simSheet').hidden=true;
 };
