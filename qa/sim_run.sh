@@ -28,8 +28,27 @@ if [ -n "$PAIR" ]; then
   NAME=$(xcrun simctl list devices | grep "$UDID" | sed 's/ (.*//' | xargs); echo "$NAME" > "$OUT/device.txt"
   echo "Using existing pair: phone $UDID ($NAME), watch $WATCH"
 else
-  WRT=$(xcrun simctl list runtimes -j | python3 -c "import json,sys; r=[x for x in json.load(sys.stdin)['runtimes'] if x['platform']=='watchOS' and x.get('isAvailable')]; print(r[-1]['identifier'] if r else '')")
-  WDT=$(xcrun simctl list devicetypes -j | python3 -c "import json,sys; d=[x for x in json.load(sys.stdin)['devicetypes'] if x['name'].startswith('Apple Watch Series')]; print(d[-1]['identifier'] if d else '')")
+  # newest watchOS runtime, a watch model that runtime supports, and an iPhone on the matching iOS (26 <-> 26, 18 <-> 11)
+  read WRT WDT PHONE_RT <<< "$(xcrun simctl list runtimes -j | python3 -c "
+import json,sys
+rs=[x for x in json.load(sys.stdin)['runtimes'] if x.get('isAvailable')]
+w=[x for x in rs if x['platform']=='watchOS']
+if not w: print('- - -'); sys.exit()
+w=w[-1]; wm=int(w['version'].split('.')[0])
+types=[d for d in w.get('supportedDeviceTypes',[]) if d['name'].startswith('Apple Watch Series') or d['name'].startswith('Apple Watch Ultra')]
+im = wm if wm>=26 else wm+7
+ios=[x for x in rs if x['platform']=='iOS' and int(x['version'].split('.')[0])==im] or [x for x in rs if x['platform']=='iOS']
+print(w['identifier'], types[-1]['identifier'] if types else '-', ios[-1]['identifier'])")"
+  if [ "$PHONE_RT" != "-" ]; then
+    P2=$(xcrun simctl list devices available -j | python3 -c "
+import json,sys
+d=json.load(sys.stdin)['devices'].get('$PHONE_RT',[])
+c=[x for x in d if x['name'].startswith('iPhone')]
+pref=[x for x in c if 'Pro' in x['name'] and 'Max' not in x['name']] or c
+print(pref[0]['udid'] if pref else '')")
+    if [ -n "$P2" ]; then UDID=$P2; NAME=$(xcrun simctl list devices | grep "$UDID" | sed 's/ (.*//' | xargs); echo "$NAME" > "$OUT/device.txt"; fi
+  fi
+  [ "$WRT" = "-" ] && WRT=""; [ "$WDT" = "-" ] && WDT=""
   echo "[runner] watch runtime=$WRT type=$WDT" >> "$OUT/runner.txt"
   if [ -n "$WRT" ] && [ -n "$WDT" ]; then
     xcrun simctl shutdown "$UDID" >/dev/null 2>&1 || true
