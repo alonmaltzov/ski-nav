@@ -7,6 +7,7 @@ struct SkiNavApp: App {
 
     init() {
         WatchLink.shared.activate()
+        if !LocationService.shared.isTracking { SkiDay.endAll() }
     }
 
     var body: some Scene {

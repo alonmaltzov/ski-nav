@@ -22,8 +22,15 @@ final class SkiDay {
 
     func end() {
         queue.async {
-            let a = self.activity; self.activity = nil
-            Task { await a?.end(nil, dismissalPolicy: .immediate) }
+            self.activity = nil
+            SkiDay.endAll()
+        }
+    }
+
+    /// Remove every Ski Nav lock-screen activity, including leftovers from an earlier run of the app.
+    static func endAll() {
+        Task {
+            for a in Activity<SkiActivityAttributes>.activities { await a.end(nil, dismissalPolicy: .immediate) }
         }
     }
 
@@ -58,8 +65,15 @@ final class SkiDay {
     }
 
     private func startActivity() {
-        guard activity == nil, ActivityAuthorizationInfo().areActivitiesEnabled else {
-            print("[app] live activity not started (disabled or already running)"); return
+        guard ActivityAuthorizationInfo().areActivitiesEnabled else { print("[app] live activities are off in Settings"); return }
+        // only ever one: reuse a running one (e.g. after stop/start or an app restart) and close any extras
+        let running = Activity<SkiActivityAttributes>.activities.filter { $0.activityState == .active }
+        if let keep = activity ?? running.first {
+            activity = keep
+            for a in Activity<SkiActivityAttributes>.activities where a.id != keep.id { Task { await a.end(nil, dismissalPolicy: .immediate) } }
+            push(force: true)
+            print("[app] live activity reused")
+            return
         }
         do {
             activity = try Activity.request(attributes: SkiActivityAttributes(dayTitle: dayTitle, startedAt: Date()),
