@@ -15,7 +15,8 @@ final class WatchLink: NSObject, WCSessionDelegate {
 
     private var ready: Bool {
         let s = WCSession.default
-        return WCSession.isSupported() && s.activationState == .activated && s.isPaired && s.isWatchAppInstalled
+        // not gated on isWatchAppInstalled: it reads false for watch apps installed straight from Xcode
+        return WCSession.isSupported() && s.activationState == .activated && s.isPaired
     }
 
     /// Remember the latest plan and deliver it as soon as the watch link is up (it often isn't yet at app launch).
@@ -56,6 +57,15 @@ final class WatchLink: NSObject, WCSessionDelegate {
     }
     func sessionWatchStateDidChange(_ session: WCSession) { DispatchQueue.main.async { self.flushPlan() } }
     func sessionReachabilityDidChange(_ session: WCSession) { DispatchQueue.main.async { self.flushPlan() } }
+    /// The watch asks for the plan when it opens (covers every case where a push was missed).
+    func session(_ session: WCSession, didReceiveMessage msg: [String: Any], replyHandler: @escaping ([String: Any]) -> Void) {
+        if msg["want"] as? String == "plan", let data = pendingPlan {
+            print("[app] watch asked for the plan, replying")
+            replyHandler(["plan": data])
+        } else {
+            replyHandler([:])
+        }
+    }
     func sessionDidBecomeInactive(_ session: WCSession) {}
     func sessionDidDeactivate(_ session: WCSession) { WCSession.default.activate() }
 }

@@ -191,6 +191,15 @@ final class SkiSession: NSObject, ObservableObject {
         return CLLocation(latitude: a[0], longitude: a[1]).distance(from: CLLocation(latitude: b[0], longitude: b[1]))
     }
 
+    /// Pull the plan from the phone (when reachable) instead of only waiting for a push.
+    func askForPlan() {
+        let s = WCSession.default
+        guard s.activationState == .activated, s.isReachable else { return }
+        s.sendMessage(["want": "plan"], replyHandler: { reply in
+            if let data = reply["plan"] as? Data { Task { @MainActor in self.receive(planData: data) } }
+        }, errorHandler: { e in print("[watch] ask for plan failed:", e.localizedDescription) })
+    }
+
     fileprivate func receive(live d: [String: Any]) {
         let l = PhoneLive(speedKmh: d["speed"] as? Double ?? 0, km: d["km"] as? Double ?? 0, maxKmh: d["max"] as? Double ?? 0,
                           vertM: d["vert"] as? Double ?? 0, onLift: d["lift"] as? Bool ?? false, step: d["step"] as? String ?? "",
@@ -226,11 +235,15 @@ extension SkiSession: CLLocationManagerDelegate {
 extension SkiSession: WCSessionDelegate {
     nonisolated func session(_ session: WCSession, activationDidCompleteWith state: WCSessionActivationState, error: Error?) {
         print("[watch] link to phone:", state == .activated ? "on" : "off", "reachable:", session.isReachable)
+        Task { @MainActor in self.askForPlan() }
         let ctx = session.receivedApplicationContext
         if let data = ctx["plan"] as? Data { Task { @MainActor in self.receive(planData: data) } }
     }
     nonisolated func session(_ session: WCSession, didReceiveApplicationContext ctx: [String: Any]) {
         if let data = ctx["plan"] as? Data { Task { @MainActor in self.receive(planData: data) } }
+    }
+    nonisolated func sessionReachabilityDidChange(_ session: WCSession) {
+        if session.isReachable { Task { @MainActor in self.askForPlan() } }
     }
     nonisolated func session(_ session: WCSession, didReceiveMessage msg: [String: Any]) {
         if let live = msg["live"] as? [String: Any] {
