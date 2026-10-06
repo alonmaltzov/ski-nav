@@ -804,7 +804,7 @@ function paintSkied(){
   for(const bi of skiedWays) map.setFeatureState({source:'pistes', id:bi}, {sk:true});
   skiedPainted = new Set(skiedWays);
 }
-const scopeB = bboxOf(goalWays.flatMap(w=>[w.pts[0],w.pts[w.pts.length-1]]).map(p=>[p[1],p[0]]));
+const scopeB = bboxOf(goalWays.filter(w=>w.gi>=0).flatMap(w=>[w.pts[0],w.pts[w.pts.length-1]]).map(p=>[p[1],p[0]]));
 const scopeBounds = [[scopeB[0],scopeB[1]],[scopeB[2],scopeB[3]]];
 
 /* ---------- views: route navigation vs runs progress ---------- */
@@ -843,7 +843,7 @@ function renderProgress(){
   document.querySelector('.totals').style.gridTemplateColumns = '1fr 1fr 1fr';
   $('progTitle').textContent = variant==='red' ? 'Reds first' : variant==='black' ? 'Blue, red & black' : 'Blue & red runs';
   const areas={}; g.forEach(x=>{ const a=areas[x.a]=areas[x.a]||{n:0,d:0,p:0,pts:[]}; a.n++; if(x.done) a.d++; if(x.plan) a.p++; });
-  goalWays.forEach(w=>{ const a=areas[GROUPS[w.gi].a]; a.pts.push([w.pts[0][1],w.pts[0][0]]); });
+  goalWays.forEach(w=>{ if(w.gi<0) return; const a=areas[GROUPS[w.gi].a]; a.pts.push([w.pts[0][1],w.pts[0][0]]); });
   const box=$('areaList'); box.textContent='';
   Object.entries(areas).sort((a,b)=>b[1].n-a[1].n).forEach(([name,a])=>{
     const r=document.createElement('button'); r.type='button'; r.className='arow';
