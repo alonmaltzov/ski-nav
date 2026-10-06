@@ -690,7 +690,7 @@ youWrap.append(coneEl, youEl);
 const you = new maplibregl.Marker({element:youWrap}); let youOn=false;
 /* heading cone: compass when available, otherwise direction of travel */
 let heading=null, compassOn=false, coneRAF=0;
-function drawCone(){ if(coneRAF) return; coneRAF=requestAnimationFrame(()=>{ coneRAF=0; if(heading==null){ coneEl.hidden=true; return; } coneEl.hidden=false; coneEl.style.transform='rotate('+(heading - map.getBearing())+'deg)'; }); }
+function drawCone(){ if(coneRAF) return; coneRAF=requestAnimationFrame(()=>{ coneRAF=0; if(heading==null || !compassWanted || !compassOn){ coneEl.hidden=true; return; } /* only a real compass reading, never a guess */ coneEl.hidden=false; coneEl.style.transform='rotate('+(heading - map.getBearing())+'deg)'; }); }
 function onOrient(e){
   let h=null;
   if(e.webkitCompassHeading!=null && !isNaN(e.webkitCompassHeading)) h=e.webkitCompassHeading;
