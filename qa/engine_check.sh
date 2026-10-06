@@ -12,4 +12,21 @@ check () { # name gpx lifts steps expected_km
 }
 check "Avoriaz day 1" $G/Avoriaz-Day1.gpx $D/avoriaz-lifts.json $D/avoriaz-day1-steps.json 33.49
 check "NYC practice" $G/NYC-Practice.gpx $D/nyc-lifts.json $D/nyc-steps.json 8.05
+# the watch must be able to read the plan exactly as the phone sends it
+python3 - <<'PY' > "$OUT/plandec.swift"
+src=open('ios/SkiNavWatch/SkiSession.swift').read()
+s=src.index("/// One step of today's plan"); e=src.index('/// What the phone is tracking right now')
+e2=src.index('struct Plan: Codable {'); e3=src.index('}', e2)+1
+print("import Foundation\n"+src[s:e]+src[e2:e3]+"""
+for f in CommandLine.arguments.dropFirst() {
+    do { let p = try JSONDecoder().decode(Plan.self, from: try Data(contentsOf: URL(fileURLWithPath: f))); print("OK \\(p.steps.count)") }
+    catch { print("FAIL \\(error)") }
+}""")
+PY
+swiftc "$OUT/plandec.swift" -o "$OUT/plandec"
+for f in $D/plan-avoriaz.json $D/plan-nyc.json; do
+  r=$("$OUT/plandec" "$f" | head -1 | cut -c1-160 | tr -d '"')
+  case "$r" in OK*) ok=true;; *) ok=false;; esac
+  echo "[web] QA RESULT {\"check\":\"watch can read the phone's plan: $(basename $f)\",\"ok\":$ok,\"detail\":\"$r\"}" | tee -a "$OUT/log.txt"
+done
 echo "[web] QA DONE" >> "$OUT/log.txt"

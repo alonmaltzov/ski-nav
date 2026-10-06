@@ -15,6 +15,8 @@ struct PlanStep: Codable, Identifiable {
     let s: [Double]      // start [lat, lon]
     let e: [Double]      // end [lat, lon]
     let at: String
+    // idx is set on the watch after decoding, the phone doesn't send it
+    enum CodingKeys: String, CodingKey { case l, t, c, len, s, e, at }
 }
 
 /// What the phone is tracking right now (sent every few seconds while the watch app is open).
