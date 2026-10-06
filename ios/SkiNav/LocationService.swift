@@ -113,6 +113,7 @@ final class LocationService: NSObject, ObservableObject, CLLocationManagerDelega
     // MARK: CLLocationManagerDelegate
 
     func locationManagerDidChangeAuthorization(_ m: CLLocationManager) {
+        if wantLocate, [.authorizedWhenInUse, .authorizedAlways].contains(m.authorizationStatus) { m.requestLocation() }
         guard isTracking else { return }
         switch m.authorizationStatus {
         case .authorizedWhenInUse:
@@ -128,7 +129,51 @@ final class LocationService: NSObject, ObservableObject, CLLocationManagerDelega
     }
 
     func locationManager(_ m: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        received(locations)
+        // one-off "where am I" for the ME button (tracking itself comes from live updates)
+        if wantLocate, let l = locations.last { wantLocate = false; sendLocated(l) }
+    }
+
+    // MARK: ME button and compass
+
+    private var wantLocate = false
+    private var wantHeading = false
+    private var lastHeadingSent = Date.distantPast
+
+    func locate() {
+        wantLocate = true
+        switch manager.authorizationStatus {
+        case .notDetermined: manager.requestWhenInUseAuthorization()
+        case .denied, .restricted: wantLocate = false; WebBridge.shared.send(event: "denied")
+        default:
+            if let l = manager.location, -l.timestamp.timeIntervalSinceNow < 20 { sendLocated(l) }
+            manager.requestLocation()
+        }
+    }
+
+    func compass(_ on: Bool) {
+        wantHeading = on
+        if on {
+            guard CLLocationManager.headingAvailable() else { WebBridge.shared.send(event: "nocompass"); return }
+            manager.headingFilter = 2
+            manager.startUpdatingHeading()
+        } else {
+            manager.stopUpdatingHeading()
+        }
+    }
+
+    func locationManager(_ m: CLLocationManager, didUpdateHeading h: CLHeading) {
+        guard wantHeading, h.headingAccuracy >= 0 else { return }
+        let now = Date()
+        guard now.timeIntervalSince(lastHeadingSent) > 0.1 else { return }
+        lastHeadingSent = now
+        let deg = h.trueHeading >= 0 ? h.trueHeading : h.magneticHeading
+        WebBridge.shared.js("window.__native && window.__native.heading && window.__native.heading(\(deg))")
+    }
+
+    private func sendLocated(_ l: CLLocation) {
+        let f = Fix(l)
+        guard let d = try? JSONEncoder().encode(f), let s = String(data: d, encoding: .utf8) else { return }
+        WebBridge.shared.js("window.__native && window.__native.located && window.__native.located(\(s))")
     }
 
     private func received(_ locations: [CLLocation]) {
@@ -144,6 +189,7 @@ final class LocationService: NSObject, ObservableObject, CLLocationManagerDelega
     }
 
     func locationManager(_ m: CLLocationManager, didFailWithError error: Error) {
+        if wantLocate { print("[app] locate failed:", error.localizedDescription) }
         // transient errors (no signal in a tunnel or a gondola) are normal; keep going
     }
 

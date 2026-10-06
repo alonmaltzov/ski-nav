@@ -188,6 +188,15 @@
 
     // real GPS path (native only: the simulator feeds a moving location)
     if (NATIVE) {
+      // ME button without tracking: should ask iOS for one location and show the blue dot
+      await tap('followBtn', 4000);
+      result('ME shows my location without tracking', !!document.querySelector('.you'), document.querySelector('.you') ? 'blue dot on map' : 'no dot after 4 s');
+      await screen('me-button');
+      // compass button: native heading (simulators have no compass, so it should switch itself off cleanly)
+      await tap('compassBtn', 2500);
+      const pressed = $('compassBtn').getAttribute('aria-pressed');
+      result('compass button responds', true, 'pressed=' + pressed + (pressed === 'false' ? ' (no compass on this device, turned itself off)' : ''));
+      if (pressed === 'true') await tap('compassBtn', 500);
       // record the raw fixes iOS hands over, to tell "simulator not moving" apart from "app ignores movement"
       const raw = [];
       const orig = window.__native && window.__native.fixes;

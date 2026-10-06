@@ -684,6 +684,7 @@ function onOrientThrottled(e){ const n=performance.now(); if(n-lastOrient<120) r
 function enableCompass(){
   compassWanted=true; $('compassBtn').setAttribute('aria-pressed','true');
   clearTimeout(compassTimer); compassTimer=setTimeout(disableCompass, 120000);
+  if(NATIVE){ toNative({cmd:'compass', on:true}); if(!youOn) locateMe(); return; }   // iPhone app: native compass
   try{
     if(typeof DeviceOrientationEvent!=='undefined' && typeof DeviceOrientationEvent.requestPermission==='function'){
       DeviceOrientationEvent.requestPermission().then(r=>{ if(r==='granted' && compassWanted) window.addEventListener('deviceorientation', onOrientThrottled, true); else disableCompass(); }).catch(disableCompass);
@@ -691,6 +692,7 @@ function enableCompass(){
   }catch(e){ disableCompass(); }
 }
 function disableCompass(){
+  if(NATIVE && compassWanted) toNative({cmd:'compass', on:false});
   compassWanted=false; compassOn=false; clearTimeout(compassTimer);
   window.removeEventListener('deviceorientation', onOrientThrottled, true); window.removeEventListener('deviceorientationabsolute', onOrientThrottled, true);
   $('compassBtn').setAttribute('aria-pressed','false');
@@ -704,8 +706,23 @@ function setFollow(on){ follow=on; $('followBtn').setAttribute('aria-pressed', o
 map.on('dragstart',()=>setFollow(false));
 map.on('rotate', drawCone);
 $('compassBtn').onclick=()=>{ if(compassWanted) disableCompass(); else enableCompass(); };
+/* ME: jump to where I am, even when not tracking (asks for location permission the first time) */
+let located=null;
+function showLocated(f){
+  located=f; setYou([f.lat,f.lon], f.acc);
+  if(f.heading!=null && !compassOn){ heading=f.heading; drawCone(); }
+  if(follow) map.easeTo({center:[f.lon,f.lat], zoom:Math.max(map.getZoom(),15), duration:600});
+}
+function locateMe(){
+  if(NATIVE){ toNative({cmd:'locate'}); return; }
+  if(!('geolocation' in navigator)) return;
+  navigator.geolocation.getCurrentPosition(p=>showLocated({lat:p.coords.latitude, lon:p.coords.longitude, acc:p.coords.accuracy, heading:p.coords.heading}),
+    e=>{ if(e.code===1) setPill('Location blocked','err'); }, {enableHighAccuracy:true, timeout:15000, maximumAge:10000});
+}
 $('followBtn').onclick=()=>{
-  setFollow(true); if(st.last) map.easeTo({center:[st.last.lon,st.last.lat], zoom:Math.max(map.getZoom(),15)}); };
+  setFollow(true);
+  if(st.last && mode!=='off') map.easeTo({center:[st.last.lon,st.last.lat], zoom:Math.max(map.getZoom(),15)});
+  else locateMe(); };
 $('fitBtn').onclick=()=>{ setFollow(false); map.fitBounds(view==='prog'?scopeBounds:routeBounds,{padding:PAD, pitch: is3D?55:0}); };
 function focusStep(){
   const s=steps[cur]; if(!s) return;
@@ -1060,7 +1077,9 @@ window.__native = {
     if(many){ renderStep(); if(follow) centerOn([l.lat,l.lon]); }
     renderStats();
   },
-  event(name){ if(name==='tracking' && mode!=='gps'){ console.warn('page restarted while tracking; resuming GPS'); startGPS(); return; } if(name==='denied'){ setPill('Location blocked','err'); $('nMeta').textContent='Location is off for Ski Nav. Settings > Ski Nav > Location > Always.'; } }
+  located(f){ if(mode==='gps' && st.last) return; showLocated(f); },
+  heading(h){ if(!compassWanted) return; heading=h; compassOn=true; drawCone(); },
+  event(name){ if(name==='nocompass'){ disableCompass(); return; } if(name==='tracking' && mode!=='gps'){ console.warn('page restarted while tracking; resuming GPS'); startGPS(); return; } if(name==='denied'){ setPill('Location blocked','err'); $('nMeta').textContent='Location is off for Ski Nav. Settings > Ski Nav > Location > Always.'; } }
 };
 function sendPlanToWatch(){
   if(!NATIVE) return;

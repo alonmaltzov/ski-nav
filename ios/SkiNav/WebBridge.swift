@@ -42,6 +42,10 @@ final class WebBridge: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
             LocationService.shared.start()
         case "stop":
             LocationService.shared.stop()
+        case "locate":
+            LocationService.shared.locate()
+        case "compass":
+            LocationService.shared.compass((body["on"] as? Bool) ?? false)
         case "log":
             print("[web]", body["msg"] ?? "")
         case "plan":
@@ -67,6 +71,10 @@ final class WebBridge: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
             guard let data = try? enc.encode(chunk), let json = String(data: data, encoding: .utf8) else { return }
             web.evaluateJavaScript("window.__native && window.__native.fixes(\(json))", completionHandler: nil)
         }
+    }
+
+    func js(_ code: String) {
+        DispatchQueue.main.async { self.webView?.evaluateJavaScript(code, completionHandler: nil) }
     }
 
     func send(event: String) {
