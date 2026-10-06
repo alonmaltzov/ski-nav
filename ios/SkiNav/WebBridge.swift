@@ -39,7 +39,19 @@ final class WebBridge: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
             }
             flush()
         case "start":
+            var base: SkiTotals?
+            if let b = body["base"] as? [String: Any] {
+                base = SkiTotals(distM: (b["distM"] as? Double) ?? 0, maxMps: (b["maxMps"] as? Double) ?? 0,
+                                 vertM: (b["vertM"] as? Double) ?? 0, elapsedS: (b["elapsedS"] as? Double) ?? 0)
+            }
+            SkiDay.shared.begin(base: base)
             LocationService.shared.start()
+        case "ctx":
+            // the resort's lift lines + today's title, so native lift detection matches the page
+            SkiDay.shared.setContext(lifts: body["lifts"] as? [[[Double]]], title: body["title"] as? String)
+        case "step":
+            SkiDay.shared.setStep(label: (body["label"] as? String) ?? "", color: (body["color"] as? String) ?? "lift",
+                                  liftLine: body["lift"] as? [[Double]])
         case "stop":
             LocationService.shared.stop()
         case "locate":

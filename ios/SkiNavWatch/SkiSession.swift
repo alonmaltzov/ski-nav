@@ -46,11 +46,7 @@ final class SkiSession: NSObject, ObservableObject {
     private var session: HKWorkoutSession?
     private var builder: HKLiveWorkoutBuilder?
     private let location = CLLocationManager()
-    private var last: CLLocation?
-    private var altRef: Double?
-    private var altHistory: [(Date, Double)] = []
-    private var prevSpeed: Double?
-    private var stepDistance: Double = 0
+    private let engine = SkiEngine()
     private var startDate: Date?
     private var timer: Timer?
 
@@ -136,12 +132,12 @@ final class SkiSession: NSObject, ObservableObject {
     }
 
     func nextManually() { advance() }
-    func previousManually() { if current > 0 { current -= 1; stepDistance = 0; saveCurrent() } }
+    func previousManually() { if current > 0 { current -= 1; engine.resetStep(); saveCurrent() } }
 
     private func advance() {
         guard let p = plan, current < p.steps.count - 1 else { return }
         current += 1
-        stepDistance = 0
+        engine.resetStep()
         saveCurrent()
         WKInterfaceDevice.current().play(.directionUp)
     }
@@ -153,57 +149,22 @@ final class SkiSession: NSObject, ObservableObject {
     fileprivate func handle(_ loc: CLLocation) {
         guard loc.horizontalAccuracy >= 0 else { return }
         gpsOK = loc.horizontalAccuracy <= 30
-        let good = loc.horizontalAccuracy <= 30
-
-        // lift: climbing steadily (> 0.4 m/s over ~10 s) or riding the lift the plan expects
-        if loc.verticalAccuracy >= 0 {
-            altHistory.append((loc.timestamp, loc.altitude))
-            altHistory.removeAll { loc.timestamp.timeIntervalSince($0.0) > 30 }
-        }
-        var rate: Double?
-        if let first = altHistory.first, loc.timestamp.timeIntervalSince(first.0) >= 8 {
-            rate = (loc.altitude - first.1) / loc.timestamp.timeIntervalSince(first.0)
-        }
-        let plannedLift = step?.t == "lift" && distance(to: step!.s, from: loc) > 25 && loc.speed > 1.5
-        if !onLift {
-            onLift = (rate ?? 0) > 0.4 || plannedLift
-        } else if !plannedLift, let r = rate, r < 0.1 {
-            onLift = false
-        }
-
-        if let prev = last, good {
-            let d = loc.distance(from: prev)
-            let dt = loc.timestamp.timeIntervalSince(prev.timestamp)
-            let sp = loc.speed >= 0 ? loc.speed : d / max(dt, 0.1)
-            if onLift {
-                speedKmh = 0; prevSpeed = nil
-                stepDistance += d
-            } else if dt > 0, d / dt < 45, sp >= 0.6, d > 3 {
-                let dd = min(d * 1.2, sp * dt + 0.5)
-                distanceKm += dd / 1000
-                stepDistance += dd
-                speedKmh = speedKmh == 0 ? sp * 3.6 : speedKmh * 0.55 + sp * 3.6 * 0.45
-                if let p = prevSpeed { maxKmh = max(maxKmh, min(sp, p) * 3.6) }
-                prevSpeed = sp
-            } else if dt > 4 {
-                speedKmh *= 0.5
-            }
-        }
-        if good { last = loc }
-
-        // vertical skied: count descents only, 5 m hysteresis, not on lifts
-        if loc.verticalAccuracy >= 0, good {
-            if onLift { altRef = loc.altitude }
-            else if let ref = altRef {
-                if loc.altitude < ref - 5 { verticalM += ref - loc.altitude; altRef = loc.altitude }
-                else if loc.altitude > ref + 5 { altRef = loc.altitude }
-            } else { altRef = loc.altitude }
-        }
+        // same rules as the phone: the shared SkiEngine (no lift map on the watch, so lifts are found by climb rate)
+        if let s = step, s.t == "lift", s.s.count == 2, s.e.count == 2 { engine.plannedLift = [s.s, s.e] } else { engine.plannedLift = nil }
+        engine.ingest(GeoFix(lat: loc.coordinate.latitude, lon: loc.coordinate.longitude, acc: loc.horizontalAccuracy,
+                             alt: loc.verticalAccuracy >= 0 ? loc.altitude : nil, speed: loc.speed >= 0 ? loc.speed : nil,
+                             t: loc.timestamp.timeIntervalSince1970 * 1000))
+        let tot = engine.totals
+        speedKmh = engine.speedMps * 3.6
+        distanceKm = tot.distM / 1000
+        maxKmh = tot.maxMps * 3.6
+        verticalM = tot.vertM
+        onLift = engine.onLift
 
         // next step: reached the end of this one (loops need most of their length done first)
         if let s = step, s.t != "end" {
             let isLoop = distance(between: s.s, s.e) < 80
-            if distance(to: s.e, from: loc) < max(35, loc.horizontalAccuracy) && (!isLoop || stepDistance > 0.6 * s.len) {
+            if distance(to: s.e, from: loc) < max(35, loc.horizontalAccuracy) && (!isLoop || engine.stepDistM > 0.6 * s.len) {
                 advance()
             }
         }
@@ -224,7 +185,7 @@ final class SkiSession: NSObject, ObservableObject {
         let newDay = plan?.day != p.day
         plan = p
         UserDefaults.standard.set(try? JSONEncoder().encode(p), forKey: "plan")
-        if newDay { current = 0; stepDistance = 0; saveCurrent() }
+        if newDay { current = 0; engine.resetStep(); saveCurrent() }
     }
 }
 

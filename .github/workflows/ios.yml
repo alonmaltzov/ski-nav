@@ -3,6 +3,8 @@ on:
   push:
     branches: [main]
     paths: ['ios/**', 'index.html', 'nyc.html', 'qa/**', '.github/workflows/ios.yml']
+  pull_request:
+    paths: ['ios/**', 'index.html', 'nyc.html', 'qa/**', '.github/workflows/ios.yml']
   workflow_dispatch:
 permissions:
   contents: write
@@ -32,6 +34,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Tools
         run: brew install xcodegen && xcodebuild -version
+      - name: Native engine matches the web app (GPS replays)
+        run: bash qa/engine_check.sh qa-out/engine
       - name: Generate project
         working-directory: ios
         run: |
@@ -53,6 +57,7 @@ jobs:
           ls "$APP/Watch" && echo "::notice::Watch app embedded: $(ls $APP/Watch)"
           ls -la "$APP/www"
           for f in index.html nyc.html qa-tour.js; do test -f "$APP/www/$f" || { echo "::error::$f missing from app bundle"; exit 1; }; done
+          ls "$APP/PlugIns" && echo "::notice::Extensions embedded: $(ls $APP/PlugIns)"
           mkdir -p ../qa-out/ios-sim
           grep "warning:" build.log | grep -v "/dd/" | sort -u | head -20 > ../qa-out/ios-sim/build-warnings.txt || true
       - name: Run QA tour in the simulator

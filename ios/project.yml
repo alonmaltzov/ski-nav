@@ -24,6 +24,8 @@ targets:
       - path: SkiNav/www
         type: folder
         buildPhase: resources
+      - path: Shared
+        excludes: ["Replay/**", "TestData/**"]
     info:
       path: SkiNav/Info.plist
       properties:
@@ -34,17 +36,22 @@ targets:
         NSLocationWhenInUseUsageDescription: Ski Nav shows where you are on the piste map and tracks your speed and distance.
         NSLocationAlwaysAndWhenInUseUsageDescription: Ski Nav keeps tracking your runs while your phone is locked in your pocket.
         NSMotionUsageDescription: Ski Nav uses the compass to show which way you are facing, only when you turn it on.
+        NSSupportsLiveActivities: true
+        NSSupportsLiveActivitiesFrequentUpdates: true
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.alonmaltzov.SkiNav
         TARGETED_DEVICE_FAMILY: "1"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
     dependencies:
+      - target: SkiNavWidgets
       - target: SkiNavWatch
   SkiNavWatch:
     type: application
     platform: watchOS
-    sources: [SkiNavWatch]
+    sources:
+      - SkiNavWatch
+      - Shared/SkiEngine.swift
     info:
       path: SkiNavWatch/Info.plist
       properties:
@@ -64,9 +71,27 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.alonmaltzov.SkiNav.watchkitapp
         TARGETED_DEVICE_FAMILY: "4"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+  SkiNavWidgets:
+    type: app-extension
+    platform: iOS
+    sources:
+      - SkiNavWidgets
+      - Shared/SkiActivity.swift
+    info:
+      path: SkiNavWidgets/Info.plist
+      properties:
+        CFBundleDisplayName: Ski Nav
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.alonmaltzov.SkiNav.widgets
+        TARGETED_DEVICE_FAMILY: "1"
+        INFOPLIST_KEY_CFBundleDisplayName: Ski Nav
 schemes:
   SkiNav:
     build:
       targets:
         SkiNav: all
+        SkiNavWidgets: all
         SkiNavWatch: all
