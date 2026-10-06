@@ -51,7 +51,8 @@ final class WebBridge: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
             SkiDay.shared.setContext(lifts: body["lifts"] as? [[[Double]]], title: body["title"] as? String)
         case "step":
             SkiDay.shared.setStep(label: (body["label"] as? String) ?? "", color: (body["color"] as? String) ?? "lift",
-                                  liftLine: body["lift"] as? [[Double]])
+                                  liftLine: body["lift"] as? [[Double]], nextLift: (body["next"] as? String) ?? "",
+                                  index: (body["idx"] as? Int) ?? 0)
         case "stop":
             LocationService.shared.stop()
         case "locate":

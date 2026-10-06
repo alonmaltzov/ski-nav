@@ -140,6 +140,8 @@
     // week menu
     await tap('menuBtn'); await screen('menu', { settle: 1000 });
     const dr = document.querySelector('.drawerin'); if (dr) { dr.scrollTop = dr.scrollHeight; await screen('menu-bottom'); dr.scrollTop = 0; }
+    const fb = $('followBtn2'); if (fb) { const b0 = fb.getAttribute('aria-pressed'); fb.click(); await sleep(200); const b1 = fb.getAttribute('aria-pressed'); fb.click(); await sleep(200);
+      result('Follow the plan toggle works (off by default)', b0 === 'false' && b1 === 'true' && fb.getAttribute('aria-pressed') === 'false', `${b0} -> ${b1} -> ${fb.getAttribute('aria-pressed')}`); }
     const days = document.querySelectorAll('#dayList .daycard, #dayList button');
     result('menu lists the days', days.length >= 1, days.length + ' day buttons');
     if (days.length > 1) {
@@ -182,6 +184,9 @@
     await sleep(9000); await screen('replay');
     await sleep(9000);
     const dist = parseFloat(txt('dist')) || 0, c1 = window.__ski.cur;
+    const trailN = (window.__ski.st.trail || []).length;
+    result('trail of where you have been is recorded', trailN > 20, trailN + ' trail points');
+    result('free ski by default: no off-route banner', $('offroute').hidden, $('offroute').hidden ? 'hidden' : 'banner showing');
     result('test replay moves the skier and counts km', dist > 0 && c1 > c0, `km=${txt('dist')} max=${txt('maxv')} step ${c0}->${c1} pill="${txt('gpsPill')}"`);
     await tap('menuBtn'); await tap('simBtn'); await tap('simOff'); await tap('closeSim');
     result('stop & reset clears the replay', (parseFloat(txt('dist')) || 0) === 0, 'km=' + txt('dist'));

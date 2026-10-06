@@ -311,6 +311,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
     <div class="toggle" style="display:grid;gap:8px;box-sizing:border-box"><span>Plan style<small>Each style is its own 6-day plan. Your skied runs carry over.</small></span>
       <div class="chips" id="styleSeg"><button type="button" data-v="red" aria-pressed="true">Reds first</button><button type="button" data-v="std" aria-pressed="false">Blue &amp; red</button><button type="button" data-v="black" aria-pressed="false">With blacks</button></div></div>
     <div class="setrow">
+      <button type="button" id="followBtn2" aria-pressed="false" style="grid-column:1/-1">Follow the plan: off</button>
       <button type="button" id="unitBtn">Switch to miles</button>
       <button type="button" id="simBtn">Test mode</button>
     </div>
@@ -987,7 +988,7 @@ function renderSchedule(){
 function renderStep(){
   const s = steps[cur];
   const b = $('nBadge'); b.className = 'badge ' + stepColor(s); b.textContent = cur+1;
-  $('nEyebrow').textContent = (s.type==='end' ? 'Finish' : 'Now') + ' · step '+(cur+1)+' of '+steps.length + (s.at ? ' · plan '+s.at : '');
+  $('nEyebrow').textContent = (s.type==='end' ? 'Finish' : (store.follow ? 'Now' : 'Suggested')) + ' · step '+(cur+1)+' of '+steps.length + (s.at ? ' · plan '+s.at : '');
   $('nTitle').textContent = stepLabel(s);
   let meta = stepMeta(s);
   if(st.last && s.type!=='end'){
@@ -1011,7 +1012,8 @@ function nativeStep(){
   const h = window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.skinav; if(!h) return;   // runs during load, before NATIVE exists
   const s=steps[cur]; if(!s) return;
   const k=di+':'+cur; if(k===nativeStepKey) return; nativeStepKey=k;
-  try{ h.postMessage({cmd:'step', label:stepLabel(s), color:stepColor(s), lift: s.type==='lift' ? s.coords : null}); }catch(e){}
+  const nx = steps.slice(cur+1).find(x=>x.type==='lift');
+  try{ h.postMessage({cmd:'step', idx:cur, label:stepLabel(s), color:stepColor(s), lift: s.type==='lift' ? s.coords : null, next: nx ? stepLabel(nx) : ''}); }catch(e){}
 }
 function renderList(){
   const box = $('stepList'); box.textContent='';
@@ -1029,6 +1031,9 @@ function renderList(){
     if(DAY.lunch===i){ const l=document.createElement('div'); l.className='lunchrow'; l.textContent='Sandwich stop · about 40 min'; box.appendChild(l); }
   });
 }
+function renderFollow(){ const b=$('followBtn2'); if(!b) return; b.setAttribute('aria-pressed', store.follow?'true':'false'); b.textContent = 'Follow the plan: ' + (store.follow?'on':'off'); }
+$('followBtn2').onclick=()=>{ store.follow=!store.follow; if(!store.follow){ st.offSince=null; $('offroute').hidden=true; } persist(); renderFollow(); renderStep(); };
+renderFollow();
 $('unitBtn').onclick=()=>{ units = units==='imp'?'met':'imp'; persist(); renderUnits(); renderStats(); renderStep(); renderMenu(); };
 $('prevBtn').onclick=()=>{ if(cur>0){cur--; st.stepDist=0; persist(); renderStep(); focusStep();} };
 $('nextBtn').onclick=()=>{ if(cur<steps.length-1){cur++; st.stepDist=0; persist(); renderStep(); focusStep();} };
@@ -1045,8 +1050,12 @@ function updateProgress(p){
   const n = steps[cur+1]; let onNext=false;
   if(n && n.type!=='end'){ const dn=distToLine(pt,n.coords), dc=distToLine(pt,s.coords); onNext = dn<25 && dc>40 && hav(pt,n.coords[0])>40; }
   if(s.type!=='end' && (nearEnd || (onNext && !isLoop) || (onNext && (st.stepDist||0) > 0.6*s.len))){ (window.__steplog=window.__steplog||[]).push(cur+1); cur++; st.stepDist=0; persist(); renderStep(); return; }
-  let d = distToLine(pt, s.coords); if(n) d=Math.min(d, distToLine(pt,n.coords)); if(cur>0) d=Math.min(d, hav(pt,s.coords[0]));
-  const off = d > 120 && hav(pt, s.coords[0]) > 150;
+  // skipped ahead (or took another way and joined the plan later): quietly jump to that step. Going back to repeat a run changes nothing.
+  const dc = distToLine(pt, s.coords);
+  if(dc > 60){ for(let k=cur+2; k<Math.min(steps.length-1, cur+10); k++){ const q=steps[k]; if(q.type==='end') break;
+      if(distToLine(pt,q.coords) < 20 && hav(pt,q.coords[0]) > 30){ cur=k; st.stepDist=0; persist(); renderStep(); return; } } }
+  let d = dc; if(n) d=Math.min(d, distToLine(pt,n.coords)); if(cur>0) d=Math.min(d, hav(pt,s.coords[0]));
+  const off = store.follow && d > 120 && hav(pt, s.coords[0]) > 150;   // free ski (default): never nag
   if(off){ st.offSince = st.offSince || p.t; } else st.offSince = null;
   $('offroute').hidden = !(st.offSince && p.t - st.offSince > 20000);
 }

@@ -17,6 +17,7 @@ struct ContentView: View {
 
     var body: some View {
         TabView {
+            NowView()
             StatsView()
             StepView()
             ControlsView()
@@ -25,7 +26,47 @@ struct ContentView: View {
     }
 }
 
-/// Page 1: the numbers.
+/// Page 1: one glance - speed, what you're on now, the next lift. Uses the watch's own tracking when it runs,
+/// otherwise the iPhone's live numbers (sent while the phone tracks and this app is open).
+struct NowView: View {
+    @EnvironmentObject var ski: SkiSession
+    var body: some View {
+        let live = ski.phone.flatMap { Date().timeIntervalSince($0.at) < 20 ? $0 : nil }
+        let speed = ski.running ? ski.speedKmh : (live?.speedKmh ?? 0)
+        let km = ski.running ? ski.distanceKm : (live?.km ?? 0)
+        let lift = ski.running ? ski.onLift : (live?.onLift ?? false)
+        let nowLabel = live?.step ?? ski.step?.l
+        let nowColor = live?.color ?? ski.step?.c ?? "lift"
+        let next = (live?.next).flatMap { $0.isEmpty ? nil : $0 } ?? ski.nextLift?.l
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(alignment: .firstTextBaseline, spacing: 4) {
+                Text("\(Int(speed.rounded()))").font(.system(size: 48, weight: .bold, design: .rounded)).monospacedDigit()
+                    .foregroundStyle(lift ? .secondary : .primary)
+                Text(lift ? "LIFT" : "km/h").font(.caption2.bold()).foregroundStyle(.secondary)
+                Spacer()
+                Text(String(format: "%.1f km", km)).font(.caption.monospacedDigit()).foregroundStyle(.secondary)
+            }
+            if let n = nowLabel {
+                HStack(alignment: .top, spacing: 6) {
+                    RoundedRectangle(cornerRadius: 3).fill(color(nowColor)).frame(width: 6)
+                    Text(n).font(.headline).lineLimit(2).minimumScaleFactor(0.75)
+                }.fixedSize(horizontal: false, vertical: true)
+            }
+            if let nx = next {
+                Label(nx, systemImage: "cablecar").font(.caption).foregroundStyle(.secondary).lineLimit(2)
+            }
+            if !ski.running && live == nil {
+                Text(ski.plan == nil ? "Open Ski Nav on your iPhone" : "Start on the iPhone, or swipe up to start here")
+                    .font(.caption2).foregroundStyle(.secondary)
+            } else if !ski.running, live != nil {
+                Text("from iPhone").font(.caption2).foregroundStyle(.secondary)
+            }
+        }
+        .padding(.horizontal, 4)
+    }
+}
+
+/// Page 2: the numbers.
 struct StatsView: View {
     @EnvironmentObject var ski: SkiSession
     var body: some View {

@@ -17,6 +17,13 @@ struct PlanStep: Codable, Identifiable {
     let at: String
 }
 
+/// What the phone is tracking right now (sent every few seconds while the watch app is open).
+struct PhoneLive {
+    var speedKmh: Double, km: Double, maxKmh: Double, vertM: Double
+    var onLift: Bool, step: String, color: String, next: String, idx: Int, tracking: Bool
+    var at: Date
+}
+
 struct Plan: Codable {
     let day: Int
     let title: String
@@ -41,6 +48,7 @@ final class SkiSession: NSObject, ObservableObject {
     // plan
     @Published var plan: Plan?
     @Published var current = 0
+    @Published var phone: PhoneLive?
 
     private let health = HKHealthStore()
     private var session: HKWorkoutSession?
@@ -68,6 +76,10 @@ final class SkiSession: NSObject, ObservableObject {
     var step: PlanStep? {
         guard let p = plan, current < p.steps.count else { return nil }
         return p.steps[current]
+    }
+    var nextLift: PlanStep? {
+        guard let p = plan, current + 1 < p.steps.count else { return nil }
+        return p.steps[(current + 1)...].first { $0.t == "lift" }
     }
     var nextStep: PlanStep? {
         guard let p = plan, current + 1 < p.steps.count else { return nil }
@@ -179,8 +191,23 @@ final class SkiSession: NSObject, ObservableObject {
         return CLLocation(latitude: a[0], longitude: a[1]).distance(from: CLLocation(latitude: b[0], longitude: b[1]))
     }
 
+    fileprivate func receive(live d: [String: Any]) {
+        let l = PhoneLive(speedKmh: d["speed"] as? Double ?? 0, km: d["km"] as? Double ?? 0, maxKmh: d["max"] as? Double ?? 0,
+                          vertM: d["vert"] as? Double ?? 0, onLift: d["lift"] as? Bool ?? false, step: d["step"] as? String ?? "",
+                          color: d["color"] as? String ?? "lift", next: d["next"] as? String ?? "", idx: d["idx"] as? Int ?? 0,
+                          tracking: d["tracking"] as? Bool ?? false, at: Date())
+        if phone?.idx != l.idx, let p = plan, l.idx < p.steps.count, l.idx != current {
+            current = l.idx; engine.resetStep(); saveCurrent()   // follow the phone's step
+        }
+        if phone == nil { print("[watch] live data from phone: \(l.step)") }
+        phone = l
+    }
+
     fileprivate func receive(planData: Data) {
-        guard var p = try? JSONDecoder().decode(Plan.self, from: planData) else { return }
+        guard var p = try? JSONDecoder().decode(Plan.self, from: planData) else {
+            print("[watch] plan received but could not be read (\(planData.count) bytes)"); message = "Plan from phone could not be read"; return
+        }
+        print("[watch] plan received: \(p.title), \(p.steps.count) steps")
         for i in p.steps.indices { p.steps[i].idx = i }
         let newDay = plan?.day != p.day
         plan = p
@@ -198,10 +225,17 @@ extension SkiSession: CLLocationManagerDelegate {
 
 extension SkiSession: WCSessionDelegate {
     nonisolated func session(_ session: WCSession, activationDidCompleteWith state: WCSessionActivationState, error: Error?) {
+        print("[watch] link to phone:", state == .activated ? "on" : "off", "reachable:", session.isReachable)
         let ctx = session.receivedApplicationContext
         if let data = ctx["plan"] as? Data { Task { @MainActor in self.receive(planData: data) } }
     }
     nonisolated func session(_ session: WCSession, didReceiveApplicationContext ctx: [String: Any]) {
         if let data = ctx["plan"] as? Data { Task { @MainActor in self.receive(planData: data) } }
+    }
+    nonisolated func session(_ session: WCSession, didReceiveMessage msg: [String: Any]) {
+        if let live = msg["live"] as? [String: Any] {
+            let copy = live as NSDictionary
+            Task { @MainActor in self.receive(live: copy as! [String: Any]) }
+        }
     }
 }
