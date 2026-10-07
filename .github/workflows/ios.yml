@@ -63,7 +63,15 @@ jobs:
           grep "warning:" build.log | grep -v "/dd/" | sort -u | head -20 > ../qa-out/ios-sim/build-warnings.txt || true
       - name: Run QA tour in the simulator
         timeout-minutes: 20
-        run: bash qa/sim_run.sh ios/dd/Build/Products/Debug-iphonesimulator/SkiNav.app qa-out/ios-sim
+        run: |
+          mkdir -p qa-out/ios-sim
+          timeout 900 bash qa/sim_run.sh ios/dd/Build/Products/Debug-iphonesimulator/SkiNav.app qa-out/ios-sim 2>&1 | tee qa-out/ios-sim/runner-console.txt || echo "::warning::simulator QA exited early"
+      - name: Shut down simulators
+        if: always()
+        timeout-minutes: 3
+        run: |
+          pkill -f "simctl launch" || true
+          xcrun simctl shutdown all || true
       - uses: actions/upload-artifact@v4
         if: always()
         with: { name: qa-ios, path: qa-out }

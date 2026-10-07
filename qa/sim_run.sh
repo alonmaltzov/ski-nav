@@ -124,3 +124,4 @@ if [ -n "$WATCH" ]; then
   echo "[web] QA RESULT {\"check\":\"watch shows live stats while the phone tracks\",\"ok\":$ok,\"detail\":\"${live:-no live data}\"}" >> "$OUT/log.txt"
 fi
 echo "QA screens captured: $seen"
+kill $(jobs -p) 2>/dev/null || true
