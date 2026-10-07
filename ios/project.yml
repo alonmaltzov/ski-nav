@@ -2,7 +2,7 @@ name: SkiNav
 options:
   bundleIdPrefix: com.alonmaltzov
   deploymentTarget:
-    iOS: "17.0"
+    iOS: "18.0"
     watchOS: "10.0"
   createIntermediateGroups: true
 settings:
@@ -25,7 +25,7 @@ targets:
         type: folder
         buildPhase: resources
       - path: Shared
-        excludes: ["Replay/**", "TestData/**"]
+        excludes: ["Replay/**", "TestData/**", "GlanceCheck/**"]
     info:
       path: SkiNav/Info.plist
       properties:
@@ -52,6 +52,9 @@ targets:
     sources:
       - SkiNavWatch
       - Shared/SkiEngine.swift
+      - Shared/SkiText.swift
+      - Shared/SkiGlance.swift
+      - Shared/SkiStyle.swift
     info:
       path: SkiNavWatch/Info.plist
       properties:
@@ -71,12 +74,35 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.alonmaltzov.SkiNav.watchkitapp
         TARGETED_DEVICE_FAMILY: "4"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+    dependencies:
+      - target: SkiNavWatchWidgets
+  SkiNavWatchWidgets:
+    type: app-extension
+    platform: watchOS
+    sources:
+      - SkiNavWatchWidgets
+    info:
+      path: SkiNavWatchWidgets/Info.plist
+      properties:
+        CFBundleDisplayName: Ski Nav
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.alonmaltzov.SkiNav.watchkitapp.widgets
+        TARGETED_DEVICE_FAMILY: "4"
+        INFOPLIST_KEY_CFBundleDisplayName: Ski Nav
   SkiNavWidgets:
     type: app-extension
     platform: iOS
     sources:
       - SkiNavWidgets
       - Shared/SkiActivity.swift
+      - Shared/SkiGlance.swift
+      - Shared/SkiText.swift
+      - Shared/SkiEngine.swift
+      - Shared/SkiStyle.swift
+      - Shared/SkiLiveViews.swift
     info:
       path: SkiNavWidgets/Info.plist
       properties:
@@ -95,9 +121,11 @@ schemes:
         SkiNav: all
         SkiNavWidgets: all
         SkiNavWatch: all
+        SkiNavWatchWidgets: all
   SkiNavWatch:
     build:
       targets:
         SkiNavWatch: all
+        SkiNavWatchWidgets: all
     run:
       config: Debug

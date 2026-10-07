@@ -1,156 +1,299 @@
 import SwiftUI
 import WatchKit
 
-private func color(_ c: String) -> Color {
-    switch c {
-    case "blue": return Color(red: 0.11, green: 0.37, blue: 0.88)
-    case "red": return Color(red: 0.85, green: 0.12, blue: 0.15)
-    case "black": return .black
-    case "green": return Color(red: 0.09, green: 0.64, blue: 0.29)
-    case "end": return Color(red: 1.0, green: 0.35, blue: 0.12)
-    default: return Color(white: 0.35)   // lift
-    }
-}
-
+/// Three vertical pages (Digital Crown or swipe): Now, today's steps, the ski-day controls.
+/// "Now" switches between skiing and riding a lift by itself, from GPS speed and position. No taps needed.
 struct ContentView: View {
     @EnvironmentObject var ski: SkiSession
+    @State private var page = SkiSession.demoScreen == "steps" ? 1 : 0
 
     var body: some View {
-        TabView {
-            NowView()
-            StatsView()
-            StepView()
-            ControlsView()
+        NavigationStack {
+            TabView(selection: $page) {
+                NowView().tag(0)
+                StepsView().tag(1)
+                ControlsView().tag(2)
+            }
+            .tabViewStyle(.verticalPage)
         }
-        .tabViewStyle(.verticalPage)
     }
 }
 
-/// Page 1: one glance - speed, what you're on now, the next lift. Uses the watch's own tracking when it runs,
-/// otherwise the iPhone's live numbers (sent while the phone tracks and this app is open).
+// MARK: - Now
+
 struct NowView: View {
     @EnvironmentObject var ski: SkiSession
     var body: some View {
-        let live = ski.phone.flatMap { Date().timeIntervalSince($0.at) < 20 ? $0 : nil }
-        let speed = ski.running ? ski.speedKmh : (live?.speedKmh ?? 0)
-        let km = ski.running ? ski.distanceKm : (live?.km ?? 0)
-        let lift = ski.running ? ski.onLift : (live?.onLift ?? false)
-        let nowLabel = live?.step ?? ski.step?.l
-        let nowColor = live?.color ?? ski.step?.c ?? "lift"
-        let next = (live?.next).flatMap { $0.isEmpty ? nil : $0 } ?? ski.nextLift?.l
-        VStack(alignment: .leading, spacing: 4) {
-            HStack(alignment: .firstTextBaseline, spacing: 4) {
-                Text("\(Int(speed.rounded()))").font(.system(size: 48, weight: .bold, design: .rounded)).monospacedDigit()
-                    .foregroundStyle(lift ? .secondary : .primary)
-                Text(lift ? "LIFT" : "km/h").font(.caption2.bold()).foregroundStyle(.secondary)
-                Spacer()
-                Text(String(format: "%.1f km", km)).font(.caption.monospacedDigit()).foregroundStyle(.secondary)
+        // re-read every few seconds so the phone's numbers are dropped once they go stale
+        TimelineView(.periodic(from: .now, by: 5)) { _ in
+            let g = ski.glance
+            Group {
+                if let g {
+                    if g.onLift { LiftGlance(g: g) } else { RunGlance(g: g) }
+                } else {
+                    IdleView()
+                }
             }
-            if let n = nowLabel {
-                HStack(alignment: .top, spacing: 6) {
-                    RoundedRectangle(cornerRadius: 3).fill(color(nowColor)).frame(width: 6)
-                    Text(n).font(.headline).lineLimit(2).minimumScaleFactor(0.75)
-                }.fixedSize(horizontal: false, vertical: true)
-            }
-            if let nx = next {
-                Label(nx, systemImage: "cablecar").font(.caption).foregroundStyle(.secondary).lineLimit(2)
-            }
-            if !ski.running && live == nil {
-                Text(ski.plan == nil ? "Open Ski Nav on your iPhone" : "Start on the iPhone, or swipe up to start here")
-                    .font(.caption2).foregroundStyle(.secondary)
-            } else if !ski.running, live != nil {
-                Text("from iPhone").font(.caption2).foregroundStyle(.secondary)
-            }
+            .navigationTitle(g.map { String(format: "%.1f km", $0.km) } ?? "Ski Nav")
+            .navigationBarTitleDisplayMode(.inline)
+            .containerBackground(background(g).gradient, for: .tabView)
         }
-        .padding(.horizontal, 4)
+    }
+    private func background(_ g: SkiGlance?) -> Color {
+        guard let g, !g.onLift else { return Color(white: 0.12) }
+        return SkiStyle.fill(g.runColor).opacity(0.35)
     }
 }
 
-/// Page 2: the numbers.
-struct StatsView: View {
+/// Skiing: big speed, the run you're on, the next lift.
+struct RunGlance: View {
+    let g: SkiGlance
+    @Environment(\.isLuminanceReduced) private var dimmed
+    @ScaledMetric(relativeTo: .largeTitle) private var speedSize: CGFloat = 72
+    @ScaledMetric(relativeTo: .title3) private var nameSize: CGFloat = 22
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(alignment: .firstTextBaseline, spacing: 4) {
+                Text("\(g.speedKmh)")
+                    .font(SkiStyle.big(speedSize)).monospacedDigit()
+                    .lineLimit(1).minimumScaleFactor(0.6)
+                    .contentTransition(.numericText(value: Double(g.speedKmh)))
+                Text("km/h").font(.headline).foregroundStyle(.secondary)
+            }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("\(g.speedKmh) kilometres per hour")
+
+            if !g.run.isEmpty {
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("ON · \(SkiText.colorWord(g.runColor).uppercased())")
+                        .font(.caption2.weight(.bold)).foregroundStyle(.white.opacity(0.85))
+                    Text(g.run).font(SkiStyle.big(nameSize)).lineLimit(2).minimumScaleFactor(0.75)
+                }
+                .padding(.horizontal, 10).padding(.vertical, 6)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(SkiStyle.fill(g.runColor).opacity(dimmed ? 0.45 : 1), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).strokeBorder(.white.opacity(g.runColor == "black" ? 0.6 : 0), lineWidth: 1.5))
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("On \(g.run), \(SkiText.colorWord(g.runColor)) run")
+            }
+
+            if !g.nextLift.isEmpty {
+                HStack(spacing: 8) {
+                    Image(systemName: "cablecar.fill").font(.title3).foregroundStyle(.secondary)
+                    VStack(alignment: .leading, spacing: 0) {
+                        Text(g.nextLift).font(.headline).lineLimit(1).minimumScaleFactor(0.8)
+                        Text(g.nextLiftM >= 0 ? "next lift · \(SkiText.km(Double(g.nextLiftM)))" : "next lift")
+                            .font(.footnote).foregroundStyle(.secondary)
+                    }
+                }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Next lift \(g.nextLift)" + (g.nextLiftM >= 0 ? ", \(SkiText.km(Double(g.nextLiftM))) away" : ""))
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .opacity(dimmed ? 0.8 : 1)
+    }
+}
+
+/// Riding a lift: which one, how far up, and the run after it. Distance is paused.
+struct LiftGlance: View {
+    let g: SkiGlance
+    @Environment(\.isLuminanceReduced) private var dimmed
+    @ScaledMetric(relativeTo: .title2) private var nameSize: CGFloat = 26
+    @ScaledMetric(relativeTo: .title3) private var thenSize: CGFloat = 22
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 8) {
+                Image(systemName: "cablecar.fill").font(.title2)
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("ON LIFT · PAUSED").font(.caption2.weight(.bold)).foregroundStyle(.secondary)
+                    Text(g.liftName.isEmpty ? "Lift" : g.liftName).font(SkiStyle.big(nameSize)).lineLimit(2).minimumScaleFactor(0.7)
+                }
+            }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(g.liftName.isEmpty ? "On a lift, distance paused" : "On \(g.liftName), distance paused")
+
+            if !g.liftName.isEmpty {
+                VStack(alignment: .leading, spacing: 4) {
+                    ProgressView(value: g.liftProgress).tint(.white)
+                    if g.liftMin > 0 {
+                        Text("about \(g.liftMin) min to the top").font(.footnote).foregroundStyle(.secondary)
+                    }
+                }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("\(Int(g.liftProgress * 100)) percent up" + (g.liftMin > 0 ? ", about \(g.liftMin) minutes to the top" : ""))
+            }
+
+            Spacer(minLength: 0)
+
+            if !g.then.isEmpty {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("THEN").font(.caption2.weight(.bold)).foregroundStyle(.secondary)
+                    HStack(spacing: 8) {
+                        RunBar(color: g.thenColor, width: 7, height: 26)
+                        Text(g.then).font(SkiStyle.big(thenSize)).lineLimit(1).minimumScaleFactor(0.7)
+                    }
+                }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Then \(g.then)")
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .opacity(dimmed ? 0.7 : 1)
+    }
+}
+
+/// Nothing tracking yet.
+struct IdleView: View {
     @EnvironmentObject var ski: SkiSession
     var body: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            HStack(alignment: .firstTextBaseline, spacing: 4) {
-                Text("\(Int(ski.speedKmh.rounded()))")
-                    .font(.system(size: 54, weight: .bold, design: .rounded))
-                    .foregroundStyle(ski.onLift ? .secondary : .primary)
-                    .monospacedDigit()
-                Text("km/h").font(.footnote).foregroundStyle(.secondary)
-                Spacer()
-                if ski.onLift { Text("LIFT").font(.caption2.bold()).padding(.horizontal, 5).padding(.vertical, 2).background(.gray.opacity(0.35), in: Capsule()) }
-            }
-            Grid(alignment: .leading, horizontalSpacing: 10, verticalSpacing: 2) {
-                GridRow {
-                    stat(String(format: "%.1f", ski.distanceKm), "km")
-                    stat("\(Int(ski.maxKmh.rounded()))", "max")
-                }
-                GridRow {
-                    stat("\(Int(ski.verticalM.rounded()))", "vert m")
-                    stat(time(ski.elapsed), "time")
-                }
-            }
-            if !ski.running {
-                Text("Swipe up to start").font(.caption2).foregroundStyle(.secondary).padding(.top, 2)
-            } else if !ski.gpsOK {
-                Text("Finding GPS…").font(.caption2).foregroundStyle(.orange).padding(.top, 2)
+        VStack(spacing: 8) {
+            Image(systemName: "figure.skiing.downhill").font(.system(size: 36)).foregroundStyle(SkiStyle.accent)
+                .accessibilityHidden(true)
+            if let t = ski.plan?.title {
+                Text(t).font(.headline).multilineTextAlignment(.center).lineLimit(2)
+                Text("Start on your iPhone and this updates by itself.").font(.footnote).foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+            } else {
+                Text("Open Ski Nav on your iPhone to get today's plan.").font(.footnote).foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
             }
         }
-        .padding(.horizontal, 4)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
+}
+
+// MARK: - Steps
+
+/// Today's plan as a list; scrolls itself to the step you're on.
+struct StepsView: View {
+    @EnvironmentObject var ski: SkiSession
+    var body: some View {
+        Group {
+            if let p = ski.plan {
+                ScrollViewReader { proxy in
+                    List(p.steps) { s in
+                        StepRow(step: s, state: s.idx < ski.current ? .done : s.idx == ski.current ? .now : .later, nowNote: nowNote(s))
+                            .id(s.idx)
+                            .listRowBackground(RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                .fill(Color.white.opacity(s.idx == ski.current ? 0.2 : 0.07)))
+                    }
+                    .listStyle(.carousel)
+                    .onAppear { proxy.scrollTo(ski.current, anchor: .center) }
+                    .onChange(of: ski.current) { _, c in withAnimation { proxy.scrollTo(c, anchor: .center) } }
+                }
+            } else {
+                VStack(spacing: 6) {
+                    Image(systemName: "iphone").font(.title2).accessibilityHidden(true)
+                    Text("Open Ski Nav on your iPhone to send today's plan.").font(.footnote).multilineTextAlignment(.center)
+                }
+            }
+        }
+        .navigationTitle("Today's plan")
+        .navigationBarTitleDisplayMode(.inline)
+        .containerBackground(SkiStyle.accent.opacity(0.3).gradient, for: .tabView)
+    }
+    private func nowNote(_ s: PlanStep) -> String {
+        guard s.idx == ski.current else { return "" }
+        if let g = ski.glance, g.onLift, g.liftMin > 0 { return "now · top in \(g.liftMin) min" }
+        return s.at.isEmpty ? "now" : "now · planned \(s.at)"
+    }
+}
+
+struct StepRow: View {
+    enum Phase { case done, now, later }
+    let step: PlanStep
+    let state: Phase
+    var nowNote = ""
+    var body: some View {
+        HStack(spacing: 10) {
+            Text("\(step.idx + 1)")
+                .font(.footnote.weight(.bold)).monospacedDigit().foregroundStyle(.white)
+                .frame(width: 30, height: 30)
+                .background(SkiStyle.fill(step.c), in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+                .overlay(RoundedRectangle(cornerRadius: 8, style: .continuous).strokeBorder(.white.opacity(step.c == "black" ? 0.6 : 0), lineWidth: 1))
+            VStack(alignment: .leading, spacing: 0) {
+                HStack(spacing: 4) {
+                    if step.t == "lift" { Image(systemName: "cablecar.fill").font(.caption).foregroundStyle(.secondary) }
+                    Text(SkiText.short(step.l)).font(state == .now ? .headline : .body).lineLimit(2)
+                }
+                if state == .now, !nowNote.isEmpty {
+                    Text(nowNote).font(.caption2).foregroundStyle(.secondary)
+                }
+            }
+        }
+        .padding(.vertical, 4)
+        .opacity(state == .done ? 0.45 : 1)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Step \(step.idx + 1), \(step.t == "lift" ? "lift" : SkiText.colorWord(step.c) + " run"), \(SkiText.short(step.l))"
+                            + (state == .now ? ", current step" : state == .done ? ", done" : ""))
+    }
+}
+
+// MARK: - Controls
+
+struct ControlsView: View {
+    @EnvironmentObject var ski: SkiSession
+    @State private var confirmEnd = false
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 10) {
+                if let g = ski.glance {
+                    Grid(horizontalSpacing: 12, verticalSpacing: 6) {
+                        GridRow {
+                            stat("\(g.maxKmh)", "max km/h")
+                            stat(g.vertM.formatted(), "vert m")
+                        }
+                        if ski.running {
+                            GridRow {
+                                stat(time(ski.elapsed), "time")
+                                stat(ski.gpsOK ? "Good" : "Weak", "GPS")
+                            }
+                        }
+                    }
+                }
+                if ski.fromPhone && ski.phoneTracking {
+                    Label("Showing your iPhone's tracking", systemImage: "iphone")
+                        .font(.footnote).foregroundStyle(.secondary).multilineTextAlignment(.center)
+                }
+                if ski.running {
+                    Button(role: .destructive) { confirmEnd = true } label: {
+                        Label("End ski day", systemImage: "stop.fill").frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.borderedProminent).tint(.red)
+                } else {
+                    Button { ski.start() } label: {
+                        Label("Track on watch", systemImage: "play.fill").frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.borderedProminent).tint(SkiStyle.accent)
+                    Text("Use this when your iPhone stays at the hotel. Saved as a Downhill Skiing workout.")
+                        .font(.caption2).foregroundStyle(.secondary).multilineTextAlignment(.center)
+                }
+                if let m = ski.message {
+                    Text(m).font(.caption2).foregroundStyle(.orange).multilineTextAlignment(.center)
+                }
+            }
+        }
+        .navigationTitle(ski.plan.map { "Day \($0.day)" } ?? "Ski day")
+        .navigationBarTitleDisplayMode(.inline)
+        .confirmationDialog("End today's ski day?", isPresented: $confirmEnd) {
+            Button("End ski day", role: .destructive) { ski.stop() }
+            Button("Keep tracking", role: .cancel) {}
+        }
+    }
+
     private func stat(_ v: String, _ l: String) -> some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text(v).font(.system(.title3, design: .rounded).bold()).monospacedDigit()
+        VStack(spacing: 0) {
+            Text(v).font(SkiStyle.big(26)).monospacedDigit()
             Text(l).font(.caption2).foregroundStyle(.secondary)
         }
+        .frame(maxWidth: .infinity)
+        .accessibilityElement(children: .combine)
     }
     private func time(_ t: TimeInterval) -> String {
         let m = Int(t) / 60
         return String(format: "%d:%02d", m / 60, m % 60)
-    }
-}
-
-/// Page 2: what to do now, and what's next.
-struct StepView: View {
-    @EnvironmentObject var ski: SkiSession
-    var body: some View {
-        if let s = ski.step, let p = ski.plan {
-            VStack(alignment: .leading, spacing: 6) {
-                Text("STEP \(ski.current + 1) OF \(p.steps.count)\(s.at.isEmpty ? "" : " · \(s.at)")")
-                    .font(.caption2).foregroundStyle(.secondary)
-                HStack(alignment: .top, spacing: 8) {
-                    RoundedRectangle(cornerRadius: 4).fill(color(s.c)).frame(width: 8)
-                    Text(s.l).font(.headline).lineLimit(3).minimumScaleFactor(0.8)
-                }
-                .fixedSize(horizontal: false, vertical: true)
-                if let n = ski.nextStep {
-                    Text("Then: \(n.l)").font(.caption).foregroundStyle(.secondary).lineLimit(2)
-                }
-                HStack {
-                    Button { ski.previousManually() } label: { Image(systemName: "chevron.left") }
-                    Button { ski.nextManually() } label: { Image(systemName: "chevron.right") }
-                }
-            }
-        } else {
-            VStack(spacing: 6) {
-                Image(systemName: "iphone.and.arrow.forward").font(.title2)
-                Text("Open Ski Nav on your iPhone to send today's plan.").font(.footnote).multilineTextAlignment(.center)
-            }
-        }
-    }
-}
-
-/// Page 3: start / stop.
-struct ControlsView: View {
-    @EnvironmentObject var ski: SkiSession
-    var body: some View {
-        VStack(spacing: 8) {
-            if let t = ski.plan?.title { Text(t).font(.caption).foregroundStyle(.secondary).lineLimit(2).multilineTextAlignment(.center) }
-            Button(ski.running ? "End ski day" : "Start ski day") {
-                ski.running ? ski.stop() : ski.start()
-            }
-            .tint(ski.running ? .red : .blue)
-            if let m = ski.message { Text(m).font(.caption2).foregroundStyle(.orange).multilineTextAlignment(.center) }
-        }
     }
 }

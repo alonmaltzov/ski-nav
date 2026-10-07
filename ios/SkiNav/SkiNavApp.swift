@@ -12,12 +12,20 @@ struct SkiNavApp: App {
 
     var body: some Scene {
         WindowGroup {
+            if ProcessInfo.processInfo.arguments.contains("-qaGlances") {
+                GlanceGallery()
+            } else {
+                app
+            }
+        }
+    }
+
+    private var app: some View {
             WebAppView()
                 .ignoresSafeArea()
                 .onChange(of: phase) { _, newPhase in
                     // when we come back to the foreground, hand the web app everything recorded while locked
                     if newPhase == .active { WebBridge.shared.flush() }
                 }
-        }
     }
 }

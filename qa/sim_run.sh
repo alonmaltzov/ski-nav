@@ -100,9 +100,21 @@ done
 kill ${MOVER:-0} 2>/dev/null; xcrun simctl location "$UDID" clear || true
 xcrun simctl io "$UDID" screenshot "$OUT/99-final.png" >/dev/null 2>&1 || true
 kill $LPID 2>/dev/null || true
+# lock screen + Dynamic Island views, rendered by the app itself with sample data
+xcrun simctl launch --terminate-running-process "$UDID" "$BUNDLE" -qaGlances >/dev/null 2>&1 && sleep 4 && \
+  xcrun simctl io "$UDID" screenshot "$OUT/90-glances.png" >/dev/null 2>&1 || true
+[ -f "$OUT/90-glances.png" ] && ok=true || ok=false
+echo "[web] QA RESULT {\"check\":\"lock screen and Dynamic Island views render\",\"ok\":$ok,\"detail\":\"90-glances.png\"}" >> "$OUT/log.txt"
 if [ -n "$WATCH" ]; then
   xcrun simctl io "$WATCH" screenshot "$OUT/98-watch.png" >/dev/null 2>&1 || true
   kill ${WPID:-0} 2>/dev/null || true
+  # the watch screens with a sample day: skiing, on a lift, steps list
+  for d in now lift steps; do
+    xcrun simctl launch --terminate-running-process "$WATCH" "$WBUNDLE" -demo $d >/dev/null 2>&1 && sleep 4 && \
+      xcrun simctl io "$WATCH" screenshot "$OUT/97-watch-$d.png" >/dev/null 2>&1 || true
+    [ -f "$OUT/97-watch-$d.png" ] && ok=true || ok=false
+    echo "[web] QA RESULT {\"check\":\"watch screen renders: $d\",\"ok\":$ok,\"detail\":\"97-watch-$d.png\"}" >> "$OUT/log.txt"
+  done
   plan=$(grep -m1 "\[watch\] plan received" "$OUT/watch.log" | sed 's/.*plan received: //' | tr -d '\r"')
   live=$(grep -m1 "\[watch\] live data" "$OUT/watch.log" | sed 's/.*from phone: //' | tr -d '\r"')
   phonelink=$(grep -m1 "\[app\] watch link" "$OUT/log.txt" | tr -d '\r"')

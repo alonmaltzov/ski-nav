@@ -50,9 +50,11 @@ final class WebBridge: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
             // the resort's lift lines + today's title, so native lift detection matches the page
             SkiDay.shared.setContext(lifts: body["lifts"] as? [[[Double]]], title: body["title"] as? String)
         case "step":
-            SkiDay.shared.setStep(label: (body["label"] as? String) ?? "", color: (body["color"] as? String) ?? "lift",
-                                  liftLine: body["lift"] as? [[Double]], nextLift: (body["next"] as? String) ?? "",
-                                  index: (body["idx"] as? Int) ?? 0)
+            let st = SkiGlance.Step(label: (body["label"] as? String) ?? "", color: (body["color"] as? String) ?? "lift",
+                                    ends: body["ends"] as? [[Double]], nextLift: (body["next"] as? String) ?? "",
+                                    nextLiftAt: body["nextAt"] as? [Double], then: (body["then"] as? String) ?? "",
+                                    thenColor: (body["thenColor"] as? String) ?? "lift")
+            SkiDay.shared.setStep(st, liftLine: body["lift"] as? [[Double]], index: (body["idx"] as? Int) ?? 0)
         case "stop":
             LocationService.shared.stop()
         case "locate":

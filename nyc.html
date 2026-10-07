@@ -1012,8 +1012,10 @@ function nativeStep(){
   const h = window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.skinav; if(!h) return;   // runs during load, before NATIVE exists
   const s=steps[cur]; if(!s) return;
   const k=di+':'+cur; if(k===nativeStepKey) return; nativeStepKey=k;
-  const nx = steps.slice(cur+1).find(x=>x.type==='lift');
-  try{ h.postMessage({cmd:'step', idx:cur, label:stepLabel(s), color:stepColor(s), lift: s.type==='lift' ? s.coords : null, next: nx ? stepLabel(nx) : ''}); }catch(e){}
+  const nx = steps.slice(cur+1).find(x=>x.type==='lift'), th = steps[cur+1];
+  const ends = q => q && q.coords && q.coords.length ? [[q.coords[0][0], q.coords[0][1]], [q.coords[q.coords.length-1][0], q.coords[q.coords.length-1][1]]] : null;
+  try{ h.postMessage({cmd:'step', idx:cur, label:stepLabel(s), color:stepColor(s), lift: s.type==='lift' ? s.coords : null, ends: ends(s),
+    next: nx ? stepLabel(nx) : '', nextAt: nx && ends(nx) ? ends(nx)[0] : null, then: th ? stepLabel(th) : '', thenColor: th ? stepColor(th) : ''}); }catch(e){}
 }
 function renderList(){
   const box = $('stepList'); box.textContent='';

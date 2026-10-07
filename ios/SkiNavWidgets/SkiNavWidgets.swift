@@ -7,74 +7,46 @@ struct SkiNavWidgets: WidgetBundle {
     var body: some Widget { SkiDayLiveActivity() }
 }
 
-private func tint(_ c: String) -> Color {
-    switch c {
-    case "blue": return Color(red: 0.11, green: 0.37, blue: 0.88)
-    case "red": return Color(red: 0.85, green: 0.12, blue: 0.15)
-    case "black": return .primary
-    case "green": return Color(red: 0.09, green: 0.64, blue: 0.29)
-    case "end": return Color(red: 1.0, green: 0.35, blue: 0.12)
-    default: return .gray
-    }
-}
-
+/// The ski day on the lock screen, in the Dynamic Island and (iOS 18+) in the Apple Watch Smart Stack.
 struct SkiDayLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: SkiActivityAttributes.self) { ctx in
-            // lock screen
-            let s = ctx.state
-            VStack(alignment: .leading, spacing: 8) {
-                HStack(alignment: .firstTextBaseline) {
-                    Text("\(s.speedKmh)").font(.system(size: 44, weight: .bold, design: .rounded)).monospacedDigit()
-                        .foregroundStyle(s.onLift ? .secondary : .primary)
-                    Text(s.onLift ? "LIFT" : "km/h").font(.caption.bold()).foregroundStyle(.secondary)
-                    Spacer()
-                    Text(ctx.attributes.startedAt, style: .timer).font(.title3.monospacedDigit()).multilineTextAlignment(.trailing)
-                }
-                HStack {
-                    stat(String(format: "%.1f", s.km), "km")
-                    stat("\(s.maxKmh)", "max")
-                    stat("\(s.vertM)", "vert m")
-                }
-                HStack(spacing: 6) {
-                    RoundedRectangle(cornerRadius: 3).fill(tint(s.stepColor)).frame(width: 6, height: 18)
-                    Text(s.step).font(.subheadline.weight(.semibold)).lineLimit(1)
-                }
-            }
-            .padding(16)
-            .activityBackgroundTint(Color(.systemBackground).opacity(0.85))
+            LiveActivityRoot(g: ctx.state)
+                .activityBackgroundTint(Color(red: 0.03, green: 0.05, blue: 0.06).opacity(0.88))
+                .activitySystemActionForegroundColor(.white)
         } dynamicIsland: { ctx in
-            let s = ctx.state
+            let g = ctx.state
             return DynamicIsland {
-                DynamicIslandExpandedRegion(.leading) {
-                    VStack(alignment: .leading) {
-                        Text("\(s.speedKmh)").font(.title.bold()).monospacedDigit()
-                        Text(s.onLift ? "on lift" : "km/h").font(.caption2).foregroundStyle(.secondary)
-                    }
-                }
-                DynamicIslandExpandedRegion(.trailing) {
-                    VStack(alignment: .trailing) {
-                        Text(String(format: "%.1f km", s.km)).font(.headline).monospacedDigit()
-                        Text("max \(s.maxKmh)").font(.caption2).foregroundStyle(.secondary)
-                    }
-                }
                 DynamicIslandExpandedRegion(.bottom) {
-                    Text(s.step).font(.subheadline).lineLimit(1).foregroundStyle(tint(s.stepColor))
+                    VStack(spacing: 10) {
+                        IslandExpandedTop(g: g)
+                        NowRow(g: g, nameSize: 22)
+                    }
+                    .padding(.horizontal, 6)
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel(g.spoken)
                 }
             } compactLeading: {
-                Text("\(s.speedKmh)").monospacedDigit().foregroundStyle(s.onLift ? .secondary : .primary)
+                IslandCompactLeading(g: g)
             } compactTrailing: {
-                Text(String(format: "%.1f", s.km)).monospacedDigit()
+                IslandCompactTrailing(g: g)
             } minimal: {
-                Text("\(s.speedKmh)").monospacedDigit()
+                if g.onLift { Image(systemName: "cablecar.fill") } else { Text("\(g.speedKmh)").font(SkiStyle.big(17)).monospacedDigit() }
             }
+            .keylineTint(SkiStyle.fill(g.runColor))
         }
+        .supplementalActivityFamilies([.small, .medium])
     }
+}
 
-    private func stat(_ v: String, _ label: String) -> some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text(v).font(.title3.weight(.semibold)).monospacedDigit()
-            Text(label).font(.caption2).foregroundStyle(.secondary)
-        }.frame(maxWidth: .infinity, alignment: .leading)
+/// Lock screen (.medium) or the smaller watch Smart Stack (.small).
+struct LiveActivityRoot: View {
+    @Environment(\.activityFamily) private var family
+    let g: SkiGlance
+    var body: some View {
+        switch family {
+        case .small: WatchStackGlance(g: g).padding(4)
+        default: LockScreenGlance(g: g)
+        }
     }
 }
