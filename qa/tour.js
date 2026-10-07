@@ -182,13 +182,21 @@
     const c0 = window.__ski.cur;
     await tap('simStart'); await tap('closeSim');
     await sleep(9000); await screen('replay');
+    result('tracking shows the stats card', document.querySelector('.app').classList.contains('tracking') && getComputedStyle(document.querySelector('.top')).display !== 'none', '');
+    if (window.__ski.setSun) { window.__ski.setSun('on'); await screen('replay-sun', { settle: 1500 }); result('Sun mode switches on', document.querySelector('.app').classList.contains('sun'), ''); window.__ski.setSun('auto'); }
     await sleep(9000);
     const dist = parseFloat(txt('dist')) || 0, c1 = window.__ski.cur;
     const trailN = (window.__ski.st.trail || []).length;
     result('trail of where you have been is recorded', trailN > 20, trailN + ' trail points');
     result('free ski by default: no off-route banner', $('offroute').hidden, $('offroute').hidden ? 'hidden' : 'banner showing');
     result('test replay moves the skier and counts km', dist > 0 && c1 > c0, `km=${txt('dist')} max=${txt('maxv')} step ${c0}->${c1} pill="${txt('gpsPill')}"`);
+    if (window.__ski.recap) {
+      window.__ski.recap(); await screen('recap');
+      result('day recap shows the day', !$('recapSheet').hidden && parseFloat(txt('rKm')) > 0, `km=${txt('rKm')} vert=${txt('rVert')} top=${txt('rTop')} lifts=${txt('rLifts')} goal=${txt('rGoal')} ${txt('rGoalPlus')}`);
+      await tap('recapClose');
+    }
     await tap('menuBtn'); await tap('simBtn'); await tap('simOff'); await tap('closeSim');
+    result('home sheet is back after stopping', !document.querySelector('.app').classList.contains('tracking') && !!txt('homeTitle'), txt('homeTitle'));
     result('stop & reset clears the replay', (parseFloat(txt('dist')) || 0) === 0, 'km=' + txt('dist'));
 
     // real GPS path (native only: the simulator feeds a moving location)

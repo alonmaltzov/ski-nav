@@ -32,6 +32,7 @@ final class WebBridge: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
         switch cmd {
         case "ready":
             pageReady = true
+            watchBrightness()
             // the page can be restarted by iOS (memory); if we were tracking, tell it to carry on
             if LocationService.shared.isTracking {
                 print("[app] page reloaded during tracking, resuming")
@@ -50,9 +51,11 @@ final class WebBridge: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
             // the resort's lift lines + today's title, so native lift detection matches the page
             SkiDay.shared.setContext(lifts: body["lifts"] as? [[[Double]]], title: body["title"] as? String)
         case "step":
-            SkiDay.shared.setStep(label: (body["label"] as? String) ?? "", color: (body["color"] as? String) ?? "lift",
-                                  liftLine: body["lift"] as? [[Double]], nextLift: (body["next"] as? String) ?? "",
-                                  index: (body["idx"] as? Int) ?? 0)
+            let st = SkiGlance.Step(label: (body["label"] as? String) ?? "", color: (body["color"] as? String) ?? "lift",
+                                    ends: body["ends"] as? [[Double]], nextLift: (body["next"] as? String) ?? "",
+                                    nextLiftAt: body["nextAt"] as? [Double], then: (body["then"] as? String) ?? "",
+                                    thenColor: (body["thenColor"] as? String) ?? "lift")
+            SkiDay.shared.setStep(st, liftLine: body["lift"] as? [[Double]], index: (body["idx"] as? Int) ?? 0)
         case "stop":
             LocationService.shared.stop()
         case "locate":
@@ -84,6 +87,18 @@ final class WebBridge: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
             guard let data = try? enc.encode(chunk), let json = String(data: data, encoding: .utf8) else { return }
             web.evaluateJavaScript("window.__native && window.__native.fixes(\(json))", completionHandler: nil)
         }
+    }
+
+    /// Sun mode "Auto": full screen brightness (auto-brightness in bright snow) tells the page it's sunny.
+    private var brightnessObserver: NSObjectProtocol?
+    private func watchBrightness() {
+        let send = { [weak self] in
+            let v = UIScreen.main.brightness
+            self?.js("window.__native && window.__native.brightness && window.__native.brightness(\(v))")
+        }
+        send()
+        guard brightnessObserver == nil else { return }
+        brightnessObserver = NotificationCenter.default.addObserver(forName: UIScreen.brightnessDidChangeNotification, object: nil, queue: .main) { _ in send() }
     }
 
     func js(_ code: String) {

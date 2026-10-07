@@ -15,15 +15,11 @@ struct PlanStep: Codable, Identifiable {
     let s: [Double]      // start [lat, lon]
     let e: [Double]      // end [lat, lon]
     let at: String
+    init(l: String, t: String, c: String, len: Double, s: [Double], e: [Double], at: String) {
+        self.l = l; self.t = t; self.c = c; self.len = len; self.s = s; self.e = e; self.at = at
+    }
     // idx is set on the watch after decoding, the phone doesn't send it
     enum CodingKeys: String, CodingKey { case l, t, c, len, s, e, at }
-}
-
-/// What the phone is tracking right now (sent every few seconds while the watch app is open).
-struct PhoneLive {
-    var speedKmh: Double, km: Double, maxKmh: Double, vertM: Double
-    var onLift: Bool, step: String, color: String, next: String, idx: Int, tracking: Bool
-    var at: Date
 }
 
 struct Plan: Codable {
@@ -50,7 +46,21 @@ final class SkiSession: NSObject, ObservableObject {
     // plan
     @Published var plan: Plan?
     @Published var current = 0
-    @Published var phone: PhoneLive?
+    /// What the iPhone is tracking right now (sent every few seconds while this app is open), and when it arrived.
+    @Published var phoneGlance: SkiGlance?
+    @Published var phoneAt = Date.distantPast
+    @Published var phoneTracking = false
+    private var phoneIdx = -1
+    /// The watch's own numbers while it runs its own workout.
+    @Published var ownGlance = SkiGlance()
+    private var lastPos: [Double]?
+
+    /// QA screenshots: `-demo now|lift|steps` fills the screens with a sample day.
+    static let demoScreen: String? = {
+        let a = ProcessInfo.processInfo.arguments
+        guard let i = a.firstIndex(of: "-demo"), i + 1 < a.count else { return nil }
+        return a[i + 1]
+    }()
 
     private let health = HKHealthStore()
     private var session: HKWorkoutSession?
@@ -73,6 +83,45 @@ final class SkiSession: NSObject, ObservableObject {
             plan = p
         }
         current = UserDefaults.standard.integer(forKey: "current")
+        if let d = SkiSession.demoScreen { loadDemo(d) } else { keepAsking() }
+    }
+
+    /// What the glances show: the watch's own tracking when it runs, else the phone's (if recent).
+    var glance: SkiGlance? {
+        if running { return ownGlance }
+        if let g = phoneGlance, phoneTracking, Date().timeIntervalSince(phoneAt) < 20 { return g }
+        return nil
+    }
+    /// True when the numbers on screen come from the iPhone.
+    var fromPhone: Bool { !running && glance != nil }
+
+    /// The current plan step in the shape glances use.
+    func glanceStep() -> SkiGlance.Step? {
+        guard let s = step else { return nil }
+        let nl = nextLift, th = nextStep
+        return SkiGlance.Step(label: s.l, color: s.c, ends: [s.s, s.e], nextLift: nl?.l ?? "", nextLiftAt: nl?.s,
+                              then: th?.l ?? "", thenColor: th?.c ?? "lift")
+    }
+
+    private func loadDemo(_ screen: String) {
+        let steps: [PlanStep] = [
+            .init(l: "Take Chaux Fleurie chair", t: "lift", c: "lift", len: 1064, s: [46.20701, 6.77827], e: [46.21169, 6.79035], at: "9:45"),
+            .init(l: "Ski Chaux Fleuries (red) → Grand Plan (blue)", t: "run", c: "red", len: 4458, s: [46.21169, 6.79035], e: [46.21378, 6.76099], at: "9:54"),
+            .init(l: "Take Ardent gondola", t: "lift", c: "lift", len: 1470, s: [46.21378, 6.76099], e: [46.20792, 6.77813], at: "10:19"),
+            .init(l: "Ski Parchets (blue)", t: "run", c: "blue", len: 1762, s: [46.20792, 6.77813], e: [46.21378, 6.76099], at: "10:28"),
+            .init(l: "Take Ardent gondola", t: "lift", c: "lift", len: 1470, s: [46.21378, 6.76099], e: [46.20792, 6.77813], at: "10:37"),
+            .init(l: "Ski Les Tannes (red)", t: "run", c: "red", len: 2055, s: [46.20792, 6.77813], e: [46.20701, 6.77827], at: "10:46"),
+        ]
+        var p = Plan(day: 1, title: "Avoriaz north + Lindarets", steps: steps)
+        for i in p.steps.indices { p.steps[i].idx = i }
+        plan = p
+        let onLift = screen == "lift"
+        current = onLift ? 2 : 1
+        let pos = onLift ? [46.2100, 6.7710] : [46.2125, 6.7800]
+        var tot = SkiTotals(); tot.distM = 12_400; tot.maxMps = 54 / 3.6; tot.vertM = 1840
+        phoneGlance = SkiGlance.make(speedMps: onLift ? 5 / 3.6 : 42 / 3.6, totals: tot, onLift: onLift, at: pos, step: glanceStep())
+        phoneAt = .distantFuture
+        phoneTracking = true
     }
 
     var step: PlanStep? {
@@ -174,6 +223,8 @@ final class SkiSession: NSObject, ObservableObject {
         maxKmh = tot.maxMps * 3.6
         verticalM = tot.vertM
         onLift = engine.onLift
+        lastPos = [loc.coordinate.latitude, loc.coordinate.longitude]
+        ownGlance = SkiGlance.make(speedMps: engine.speedMps, totals: tot, onLift: engine.onLift, at: lastPos, step: glanceStep())
 
         // next step: reached the end of this one (loops need most of their length done first)
         if let s = step, s.t != "end" {
@@ -193,32 +244,63 @@ final class SkiSession: NSObject, ObservableObject {
         return CLLocation(latitude: a[0], longitude: a[1]).distance(from: CLLocation(latitude: b[0], longitude: b[1]))
     }
 
+    /// True once the phone answered in this session; until then the watch keeps asking every few seconds
+    /// (the first ask often lands before the iPhone app is running, and the reachability callback isn't reliable).
+    private var gotPlan = false
+    private var askTimer: Timer?
+    private func keepAsking() {
+        // runs only while the app is on screen: first the plan, then live numbers whenever the pushes go quiet
+        askTimer = Timer.scheduledTimer(withTimeInterval: 4, repeats: true) { [weak self] _ in
+            Task { @MainActor in
+                guard let self else { return }
+                if !self.gotPlan { self.askForPlan() }
+                else if !self.running && Date().timeIntervalSince(self.phoneAt) > 6 { self.askForLive() }
+            }
+        }
+    }
+
+    /// Pull what the phone is tracking right now.
+    func askForLive() {
+        let s = WCSession.default
+        guard s.activationState == .activated else { return }
+        s.sendMessage(["want": "live"], replyHandler: { reply in
+            if let live = reply["live"] as? [String: Any] {
+                let copy = live as NSDictionary
+                Task { @MainActor in self.receive(live: copy as! [String: Any]) }
+            }
+        }, errorHandler: { _ in })
+    }
+
     /// Pull the plan from the phone (when reachable) instead of only waiting for a push.
     func askForPlan() {
         let s = WCSession.default
-        guard s.activationState == .activated, s.isReachable else { return }
+        guard s.activationState == .activated, !gotPlan else { return }
         s.sendMessage(["want": "plan"], replyHandler: { reply in
             if let data = reply["plan"] as? Data { Task { @MainActor in self.receive(planData: data) } }
         }, errorHandler: { e in print("[watch] ask for plan failed:", e.localizedDescription) })
     }
 
     fileprivate func receive(live d: [String: Any]) {
-        let l = PhoneLive(speedKmh: d["speed"] as? Double ?? 0, km: d["km"] as? Double ?? 0, maxKmh: d["max"] as? Double ?? 0,
-                          vertM: d["vert"] as? Double ?? 0, onLift: d["lift"] as? Bool ?? false, step: d["step"] as? String ?? "",
-                          color: d["color"] as? String ?? "lift", next: d["next"] as? String ?? "", idx: d["idx"] as? Int ?? 0,
-                          tracking: d["tracking"] as? Bool ?? false, at: Date())
-        if phone?.idx != l.idx, let p = plan, l.idx < p.steps.count, l.idx != current {
-            current = l.idx; engine.resetStep(); saveCurrent()   // follow the phone's step
+        if SkiSession.demoScreen != nil { return }
+        guard let data = d["glance"] as? Data, let g = try? JSONDecoder().decode(SkiGlance.self, from: data) else { return }
+        let idx = d["idx"] as? Int ?? 0
+        if idx != phoneIdx, let p = plan, idx < p.steps.count, idx != current {
+            current = idx; engine.resetStep(); saveCurrent()   // follow the phone's step
         }
-        if phone == nil { print("[watch] live data from phone: \(l.step)") }
-        phone = l
+        phoneIdx = idx
+        if phoneGlance == nil { print("[watch] live data from phone: \(g.run) \(g.speedKmh) km/h") }
+        phoneGlance = g
+        phoneAt = Date()
+        phoneTracking = d["tracking"] as? Bool ?? false
     }
 
     fileprivate func receive(planData: Data) {
+        if SkiSession.demoScreen != nil { return }   // QA screenshots keep the sample day
         guard var p = try? JSONDecoder().decode(Plan.self, from: planData) else {
             print("[watch] plan received but could not be read (\(planData.count) bytes)"); message = "Plan from phone could not be read"; return
         }
         print("[watch] plan received: \(p.title), \(p.steps.count) steps")
+        gotPlan = true
         for i in p.steps.indices { p.steps[i].idx = i }
         let newDay = plan?.day != p.day
         plan = p

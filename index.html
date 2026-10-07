@@ -212,12 +212,81 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .toggle[aria-pressed="true"] .sw{background:var(--accent)} .toggle[aria-pressed="true"] .sw::after{left:22px}
 .toggle small{display:block;font-weight:400;color:var(--muted);font-size:.88rem;margin-top:2px}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+
+/* ===== redesign: map-first home, floating tracking card, Sun mode, day recap ===== */
+.daybar{display:none!important}
+.top{grid-row:1}.mapwrap{grid-row:2}.bottom{grid-row:3}
+.app.sun .nexttxt h2,.app.tracking .nexttxt h2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.app.sun .nexttxt h2{font-size:1.45rem}
+.app{--sheet-r:24px}
+.app:not(.tracking) .top{display:none}
+.prog-view .top{display:none}
+.mapwrap{margin-bottom:calc(-1 * var(--sheet-r))}
+.bottom{position:relative;z-index:2;border-top:0;border-radius:var(--sheet-r) var(--sheet-r) 0 0;box-shadow:0 -6px 24px rgb(11 22 32/.14);padding-top:20px}
+.bottom::before{content:"";position:absolute;top:7px;left:50%;width:40px;height:5px;margin-left:-20px;border-radius:3px;background:color-mix(in srgb,var(--muted) 40%,transparent)}
+.floatmenu{position:absolute;left:12px;top:12px;z-index:500;width:50px;height:50px;border-radius:25px;border:1px solid var(--line);background:var(--panel);color:var(--ink);display:grid;place-items:center;box-shadow:0 3px 12px rgb(11 22 32/.16)}
+.floatmenu svg{width:22px;height:22px}
+.app:not(.tracking) .floatmenu,.app:not(.tracking) .mapbtns,.app:not(.tracking) .offroute,.app:not(.tracking) .homebanner,.app:not(.tracking) .placesbox{top:calc(12px + env(safe-area-inset-top,0px))}
+.offroute,.homebanner{left:74px}
+/* home sheet */
+.homesum{display:grid;gap:4px}
+.homesum h2{margin:0;font:800 1.75rem/1.05 var(--f-num);letter-spacing:-.01em;text-wrap:balance}
+.homesum p{margin:0;color:var(--muted);font-size:1rem}
+.app.tracking .homesum{display:none}
+.app:not(.tracking) .next,.app:not(.tracking) .then{display:none}
+.app:not(.tracking) .actions{grid-template-columns:1fr 1fr}
+.app:not(.tracking) #goBtn{grid-column:1/-1;min-height:62px;font-size:1.25rem;font-weight:700;background:var(--ink);color:var(--panel);border-radius:18px}
+.app.tracking .actions{grid-template-columns:1fr 1fr 1.3fr}
+.app.tracking #goBtn{order:3}
+/* tracking: one card, speed left, four numbers right */
+.app.tracking .top{grid-template-columns:auto 1fr;align-items:center;column-gap:16px;row-gap:0;padding-bottom:12px}
+.app.tracking .speedrow{flex-direction:column;align-items:flex-start;gap:6px}
+.app.tracking .speed{font-size:4.6rem;font-weight:800}
+.app.tracking .speed small{font-size:1rem;margin-left:4px}
+.app.tracking .gps{flex-direction:row;align-items:center;flex-wrap:wrap;gap:4px;max-width:46vw}
+.app.tracking .top{grid-template-columns:minmax(0,auto) minmax(0,1fr)}
+.app.tracking .stat{min-width:0}
+.app.sun .speed.paused #spd{color:#8a96a0}
+.app.tracking .pill{font-size:.75rem;padding:5px 8px}
+.app.tracking .stats{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:10px}
+.app.tracking .stat b{font-size:1.5rem;font-weight:700}
+/* Sun mode: black on white, fewer and bigger numbers */
+.app.sun{--ink:#000;--muted:#1f2a33;--line:#000;--panel:#fff;--bg:#f1f1f1}
+.app.sun.tracking .top{background:#000;color:#fff;border-bottom:0}
+.app.sun.tracking .speed{font-size:6rem;font-weight:900}
+.app.sun.tracking .speed small,.app.sun.tracking .stat span{color:#fff;font-weight:800}
+.app.sun.tracking .stats{grid-template-columns:1fr}
+.app.sun.tracking .stat:nth-child(n+3){display:none}
+.app.sun.tracking .stat b{font-size:2rem;font-weight:900}
+.app.sun .pill{background:#fff;color:#000;font-weight:800}
+.app.sun .nexttxt h2{font-size:1.6rem;font-weight:900}
+.app.sun .nexttxt p,.app.sun .then,.app.sun .eyebrow{color:#000;font-weight:700}
+.app.sun .mbtn,.app.sun .floatmenu{border:2px solid #000;box-sizing:border-box}
+.app.sun .legend{border:2px solid #000;background:#fff}
+/* day recap */
+.recapin{max-height:92%;gap:12px}
+.recap .eyebrow{display:block}
+.recap h3{margin:0;font:800 1.7rem/1.05 var(--f-num);text-wrap:balance}
+.rgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.rtile{background:var(--bg);border-radius:16px;padding:12px 14px;display:grid;gap:2px}
+.rtile b{font:800 2rem/1 var(--f-num);font-variant-numeric:tabular-nums}
+.rtile span{font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.rgoal{background:var(--bg);border-radius:16px;padding:14px;display:grid;gap:10px}
+.rgoal .big{font:800 1.6rem/1 var(--f-num)}
+.rgoal .plus{color:var(--ok);font-weight:700;margin-left:8px;font-size:1rem}
+.rbar{height:10px;border-radius:5px;background:color-mix(in srgb,var(--muted) 22%,transparent);overflow:hidden}
+.rbar i{display:block;height:100%;border-radius:5px}
+.rruns{display:grid;gap:8px}
+.rrun{display:flex;align-items:center;gap:10px;font-size:1rem}
+.rrun i{width:12px;height:12px;border-radius:3px;flex:none}
+.ractions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
+.ractions .btn.primary{background:var(--ink);color:var(--panel)}
 </style>
 
 <div class="app">
   <header class="top">
     <div class="daybar">
-      <button class="menubtn" id="menuBtn" type="button" aria-label="Open week menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      
       <button class="daytitle" id="dayTitle" type="button"><span id="dayEyebrow">Day 1 · Sun Jan 17</span><b id="dayName">Avoriaz north</b></button>
       <span class="sched" id="sched" hidden>On plan</span>
     </div>
@@ -238,6 +307,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 
   <div class="mapwrap">
     <div id="map" role="application" aria-label="Piste map"></div>
+    <button class="floatmenu" id="menuBtn" type="button" aria-label="Week, places and settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     <div class="placesbox" id="placesBox" hidden><b>Show on map</b><div id="placeCats" style="display:grid;gap:6px"></div></div>
     <div class="homebanner" id="homeBanner" hidden></div>
     <div class="offroute" id="offroute" hidden>Off route. Head back to the highlighted line.</div>
@@ -252,6 +322,11 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
   </div>
 
   <footer class="bottom" id="navPanel">
+    <div class="homesum" id="homeSum">
+      <span class="eyebrow" id="homeEyebrow"></span>
+      <h2 id="homeTitle"></h2>
+      <p id="homeMeta"></p>
+    </div>
     <div class="next">
       <div class="badge lift" id="nBadge">1</div>
       <div class="nexttxt">
@@ -266,7 +341,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
     </div>
     <div class="then" id="nThen"></div>
     <div class="actions">
-      <button class="btn primary" id="goBtn" type="button">Start tracking</button>
+      <button class="btn primary" id="goBtn" type="button">Start skiing</button>
       <button class="btn ghost" id="stepsBtn" type="button">Steps</button>
       <button class="btn ghost" id="progBtn" type="button">Runs</button>
     </div>
@@ -310,6 +385,8 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
     <div class="sect">Settings</div>
     <div class="toggle" style="display:grid;gap:8px;box-sizing:border-box"><span>Plan style<small>Each style is its own 6-day plan. Your skied runs carry over.</small></span>
       <div class="chips" id="styleSeg"><button type="button" data-v="red" aria-pressed="true">Reds first</button><button type="button" data-v="std" aria-pressed="false">Blue &amp; red</button><button type="button" data-v="black" aria-pressed="false">With blacks</button></div></div>
+    <div class="toggle" style="display:grid;gap:8px;box-sizing:border-box"><span>Sun mode<small>Black on white with bigger numbers, for bright snow. Auto turns it on when your screen goes to full brightness.</small></span>
+      <div class="chips" id="sunSeg"><button type="button" data-v="auto" aria-pressed="true">Auto</button><button type="button" data-v="on" aria-pressed="false">On</button><button type="button" data-v="off" aria-pressed="false">Off</button></div></div>
     <div class="setrow">
       <button type="button" id="followBtn2" aria-pressed="false" style="grid-column:1/-1">Follow the plan: off</button>
       <button type="button" id="unitBtn">Switch to miles</button>
@@ -318,6 +395,28 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
     <a class="btn ghost" id="otherApp" href="#" style="display:grid;place-items:center;text-decoration:none;min-height:50px;box-sizing:border-box;color:var(--ink)">Practice in NYC</a>
     <p class="note">Routes come from OpenStreetMap piste data and terrain. Chairs and gondolas only, no T-bars, every lift is ridden up. Check lift status on the day.</p>
   </nav>
+</div>
+
+<div class="sheet recap" id="recapSheet" hidden>
+  <div class="sheetin recapin" role="dialog" aria-label="Day recap">
+    <div class="sheethead"><div><span class="eyebrow" id="recapEyebrow"></span><h3 id="recapTitle"></h3></div><button class="btn ghost sm" id="recapClose" type="button">Done</button></div>
+    <div class="rgrid">
+      <div class="rtile"><b id="rKm">0</b><span id="rKmU">Km skied</span></div>
+      <div class="rtile"><b id="rVert">0</b><span id="rVertU">Vertical m</span></div>
+      <div class="rtile"><b id="rTop">0</b><span id="rTopU">Top km/h</span></div>
+      <div class="rtile"><b id="rLifts">0</b><span>Lifts ridden</span></div>
+    </div>
+    <div class="rgoal">
+      <span class="eyebrow" id="rGoalLabel">Week goal</span>
+      <div><span class="big" id="rGoal">0 of 0</span><span class="plus" id="rGoalPlus"></span></div>
+      <div class="rbar"><i id="rGoalBar"></i></div>
+      <div class="rruns" id="rRuns"></div>
+    </div>
+    <div class="ractions">
+      <button class="btn ghost" id="recapShare" type="button">Share day</button>
+      <button class="btn primary" id="recapNext" type="button">Plan tomorrow</button>
+    </div>
+  </div>
 </div>
 
 <div class="sheet" id="sheet" hidden>
@@ -790,10 +889,10 @@ function markCoverage(ll, acc){
       const w=goalWays[wi]; if(!skiedWays.has(w.bi)){ let n=0; for(const x of vis[wi]) n+=x; if(n/vis[wi].length >= 0.6){ skiedWays.add(w.bi); changed=true; } } } } }
   if(changed){ paintSkied(); renderProgress(); renderMenu(); }
 }
-function groupStats(){
+function groupStats(SW){ SW=SW||skiedWays;
   // a run counts as skied when 60% of its length is skied
   const g = GROUPS.map((x,i)=>({...x, gi:i, L:0, S:0, P:0, dayL:{}, ways:[]}));
-  goalWays.forEach(w=>{ const b=BG[w.bi]; if(goalOf(b)!==1) return; const G=g[w.gi]; G.L+=w.len; G.ways.push(w); if(skiedWays.has(w.bi)) G.S+=w.len; const pd=planOf(b); if(pd){ G.P+=w.len; G.dayL[pd]=(G.dayL[pd]||0)+w.len; } });
+  goalWays.forEach(w=>{ const b=BG[w.bi]; if(goalOf(b)!==1) return; const G=g[w.gi]; G.L+=w.len; G.ways.push(w); if(SW.has(w.bi)) G.S+=w.len; const pd=planOf(b); if(pd){ G.P+=w.len; G.dayL[pd]=(G.dayL[pd]||0)+w.len; } });
   const out = g.filter(x=>x.L>0);
   out.forEach(x=>{ x.done = x.S >= 0.6*x.L; x.plan = x.P >= 0.6*x.L; const ds=Object.entries(x.dayL).sort((a,b)=>b[1]-a[1]); x.day = x.plan && ds.length ? +ds[0][0] : 0; });
   return out;
@@ -1003,7 +1102,7 @@ function renderStep(){
   else if(n){ $('nThen').append('Then: '); const bb=document.createElement('b'); bb.textContent=stepLabel(n); $('nThen').appendChild(bb); }
   else $('nThen').textContent='Last step. Enjoy the après.';
   renderSchedule();
-  drawRoute(); renderList();
+  drawRoute(); renderList(); renderHome();
   nativeStep();
 }
 /* tell the iPhone app which step we're on (lock-screen Live Activity + native lift detection) */
@@ -1012,8 +1111,10 @@ function nativeStep(){
   const h = window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.skinav; if(!h) return;   // runs during load, before NATIVE exists
   const s=steps[cur]; if(!s) return;
   const k=di+':'+cur; if(k===nativeStepKey) return; nativeStepKey=k;
-  const nx = steps.slice(cur+1).find(x=>x.type==='lift');
-  try{ h.postMessage({cmd:'step', idx:cur, label:stepLabel(s), color:stepColor(s), lift: s.type==='lift' ? s.coords : null, next: nx ? stepLabel(nx) : ''}); }catch(e){}
+  const nx = steps.slice(cur+1).find(x=>x.type==='lift'), th = steps[cur+1];
+  const ends = q => q && q.coords && q.coords.length ? [[q.coords[0][0], q.coords[0][1]], [q.coords[q.coords.length-1][0], q.coords[q.coords.length-1][1]]] : null;
+  try{ h.postMessage({cmd:'step', idx:cur, label:stepLabel(s), color:stepColor(s), lift: s.type==='lift' ? s.coords : null, ends: ends(s),
+    next: nx ? stepLabel(nx) : '', nextAt: nx && ends(nx) ? ends(nx)[0] : null, then: th ? stepLabel(th) : '', thenColor: th ? stepColor(th) : ''}); }catch(e){}
 }
 function renderList(){
   const box = $('stepList'); box.textContent='';
@@ -1135,13 +1236,13 @@ document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==
 function startGPS(){
   if(NATIVE){
     stopSim(); mode='gps'; st.last=null; st.sm=null; st.prevSp=null; st.ema=null; st.lastT=null;
-    setPill('Finding GPS…','live'); $('goBtn').textContent='Stop'; $('goBtn').classList.add('stop');
+    setPill('Finding GPS…','live'); $('goBtn').textContent='Stop'; $('goBtn').classList.add('stop'); setTrackUI(true);
     toNative({cmd:'start', base:{distM:st.dist||0, maxMps:st.max||0, vertM:st.vert||0, elapsedS:st.elapsed||0}}); nativeStepKey=null; nativeStep(); sendPlanToWatch(); keepAwake(); return;
   }
   if(!('geolocation' in navigator)){ setPill('No GPS here','err'); return; }
   stopSim();
   mode='gps'; st.last=null; st.sm=null; st.prevSp=null; st.ema=null; st.lastT=null;
-  setPill('Finding GPS…','live'); $('goBtn').textContent='Stop'; $('goBtn').classList.add('stop');
+  setPill('Finding GPS…','live'); $('goBtn').textContent='Stop'; $('goBtn').classList.add('stop'); setTrackUI(true);
   keepAwake();
   watchId = navigator.geolocation.watchPosition(pos=>{
     const c=pos.coords; setPill('GPS ±'+Math.round(c.accuracy)+' m', c.accuracy<=30?'live':'');
@@ -1155,11 +1256,11 @@ function stopGPS(){
   if(NATIVE) toNative({cmd:'stop'});
   if(watchId!=null) navigator.geolocation.clearWatch(watchId); watchId=null;
   st.lastT=null; st.speed=0; mode='off'; setPill('GPS off');
-  $('goBtn').textContent='Start tracking'; $('goBtn').classList.remove('stop');
+  $('goBtn').textContent='Start skiing'; $('goBtn').classList.remove('stop'); setTrackUI(false);
   try{ wakeLock && wakeLock.release(); }catch(e){} wakeLock=null;
   persist(); renderStats(); renderSchedule();
 }
-$('goBtn').onclick=()=>{ if(mode==='gps') stopGPS(); else if(mode==='sim') stopSim(); else startGPS(); };
+$('goBtn').onclick=()=>{ if(mode==='gps'){ stopGPS(); if(st.elapsed > 60 || st.dist > 100) openRecap(); } else if(mode==='sim') stopSim(); else startGPS(); };
 
 /* ---------- test replay ---------- */
 let simTimer=null, simX=30, simDrift=false, simClock=0, simTrack=null, simI=0, simSnap=null;
@@ -1186,7 +1287,7 @@ function startSim(){
   simTrack=buildTrack(); simI=0; mode='sim'; simDrift=false;
   st.dist=0; st.vert=0; st.max=0; st.elapsed=0; st.last=null; st.lastT=null; st.sm=null; st.altRef=null; st.onLift=false; altHist.length=0; st.ema=null; st.prevSp=null; st.stepDist=0; cur=0;
   simClock = new Date().setHours(Math.floor(CONFIG.dayStart/60), CONFIG.dayStart%60, 0, 0);
-  setPill('Test replay','sim'); $('goBtn').textContent='Stop test'; $('goBtn').classList.add('stop');
+  setPill('Test replay','sim'); $('goBtn').textContent='Stop test'; $('goBtn').classList.add('stop'); setTrackUI(true);
   setFollow(view==='nav'); renderStep();
   simTimer=setInterval(()=>{
     for(let k=0;k<simX/5 && simI<simTrack.length;k++){
@@ -1203,7 +1304,7 @@ let quietN=0;
 function onFixQuiet(p){ quietN++; const f=follow; if(quietN%3) follow=false; onFix(p); follow=f; }
 function stopSim(){
   if(simTimer) clearInterval(simTimer); simTimer=null;
-  if(mode==='sim'){ mode='off'; st.lastT=null; st.speed=0; $('goBtn').textContent='Start tracking'; $('goBtn').classList.remove('stop'); setPill('GPS off'); renderStats(); }
+  if(mode==='sim'){ mode='off'; st.lastT=null; st.speed=0; $('goBtn').textContent='Start skiing'; $('goBtn').classList.remove('stop'); setTrackUI(false); setPill('GPS off'); renderStats(); }
 }
 $('simBtn').onclick=()=>{ closeDrawer(); $('simSheet').hidden=false; };
 $('closeSim').onclick=()=>{ $('simSheet').hidden=true; };
@@ -1223,10 +1324,80 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>
 /* app-like: no page zoom from double-tap or pinch outside the map */
 ['gesturestart','gesturechange'].forEach(ev=>document.addEventListener(ev, e=>{ if(!e.target.closest('#map')) e.preventDefault(); }, {passive:false}));
 
-/* expose for automated tests */
-window.__ski = { map, st, get steps(){return steps;}, get cur(){return cur;}, get di(){return di;}, startSim, stopSim, onFix, setX:x=>simX=x, selectDay, groupStats, openProgress, closeProgress, skied:()=>skiedWays.size };
 
-renderUnits(); renderDayBar(); renderStats(); renderStep(); applyView();
+/* ---------- redesign: home sheet, tracking state, Sun mode, day recap ---------- */
+const APP = document.querySelector('.app');
+function renderHome(){
+  if(!$('homeTitle')) return;
+  const dateTxt = (DAY.date||'').toUpperCase();
+  $('homeEyebrow').textContent = (dateTxt ? dateTxt+' · ' : '') + (store.follow ? "TODAY'S PLAN" : "TODAY'S SUGGESTION");
+  $('homeTitle').textContent = DAY.title;
+  const km = units==='imp' ? (DAY.km*0.6214).toFixed(1)+' mi' : DAY.km+' km';
+  let meta = km+' of runs · '+DAY.lifts+' lifts · '+CONFIG.endName+' '+DAY.arrive;
+  if(st.dist > 50) meta += ' · '+(units==='imp' ? (st.dist/1609.34).toFixed(1)+' mi' : (st.dist/1000).toFixed(1)+' km')+' skied so far';
+  $('homeMeta').textContent = meta;
+}
+function setTrackUI(on){
+  APP.classList.toggle('tracking', !!on);
+  renderHome(); fitMapBtns();
+  if(on){ const k=dayKey(WEEK[di].day), d=store.days[k]||(store.days[k]={}); if(!d.startSkied) d.startSkied=[...skiedWays]; }
+}
+/* Sun mode: auto follows screen brightness from the iPhone (full brightness = bright sun), or on/off by hand */
+let sunBright=false, sunApplied=null;
+function applySun(){
+  const pref = store.sun || 'auto';
+  const on = pref==='on' || (pref==='auto' && sunBright);
+  document.querySelectorAll('#sunSeg [data-v]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.v===pref?'true':'false'));
+  if(on===sunApplied) return; sunApplied=on;
+  APP.classList.toggle('sun', on);
+  if(on) document.documentElement.setAttribute('data-theme','light'); else document.documentElement.removeAttribute('data-theme');
+  if(mapReady){ map.setStyle(styleFor()); map.once('styledata',()=>{ drawRoute(); paintSkied(); applyView(); drawTrail(true); if(is3D) map.setTerrain({source:'dem',exaggeration:1.3}); }); }
+}
+function setSun(v){ store.sun=v; persist(); applySun(); }
+document.querySelectorAll('#sunSeg [data-v]').forEach(b=>b.onclick=()=>setSun(b.dataset.v));
+if(window.__native) window.__native.brightness = v => { const was=sunBright; sunBright = was ? v > 0.8 : v >= 0.92; if(was!==sunBright) applySun(); };
+/* day recap, shown when you stop */
+function liftsRidden(){ let n=0, prev=0; for(const q of (st.trail||[])){ if(q[2]===1 && prev!==1) n++; prev=q[2]; } return n; }
+function openRecap(){
+  const k=dayKey(WEEK[di].day), start=new Set((store.days[k]||{}).startSkied||[]);
+  $('recapEyebrow').textContent = (DAY.date ? DAY.date+' · ' : '')+'Day '+DAY.day+' done';
+  $('recapTitle').textContent = DAY.title;
+  $('rKm').textContent = units==='imp' ? (st.dist/1609.34).toFixed(1) : (st.dist/1000).toFixed(1);
+  $('rKmU').textContent = units==='imp' ? 'Miles skied' : 'Km skied';
+  $('rVert').textContent = (units==='imp' ? Math.round(st.vert*3.28084) : Math.round(st.vert)).toLocaleString();
+  $('rVertU').textContent = units==='imp' ? 'Vertical ft' : 'Vertical m';
+  $('rTop').textContent = Math.round(speedOut(st.max));
+  $('rTopU').textContent = units==='imp' ? 'Top mph' : 'Top km/h';
+  $('rLifts').textContent = liftsRidden();
+  const cols = GOALCOL(), word = cols.length===1 ? cols[0]+' runs' : cols.join(' & ')+' runs';
+  const pick = arr => { const g=arr.filter(x=>cols.includes(x.c||'')); return g.length ? g : arr; };
+  const goalGroups = pick(groupStats()), before = pick(groupStats(start));
+  const total = goalGroups.length, doneAll = goalGroups.filter(x=>x.done).length, plus = doneAll - before.filter(x=>x.done).length;
+  const today = [...skiedWays].filter(bi=>!start.has(bi));
+  $('rGoalLabel').textContent = 'Week goal: '+word;
+  $('rGoal').textContent = doneAll+' of '+total;
+  $('rGoalPlus').textContent = plus > 0 ? '+'+plus+' today' : '';
+  const bar=$('rGoalBar'); bar.style.width = (total ? Math.round(100*doneAll/total) : 0)+'%'; bar.style.background = 'var(--p-'+(cols[0]||'blue')+')';
+  const box=$('rRuns'); box.textContent='';
+  const named = new Map();
+  const DCOL={nov:'green',eas:'blue',int:'red',adv:'black',exp:'black'}; for(const bi of today){ const b=BG[bi]; const nm=b[2]||'Unnamed run'; const col=DCOL[b[1]]||'blue'; if(!named.has(nm) || col==='red') named.set(nm,{nm,col}); }
+  [...named.values()].sort((a,b)=>(a.nm==='Unnamed run')-(b.nm==='Unnamed run') || ['red','black','blue','green'].indexOf(a.col)-['red','black','blue','green'].indexOf(b.col)).slice(0,8).forEach(r=>{ const row=document.createElement('div'); row.className='rrun'; const i=document.createElement('i'); i.style.background='var(--p-'+(['green','blue','red','black'].includes(r.col)?r.col:'blue')+')'; const s=document.createElement('span'); s.textContent=r.nm; row.append(i,s); box.appendChild(row); });
+  if(!named.size){ const p=document.createElement('span'); p.className='note'; p.style.margin='0'; p.textContent='No new runs marked today.'; box.appendChild(p); }
+  $('recapNext').hidden = di >= WEEK.length-1;
+  $('recapSheet').hidden=false;
+}
+$('recapClose').onclick=()=>{ $('recapSheet').hidden=true; };
+$('recapSheet').onclick=e=>{ if(e.target.id==='recapSheet') $('recapSheet').hidden=true; };
+$('recapNext').onclick=()=>{ $('recapSheet').hidden=true; if(di < WEEK.length-1) selectDay(di+1); };
+$('recapShare').onclick=async()=>{
+  const t = 'Ski Nav · '+(DAY.date||'')+' · '+DAY.title+': '+$('rKm').textContent+' '+(units==='imp'?'mi':'km')+', '+$('rVert').textContent+(units==='imp'?' ft':' m')+' down, top '+$('rTop').textContent+(units==='imp'?' mph':' km/h')+', '+$('rLifts').textContent+' lifts.';
+  try{ if(navigator.share) await navigator.share({text:t}); else { await navigator.clipboard.writeText(t); $('recapShare').textContent='Copied'; } }catch(e){}
+};
+
+/* expose for automated tests */
+window.__ski = { map, st, get steps(){return steps;}, get cur(){return cur;}, get di(){return di;}, startSim, stopSim, onFix, setX:x=>simX=x, selectDay, groupStats, openProgress, closeProgress, skied:()=>skiedWays.size, recap:openRecap, setSun };
+
+renderUnits(); renderDayBar(); renderStats(); renderStep(); applyView(); renderHome(); applySun();
 if(NATIVE){ toNative({cmd:'ready'}); toNative({cmd:'ctx', lifts: liftLines, title: DAY.title}); sendPlanToWatch(); nativeStep(); }
 setInterval(()=>{ if(mode!=='off'){ renderStats(); renderSchedule(); } }, 1000);
 })();

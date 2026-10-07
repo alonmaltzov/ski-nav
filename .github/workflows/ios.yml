@@ -30,6 +30,7 @@ jobs:
   ios-qa:
     name: Build iPhone + Watch, QA in iOS Simulator
     runs-on: macos-15
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
       - name: Tools
@@ -61,7 +62,17 @@ jobs:
           mkdir -p ../qa-out/ios-sim
           grep "warning:" build.log | grep -v "/dd/" | sort -u | head -20 > ../qa-out/ios-sim/build-warnings.txt || true
       - name: Run QA tour in the simulator
-        run: bash qa/sim_run.sh ios/dd/Build/Products/Debug-iphonesimulator/SkiNav.app qa-out/ios-sim
+        timeout-minutes: 20
+        run: |
+          mkdir -p qa-out/ios-sim
+          perl -e 'alarm shift; exec @ARGV' 900 bash qa/sim_run.sh ios/dd/Build/Products/Debug-iphonesimulator/SkiNav.app qa-out/ios-sim 2>&1 | tee qa-out/ios-sim/runner-console.txt || echo "::warning::simulator QA exited early"
+          grep -q "QA DONE" qa-out/ios-sim/log.txt 2>/dev/null || echo '[web] QA RESULT {"check":"simulator QA ran to the end","ok":false,"detail":"see runner-console.txt"}' >> qa-out/ios-sim/log.txt
+      - name: Shut down simulators
+        if: always()
+        timeout-minutes: 3
+        run: |
+          pkill -f "simctl launch" || true
+          xcrun simctl shutdown all || true
       - uses: actions/upload-artifact@v4
         if: always()
         with: { name: qa-ios, path: qa-out }

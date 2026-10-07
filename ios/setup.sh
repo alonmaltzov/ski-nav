@@ -13,7 +13,7 @@ NOWATCH=0; BETA=0
 for a in "$@"; do case "$a" in --no-watch) NOWATCH=1;; --beta) BETA=1;; esac; done
 cp project.yml .project-gen.yml
 if [ $NOWATCH = 1 ]; then
-  awk '/^  SkiNavWatch:/{skip=1} /^  SkiNavWidgets:/{skip=0} /^schemes:/{skip=0} /- target: SkiNavWatch/{next} /SkiNavWatch: all/{next} !skip' .project-gen.yml > .project-tmp.yml && mv .project-tmp.yml .project-gen.yml
+  awk '/^  SkiNavWatch:/{skip=1} /^  SkiNavWidgets:/{skip=0} /^schemes:/{skip=0} /- target: SkiNavWatch/{next} /SkiNavWatch: all/{next} /SkiNavWatchWidgets: all/{next} !skip' .project-gen.yml > .project-tmp.yml && mv .project-tmp.yml .project-gen.yml
   echo "Phone only (no Watch app)."
 fi
 if [ $BETA = 1 ]; then

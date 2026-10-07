@@ -15,9 +15,9 @@ check "NYC practice" $G/NYC-Practice.gpx $D/nyc-lifts.json $D/nyc-steps.json 8.0
 # the watch must be able to read the plan exactly as the phone sends it
 python3 - <<'PY' > "$OUT/plandec.swift"
 src=open('ios/SkiNavWatch/SkiSession.swift').read()
-s=src.index("/// One step of today's plan"); e=src.index('/// What the phone is tracking right now')
+s=src.index("/// One step of today's plan")
 e2=src.index('struct Plan: Codable {'); e3=src.index('}', e2)+1
-print("import Foundation\n"+src[s:e]+src[e2:e3]+"""
+print("import Foundation\n"+src[s:e3]+"""
 for f in CommandLine.arguments.dropFirst() {
     do { let p = try JSONDecoder().decode(Plan.self, from: try Data(contentsOf: URL(fileURLWithPath: f))); print("OK \\(p.steps.count)") }
     catch { print("FAIL \\(error)") }
@@ -29,4 +29,7 @@ for f in $D/plan-avoriaz.json $D/plan-nyc.json; do
   case "$r" in OK*) ok=true;; *) ok=false;; esac
   echo "[web] QA RESULT {\"check\":\"watch can read the phone's plan: $(basename $f)\",\"ok\":$ok,\"detail\":\"$r\"}" | tee -a "$OUT/log.txt"
 done
+# what the lock screen / island / watch show, from the shared SkiGlance
+swiftc ios/Shared/SkiEngine.swift ios/Shared/SkiText.swift ios/Shared/SkiGlance.swift ios/Shared/GlanceCheck/main.swift -o "$OUT/glance"
+"$OUT/glance" | tee -a "$OUT/log.txt"
 echo "[web] QA DONE" >> "$OUT/log.txt"

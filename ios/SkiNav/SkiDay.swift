@@ -8,9 +8,9 @@ final class SkiDay {
     let engine = SkiEngine()
     private let queue = DispatchQueue(label: "skinav.skiday")
     private var activity: Activity<SkiActivityAttributes>?
-    private var step = ("", "lift")
-    private var nextLift = ""
+    private var step: SkiGlance.Step?
     private var stepIndex = 0
+    private var lastPos: [Double]?
     private var dayTitle = "Ski day"
     private var lastPush = Date.distantPast
     private var lastLift = false
@@ -43,10 +43,9 @@ final class SkiDay {
         }
     }
 
-    func setStep(label: String, color: String, liftLine: [[Double]]?, nextLift: String, index: Int) {
+    func setStep(_ st: SkiGlance.Step, liftLine: [[Double]]?, index: Int) {
         queue.async {
-            self.step = (label, color)
-            self.nextLift = nextLift
+            self.step = st
             self.stepIndex = index
             self.engine.plannedLift = liftLine
             self.push(force: true)
@@ -54,18 +53,29 @@ final class SkiDay {
         }
     }
 
-    /// Live numbers for the watch: speed, totals, what you're on now and the next lift.
+    /// What every glance shows right now.
+    var glance: SkiGlance {
+        SkiGlance.make(speedMps: engine.speedMps, totals: engine.totals, onLift: engine.onLift, at: lastPos, step: step)
+    }
+
+    /// Live numbers for the watch (the same SkiGlance the lock screen shows) plus the step index.
+    private func liveBody() -> [String: Any]? {
+        guard let data = try? JSONEncoder().encode(glance) else { return nil }
+        return ["glance": data, "idx": stepIndex, "tracking": LocationService.shared.isTracking]
+    }
     private func toWatch(force: Bool) {
-        let t = engine.totals
-        let live: [String: Any] = ["speed": engine.speedMps * 3.6, "km": t.distM / 1000, "max": t.maxMps * 3.6, "vert": t.vertM,
-                                   "lift": engine.onLift, "step": step.0, "color": step.1, "next": nextLift, "idx": stepIndex,
-                                   "tracking": LocationService.shared.isTracking]
+        guard let live = liveBody() else { return }
         DispatchQueue.main.async { WatchLink.shared.sendLive(live, force: force) }
     }
+    /// For the watch asking "what's happening now?" (it pulls when pushes don't arrive).
+    func liveForWatch() -> [String: Any]? { queue.sync { liveBody() } }
 
     func ingest(_ fixes: [GeoFix]) {
         queue.async {
-            for f in fixes { self.engine.ingest(f) }
+            for f in fixes {
+                self.engine.ingest(f)
+                if f.acc <= 30 { self.lastPos = [f.lat, f.lon] }
+            }
             let liftChanged = self.engine.onLift != self.lastLift
             self.push(force: liftChanged)
             self.toWatch(force: liftChanged)
@@ -75,11 +85,7 @@ final class SkiDay {
 
     // MARK: Live Activity
 
-    private var state: SkiActivityAttributes.ContentState {
-        let t = engine.totals
-        return .init(speedKmh: Int((engine.speedMps * 3.6).rounded()), km: t.distM / 1000, maxKmh: Int((t.maxMps * 3.6).rounded()),
-                     vertM: Int(t.vertM.rounded()), onLift: engine.onLift, step: step.0, stepColor: step.1)
-    }
+    private var state: SkiActivityAttributes.ContentState { glance }
 
     private func startActivity() {
         guard ActivityAuthorizationInfo().areActivitiesEnabled else { print("[app] live activities are off in Settings"); return }
