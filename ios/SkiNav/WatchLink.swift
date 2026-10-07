@@ -35,9 +35,7 @@ final class WatchLink: NSObject, WCSessionDelegate {
         }
         do {
             // applicationContext keeps only the latest plan and arrives even if the watch app is closed
-            var ctx: [String: Any] = ["plan": data]
-            if let l = lastLiveCtx { ctx["live"] = l }
-            try WCSession.default.updateApplicationContext(ctx)
+            try WCSession.default.updateApplicationContext(["plan": data])
             print("[app] plan sent to watch")
         } catch {
             print("[app] plan to watch failed:", error.localizedDescription)
@@ -46,25 +44,12 @@ final class WatchLink: NSObject, WCSessionDelegate {
 
     /// Live numbers for the watch face while the phone tracks (only when the watch app is open and reachable).
     func sendLive(_ live: [String: Any], force: Bool) {
-        guard ready else { return }
+        guard ready, WCSession.default.isReachable else { return }
         let now = Date()
-        var l = live; l["at"] = now.timeIntervalSince1970
-        if WCSession.default.isReachable {
-            guard force || now.timeIntervalSince(lastLive) >= 3 else { return }
-            lastLive = now
-            WCSession.default.sendMessage(["live": l], replyHandler: nil, errorHandler: nil)
-        } else {
-            // watch app not reachable right now: leave the latest numbers in the application context
-            // (delivered when the watch can take it, only the newest kept)
-            guard force || now.timeIntervalSince(lastCtx) >= 10 else { return }
-            lastCtx = now; lastLiveCtx = l
-            var ctx: [String: Any] = ["live": l]
-            if let p = pendingPlan { ctx["plan"] = p }
-            try? WCSession.default.updateApplicationContext(ctx)
-        }
+        guard force || now.timeIntervalSince(lastLive) >= 3 else { return }
+        lastLive = now
+        WCSession.default.sendMessage(["live": live], replyHandler: nil, errorHandler: nil)
     }
-    private var lastCtx = Date.distantPast
-    private var lastLiveCtx: [String: Any]?
 
     func session(_ session: WCSession, activationDidCompleteWith state: WCSessionActivationState, error: Error?) {
         print("[app] watch link:", state == .activated ? "on" : "off", "paired:", session.isPaired, "installed:", session.isWatchAppInstalled)
