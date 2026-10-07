@@ -139,7 +139,13 @@
 
     // week menu
     await tap('menuBtn'); await screen('menu', { settle: 1000 });
-    const dr = document.querySelector('.drawerin'); if (dr) { dr.scrollTop = dr.scrollHeight; await screen('menu-bottom'); dr.scrollTop = 0; }
+    if ($('settingsBtn')) {
+      await tap('settingsBtn'); await screen('menu-settings');
+      result('gear opens settings', !$('menuSettings').hidden && $('menuMain').hidden, '');
+      const dr = document.querySelector('.drawerin'); result('settings fit without scrolling', dr.scrollHeight <= dr.clientHeight + 1, dr.scrollHeight + ' vs ' + dr.clientHeight);
+      await tap('settingsBack');
+    }
+    { const dr = document.querySelector('.drawerin'); result('week fits without scrolling', dr.scrollHeight <= dr.clientHeight + 1, dr.scrollHeight + ' vs ' + dr.clientHeight); }
     const fb = $('followBtn2'); if (fb) { const b0 = fb.getAttribute('aria-pressed'); fb.click(); await sleep(200); const b1 = fb.getAttribute('aria-pressed'); fb.click(); await sleep(200);
       result('Follow the plan toggle works (off by default)', b0 === 'false' && b1 === 'true' && fb.getAttribute('aria-pressed') === 'false', `${b0} -> ${b1} -> ${fb.getAttribute('aria-pressed')}`); }
     const days = document.querySelectorAll('#dayList .daycard, #dayList button');
