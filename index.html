@@ -1018,7 +1018,7 @@ function renderMenu(){
     b.querySelector('.dn small').textContent=wd.toUpperCase(); b.querySelector('.dn b').textContent=dn;
     b.querySelector('.dt b').textContent=d.title;
     const kmTxt=(units==='imp'?(d.km*0.6214).toFixed(1)+' mi':Math.round(d.km)+' km');
-    if(i===ti || i===di){ const m=document.createElement('small'); if(i===ti) m.className='today'; m.textContent=(i===ti?'Today · ':'')+(sd.dist>500?'skied '+fmtLen(sd.dist):kmTxt+' · '+d.lifts+' lifts'); b.querySelector('.dt').appendChild(m); }
+    if(i===ti || i===di){ const m=document.createElement('small'); if(i===ti) m.className='today'; m.textContent=(i===ti?'Today · ':'')+(sd.dist>500?'skied '+fmtLen(sd.dist):kmTxt+' · '+d.lifts+(d.lifts===1?' lift':' lifts')); b.querySelector('.dt').appendChild(m); }
     if(sd.dist>500) b.querySelector('.dr').innerHTML='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-label="Skied"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>'; else if(!(i===ti || i===di)) b.querySelector('.dr').textContent=kmTxt;
     b.setAttribute('aria-label', d.date+', '+d.title+(sd.dist>500?', skied':'')+(i===ti?', today':''));
     b.onclick=()=>{ selectDay(i); closeDrawer(); };
@@ -1166,7 +1166,7 @@ function nativeStep(){
 function renderList(){
   const box = $('stepList'); box.textContent='';
   $('sheetTitle').textContent='Day '+DAY.day+' · '+DAY.title;
-  $('sheetSub').textContent=DAY.date+' · '+(units==='imp'?(DAY.km*0.6214).toFixed(1)+' mi':DAY.km+' km')+' of runs · '+DAY.lifts+' lifts · '+CONFIG.endName+' '+DAY.arrive;
+  $('sheetSub').textContent=DAY.date+' · '+(units==='imp'?(DAY.km*0.6214).toFixed(1)+' mi':DAY.km+' km')+' of runs · '+DAY.lifts+(DAY.lifts===1?' lift':' lifts')+' · '+(CONFIG.flat && DAY.end && DAY.end.name ? DAY.end.name : CONFIG.endName)+' '+DAY.arrive;
   steps.forEach((s,i)=>{
     const r = document.createElement('button'); r.type='button';
     r.className = 'srow' + (i===cur?' cur':'') + (i<cur?' done':'');
@@ -1390,7 +1390,7 @@ function renderHome(){
   $('homeEyebrow').textContent = (dateTxt ? dateTxt+' · ' : '') + (store.follow ? "TODAY'S PLAN" : "TODAY'S SUGGESTION");
   $('homeTitle').textContent = DAY.title;
   const km = units==='imp' ? (DAY.km*0.6214).toFixed(1)+' mi' : DAY.km+' km';
-  let meta = km+' of runs · '+DAY.lifts+' lifts · '+CONFIG.endName+' '+DAY.arrive;
+  let meta = km+' of runs · '+DAY.lifts+(DAY.lifts===1?' lift':' lifts')+' · '+(CONFIG.flat && DAY.end && DAY.end.name ? DAY.end.name : CONFIG.endName)+' '+DAY.arrive;
   if(st.dist > 50) meta += ' · '+(units==='imp' ? (st.dist/1609.34).toFixed(1)+' mi' : (st.dist/1000).toFixed(1)+' km')+' skied so far';
   $('homeMeta').textContent = meta;
 }
