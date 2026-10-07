@@ -110,8 +110,7 @@ struct LiftGlance: View {
                 VStack(alignment: .leading, spacing: 0) {
                     Text("ON LIFT · PAUSED").font(.caption2.weight(.bold)).foregroundStyle(.secondary)
                         .lineLimit(1).minimumScaleFactor(0.7)
-                    Text(g.liftName.isEmpty ? "Lift" : g.liftName).font(SkiStyle.big(nameSize)).lineLimit(2).minimumScaleFactor(0.7)
-                        .fixedSize(horizontal: false, vertical: true)
+                    Text(g.liftName.isEmpty ? "Lift" : g.liftName).font(SkiStyle.big(nameSize)).lineLimit(1).minimumScaleFactor(0.55)
                 }
             }
             .accessibilityElement(children: .ignore)
