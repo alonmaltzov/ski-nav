@@ -83,7 +83,7 @@ final class SkiSession: NSObject, ObservableObject {
             plan = p
         }
         current = UserDefaults.standard.integer(forKey: "current")
-        if let d = SkiSession.demoScreen { loadDemo(d) }
+        if let d = SkiSession.demoScreen { loadDemo(d) } else { keepAsking() }
     }
 
     /// What the glances show: the watch's own tracking when it runs, else the phone's (if recent).
@@ -244,10 +244,23 @@ final class SkiSession: NSObject, ObservableObject {
         return CLLocation(latitude: a[0], longitude: a[1]).distance(from: CLLocation(latitude: b[0], longitude: b[1]))
     }
 
+    /// True once the phone answered in this session; until then the watch keeps asking every few seconds
+    /// (the first ask often lands before the iPhone app is running, and the reachability callback isn't reliable).
+    private var gotPlan = false
+    private var askTimer: Timer?
+    private func keepAsking() {
+        askTimer = Timer.scheduledTimer(withTimeInterval: 8, repeats: true) { [weak self] t in
+            Task { @MainActor in
+                guard let self else { t.invalidate(); return }
+                if self.gotPlan { t.invalidate(); self.askTimer = nil } else { self.askForPlan() }
+            }
+        }
+    }
+
     /// Pull the plan from the phone (when reachable) instead of only waiting for a push.
     func askForPlan() {
         let s = WCSession.default
-        guard s.activationState == .activated, s.isReachable else { return }
+        guard s.activationState == .activated, !gotPlan else { return }
         s.sendMessage(["want": "plan"], replyHandler: { reply in
             if let data = reply["plan"] as? Data { Task { @MainActor in self.receive(planData: data) } }
         }, errorHandler: { e in print("[watch] ask for plan failed:", e.localizedDescription) })
@@ -273,6 +286,7 @@ final class SkiSession: NSObject, ObservableObject {
             print("[watch] plan received but could not be read (\(planData.count) bytes)"); message = "Plan from phone could not be read"; return
         }
         print("[watch] plan received: \(p.title), \(p.steps.count) steps")
+        gotPlan = true
         for i in p.steps.indices { p.steps[i].idx = i }
         let newDay = plan?.day != p.day
         plan = p
