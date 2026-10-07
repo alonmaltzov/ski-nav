@@ -65,7 +65,8 @@ jobs:
         timeout-minutes: 20
         run: |
           mkdir -p qa-out/ios-sim
-          timeout 900 bash qa/sim_run.sh ios/dd/Build/Products/Debug-iphonesimulator/SkiNav.app qa-out/ios-sim 2>&1 | tee qa-out/ios-sim/runner-console.txt || echo "::warning::simulator QA exited early"
+          perl -e 'alarm shift; exec @ARGV' 900 bash qa/sim_run.sh ios/dd/Build/Products/Debug-iphonesimulator/SkiNav.app qa-out/ios-sim 2>&1 | tee qa-out/ios-sim/runner-console.txt || echo "::warning::simulator QA exited early"
+          grep -q "QA DONE" qa-out/ios-sim/log.txt 2>/dev/null || echo '[web] QA RESULT {"check":"simulator QA ran to the end","ok":false,"detail":"see runner-console.txt"}' >> qa-out/ios-sim/log.txt
       - name: Shut down simulators
         if: always()
         timeout-minutes: 3
