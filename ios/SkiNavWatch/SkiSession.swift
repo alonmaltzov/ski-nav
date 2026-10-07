@@ -290,7 +290,7 @@ final class SkiSession: NSObject, ObservableObject {
         phoneIdx = idx
         if phoneGlance == nil { print("[watch] live data from phone: \(g.run) \(g.speedKmh) km/h") }
         phoneGlance = g
-        phoneAt = Date()
+        if let at = d["at"] as? Double { phoneAt = min(Date(), Date(timeIntervalSince1970: at)) } else { phoneAt = Date() }
         phoneTracking = d["tracking"] as? Bool ?? false
     }
 
@@ -325,6 +325,10 @@ extension SkiSession: WCSessionDelegate {
     }
     nonisolated func session(_ session: WCSession, didReceiveApplicationContext ctx: [String: Any]) {
         if let data = ctx["plan"] as? Data { Task { @MainActor in self.receive(planData: data) } }
+        if let live = ctx["live"] as? [String: Any] {
+            let copy = live as NSDictionary
+            Task { @MainActor in self.receive(live: copy as! [String: Any]) }
+        }
     }
     nonisolated func sessionReachabilityDidChange(_ session: WCSession) {
         if session.isReachable { Task { @MainActor in self.askForPlan() } }
