@@ -83,12 +83,12 @@ struct RunGlance: View {
                     Image(systemName: "cablecar.fill").font(.title3).foregroundStyle(.secondary)
                     VStack(alignment: .leading, spacing: 0) {
                         Text(g.nextLift).font(.headline).lineLimit(1).minimumScaleFactor(0.8)
-                        Text(g.nextLiftM >= 0 ? "next lift · \(SkiText.km(Double(g.nextLiftM)))" : "next lift")
+                        Text(g.nextLiftM >= 0 && g.nextLiftM < 20_000 ? "next lift · \(SkiText.km(Double(g.nextLiftM)))" : "next lift")
                             .font(.footnote).foregroundStyle(.secondary)
                     }
                 }
                 .accessibilityElement(children: .ignore)
-                .accessibilityLabel("Next lift \(g.nextLift)" + (g.nextLiftM >= 0 ? ", \(SkiText.km(Double(g.nextLiftM))) away" : ""))
+                .accessibilityLabel("Next lift \(g.nextLift)" + (g.nextLiftM >= 0 && g.nextLiftM < 20_000 ? ", \(SkiText.km(Double(g.nextLiftM))) away" : ""))
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
@@ -106,10 +106,12 @@ struct LiftGlance: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 8) {
-                Image(systemName: "cablecar.fill").font(.title2)
+                Image(systemName: "cablecar.fill").font(.title3)
                 VStack(alignment: .leading, spacing: 0) {
                     Text("ON LIFT · PAUSED").font(.caption2.weight(.bold)).foregroundStyle(.secondary)
+                        .lineLimit(1).minimumScaleFactor(0.7)
                     Text(g.liftName.isEmpty ? "Lift" : g.liftName).font(SkiStyle.big(nameSize)).lineLimit(2).minimumScaleFactor(0.7)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
             }
             .accessibilityElement(children: .ignore)

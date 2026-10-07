@@ -254,6 +254,7 @@ final class SkiSession: NSObject, ObservableObject {
     }
 
     fileprivate func receive(live d: [String: Any]) {
+        if SkiSession.demoScreen != nil { return }
         guard let data = d["glance"] as? Data, let g = try? JSONDecoder().decode(SkiGlance.self, from: data) else { return }
         let idx = d["idx"] as? Int ?? 0
         if idx != phoneIdx, let p = plan, idx < p.steps.count, idx != current {
@@ -267,6 +268,7 @@ final class SkiSession: NSObject, ObservableObject {
     }
 
     fileprivate func receive(planData: Data) {
+        if SkiSession.demoScreen != nil { return }   // QA screenshots keep the sample day
         guard var p = try? JSONDecoder().decode(Plan.self, from: planData) else {
             print("[watch] plan received but could not be read (\(planData.count) bytes)"); message = "Plan from phone could not be read"; return
         }
