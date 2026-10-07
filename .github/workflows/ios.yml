@@ -30,6 +30,7 @@ jobs:
   ios-qa:
     name: Build iPhone + Watch, QA in iOS Simulator
     runs-on: macos-15
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
       - name: Tools
@@ -61,6 +62,7 @@ jobs:
           mkdir -p ../qa-out/ios-sim
           grep "warning:" build.log | grep -v "/dd/" | sort -u | head -20 > ../qa-out/ios-sim/build-warnings.txt || true
       - name: Run QA tour in the simulator
+        timeout-minutes: 20
         run: bash qa/sim_run.sh ios/dd/Build/Products/Debug-iphonesimulator/SkiNav.app qa-out/ios-sim
       - uses: actions/upload-artifact@v4
         if: always()
