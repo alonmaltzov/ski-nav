@@ -287,6 +287,8 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .tpill{font-size:.9rem;padding:0 12px}
 .app.tracking #progBtn{display:none}
 .sheethead .hb{display:flex;gap:8px}
+.planrow{display:flex;gap:8px;margin:0 0 8px}
+.plannote{margin:0 0 8px;padding:12px 14px;border-radius:14px;background:color-mix(in srgb,var(--accent) 12%,transparent);color:var(--ink);font:600 1rem/1.35 var(--f-ui)}
 /* ===== redesign: map-first home, floating tracking card, Sun mode, day recap ===== */
 .daybar{display:none!important}
 .top{grid-row:1}.mapwrap{grid-row:2}.bottom{grid-row:3}
@@ -383,8 +385,8 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
     <div id="map" role="application" aria-label="Piste map"></div>
     <button class="floatmenu" id="menuBtn" type="button" aria-label="Week, places and settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     <div class="toppills" id="topPills">
-      <button class="tpill" id="wxPill" type="button" aria-label="Weather and what to wear"><span id="wxPillTxt">Weather</span></button>
-      <button class="tpill" id="liftsPill" type="button" aria-label="Lift status"><i class="ldot" id="liftsDot"></i><span id="liftsPillTxt">Lifts</span></button>
+      <button class="tpill" id="wxPill" type="button" aria-label="Today: weather, what to wear and lifts"><i class="ldot" id="wxLiftDot" hidden></i><span id="wxPillTxt">Today</span></button>
+      <button class="tpill" id="liftsPill" type="button" aria-label="Lift status" hidden><i class="ldot" id="liftsDot"></i><span id="liftsPillTxt">Lifts</span></button>
     </div>
     <div class="placesbox" id="placesBox" hidden><b>Show on map</b><div id="placeCats" style="display:grid;gap:6px"></div></div>
     <div class="homebanner" id="homeBanner" hidden></div>
@@ -524,8 +526,10 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 
 <div class="sheet" id="sheet" hidden>
   <div class="sheetin" role="dialog" aria-label="Route steps">
-    <div class="sheethead"><h3 id="sheetTitle">Day 1</h3><div class="hb"><button class="btn ghost sm" id="unplanBtn" type="button" hidden>Original plan</button><button class="btn ghost sm" id="replan2" type="button">Plan from here</button><button class="btn ghost sm" id="closeSheet" type="button">Done</button></div></div>
+    <div class="sheethead"><h3 id="sheetTitle">Day 1</h3><button class="btn ghost sm" id="closeSheet" type="button">Done</button></div>
     <p class="note" id="sheetSub" style="margin:0 0 6px"></p>
+    <div class="planrow"><button class="btn ghost sm" id="replan2" type="button">Plan from here</button><button class="btn ghost sm" id="unplanBtn" type="button" hidden>Back to original plan</button></div>
+    <p class="plannote" id="planNote" role="status" hidden></p>
     <div id="stepList"></div>
   </div>
 </div>
@@ -1256,7 +1260,7 @@ document.querySelectorAll('#unitSeg [data-v]').forEach(b=>b.onclick=()=>{ if(uni
 $('prevBtn').onclick=()=>{ if(cur>0){cur--; st.stepDist=0; persist(); renderStep(); focusStep();} };
 $('nextBtn').onclick=()=>{ if(cur<steps.length-1){cur++; st.stepDist=0; persist(); renderStep(); focusStep();} };
 $('stepsBtn').onclick=()=>{ $('sheet').hidden=false; const c=$('stepList').querySelector('.cur'); if(c) c.scrollIntoView({block:'center'}); };
-$('closeSheet').onclick=()=>{ $('sheet').hidden=true; };
+$('closeSheet').addEventListener('click',()=>{ $('planNote').hidden=true; }); $('closeSheet').onclick=()=>{ $('sheet').hidden=true; };
 $('sheet').onclick=e=>{ if(e.target.id==='sheet') $('sheet').hidden=true; };
 
 /* ---------- step progress ---------- */
@@ -1544,9 +1548,9 @@ async function fetchLifts(force){
 }
 function planLifts(){ return steps.filter(s=>s.type==='lift').map(s=>({s, bi:stepLiftBi(s)})).filter((x,i,a)=>a.findIndex(y=>y.bi===x.bi)===i); }
 function renderLifts(){
-  if(!LIFT_FEED){ $('liftsPill').hidden=true; $('liftCard').hidden=true; return; }
-  const dot=$('liftsDot'); dot.className='ldot';
-  if(!liftStat){ $('liftsPillTxt').textContent='Lifts'; $('liftsBig').textContent='No lift data yet'; $('liftsNote').textContent='Needs a connection. Checks every 30 minutes.'; $('liftRows').textContent=''; return; }
+  if(!LIFT_FEED){ $('liftCard').hidden=true; return; }
+  const dot=$('wxLiftDot'); dot.className='ldot'; dot.hidden=false;
+  if(!liftStat){ dot.hidden=true; $('liftsPillTxt').textContent='Lifts'; $('liftsBig').textContent='No lift data yet'; $('liftsNote').textContent='Needs a connection. Checks every 30 minutes.'; $('liftRows').textContent=''; return; }
   const running=resortRunning(), off = liftStat.open/Math.max(1,liftStat.total) < 0.2;
   const pl = planLifts(), closed = pl.filter(x=>liftStatusOf(x.bi) && liftStatusOf(x.bi)!=='open');
   if(off){ dot.classList.add('off'); $('liftsPillTxt').textContent='Lifts closed'; }
@@ -1592,7 +1596,7 @@ function wearFor(w){
 }
 function renderWx(){
   if(!CONFIG.wx){ $('wxPill').hidden=true; return; }
-  if(!wx){ $('wxPillTxt').textContent='Weather'; $('wxCond').textContent='No weather yet (needs a connection)'; return; }
+  if(!wx){ $('wxPillTxt').textContent='Today'; $('wxCond').textContent='No weather yet (needs a connection)'; return; }
   const n=wx.now, d=wx.day, cond=WX_CODES[n.weather_code]||'';
   $('wxPillTxt').textContent = tUnit(n.temperature_2m)+' '+(cond.split(' ').pop()||'').toLowerCase();
   $('wxTemp').textContent = tUnit(n.temperature_2m); $('wxCond').textContent = cond + (CONFIG.wx.label?' · '+CONFIG.wx.label:'');
@@ -1679,15 +1683,17 @@ function pathSteps(D, v, from){
   }
   return out;
 }
+function showPlanNote(msg){ const n=$('planNote'); n.textContent=msg; n.hidden=false; renderList(); $('sheet').hidden=false; }
 function myPos(){ if(st.last) return [st.last.lat, st.last.lon]; if(located) return [located.lat, located.lon]; return null; }
 let toastT=0;
 function toast(msg){ let t=$('toast'); if(!t){ t=document.createElement('div'); t.id='toast'; t.className='toast'; t.setAttribute('role','status'); document.body.appendChild(t); } t.textContent=msg; t.hidden=false; clearTimeout(toastT); toastT=setTimeout(()=>{ t.hidden=true; }, 5000); }
 function planFromHere(){
   const p = myPos();
-  if(!p){ toast('Finding you first…'); locateMe(); setTimeout(()=>{ if(myPos()) planFromHere(); else toast('No location yet. Try again in a moment.'); }, 4000); return null; }
+  if(!p){ toast('Finding you first…'); locateMe(); setTimeout(()=>{ if(myPos()) planFromHere(); else showPlanNote('Couldn\u2019t get your location yet. Check location is on for Ski Nav and try again.'); }, 4000); return null; }
   if(!RG) RG=buildGraph();
   const src = near(p, 150, v=>BG[RG.vLine[v]][0]==='R' || RG.vIdx[v]===0).map(([v,d])=>[v, 10+d/RG.walkV]);
-  if(!src.length){ toast('You are too far from the runs to plan a route. Get onto a run or near a lift first.'); return null; }
+  if(!src.length){ const near1=(()=>{ let m=1e9; for(let v=0;v<RG.N;v+=7){ const d=hav(p,[RG.vLat[v],RG.vLon[v]]); if(d<m) m=d; } return m; })();
+    showPlanNote('Plan from here re-routes you back into today\u2019s plan when you\u2019ve gone off it. '+(near1>50000 ? 'You\u2019re not in '+(CONFIG.flat?'the practice area':'the Portes du Soleil')+' right now' : 'You\u2019re '+fmtLen(near1)+' from the nearest run')+', so there\u2019s nothing to route yet. Try it once you\u2019re on the mountain.'); return null; }
   const D = dijkstra(src);
   let best=null;
   for(let k=cur; k<steps.length; k++){
@@ -1697,7 +1703,7 @@ function planFromHere(){
     const cands = near(tgt, s.type==='end'?80:40, v=> s.type==='lift' ? (BG[RG.vLine[v]][0]==='L' && RG.vIdx[v]===0) : RG.usable(v));
     for(const [v] of cands){ const c=D.dist[v]; if(!isFinite(c)) continue; const score=c + 240*(k-cur); if(!best || score<best.score) best={k,v,c,score}; }
   }
-  if(!best){ toast('No way back into the plan from here. Free ski, or head to '+DAY.end.name+'.'); return null; }
+  if(!best){ showPlanNote('No way back into today\u2019s plan from here (lifts closed or too far). Free ski, or head to '+DAY.end.name+'.'); return null; }
   const routed = pathSteps(D, best.v, p);
   const now = new Date(), t0 = now.getHours()*60+now.getMinutes();
   let t=t0; const rest = steps.slice(best.k).map(s=>({...s}));
@@ -1707,7 +1713,7 @@ function planFromHere(){
   const done = steps.slice(0,cur);
   applySteps(done.concat(routed, rest), cur);
   const target = steps[cur+routed.length];
-  toast(routed.length ? 'New route: '+routed.length+' step'+(routed.length>1?'s':'')+' to '+(target ? stepLabel(target).replace(/^(Ski|Take) /,'') : DAY.end.name)+'.' : 'You are already on the plan.');
+  showPlanNote(routed.length ? 'New route from where you are: '+routed.length+' step'+(routed.length>1?'s':'')+' (about '+Math.max(1,Math.round(best.c/60))+' min), then back on the plan at '+(target ? stepLabel(target).replace(/^(Ski|Take) /,'') : DAY.end.name)+'. They start at step '+(cur+1)+' below.' : 'You\u2019re already on the plan. Next up: '+stepLabel(steps[cur])+'.');
   return {routed:routed.length, rejoin:best.k, minutes:Math.round(best.c/60)};
 }
 function applySteps(list, at){
@@ -1720,7 +1726,7 @@ function applySteps(list, at){
 function resetPlan(){ const k=dayKey(DAY.day); if(store.days[k]) delete store.days[k].steps; const c=cur; loadDayKeep(); toast('Back to the original plan.'); }
 function loadDayKeep(){ const c=cur, keep={dist:st.dist,vert:st.vert,max:st.max,elapsed:st.elapsed,trail:st.trail}; loadDay(di); Object.assign(st,keep); cur=Math.min(c,steps.length-1); persist(); buildMarkers(); drawRoute(); renderStep(); nativeStepKey=null; nativeStep(); sendPlanToWatch(); }
 $('replanBtn').onclick=()=>planFromHere();
-$('replan2').onclick=()=>{ $('sheet').hidden=true; planFromHere(); };
+$('replan2').onclick=()=>planFromHere();
 $('unplanBtn').onclick=()=>{ $('sheet').hidden=true; resetPlan(); };
 
 /* expose for automated tests */

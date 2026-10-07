@@ -206,6 +206,8 @@
       const st = window.__ski.steps; let gap = 0; for (let k = window.__ski.cur; k < st.length - 1; k++) { const a = st[k].coords[st[k].coords.length - 1], b = st[k + 1].coords[0]; gap = Math.max(gap, Math.hypot((a[0] - b[0]) * 111000, (a[1] - b[1]) * 77000)); }
       result('Plan from here builds a connected route', !!r && gap < 120, JSON.stringify(r) + ' max gap ' + Math.round(gap) + ' m');
       await screen('plan-from-here');
+      result('Plan from here explains what it did', !$('planNote').hidden && txt('planNote').length > 20, txt('planNote').slice(0, 120));
+      await tap('closeSheet');
       window.__ski.resetPlan();
     }
     if (window.__ski.recap) {
