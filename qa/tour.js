@@ -158,6 +158,11 @@
     if (!$('drawer').hidden) await tap('drawerClose');
     result('menu closes', $('drawer').hidden, '');
 
+    // today: weather, what to wear, lifts
+    { let ok = false; for (let i = 0; i < 20 && !ok; i++) { ok = !!(window.__ski.liftStat); if (!ok) await sleep(500); }
+      result('live lift status loads from the internet', ok, ok ? (window.__ski.liftStat.open + ' of ' + window.__ski.liftStat.total + ' open') : 'no data (offline?)'); }
+    if ($('wxPill') && !$('wxPill').hidden) { await tap('wxPill', 800); await screen('today'); result('Today sheet opens', !$('todaySheet').hidden, ''); await tap('closeToday'); }
+
     // route steps sheet
     await tap('stepsBtn'); await screen('steps');
     await tap('closeSheet'); result('steps sheet closes', $('sheet').hidden, '');
@@ -196,6 +201,13 @@
     result('trail of where you have been is recorded', trailN > 20, trailN + ' trail points');
     result('free ski by default: no off-route banner', $('offroute').hidden, $('offroute').hidden ? 'hidden' : 'banner showing');
     result('test replay moves the skier and counts km', dist > 0 && c1 > c0, `km=${txt('dist')} max=${txt('maxv')} step ${c0}->${c1} pill="${txt('gpsPill')}"`);
+    if (window.__ski.planFromHere) {
+      const r = window.__ski.planFromHere();
+      const st = window.__ski.steps; let gap = 0; for (let k = window.__ski.cur; k < st.length - 1; k++) { const a = st[k].coords[st[k].coords.length - 1], b = st[k + 1].coords[0]; gap = Math.max(gap, Math.hypot((a[0] - b[0]) * 111000, (a[1] - b[1]) * 77000)); }
+      result('Plan from here builds a connected route', !!r && gap < 120, JSON.stringify(r) + ' max gap ' + Math.round(gap) + ' m');
+      await screen('plan-from-here');
+      window.__ski.resetPlan();
+    }
     if (window.__ski.recap) {
       window.__ski.recap(); await screen('recap');
       result('day recap shows the day', !$('recapSheet').hidden && parseFloat(txt('rKm')) > 0, `km=${txt('rKm')} vert=${txt('rVert')} top=${txt('rTop')} lifts=${txt('rLifts')} goal=${txt('rGoal')} ${txt('rGoalPlus')}`);

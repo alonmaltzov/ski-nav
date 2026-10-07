@@ -85,7 +85,7 @@ while true; do
     MOVER=$!
     echo "[runner] moving route started" >> "$OUT/runner.txt"
   fi
-  n=$(grep -c "QA SCREEN" "$OUT/log.txt" 2>/dev/null || echo 0)
+  n=$(grep -c "QA SCREEN" "$OUT/log.txt" 2>/dev/null); n=${n:-0}
   while [ "$seen" -lt "$n" ]; do
     seen=$((seen+1))
     s=$(grep "QA SCREEN" "$OUT/log.txt" | sed -n "${seen}p" | sed 's/.*QA SCREEN //' | tr -cd 'a-zA-Z0-9_-')
