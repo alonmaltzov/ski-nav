@@ -89,7 +89,7 @@ final class SkiSession: NSObject, ObservableObject {
     /// What the glances show: the watch's own tracking when it runs, else the phone's (if recent).
     var glance: SkiGlance? {
         if running { return ownGlance }
-        if let g = phoneGlance, Date().timeIntervalSince(phoneAt) < 20 { return g }
+        if let g = phoneGlance, phoneTracking, Date().timeIntervalSince(phoneAt) < 20 { return g }
         return nil
     }
     /// True when the numbers on screen come from the iPhone.
@@ -249,12 +249,26 @@ final class SkiSession: NSObject, ObservableObject {
     private var gotPlan = false
     private var askTimer: Timer?
     private func keepAsking() {
-        askTimer = Timer.scheduledTimer(withTimeInterval: 8, repeats: true) { [weak self] t in
+        // runs only while the app is on screen: first the plan, then live numbers whenever the pushes go quiet
+        askTimer = Timer.scheduledTimer(withTimeInterval: 4, repeats: true) { [weak self] _ in
             Task { @MainActor in
-                guard let self else { t.invalidate(); return }
-                if self.gotPlan { t.invalidate(); self.askTimer = nil } else { self.askForPlan() }
+                guard let self else { return }
+                if !self.gotPlan { self.askForPlan() }
+                else if !self.running && Date().timeIntervalSince(self.phoneAt) > 6 { self.askForLive() }
             }
         }
+    }
+
+    /// Pull what the phone is tracking right now.
+    func askForLive() {
+        let s = WCSession.default
+        guard s.activationState == .activated else { return }
+        s.sendMessage(["want": "live"], replyHandler: { reply in
+            if let live = reply["live"] as? [String: Any] {
+                let copy = live as NSDictionary
+                Task { @MainActor in self.receive(live: copy as! [String: Any]) }
+            }
+        }, errorHandler: { _ in })
     }
 
     /// Pull the plan from the phone (when reachable) instead of only waiting for a push.

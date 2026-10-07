@@ -59,11 +59,16 @@ final class SkiDay {
     }
 
     /// Live numbers for the watch (the same SkiGlance the lock screen shows) plus the step index.
+    private func liveBody() -> [String: Any]? {
+        guard let data = try? JSONEncoder().encode(glance) else { return nil }
+        return ["glance": data, "idx": stepIndex, "tracking": LocationService.shared.isTracking]
+    }
     private func toWatch(force: Bool) {
-        guard let data = try? JSONEncoder().encode(glance) else { return }
-        let live: [String: Any] = ["glance": data, "idx": stepIndex, "tracking": LocationService.shared.isTracking]
+        guard let live = liveBody() else { return }
         DispatchQueue.main.async { WatchLink.shared.sendLive(live, force: force) }
     }
+    /// For the watch asking "what's happening now?" (it pulls when pushes don't arrive).
+    func liveForWatch() -> [String: Any]? { queue.sync { liveBody() } }
 
     func ingest(_ fixes: [GeoFix]) {
         queue.async {

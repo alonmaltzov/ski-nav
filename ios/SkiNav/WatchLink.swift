@@ -62,6 +62,8 @@ final class WatchLink: NSObject, WCSessionDelegate {
         if msg["want"] as? String == "plan", let data = pendingPlan {
             print("[app] watch asked for the plan, replying")
             replyHandler(["plan": data])
+        } else if msg["want"] as? String == "live", let live = SkiDay.shared.liveForWatch() {
+            replyHandler(["live": live])
         } else {
             replyHandler([:])
         }
