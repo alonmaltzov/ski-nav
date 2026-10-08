@@ -59,12 +59,18 @@ fi
 xcrun simctl boot "$UDID" 2>/dev/null || true
 xcrun simctl bootstatus "$UDID" -b
 xcrun simctl install "$UDID" "$APP"
-if [ -n "$WATCH" ]; then
+# Running two simulators at once often kills GitHub's Mac runner, so the live phone<->watch test is opt-in (WATCH_SYNC=1).
+# Otherwise the watch boots after the phone tour, only for its screenshots.
+WATCH_SYNC=${WATCH_SYNC:-0}
+boot_watch () {
   xcrun simctl boot "$WATCH" 2>/dev/null || true
   xcrun simctl bootstatus "$WATCH" -b
   WAPP=$(ls -d "$APP"/Watch/*.app | head -1)
   WBUNDLE=$(/usr/libexec/PlistBuddy -c "Print CFBundleIdentifier" "$WAPP/Info.plist")
   xcrun simctl install "$WATCH" "$WAPP" && echo "Watch app installed: $WBUNDLE"
+}
+if [ -n "$WATCH" ] && [ "$WATCH_SYNC" = 1 ]; then
+  boot_watch
   xcrun simctl launch --console-pty "$WATCH" "$WBUNDLE" > "$OUT/watch.log" 2>&1 &
   WPID=$!
   sleep 8
@@ -106,8 +112,13 @@ xcrun simctl launch --terminate-running-process "$UDID" "$BUNDLE" -qaGlances >/d
 [ -f "$OUT/90-glances.png" ] && ok=true || ok=false
 echo "[web] QA RESULT {\"check\":\"lock screen and Dynamic Island views render\",\"ok\":$ok,\"detail\":\"90-glances.png\"}" >> "$OUT/log.txt"
 if [ -n "$WATCH" ]; then
-  xcrun simctl io "$WATCH" screenshot "$OUT/98-watch.png" >/dev/null 2>&1 || true
-  kill ${WPID:-0} 2>/dev/null || true
+  if [ "$WATCH_SYNC" = 1 ]; then
+    xcrun simctl io "$WATCH" screenshot "$OUT/98-watch.png" >/dev/null 2>&1 || true
+    kill ${WPID:-0} 2>/dev/null || true
+  else
+    xcrun simctl shutdown "$UDID" >/dev/null 2>&1 || true
+    boot_watch
+  fi
   # the watch screens with a sample day: skiing, on a lift, steps list
   for d in now lift steps; do
     xcrun simctl launch --terminate-running-process "$WATCH" "$WBUNDLE" -demo $d >/dev/null 2>&1 && sleep 4 && \
@@ -115,6 +126,7 @@ if [ -n "$WATCH" ]; then
     [ -f "$OUT/97-watch-$d.png" ] && ok=true || ok=false
     echo "[web] QA RESULT {\"check\":\"watch screen renders: $d\",\"ok\":$ok,\"detail\":\"97-watch-$d.png\"}" >> "$OUT/log.txt"
   done
+  if [ "$WATCH_SYNC" = 1 ]; then
   plan=$(grep -m1 "\[watch\] plan received" "$OUT/watch.log" | sed 's/.*plan received: //' | tr -d '\r"')
   live=$(grep -m1 "\[watch\] live data" "$OUT/watch.log" | sed 's/.*from phone: //' | tr -d '\r"')
   phonelink=$(grep -m1 "\[app\] watch link" "$OUT/log.txt" | tr -d '\r"')
@@ -122,6 +134,7 @@ if [ -n "$WATCH" ]; then
   echo "[web] QA RESULT {\"check\":\"watch receives today's plan from the phone\",\"ok\":$ok,\"detail\":\"${plan:-nothing received} | ${phonelink}\"}" >> "$OUT/log.txt"
   [ -n "$live" ] && ok=true || ok=false
   echo "[web] QA RESULT {\"check\":\"watch shows live stats while the phone tracks\",\"ok\":$ok,\"detail\":\"${live:-no live data}\"}" >> "$OUT/log.txt"
+  fi
 fi
 echo "QA screens captured: $seen"
 kill $(jobs -p) 2>/dev/null || true

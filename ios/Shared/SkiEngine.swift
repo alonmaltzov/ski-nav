@@ -38,6 +38,9 @@ public final class SkiEngine {
     public var liftLines: [[[Double]]] = [] { didSet { indexLifts() } }
     /// The current plan step's line when it is a lift ride, else nil.
     public var plannedLift: [[Double]]?
+    /// Flat practice maps (the city): a walk along the bus route is not a lift ride, so need real speed and drop off when slow.
+    public var flat = false
+    private var slowSince: Double?
 
     private var lastT: Double?
     private var last: GeoFix?
@@ -55,6 +58,13 @@ public final class SkiEngine {
     public func seed(_ t: SkiTotals) { totals = t }
     public func resetStep() { stepDistM = 0 }
 
+    private func slowTooLong(_ p: GeoFix) -> Bool {
+        guard flat, let sp = p.speed else { return false }
+        if sp >= 1.2 { slowSince = nil; return false }
+        if slowSince == nil { slowSince = p.t }
+        return p.t - (slowSince ?? p.t) > 45000
+    }
+
     public func ingest(_ p: GeoFix) {
         if let lt = lastT { let g = (p.t - lt) / 1000; if g > 0 && g < 120 { totals.elapsedS += g } }
         lastT = p.t
@@ -67,10 +77,10 @@ public final class SkiEngine {
         if let pl = plannedLift, pl.count >= 1 {
             onPlanned = SkiEngine.distToLine(ll, pl) < 40 && SkiEngine.hav(ll, pl[0]) > 25
         }
-        let moving = (p.speed ?? -1) > 1.5
+        let moving = (p.speed ?? -1) > (flat ? 3 : 1.5)
         if !onLift {
-            onLift = nl < 30 && (((rate ?? -1) > 0.4) || (onPlanned && (moving || rate == nil)))
-        } else if nl > 60 || (!onPlanned && rate != nil && rate! < 0.1) {
+            onLift = nl < 30 && (((rate ?? -1) > 0.4) || (onPlanned && (moving || (rate == nil && !flat))))
+        } else if nl > 60 || (!onPlanned && rate != nil && rate! < 0.1) || slowTooLong(p) {
             onLift = false
         }
         if !onLift && onPlanned && moving && nl < 45 { onLift = true }

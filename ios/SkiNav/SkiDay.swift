@@ -36,8 +36,9 @@ final class SkiDay {
         }
     }
 
-    func setContext(lifts: [[[Double]]]?, title: String?) {
+    func setContext(lifts: [[[Double]]]?, title: String?, flat: Bool? = nil) {
         queue.async {
+            if let f = flat { self.engine.flat = f }
             if let l = lifts { self.engine.liftLines = l }
             if let t = title { self.dayTitle = t }
         }
