@@ -13,6 +13,7 @@ final class GroupLink {
     private var key: String
     private var secret: String
     private var sharing: Bool
+    private var stopHour: Int
     private var lastPost = Date.distantPast
     private var inFlight = false
 
@@ -21,6 +22,7 @@ final class GroupLink {
         key = defaults.string(forKey: "group.key") ?? ""
         secret = defaults.string(forKey: "group.secret") ?? ""
         sharing = defaults.object(forKey: "group.sharing") as? Bool ?? true
+        stopHour = defaults.object(forKey: "group.stopHour") as? Int ?? 18
     }
 
     /// From the page: {cmd:'group', url, key, secret, sharing}. An empty secret means "not in a group".
@@ -30,6 +32,8 @@ final class GroupLink {
         key = (body["key"] as? String) ?? ""
         secret = (body["secret"] as? String) ?? ""
         sharing = (body["sharing"] as? Bool) ?? true
+        stopHour = (body["stopHour"] as? Int) ?? 18   // 18 on trip days, 24 (never) on practice days
+        defaults.set(stopHour, forKey: "group.stopHour")
         defaults.set(url, forKey: "group.url"); defaults.set(key, forKey: "group.key")
         defaults.set(secret, forKey: "group.secret"); defaults.set(sharing, forKey: "group.sharing")
         print("[app] group:", secret.isEmpty ? "none" : (sharing ? "sharing location" : "in a group, not sharing"))
@@ -42,7 +46,7 @@ final class GroupLink {
         lock.lock()
         let now = Date()
         guard !secret.isEmpty, sharing, !url.isEmpty, !inFlight, now.timeIntervalSince(lastPost) >= 30,
-              Calendar.current.component(.hour, from: now) < 18,
+              Calendar.current.component(.hour, from: now) < stopHour,
               let endpoint = URL(string: url.trimmingCharacters(in: CharacterSet(charactersIn: "/")) + "/rest/v1/rpc/post_position")
         else { lock.unlock(); return }
         lastPost = now; inFlight = true

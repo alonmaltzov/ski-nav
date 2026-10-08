@@ -30,7 +30,7 @@ async def new_page(b, who):
     await ctx.grant_permissions(['clipboard-read', 'clipboard-write'])
     pg = await ctx.new_page()
     # sharing stops at 6 pm: run the test at 11 am the phone's time, whatever time CI runs
-    await pg.clock.set_system_time(datetime.datetime.now().replace(hour=11, minute=0))
+    await pg.clock.set_system_time(datetime.datetime.now().replace(hour=int(os.environ.get('QA_HOUR', '11')), minute=0))
     pg.on('pageerror', lambda e: (log.write(f'[{who}] ERROR {e}\n'), fails.append(f'{who} page error: {e}')))
     pg.on('console', lambda m: m.type == 'error' and log.write(f'[{who}] console error {m.text[:300]}\n'))
     return pg

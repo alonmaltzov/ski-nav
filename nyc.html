@@ -2047,7 +2047,9 @@ async function rpc(fn, args){
   return d;
 }
 const platform = () => NATIVE ? 'ios' : /android/i.test(navigator.userAgent) ? 'android-web' : 'web';
-function tellNative(){ if(NATIVE) toNative({cmd:'group', url:GB&&GB.url||'', key:GB&&GB.key||'', secret: grp ? grp.secret : '', sharing: !!(grp && grp.sharing!==false)}); }
+/* sharing stops at 6 pm only during the trip itself; practice days (NYC tests) share any time */
+function stopHour(){ const t=gstate && gstate.trip, d=new Date().toISOString().slice(0,10); return t && t.starts_on && d>=t.starts_on && d<=t.ends_on ? 18 : 24; }
+function tellNative(){ if(NATIVE) toNative({cmd:'group', url:GB&&GB.url||'', key:GB&&GB.key||'', secret: grp ? grp.secret : '', sharing: !!(grp && grp.sharing!==false), stopHour: stopHour()}); }
 
 /* members, invite, sharing (menu > people button) */
 function showGroup(on){ $('menuMain').hidden=on; $('menuSettings').hidden=true; $('menuGroup').hidden=!on; if(on){ renderGroup(); refreshGroup(); } }
@@ -2163,6 +2165,7 @@ async function refreshGroup(){
     // the organizer's plan style is the group's plan style
     const pv=gstate.trip.plan && gstate.trip.plan.variant;
     if(gstate.role!=='owner' && pv && WEEKS[pv] && pv!==variant){ setVariant(pv); toast('Plan style set by the organizer.'); }
+    if(NATIVE && gstate.__sh!==stopHour()){ gstate.__sh=stopHour(); tellNative(); }
   }catch(e){ if(/not a member/i.test(e.message)){ grp=null; gstate=null; saveGrp(); tellNative(); clearFriends(); toast('You’re no longer in the group.'); } return; }
   renderFriends(); renderFriendsPill(); if(!$('menuGroup').hidden) renderGroup();
 }
@@ -2212,7 +2215,7 @@ function routeTo(pt, label, estimateOnly){
 /* send my position while I ski (the iPhone app sends it natively, even when locked) */
 function postPosition(here, p){
   if(!grp || grp.sharing===false || NATIVE || mode==='off' || !GB || !GB.url) return;
-  const n=Date.now(); if(n-lastPost < 20000 || new Date().getHours() >= 18) return; lastPost=n;
+  const n=Date.now(); if(n-lastPost < 20000 || new Date().getHours() >= stopHour()) return; lastPost=n;
   rpc('post_position',{p_secret:grp.secret, p_lat:here[0], p_lon:here[1], p_acc:p.acc||null, p_speed:st.speed||0, p_on_lift:!!st.onLift,
     p_run: st.match ? st.match.name : (steps[cur] && steps[cur].type!=='end' ? stepLabel(steps[cur]).replace(/^(Ski|Take) /,'') : null), p_km: +(st.dist/1000).toFixed(2)}).catch(()=>{});
 }
