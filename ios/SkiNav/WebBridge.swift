@@ -25,7 +25,7 @@ final class WebBridge: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
 
     static let shared = WebBridge()
     weak var webView: WKWebView?
-    private var pageReady = false
+    var pageReady = false
 
     func userContentController(_ c: WKUserContentController, didReceive message: WKScriptMessage) {
         guard let body = message.body as? [String: Any], let cmd = body["cmd"] as? String else { return }
@@ -150,9 +150,20 @@ struct WebAppView: UIViewRepresentable {
         #endif
         WebBridge.shared.webView = web
         web.navigationDelegate = WebBridge.shared
-        if let url = Bundle.main.url(forResource: "index", withExtension: "html", subdirectory: "www") {
-            print("[app] loading", url.path, (try? FileManager.default.attributesOfItem(atPath: url.path)[.size]) ?? "?")
+        if let start = WebUpdater.startPage() {
+            let url = start.url
+            print("[app] loading", start.fromDownload ? "downloaded" : "built-in", url.path, (try? FileManager.default.attributesOfItem(atPath: url.path)[.size]) ?? "?")
             web.loadFileURL(url, allowingReadAccessTo: url.deletingLastPathComponent())
+            if start.fromDownload {
+                // a downloaded page that never says hello within 15 s is broken: fall back to the built-in one
+                DispatchQueue.main.asyncAfter(deadline: .now() + 15) { [weak web] in
+                    guard let web, !WebBridge.shared.pageReady,
+                          let b = Bundle.main.url(forResource: "index", withExtension: "html", subdirectory: "www") else { return }
+                    WebUpdater.discardDownload()
+                    web.loadFileURL(b, allowingReadAccessTo: b.deletingLastPathComponent())
+                }
+            }
+            WebUpdater.checkForUpdate()
         } else {
             print("[app] ERROR www/index.html is missing from the app bundle. Run ./setup.sh again.")
         }

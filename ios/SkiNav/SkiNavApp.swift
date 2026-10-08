@@ -25,7 +25,7 @@ struct SkiNavApp: App {
                 .ignoresSafeArea()
                 .onChange(of: phase) { _, newPhase in
                     // when we come back to the foreground, hand the web app everything recorded while locked
-                    if newPhase == .active { WebBridge.shared.flush() }
+                    if newPhase == .active { WebBridge.shared.flush(); WebUpdater.checkForUpdate() }
                 }
     }
 }
