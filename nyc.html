@@ -363,6 +363,10 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .lg-you{background:radial-gradient(circle,#334155 1.8px,transparent 2.2px) 0 50%/7px 7px repeat-x!important;height:7px!important;border-radius:0!important}
 .donechip{position:absolute;left:74px;top:12px;z-index:500;display:none;align-items:center;gap:7px;background:var(--panel);color:var(--ink);border:2px solid #000;border-radius:18px;padding:6px 12px 6px 7px;font:700 .95rem var(--f-ui);pointer-events:none}
 .app.tracking .donechip:not([hidden]){display:flex}
+/* while tracking: the people button stays (find friends), the other pills hide; the done chip moves under the menu */
+.app.tracking .toppills{display:flex}
+.app.tracking .toppills>:not(#friendsPill){display:none!important}
+.app.tracking .donechip{top:70px;left:12px}
 .donechip svg{flex:none}
 .badge.daily{background:#475569}
 @media (max-height:700px){#menuSettings .grow{min-height:44px}#menuSettings .note{display:none}}
@@ -2047,7 +2051,9 @@ async function rpc(fn, args){
   return d;
 }
 const platform = () => NATIVE ? 'ios' : /android/i.test(navigator.userAgent) ? 'android-web' : 'web';
-function tellNative(){ if(NATIVE) toNative({cmd:'group', url:GB&&GB.url||'', key:GB&&GB.key||'', secret: grp ? grp.secret : '', sharing: !!(grp && grp.sharing!==false)}); }
+/* sharing stops at 6 pm only during the trip itself; practice days (NYC tests) share any time */
+function stopHour(){ const t=gstate && gstate.trip, n=new Date(), d=n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0'); return t && t.starts_on && d>=t.starts_on && d<=t.ends_on ? 18 : 24; }
+function tellNative(){ if(NATIVE) toNative({cmd:'group', url:GB&&GB.url||'', key:GB&&GB.key||'', secret: grp ? grp.secret : '', sharing: !!(grp && grp.sharing!==false), stopHour: stopHour()}); }
 
 /* members, invite, sharing (menu > people button) */
 function showGroup(on){ $('menuMain').hidden=on; $('menuSettings').hidden=true; $('menuGroup').hidden=!on; if(on){ renderGroup(); refreshGroup(); } }
@@ -2147,6 +2153,8 @@ function renderFriends(){
   if(openFriend) fillFriend(openFriend);
 }
 function renderFriendsPill(){
+  // my own dot in my group colour, so I look the same on my map as on everyone else's
+  if(typeof youEl!=='undefined') youEl.style.background = grp && grp.color ? grp.color : '';
   let p=$('friendsPill');
   const others = gstate ? gstate.members.filter(m=>m.id!==(grp&&grp.member_id)) : [];
   if(!grp){ if(p) p.hidden=true; return; }
@@ -2163,6 +2171,7 @@ async function refreshGroup(){
     // the organizer's plan style is the group's plan style
     const pv=gstate.trip.plan && gstate.trip.plan.variant;
     if(gstate.role!=='owner' && pv && WEEKS[pv] && pv!==variant){ setVariant(pv); toast('Plan style set by the organizer.'); }
+    if(NATIVE && gstate.__sh!==stopHour()){ gstate.__sh=stopHour(); tellNative(); }
   }catch(e){ if(/not a member/i.test(e.message)){ grp=null; gstate=null; saveGrp(); tellNative(); clearFriends(); toast('You’re no longer in the group.'); } return; }
   renderFriends(); renderFriendsPill(); if(!$('menuGroup').hidden) renderGroup();
 }
@@ -2211,8 +2220,9 @@ function routeTo(pt, label, estimateOnly){
 
 /* send my position while I ski (the iPhone app sends it natively, even when locked) */
 function postPosition(here, p){
-  if(!grp || grp.sharing===false || NATIVE || mode==='off' || !GB || !GB.url) return;
-  const n=Date.now(); if(n-lastPost < 20000 || new Date().getHours() >= 18) return; lastPost=n;
+  // the iPhone app sends natively (works locked); older app builds stop at 6 pm, so after that the page sends while open
+  if(!grp || grp.sharing===false || (NATIVE && new Date().getHours() < 18) || mode==='off' || !GB || !GB.url) return;
+  const n=Date.now(); if(n-lastPost < 20000 || new Date().getHours() >= stopHour()) return; lastPost=n;
   rpc('post_position',{p_secret:grp.secret, p_lat:here[0], p_lon:here[1], p_acc:p.acc||null, p_speed:st.speed||0, p_on_lift:!!st.onLift,
     p_run: st.match ? st.match.name : (steps[cur] && steps[cur].type!=='end' ? stepLabel(steps[cur]).replace(/^(Ski|Take) /,'') : null), p_km: +(st.dist/1000).toFixed(2)}).catch(()=>{});
 }

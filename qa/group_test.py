@@ -30,7 +30,7 @@ async def new_page(b, who):
     await ctx.grant_permissions(['clipboard-read', 'clipboard-write'])
     pg = await ctx.new_page()
     # sharing stops at 6 pm: run the test at 11 am the phone's time, whatever time CI runs
-    await pg.clock.set_system_time(datetime.datetime.now().replace(hour=11, minute=0))
+    await pg.clock.set_system_time(datetime.datetime.now().replace(hour=int(os.environ.get('QA_HOUR', '11')), minute=0))
     pg.on('pageerror', lambda e: (log.write(f'[{who}] ERROR {e}\n'), fails.append(f'{who} page error: {e}')))
     pg.on('console', lambda m: m.type == 'error' and log.write(f'[{who}] console error {m.text[:300]}\n'))
     return pg
@@ -89,12 +89,16 @@ async def main():
             await B.wait_for_timeout(800)
             gb2 = rpc('trip_state', {'p_secret': (await B.evaluate('window.__ski.grp'))['secret']})
         posted = any(m['pos'] for m in gb2['members'] if m['name'] == 'Dana Levi')
-        result('friend\'s phone sends its position while skiing', posted)
+        result('friend\'s phone sends its position while skiing (phone time %s:00)' % os.environ.get('QA_HOUR', '11'), posted)
+        result('own dot is drawn in my group colour', (await B.evaluate("getComputedStyle(document.querySelector('.youdot')).backgroundColor")) == 'rgb(124, 58, 237)', await B.evaluate("getComputedStyle(document.querySelector('.youdot')).backgroundColor"))
         if not posted:
             rpc('post_position', {'p_secret': (await B.evaluate('window.__ski.grp'))['secret'], 'p_lat': bpt[0], 'p_lon': bpt[1], 'p_acc': 8, 'p_speed': 9, 'p_on_lift': False, 'p_run': 'test run', 'p_km': 4.2})
 
         await A.click('#groupBack'); await A.click('#drawerClose')
         await A.evaluate('window.__ski.refreshGroup()'); await A.wait_for_timeout(800)
+        await A.evaluate("document.querySelector('.app').classList.add('tracking')")
+        result('people button stays visible while tracking', await A.is_visible('#friendsPill'))
+        await A.evaluate("document.querySelector('.app').classList.remove('tracking')")
         result('friend appears on the organizer\'s map', await A.locator('.fdot').count() == 1, await A.locator('.fdot').count())
         result('friends pill shows 1 friend', (await A.inner_text('#friendsPill')).strip() == 'All 1', await A.inner_text('#friendsPill'))
         await A.evaluate('window.__ski.map.jumpTo({center:[%f,%f], zoom:14})' % ((a0[1] + bpt[1]) / 2, (a0[0] + bpt[0]) / 2))
