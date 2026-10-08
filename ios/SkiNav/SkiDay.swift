@@ -73,9 +73,16 @@ final class SkiDay {
 
     func ingest(_ fixes: [GeoFix]) {
         queue.async {
+            var good: GeoFix?
             for f in fixes {
                 self.engine.ingest(f)
-                if f.acc <= 30 { self.lastPos = [f.lat, f.lon] }
+                if f.acc <= 30 { self.lastPos = [f.lat, f.lon]; good = f }
+            }
+            if let f = good {
+                // where I am, for friends in the trip group (only when sharing is on; GroupLink throttles)
+                let run = self.engine.onLift ? nil : self.step.map { $0.label.replacingOccurrences(of: #"^(Ski|Take|Walk to) "#, with: "", options: .regularExpression) }
+                GroupLink.shared.maybePost(lat: f.lat, lon: f.lon, acc: f.acc, speedMps: self.engine.speedMps, onLift: self.engine.onLift,
+                                           run: run, km: self.engine.totals.distM / 1000)
             }
             let liftChanged = self.engine.onLift != self.lastLift
             self.push(force: liftChanged)
