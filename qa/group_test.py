@@ -2,7 +2,7 @@
 both appear on each other's map, route to a friend, meeting point, sharing off, remove member.
 Runs against qa/fake_supabase.py (local Postgres) or any Supabase URL.
 Usage: GROUP_URL=http://127.0.0.1:54400 python3 qa/group_test.py   ->  qa-out/web-group/ (log.txt + screenshots)"""
-import asyncio, json, os, sys, urllib.request
+import asyncio, datetime, json, os, sys, urllib.request
 from playwright.async_api import async_playwright
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -29,6 +29,8 @@ async def new_page(b, who):
     await ctx.add_init_script('window.__GROUP_BACKEND=%s; window.__QA_ACK=true;' % json.dumps({'url': URL, 'key': KEY}))
     await ctx.grant_permissions(['clipboard-read', 'clipboard-write'])
     pg = await ctx.new_page()
+    # sharing stops at 6 pm: run the test at 11 am the phone's time, whatever time CI runs
+    await pg.clock.set_system_time(datetime.datetime.now().replace(hour=11, minute=0))
     pg.on('pageerror', lambda e: (log.write(f'[{who}] ERROR {e}\n'), fails.append(f'{who} page error: {e}')))
     pg.on('console', lambda m: m.type == 'error' and log.write(f'[{who}] console error {m.text[:300]}\n'))
     return pg

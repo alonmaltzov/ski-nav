@@ -196,6 +196,19 @@ final class LocationService: NSObject, ObservableObject, CLLocationManagerDelega
         // transient errors (no signal in a tunnel or a gondola) are normal; keep going
     }
 
+    /// Delete every saved day log (track-YYYY-MM-DD.jsonl). Not while tracking.
+    func clearSaved() {
+        guard !isTracking else { return }
+        let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let files = (try? FileManager.default.contentsOfDirectory(at: dir, includingPropertiesForKeys: nil)) ?? []
+        var n = 0
+        for f in files where f.lastPathComponent.hasPrefix("track-") && f.pathExtension == "jsonl" {
+            if (try? FileManager.default.removeItem(at: f)) != nil { n += 1 }
+        }
+        queue.sync { pending.removeAll() }
+        print("[app] cleared \(n) saved track files")
+    }
+
     private func save(_ fixes: [Fix]) {
         let enc = JSONEncoder()
         var data = Data()
