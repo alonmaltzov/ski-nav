@@ -143,8 +143,10 @@ async def main():
         # organizer removes the friend
         await A.click('#menuBtn'); await A.wait_for_timeout(400); await A.click('#groupBtn'); await A.wait_for_timeout(800)
         await shot(A, 'group-organizer-2')
-        await A.click('.mrm'); await A.click('.mrm'); await A.wait_for_timeout(1000)
-        result('organizer removes a member', len((await A.evaluate('window.__ski.gstate'))['members']) == 1)
+        await A.click('.mrm'); await A.click('.mrm')
+        try: await A.wait_for_function('window.__ski.gstate.members.length === 1', timeout=10000); ok = True
+        except Exception: ok = False
+        result('organizer removes a member', ok)
         await B.evaluate('window.__ski.refreshGroup()'); await B.wait_for_timeout(800)
         result('removed friend leaves the group on their phone', (await B.evaluate('window.__ski.grp')) is None)
 

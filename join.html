@@ -74,7 +74,7 @@ ul{margin:0 0 6px;padding-left:20px;display:grid;gap:8px}
   // Optional: link to the TestFlight public invite once the app is on TestFlight.
   var TESTFLIGHT_URL = '';
   // Optional: the group server, to show who invited you (same values as CONFIG.group in index.html).
-  var GROUP = window.__GROUP_BACKEND || null;
+  var GROUP = window.__GROUP_BACKEND || {"url": "https://aklgkbiehjxpeevuqump.supabase.co", "key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFrbGdrYmllaGp4cGVldnVxdW1wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE0NjcxNzMsImV4cCI6MjEwNzA0MzE3M30.0sJYp4uYnDoqFOECqNZmA8tnZUQFAz8YAPHktvx1HI0"};
 
   var q = new URLSearchParams(location.search);
   var code = (q.get('c') || q.get('join') || (location.hash.match(/c=([A-Za-z0-9-]+)/) || [])[1] || '').trim().toUpperCase();
