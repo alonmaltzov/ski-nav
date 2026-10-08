@@ -16,15 +16,30 @@ jobs:
     name: QA in headless Chrome (iPhone 16 + SE sizes)
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:16
+        env: { POSTGRES_PASSWORD: qa }
+        ports: ['5432:5432']
+        options: --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: '3.12' }
       - name: Install Playwright
         timeout-minutes: 10
-        run: pip install playwright && python -m playwright install --with-deps chromium
+        run: pip install playwright psycopg2-binary && python -m playwright install --with-deps chromium
       - name: Run tour
         run: python qa/run_web.py
+      - name: Group test (organizer + friend, against the real schema on Postgres)
+        timeout-minutes: 8
+        env: { PGPASSWORD: qa }
+        run: |
+          psql -h 127.0.0.1 -U postgres -v ON_ERROR_STOP=1 -c "create role anon nologin; create role authenticated nologin;"
+          psql -h 127.0.0.1 -U postgres -v ON_ERROR_STOP=1 -f supabase/schema.sql -q
+          python qa/fake_supabase.py 54400 "host=127.0.0.1 user=postgres password=qa dbname=postgres" &
+          sleep 2
+          GROUP_URL=http://127.0.0.1:54400 python qa/group_test.py
       - uses: actions/upload-artifact@v4
         if: always()
         with: { name: qa-web, path: qa-out }

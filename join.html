@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Join the trip · Ski Nav</title>
+<meta name="description" content="You're invited to a ski trip on Ski Nav: the plan for every day and where everyone is on the mountain.">
+<meta property="og:title" content="Join our ski trip on Ski Nav">
+<meta property="og:description" content="The plan for every day, and where everyone is on the mountain.">
+<meta name="theme-color" content="#2e4a63">
+<style>
+:root{--bg:#eef2f5;--panel:#fff;--ink:#0d1b26;--muted:#5b6b78;--line:#d5dde3;--accent:#0a6cff}
+@media (prefers-color-scheme:dark){:root{--bg:#0b1218;--panel:#131d26;--ink:#eaf1f6;--muted:#9fb0bd;--line:#26333f}}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:17px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,system-ui,sans-serif}
+body{display:flex;flex-direction:column;min-height:100dvh}
+.hero{flex:1;min-height:42dvh;background:linear-gradient(#4d6f8c,#2e4a63);color:#fff;padding:calc(48px + env(safe-area-inset-top,0px)) 24px 40px;display:flex;flex-direction:column;justify-content:flex-end;gap:8px}
+.logo{width:52px;height:52px;border-radius:14px;background:#0d1b26;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.inv{font-size:1rem;opacity:.9}
+h1{margin:0;font-size:2.6rem;line-height:1;font-weight:800;letter-spacing:-.01em}
+.dates{font-size:1rem;opacity:.9}
+.sheet{background:var(--panel);border-radius:24px 24px 0 0;margin-top:-20px;padding:24px 20px calc(24px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:12px;position:relative}
+ul{margin:0 0 6px;padding-left:20px;display:grid;gap:8px}
+.btn{display:flex;align-items:center;justify-content:center;min-height:56px;border-radius:16px;font-size:1.1rem;font-weight:700;text-decoration:none;border:0;width:100%;cursor:pointer;font-family:inherit}
+.primary{background:var(--ink);color:var(--panel)}
+.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.note{margin:0;color:var(--muted);font-size:.95rem;text-align:center}
+.box{background:var(--bg);border-radius:16px;padding:14px 16px;font-size:.98rem;display:grid;gap:8px}
+.box b{font-size:1rem}
+.box ol{margin:0;padding-left:20px;display:grid;gap:4px}
+.err{color:#b42318;font-weight:600;margin:0}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="hero">
+  <span class="logo" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FF8A3D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20l7-11 4 6 3-4 4 9z"/></svg></span>
+  <span class="inv" id="inv">You’re invited to</span>
+  <h1 id="trip">Avoriaz week</h1>
+  <span class="dates" id="dates">Portes du Soleil</span>
+</div>
+<div class="sheet">
+  <ul>
+    <li><b>The plan for each day</b>: which runs and lifts, on a map that works offline</li>
+    <li><b>See where everyone is</b> on the mountain, and find each other</li>
+    <li><b>Your speed, km and runs</b> for every day</li>
+  </ul>
+  <p class="err" id="err" hidden>This invite link is missing its code. Ask for the link again.</p>
+
+  <!-- iPhone -->
+  <div id="ios" hidden style="display:grid;gap:10px">
+    <a class="btn primary" id="openApp" href="#">Open in the Ski Nav app</a>
+    <button class="btn ghost" id="noApp" type="button">I don’t have the app yet</button>
+    <div class="box" id="getApp" hidden>
+      <b>Get the iPhone app (best: it keeps working with your phone in your pocket)</b>
+      <ol>
+        <li id="tfStep">Ask the organizer for the TestFlight invite.</li>
+        <li>Install it, then come back to this message and tap the link again.</li>
+      </ol>
+      <a class="btn ghost" id="webIos" href="#">Use it in Safari for now</a>
+    </div>
+  </div>
+
+  <!-- Android and everything else -->
+  <div id="other" hidden style="display:grid;gap:10px">
+    <a class="btn primary" id="webOther" href="#">Join the trip</a>
+    <p class="note">Opens in your browser. Tip: add it to your home screen. Keep the screen on while you ski, so your friends can see you.</p>
+  </div>
+
+  <p class="note">Takes 30 seconds. No account or password.</p>
+</div>
+<script>
+(function(){
+  // Optional: link to the TestFlight public invite once the app is on TestFlight.
+  var TESTFLIGHT_URL = '';
+  // Optional: the group server, to show who invited you (same values as CONFIG.group in index.html).
+  var GROUP = window.__GROUP_BACKEND || null;
+
+  var q = new URLSearchParams(location.search);
+  var code = (q.get('c') || q.get('join') || (location.hash.match(/c=([A-Za-z0-9-]+)/) || [])[1] || '').trim().toUpperCase();
+  if (!/^[A-Z0-9-]{4,16}$/.test(code)) { document.getElementById('err').hidden = false; code = ''; }
+  var web = 'index.html' + (code ? '?join=' + encodeURIComponent(code) : '');
+  var ua = navigator.userAgent || '';
+  var isIOS = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+  if (isIOS) {
+    document.getElementById('ios').hidden = false;
+    document.getElementById('openApp').href = 'skinav://join?c=' + encodeURIComponent(code);
+    document.getElementById('webIos').href = web;
+    document.getElementById('noApp').onclick = function(){ document.getElementById('getApp').hidden = false; this.hidden = true; };
+    if (TESTFLIGHT_URL) document.getElementById('tfStep').innerHTML = '<a href="' + TESTFLIGHT_URL + '">Get it on TestFlight</a> (install TestFlight from the App Store first if it asks).';
+  } else {
+    document.getElementById('other').hidden = false;
+    document.getElementById('webOther').href = web;
+  }
+
+  if (GROUP && GROUP.url && code) {
+    fetch(GROUP.url.replace(/\/$/, '') + '/rest/v1/rpc/trip_preview', {method:'POST', headers:{'apikey':GROUP.key,'Authorization':'Bearer '+GROUP.key,'Content-Type':'application/json'}, body: JSON.stringify({p_code: code})})
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(p){
+        if (!p) { document.getElementById('err').textContent = 'This invite link isn’t valid any more. Ask for a new one.'; document.getElementById('err').hidden = false; return; }
+        document.getElementById('inv').textContent = (p.organizer || 'Your friend') + ' invited you to';
+        document.getElementById('trip').textContent = p.name;
+        if (p.starts_on) { var f = function(d){ return new Date(d + 'T12:00').toLocaleDateString('en-US', {weekday:'short', month:'short', day:'numeric'}); };
+          document.getElementById('dates').textContent = f(p.starts_on) + ' to ' + f(p.ends_on) + ' · Portes du Soleil'; }
+      }).catch(function(){});
+  }
+})();
+</script>
+</body>
+</html>

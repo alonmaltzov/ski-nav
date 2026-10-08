@@ -39,6 +39,7 @@ final class WebBridge: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
                 send(event: "tracking")
             }
             flush()
+            if let code = pendingJoin { pendingJoin = nil; send(event: "join:" + code) }
         case "start":
             var base: SkiTotals?
             if let b = body["base"] as? [String: Any] {
@@ -64,12 +65,24 @@ final class WebBridge: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
             LocationService.shared.compass((body["on"] as? Bool) ?? false)
         case "log":
             print("[web]", body["msg"] ?? "")
+        case "group":
+            GroupLink.shared.configure(body)
         case "plan":
             // today's steps, forwarded to the watch so it can show "next step" on the wrist
             WatchLink.shared.sendPlan(body)
         default:
             break
         }
+    }
+
+    /// The app was opened from an invite link (skinav://join?c=AVZ-XXXX): hand the code to the page's join flow.
+    private var pendingJoin: String?
+    func openJoin(_ url: URL) {
+        guard url.scheme == "skinav", url.host == "join",
+              let code = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems?.first(where: { $0.name == "c" })?.value,
+              code.range(of: #"^[A-Za-z0-9-]{4,16}$"#, options: .regularExpression) != nil else { return }
+        print("[app] opened from invite", code)
+        if pageReady { send(event: "join:" + code.uppercased()) } else { pendingJoin = code.uppercased() }
     }
 
     func flushIfActive() {

@@ -23,6 +23,7 @@ struct SkiNavApp: App {
     private var app: some View {
             WebAppView()
                 .ignoresSafeArea()
+                .onOpenURL { WebBridge.shared.openJoin($0) }
                 .onChange(of: phase) { _, newPhase in
                     // when we come back to the foreground, hand the web app everything recorded while locked
                     if newPhase == .active { WebBridge.shared.flush(); WebUpdater.checkForUpdate() }
