@@ -76,7 +76,8 @@ final class SkiDay {
             var good: GeoFix?
             for f in fixes {
                 self.engine.ingest(f)
-                if f.acc <= 30 { self.lastPos = [f.lat, f.lon]; good = f }
+                if f.acc <= 30 { self.lastPos = [f.lat, f.lon] }
+                if f.acc <= 100 { good = f }   // friends get rough positions too
             }
             if let f = good {
                 // where I am, for friends in the trip group (only when sharing is on; GroupLink throttles)
