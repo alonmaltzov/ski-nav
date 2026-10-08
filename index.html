@@ -1205,6 +1205,7 @@ function renderStep(){
     if(onIt){ const e=hav(pt, s.coords[s.coords.length-1]); meta = (s.type==='lift' ? 'Riding · ' : 'On it · ') + fmtLen(e) + ' to go' + (CONFIG.flat ? '' : (s.type==='lift' ? ' · top at '+fmtAlt(s.top) : ' · down to '+fmtAlt(s.bottom))); }
     else if(d > 60) meta = fmtLen(d) + ' to start · ' + meta;
   }
+  if(st.match && mode!=='off' && !String(st.match.id).startsWith('s')) meta = 'You\u2019re on ' + st.match.name + (st.match.color && st.match.color!=='lift' ? ' ('+st.match.color+')' : '') + ' · ' + meta;
   $('nMeta').textContent = meta;
   const n = steps[cur+1];
   $('nThen').textContent='';
@@ -1268,19 +1269,47 @@ function updateProgress(p){
   const s = steps[cur]; if(!s) return;
   const pt=[p.lat,p.lon], endPt = s.coords[s.coords.length-1];
   const isLoop = hav(s.coords[0], endPt) < 80;
-  const nearEnd = hav(pt,endPt) < Math.max(35, p.acc||0) && (!isLoop || (st.stepDist||0) > 0.6*s.len);
+  const nearEnd = hav(pt,endPt) < Math.max(35, p.acc||0) && (st.stepDist||0) > (isLoop ? 0.6*s.len : Math.min(0.5*s.len, Math.max(0, s.len-80)));
   const n = steps[cur+1]; let onNext=false;
   if(n && n.type!=='end'){ const dn=distToLine(pt,n.coords), dc=distToLine(pt,s.coords); onNext = dn<25 && dc>40 && hav(pt,n.coords[0])>40; }
   if(s.type!=='end' && (nearEnd || (onNext && !isLoop) || (onNext && (st.stepDist||0) > 0.6*s.len))){ (window.__steplog=window.__steplog||[]).push(cur+1); cur++; st.stepDist=0; persist(); renderStep(); return; }
   // skipped ahead (or took another way and joined the plan later): quietly jump to that step. Going back to repeat a run changes nothing.
   const dc = distToLine(pt, s.coords);
   if(dc > 60){ for(let k=cur+2; k<Math.min(steps.length-1, cur+10); k++){ const q=steps[k]; if(q.type==='end') break;
-      if(distToLine(pt,q.coords) < 20 && hav(pt,q.coords[0]) > 30){ cur=k; st.stepDist=0; persist(); renderStep(); return; } } }
+      if(distToLine(pt,q.coords) < 20 && hav(pt,q.coords[0]) > 30 && hav(pt,q.coords[q.coords.length-1]) > 80){
+        st.skipCand = (st.skipCand && st.skipCand.k===k) ? {k, n:st.skipCand.n+1} : {k, n:1};
+        if(st.skipCand.n >= 4){ st.skipCand=null; cur=k; st.stepDist=0; persist(); renderStep(); return; } break; } } }
   let d = dc; if(n) d=Math.min(d, distToLine(pt,n.coords)); if(cur>0) d=Math.min(d, hav(pt,s.coords[0]));
   const off = store.follow && d > 120 && hav(pt, s.coords[0]) > 150;   // free ski (default): never nag
   if(off){ st.offSince = st.offSince || p.t; } else st.offSince = null;
   $('offroute').hidden = !(st.offSince && p.t - st.offSince > 20000);
 }
+
+
+/* ---------- snap to the run or lift you're on (map matching) ---------- */
+const MG={}, mkey=(a,o)=>a+':'+o;
+BG.forEach((b,bi)=>{ if(b[0]!=='R' && b[0]!=='L') return; const c=b[3];
+  for(let j=0;j<c.length-1;j++){ const a0=Math.floor(Math.min(c[j][0],c[j+1][0])*2000), a1=Math.floor(Math.max(c[j][0],c[j+1][0])*2000), o0=Math.floor(Math.min(c[j][1],c[j+1][1])*1400), o1=Math.floor(Math.max(c[j][1],c[j+1][1])*1400);
+    for(let a=a0;a<=a1;a++) for(let o=o0;o<=o1;o++) (MG[mkey(a,o)]=MG[mkey(a,o)]||[]).push(bi,j); } });
+function projSeg(p,a,b){ const k=Math.cos(p[0]*Math.PI/180), ax=(a[1]-p[1])*111320*k, ay=(a[0]-p[0])*110540, bx=(b[1]-p[1])*111320*k, by=(b[0]-p[0])*110540;
+  const dx=bx-ax, dy=by-ay, L=dx*dx+dy*dy; let t=L ? -(ax*dx+ay*dy)/L : 0; t=Math.max(0,Math.min(1,t));
+  return { d:Math.hypot(ax+t*dx, ay+t*dy), pt:[a[0]+t*(b[0]-a[0]), a[1]+t*(b[1]-a[1])] }; }
+function projLine(p,c){ let best=null; for(let j=0;j<c.length-1;j++){ const r=projSeg(p,c[j],c[j+1]); if(!best || r.d<best.d) best=r; } return best; }
+/* best line within reach: planned steps get a head start, the line you're already on is sticky */
+function matchFix(ll, acc, onLift){
+  const R=Math.max(20, Math.min(40, (acc||10)*1.6)); let best=null;
+  const consider=(id, name, color, r, bonus)=>{ if(!r || r.d>R) return; const score=r.d-bonus-(st.match && st.match.id===id ? 8 : 0); if(!best || score<best.score) best={id, name, color, d:r.d, pt:r.pt, score}; };
+  for(const k of [cur, cur+1]){ const s=steps[k]; if(!s || s.type==='end' || !s.coords || s.coords.length<2) continue; if((s.type==='lift')!==!!onLift) continue;
+    consider('s'+k, s.type==='lift' ? s.name : (s.legs&&s.legs.length ? s.legs[0].name : s.name), stepColor(s), projLine(ll, s.coords), 6); }
+  const a=Math.floor(ll[0]*2000), o=Math.floor(ll[1]*1400), seen=new Set();
+  for(let da=-1;da<=1;da++) for(let db=-1;db<=1;db++){ const L=MG[mkey(a+da,o+db)]; if(!L) continue;
+    for(let i=0;i<L.length;i+=2){ const bi=L[i], j=L[i+1], key=bi*10000+j; if(seen.has(key)) continue; seen.add(key); const b=BG[bi];
+      if((b[0]==='L')!==!!onLift) continue;
+      consider('b'+bi, b[2]||(b[0]==='L'?'Lift':'Unnamed run'), b[0]==='L' ? 'lift' : ({nov:'green',eas:'blue',int:'red',adv:'black',exp:'black'}[b[1]]||'blue'), projSeg(ll,b[3][j],b[3][j+1]), 0); } }
+  return best;
+}
+const onPlanNow = pt => [cur-1, cur, cur+1, cur+2, cur+3].some(k=>steps[k] && steps[k].type!=='end' && steps[k].coords.length>1 && distToLine(pt, steps[k].coords) < 30);
+let lastAutoPlan=0;
 
 /* ---------- position pipeline (shared by real GPS and test replay) ---------- */
 function onFix(p){
@@ -1294,9 +1323,10 @@ function onFix(p){
   const good = (p.acc||99) <= 30;
   const rate = climbingRate(p), nl = nearLift(ll), s0 = steps[cur], wasLift = !!st.onLift;
   const onPlannedLift = s0 && s0.type==='lift' && distToLine(ll, s0.coords) < 40 && hav(ll, s0.coords[0]) > 25;
-  const moving = (p.speed!=null && p.speed > 1.5);
-  if(!st.onLift){ st.onLift = nl < 30 && ((rate!=null && rate > 0.4) || (onPlannedLift && (moving || rate==null))); }
-  else if(nl > 60 || (!onPlannedLift && rate!=null && rate < 0.1)){ st.onLift = false; }
+  const moving = (p.speed!=null && p.speed > (CONFIG.flat ? 3 : 1.5));
+  if(!st.onLift){ st.onLift = nl < 30 && ((rate!=null && rate > 0.4) || (onPlannedLift && (moving || (rate==null && !CONFIG.flat)))); }
+  else if(nl > 60 || (!onPlannedLift && rate!=null && rate < 0.1) || (CONFIG.flat && p.speed!=null && p.speed < 1.2 && (st.slowSince=st.slowSince||p.t) && p.t-st.slowSince > 45000)){ st.onLift = false; st.slowSince=null; }
+  if(CONFIG.flat && p.speed!=null && p.speed >= 1.2) st.slowSince=null;
   if(!st.onLift && onPlannedLift && moving && nl < 45) st.onLift = true;
   if(st.onLift && !wasLift && st.recent){ for(const r of st.recent){ if(p.t - r[0] < 25000 && r[2]) st.dist -= r[1]; } st.recent = []; }
   $('liftPill').hidden = !st.onLift;
@@ -1320,9 +1350,20 @@ function onFix(p){
   } else if(good || !st.last){ st.last={...p}; if(good) st.sm={lat:p.lat, lon:p.lon}; }
   if(p.alt!=null && good && st.onLift) st.altRef=p.alt;
   if(p.alt!=null && good && !st.onLift){ if(st.altRef==null) st.altRef=p.alt; if(p.alt < st.altRef-5){ st.vert += st.altRef-p.alt; st.altRef=p.alt; } else if(p.alt > st.altRef+5) st.altRef=p.alt; }
-  if(good && !st.onLift) markCoverage(ll, p.acc);
-  if(good) addTrail(st.sm ? [st.sm.lat, st.sm.lon] : ll, !!st.onLift);
-  updateProgress(p);
+  // snap to the run or lift you're on: the dot, the trail, skied runs and step progress all use the snapped point
+  let snap=null;
+  if(good){ const sp = st.sm ? [st.sm.lat, st.sm.lon] : ll; const m = matchFix(sp, p.acc, !!st.onLift);
+    if(m){ st.match = {...m, at:p.t}; snap = m.pt; } else if(st.match && p.t - st.match.at > 8000) st.match = null; }
+  const here = snap || (st.sm ? [st.sm.lat, st.sm.lon] : ll);
+  if(snap) setYou(snap, Math.min(p.acc||10, 8));
+  if(good && !st.onLift) markCoverage(here, Math.min(p.acc||15, 20));
+  if(good) addTrail(here, !!st.onLift);
+  updateProgress(snap ? {...p, lat:snap[0], lon:snap[1]} : p);
+  // following a different run than suggested for a while: quietly suggest a new way back into the plan
+  if(good && mode!=='off' && st.match && !st.onLift && (p.speed==null || p.speed>1)){
+    if(onPlanNow(here)) st.offFrom=null;
+    else { st.offFrom = st.offFrom || here;
+      if(hav(st.offFrom, here) > 150 && Date.now()-lastAutoPlan > 180000 && typeof planFromHere==='function'){ lastAutoPlan=Date.now(); st.offFrom=null; planFromHere({quiet:true}); } } }
   renderStats();
   if(st.fixes % 5 === 0){ persist(); renderStep(); }
 }
@@ -1687,13 +1728,14 @@ function showPlanNote(msg){ const n=$('planNote'); n.textContent=msg; n.hidden=f
 function myPos(){ if(st.last) return [st.last.lat, st.last.lon]; if(located) return [located.lat, located.lon]; return null; }
 let toastT=0;
 function toast(msg){ let t=$('toast'); if(!t){ t=document.createElement('div'); t.id='toast'; t.className='toast'; t.setAttribute('role','status'); document.body.appendChild(t); } t.textContent=msg; t.hidden=false; clearTimeout(toastT); toastT=setTimeout(()=>{ t.hidden=true; }, 5000); }
-function planFromHere(){
+function planFromHere(opts){
+  const quiet = opts && opts.quiet; const say = msg => quiet ? null : showPlanNote(msg);
   const p = myPos();
-  if(!p){ toast('Finding you first…'); locateMe(); setTimeout(()=>{ if(myPos()) planFromHere(); else showPlanNote('Couldn\u2019t get your location yet. Check location is on for Ski Nav and try again.'); }, 4000); return null; }
+  if(!p){ if(quiet) return null; toast('Finding you first…'); locateMe(); setTimeout(()=>{ if(myPos()) planFromHere(); else showPlanNote('Couldn\u2019t get your location yet. Check location is on for Ski Nav and try again.'); }, 4000); return null; }
   if(!RG) RG=buildGraph();
   const src = near(p, 150, v=>BG[RG.vLine[v]][0]==='R' || RG.vIdx[v]===0).map(([v,d])=>[v, 10+d/RG.walkV]);
   if(!src.length){ const near1=(()=>{ let m=1e9; for(let v=0;v<RG.N;v+=7){ const d=hav(p,[RG.vLat[v],RG.vLon[v]]); if(d<m) m=d; } return m; })();
-    showPlanNote('Plan from here re-routes you back into today\u2019s plan when you\u2019ve gone off it. '+(near1>50000 ? 'You\u2019re not in '+(CONFIG.flat?'the practice area':'the Portes du Soleil')+' right now' : 'You\u2019re '+fmtLen(near1)+' from the nearest run')+', so there\u2019s nothing to route yet. Try it once you\u2019re on the mountain.'); return null; }
+    say('Plan from here re-routes you back into today\u2019s plan when you\u2019ve gone off it. '+(near1>50000 ? 'You\u2019re not in '+(CONFIG.flat?'the practice area':'the Portes du Soleil')+' right now' : 'You\u2019re '+fmtLen(near1)+' from the nearest run')+', so there\u2019s nothing to route yet. Try it once you\u2019re on the mountain.'); return null; }
   const D = dijkstra(src);
   let best=null;
   for(let k=cur; k<steps.length; k++){
@@ -1703,7 +1745,7 @@ function planFromHere(){
     const cands = near(tgt, s.type==='end'?80:40, v=> s.type==='lift' ? (BG[RG.vLine[v]][0]==='L' && RG.vIdx[v]===0) : RG.usable(v));
     for(const [v] of cands){ const c=D.dist[v]; if(!isFinite(c)) continue; const score=c + 240*(k-cur); if(!best || score<best.score) best={k,v,c,score}; }
   }
-  if(!best){ showPlanNote('No way back into today\u2019s plan from here (lifts closed or too far). Free ski, or head to '+DAY.end.name+'.'); return null; }
+  if(!best){ say('No way back into today\u2019s plan from here (lifts closed or too far). Free ski, or head to '+DAY.end.name+'.'); return null; }
   const routed = pathSteps(D, best.v, p);
   const now = new Date(), t0 = now.getHours()*60+now.getMinutes();
   let t=t0; const rest = steps.slice(best.k).map(s=>({...s}));
@@ -1713,6 +1755,7 @@ function planFromHere(){
   const done = steps.slice(0,cur);
   applySteps(done.concat(routed, rest), cur);
   const target = steps[cur+routed.length];
+  if(quiet){ if(routed.length) toast('Route updated from where you are: back on the plan at '+(target ? stepLabel(target).replace(/^(Ski|Take) /,'') : DAY.end.name)+'.'); return {routed:routed.length, rejoin:best.k, minutes:Math.round(best.c/60)}; }
   showPlanNote(routed.length ? 'New route from where you are: '+routed.length+' step'+(routed.length>1?'s':'')+' (about '+Math.max(1,Math.round(best.c/60))+' min), then back on the plan at '+(target ? stepLabel(target).replace(/^(Ski|Take) /,'') : DAY.end.name)+'. They start at step '+(cur+1)+' below.' : 'You\u2019re already on the plan. Next up: '+stepLabel(steps[cur])+'.');
   return {routed:routed.length, rejoin:best.k, minutes:Math.round(best.c/60)};
 }
@@ -1730,10 +1773,10 @@ $('replan2').onclick=()=>planFromHere();
 $('unplanBtn').onclick=()=>{ $('sheet').hidden=true; resetPlan(); };
 
 /* expose for automated tests */
-window.__ski = { map, st, get steps(){return steps;}, get cur(){return cur;}, get di(){return di;}, startSim, stopSim, onFix, setX:x=>simX=x, selectDay, groupStats, openProgress, closeProgress, skied:()=>skiedWays.size, recap:openRecap, setSun, planFromHere, applySteps, get liftStat(){return liftStat;}, set liftStat(v){liftStat=v;}, renderLifts, wearFor, resetPlan, setWx(v){ wx=v; renderWx(); } };
+window.__ski = { map, st, get steps(){return steps;}, get cur(){return cur;}, get di(){return di;}, startSim, stopSim, onFix, setX:x=>simX=x, selectDay, groupStats, openProgress, closeProgress, skied:()=>skiedWays.size, recap:openRecap, matchFix, get match(){return st.match;}, _mode(m){ mode=m; }, setSun, planFromHere, applySteps, get liftStat(){return liftStat;}, set liftStat(v){liftStat=v;}, renderLifts, wearFor, resetPlan, setWx(v){ wx=v; renderWx(); } };
 
 renderUnits(); renderDayBar(); renderStats(); renderStep(); applyView(); renderHome(); applySun();
-if(NATIVE){ toNative({cmd:'ready'}); toNative({cmd:'ctx', lifts: liftLines, title: DAY.title}); sendPlanToWatch(); nativeStep(); }
+if(NATIVE){ toNative({cmd:'ready'}); toNative({cmd:'ctx', lifts: liftLines, title: DAY.title, flat: !!CONFIG.flat}); sendPlanToWatch(); nativeStep(); }
 setInterval(()=>{ if(mode!=='off'){ renderStats(); renderSchedule(); } }, 1000);
 })();
 </script>
