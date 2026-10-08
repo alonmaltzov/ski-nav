@@ -22,7 +22,7 @@ def rpc(fn, args):
     return json.loads(urllib.request.urlopen(r).read())
 
 async def shot(pg, name):
-    n[0] += 1; await pg.wait_for_timeout(700); await pg.screenshot(path=os.path.join(OUT, f'{n[0]:02d}-{name}.png'))
+    n[0] += 1; await pg.wait_for_timeout(700); await pg.screenshot(path=os.path.join(OUT, f'{n[0]:02d}-{name}.png'), timeout=90000)
 
 async def new_page(b, who):
     ctx = await b.new_context(viewport=dict(width=393, height=852), device_scale_factor=2, is_mobile=True, has_touch=True)
@@ -96,9 +96,41 @@ async def main():
         await A.click('#groupBack'); await A.click('#drawerClose')
         await A.evaluate('window.__ski.refreshGroup()'); await A.wait_for_timeout(800)
         result('friend appears on the organizer\'s map', await A.locator('.fdot').count() == 1, await A.locator('.fdot').count())
-        result('friends pill shows 1 friend', (await A.inner_text('#friendsPill')).strip() == '1', await A.inner_text('#friendsPill'))
+        result('friends pill shows 1 friend', (await A.inner_text('#friendsPill')).strip() == 'All 1', await A.inner_text('#friendsPill'))
         await A.evaluate('window.__ski.map.jumpTo({center:[%f,%f], zoom:14})' % ((a0[1] + bpt[1]) / 2, (a0[0] + bpt[0]) / 2))
         await shot(A, 'organizer-map-friend')
+
+        # a third friend skiing far away (Chatel side): ALL must show them, and the organizer can choose who to see
+        Y = rpc('join_trip', {'p_code': code, 'p_name': 'Yoni Katz', 'p_color': '#0F766E', 'p_platform': 'test'})
+        far = [bpt[0] + 0.07, bpt[1] + 0.06]   # ~8 km away, off the route
+        rpc('post_position', {'p_secret': Y['secret'], 'p_lat': far[0], 'p_lon': far[1], 'p_acc': 10, 'p_speed': 3, 'p_on_lift': True, 'p_run': None, 'p_km': 9.1})
+        await A.evaluate('window.__ski.refreshGroup()'); await A.wait_for_timeout(800)
+        result('pill shows everyone by default', (await A.inner_text('#friendsPill')).strip() == 'All 2', await A.inner_text('#friendsPill'))
+        result('friend on a lift gets the lift badge', await A.locator('.fdot.lift').count() == 1)
+        inb = 'window.__ski.map.getBounds().contains([%f,%f])' % (far[1], far[0])
+        await A.click('#fitBtn'); await A.wait_for_timeout(3500)
+        result('ALL shows a friend who is off the route', await A.evaluate(inb))
+        await shot(A, 'all-shows-everyone')
+        await A.click('#friendsPill'); await A.wait_for_timeout(500)
+        result('people pill opens "On your map"', await A.is_visible('#pickSheet') and await A.locator('#pickList .prow').count() == 2)
+        result('Everyone mode hides the switches', not await A.locator('#pickList .ptog >> nth=0').is_visible())
+        await A.click('#pickSeg button[data-v="choose"]'); await A.wait_for_timeout(300)
+        await shot(A, 'choose-who')
+        await A.click('#pickList .prow:has-text("Yoni") .ptog'); await A.wait_for_timeout(500)
+        result('switching someone off removes their dot', await A.locator('.fdot').count() == 1)
+        result('pill shows "1 of 2"', (await A.inner_text('#friendsPill')).strip() == '1 of 2', await A.inner_text('#friendsPill'))
+        await A.click('#pickDone'); await A.click('#fitBtn'); await A.wait_for_timeout(3500)
+        result('ALL leaves out people you hid', not await A.evaluate(inb))
+        await A.reload(); await A.wait_for_function('window.__ski && window.__ski.map && window.__ski.map.loaded() && window.__ski.gstate', timeout=60000); await A.wait_for_timeout(800)
+        await A.evaluate('window.__ski._mode("gps")'); await fix(A, a0[0], a0[1])
+        result('your choice is remembered on this phone', (await A.inner_text('#friendsPill')).strip() == '1 of 2', await A.inner_text('#friendsPill'))
+        await A.click('#friendsPill'); await A.wait_for_timeout(400)
+        await A.click('#pickList .prow:has-text("Dana") .pwho'); await A.wait_for_timeout(2500)
+        c = await A.evaluate('window.__ski.map.getCenter()')
+        result('tapping a name flies to them', abs(c['lat'] - bpt[0]) < 0.003 and abs(c['lng'] - bpt[1]) < 0.003, c)
+        await A.click('#friendsPill'); await A.click('#pickSeg button[data-v="all"]'); await A.click('#pickDone')
+        rpc('remove_member', {'p_secret': g['secret'], 'p_member': Y['member_id']})
+        await A.evaluate('window.__ski.refreshGroup()'); await A.wait_for_timeout(600)
 
         await A.evaluate('document.querySelector(".fdot").click()'); await A.wait_for_timeout(500)
         result('friend card opens', await A.is_visible('#friendSheet'))
