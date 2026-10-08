@@ -354,6 +354,19 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .jchecks svg{flex:none}
 .jbottom{margin-top:auto}
 .jcol{display:grid;gap:8px}
+
+/* ===== map lines: done filled in, ahead outlined, dotted track ===== */
+.stepnum.next{background:var(--ink);color:var(--panel);font:700 13px/1 var(--f-ui);height:auto;padding:5px 10px;border-radius:10px;border:2px solid var(--panel)}
+.lowzoom .stepnum.next{display:block}
+.lg-ahead{background:var(--panel)!important;box-shadow:inset 0 0 0 2.5px var(--p-red);height:9px!important;border-radius:5px!important}
+.lg-done{background:var(--p-red)!important;height:7px!important}
+.lg-you{background:radial-gradient(circle,#334155 1.8px,transparent 2.2px) 0 50%/7px 7px repeat-x!important;height:7px!important;border-radius:0!important}
+.donechip{position:absolute;left:74px;top:12px;z-index:500;display:none;align-items:center;gap:7px;background:var(--panel);color:var(--ink);border:2px solid #000;border-radius:18px;padding:6px 12px 6px 7px;font:700 .95rem var(--f-ui);pointer-events:none}
+.app.tracking .donechip:not([hidden]){display:flex}
+.donechip svg{flex:none}
+.badge.daily{background:#475569}
+@media (max-height:700px){#menuSettings .grow{min-height:44px}#menuSettings .note{display:none}}
+.srow.fold .t small{display:block;font-weight:500;color:var(--muted);font-size:.85rem}
 /* ===== redesign: map-first home, floating tracking card, Sun mode, day recap ===== */
 .daybar{display:none!important}
 .top{grid-row:1}.mapwrap{grid-row:2}.bottom{grid-row:3}
@@ -456,7 +469,8 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
     <div class="placesbox" id="placesBox" hidden><b>Show on map</b><div id="placeCats" style="display:grid;gap:6px"></div></div>
     <div class="homebanner" id="homeBanner" hidden></div>
     <div class="offroute" id="offroute" hidden>Off route. Head back to the highlighted line.</div>
-    <div class="legend" id="legend" aria-hidden="true"><span><i class="lg-run"></i>Ski down ›</span><span><i class="lg-lift"></i>Lift up »</span></div>
+    <div class="donechip" id="doneChip" hidden><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#15803d"/><path d="M7 12.5l3.2 3.2L17 8.8" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span></span></div>
+    <div class="legend" id="legend" aria-hidden="true"><span><i class="lg-ahead"></i>Ahead</span><span><i class="lg-done"></i>Done</span><span><i class="lg-you"></i>You</span></div>
     <div class="mapbtns">
       <button class="mbtn" id="followBtn" type="button" aria-pressed="true" title="Follow my location">ME</button>
       <button class="mbtn" id="compassBtn" type="button" aria-pressed="false" title="Show which way I'm facing" aria-label="Compass"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z" fill="currentColor"/></svg></button>
@@ -562,6 +576,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
       <div class="group">
         <button class="grow link" id="menuRunsList" type="button">Every run in the plan</button>
         <button class="grow link" id="simBtn" type="button">Test mode</button>
+        <button class="grow link" id="clearHist" type="button">Clear tracking history</button>
         <a class="grow link" id="otherApp" href="#">Practice in NYC</a>
       </div>
       <p class="note">Chairs and gondolas only, no T-bars, every lift ridden up. Piste data from OpenStreetMap. Check lift status on the day.</p>
@@ -857,22 +872,26 @@ const detailFC = {
 };
 const POI_LABEL = Object.assign({food:'Restaurant', drink:'Café / bar', park:'Snow park', fun:'Activity', view:'Viewpoint', svc:'Services'}, CONFIG.poiLabel||{});
 const poiFC = { type:'FeatureCollection', features: POIS.map(([c,n,lon,lat,x,alt],i)=>({type:'Feature', id:i, properties:{c,n,x,alt:alt||0, mtn: (alt||0)>=1400 ? 1:0}, geometry:{type:'Point',coordinates:[lon,lat]}})) };
-function catsOn(){ const on=Object.keys(placeCats).filter(k=>placeCats[k]); return on.length?on:['none']; }
+var TRACKING_POI=false, poiTrackOn=false;
+function catsOn(){ if(TRACKING_POI && !poiTrackOn) return ['none']; const on=Object.keys(placeCats).filter(k=>placeCats[k]); return on.length?on:['none']; }
 function poiFilter(){ return ['all', ['in',['get','c'],['literal',catsOn()]], ['any',['==',['get','mtn'],1],['!=',['get','c'],'food']]]; }
 function poiValleyFilter(){ return ['all', ['in',['get','c'],['literal',catsOn()]], ['==',['get','c'],'food'], ['==',['get','mtn'],0]]; }
 /* where I've been: a trail of every good fix (~8 m apart), lifts drawn faint; kept per day */
-const TRAIL = '#7c3aed';
+const TRAIL = '#334155';
 function trailFC(){
   const f=[]; let seg=null;
-  for(const q of (st.trail||[])){ const lift=q[2]===1; if(!seg || seg.lift!==lift){ const prev = seg && seg.c.length ? seg.c[seg.c.length-1] : null; seg={lift, c: prev?[prev]:[]}; f.push(seg); } seg.c.push([q[1],q[0]]); }
+  for(const q of (st.trail||[])){ const lift=q[2]===1; if(!seg || seg.lift!==lift || q[3]){ const prev = !q[3] && seg && seg.c.length ? seg.c[seg.c.length-1] : null; seg={lift, c: prev?[prev]:[]}; f.push(seg); } seg.c.push([q[1],q[0]]); }
   return { type:'FeatureCollection', features: f.filter(s=>s.c.length>1).map(s=>({type:'Feature', properties:{lift:s.lift}, geometry:{type:'LineString', coordinates:s.c}})) };
 }
 let trailDirty=0, trailT=0;
 function drawTrail(now){ if(!mapReady || !map.getSource('trail')) return; const n=performance.now(); if(!now && n-trailT<1500){ trailDirty=1; return; } trailT=n; trailDirty=0; map.getSource('trail').setData(trailFC()); }
 function addTrail(ll, lift){
   const tr=st.trail||(st.trail=[]); const l=tr[tr.length-1];
-  if(l && hav([l[0],l[1]], ll) < 8 && (l[2]===1)===lift) return;
-  tr.push([+ll[0].toFixed(6), +ll[1].toFixed(6), lift?1:0]);
+  // a new piece after Stop/Start or a jump (phone off, no GPS): never draw a straight line across the gap
+  const brk = !!(l && (st.trailBreak || hav([l[0],l[1]], ll) > 300));
+  if(!brk && l && hav([l[0],l[1]], ll) < 8 && (l[2]===1)===lift) return;
+  const q=[+ll[0].toFixed(6), +ll[1].toFixed(6), lift?1:0]; if(brk) q.push(1); st.trailBreak=false;
+  tr.push(q);
   if(tr.length>20000) tr.splice(0, tr.length-20000);
   drawTrail(false);
 }
@@ -914,14 +933,13 @@ function styleFor(){
       { id:'goal-done-case', type:'line', source:'pistes', filter:['==',['get','k'],'R'], layout:{visibility:'none','line-cap':'round','line-join':'round'}, paint:{'line-color':'#ffffff','line-width':['interpolate',['linear'],['zoom'],11,5,15,9],'line-opacity':['case',SK,1,0]} },
       { id:'goal-done', type:'line', source:'pistes', filter:['==',['get','k'],'R'], layout:{visibility:'none','line-cap':'round','line-join':'round'}, paint:{'line-color':diffColor,'line-width':['interpolate',['linear'],['zoom'],11,3,15,5.5],'line-opacity':['case',SK,1,0]} },
       // route
-      { id:'trail-case', type:'line', source:'trail', filter:['!',['get','lift']], layout:{'line-cap':'round','line-join':'round'}, paint:{'line-color':'#ffffff','line-width':['interpolate',['linear'],['zoom'],11,4,16,8],'line-opacity':.9} },
-      { id:'trail', type:'line', source:'trail', layout:{'line-cap':'round','line-join':'round'}, paint:{'line-color':TRAIL,'line-width':['interpolate',['linear'],['zoom'],11,2,16,4.5],'line-opacity':['case',['get','lift'],.55,1],'line-dasharray':[1,0]} },
-      { id:'route-glow', type:'line', source:'route', filter:['get','active'], layout:{'line-cap':'round','line-join':'round'}, paint:{'line-color':t.route,'line-width':18,'line-blur':3,'line-opacity':.55} },
-      { id:'route-case', type:'line', source:'route', layout:{'line-cap':'round','line-join':'round'}, paint:{'line-color':'#ffffff','line-width':['case',['get','active'],11,8],'line-opacity':['case',['get','done'],.3,1]} },
-      { id:'route', type:'line', source:'route', filter:['!',['get','lift']], layout:{'line-cap':'round','line-join':'round'}, paint:{'line-color':['match',['get','col'],'green',t.green,'red',t.red,'black',t.black,t.blue],'line-width':['case',['get','active'],6.5,5],'line-opacity':['case',['get','done'],.3,1]} },
-      { id:'route-lift', type:'line', source:'route', filter:['get','lift'], layout:{'line-cap':'butt','line-join':'round'}, paint:{'line-color':t.lift,'line-width':['case',['get','active'],5,4],'line-opacity':['case',['get','done'],.3,1],'line-dasharray':[1.2,1]} },
-      { id:'route-arrows', type:'symbol', source:'route', filter:['!',['get','lift']], layout:{'symbol-placement':'line','symbol-spacing':['interpolate',['linear'],['zoom'],13,70,16,110],'icon-image':'arr-run','icon-size':['case',['get','active'],1.15,.85],'icon-allow-overlap':true,'icon-ignore-placement':true,'icon-rotation-alignment':'map','icon-pitch-alignment':'map'}, paint:{'icon-opacity':['case',['get','done'],.3,1]} },
-      { id:'lift-arrows', type:'symbol', source:'route', filter:['get','lift'], layout:{'symbol-placement':'line','symbol-spacing':['interpolate',['linear'],['zoom'],13,60,16,95],'icon-image':'arr-lift','icon-size':['case',['get','active'],1,.85],'icon-allow-overlap':true,'icon-ignore-placement':true,'icon-rotation-alignment':'map','icon-pitch-alignment':'map'}, paint:{'icon-opacity':['case',['get','done'],.3,1]} },
+      { id:'route-case', type:'line', source:'route', layout:{'line-cap':'round','line-join':'round'}, paint:{'line-color':'#ffffff','line-width':['case',['get','lift'],8,['get','active'],15,12],'line-opacity':['case',['get','far'],.4,.95]} },
+      { id:'route', type:'line', source:'route', filter:['!',['get','lift']], layout:{'line-cap':'round','line-join':'round'}, paint:{'line-color':['case',['get','daily'],'#64748b',['match',['get','col'],'green',t.green,'red',t.red,'black',t.black,t.blue]],'line-width':['case',['get','active'],11,['get','done'],8,9],'line-opacity':['case',['get','far'],.4,1]} },
+      { id:'route-core', type:'line', source:'route', filter:['all',['!',['get','lift']],['!',['get','done']]], layout:{'line-cap':'round','line-join':'round'}, paint:{'line-color':'#ffffff','line-width':['case',['get','active'],5,4],'line-opacity':['case',['get','far'],.4,1]} },
+      { id:'route-lift-done', type:'line', source:'route', filter:['all',['get','lift'],['get','done']], layout:{'line-cap':'round','line-join':'round'}, paint:{'line-color':['case',['get','daily'],'#64748b',t.lift],'line-width':4.5} },
+      { id:'route-lift', type:'line', source:'route', filter:['all',['get','lift'],['!',['get','done']]], layout:{'line-cap':'butt','line-join':'round'}, paint:{'line-color':['case',['get','daily'],'#64748b',t.lift],'line-width':['case',['get','active'],4.5,3.5],'line-opacity':['case',['get','far'],.4,1],'line-dasharray':[2,1.4]} },
+      { id:'lift-arrows', type:'symbol', source:'route', filter:['all',['get','lift'],['!',['get','done']]], layout:{'symbol-placement':'line-center','icon-image':'arr-lift','icon-size':1,'icon-allow-overlap':true,'icon-ignore-placement':true,'icon-rotation-alignment':'map','icon-pitch-alignment':'map'} },
+      { id:'trail', type:'line', source:'trail', layout:{'line-cap':'round','line-join':'round'}, paint:{'line-color':TRAIL,'line-width':['interpolate',['linear'],['zoom'],11,3,16,5],'line-opacity':['case',['get','lift'],.45,.85],'line-dasharray':[0.1,2]} },
       { id:'bg-run-arrows', type:'symbol', source:'pistes', filter:['all',['==',['get','k'],'R'],['==',['get','reach'],1]], minzoom:13.8, layout:{'symbol-placement':'line','symbol-spacing':140,'icon-image':'arr-sm','icon-size':.75,'icon-rotation-alignment':'map','icon-pitch-alignment':'map','icon-allow-overlap':false}, paint:{'icon-opacity':.9} },
       { id:'bg-lift-arrows', type:'symbol', source:'pistes', filter:['all',['==',['get','k'],'L'],['==',['get','reach'],1]], minzoom:13, layout:{'symbol-placement':'line','symbol-spacing':120,'icon-image':'arr-lift','icon-size':.6,'icon-rotation-alignment':'map','icon-pitch-alignment':'map','icon-allow-overlap':false}, paint:{'icon-opacity':.85} },
       { id:'places', type:'symbol', source:'places', filter:['match',['get','t'],['town','village'],true,false], minzoom:10.5, layout:{'text-field':['get','n'],'text-font':['Noto Sans Medium'],'text-size':['interpolate',['linear'],['zoom'],11,12,15,15],'text-transform':'uppercase','text-letter-spacing':.08}, paint:{'text-color':t.ink,'text-halo-color':t.halo,'text-halo-width':2,'text-opacity':.8} },
@@ -992,15 +1010,36 @@ for(const lid of ['pois','pois-valley']){
 }
 map.on('load',()=>{ mapReady=true; drawRoute(); paintSkied(); if(view==='prog') applyView(); });
 
+/* daily tracks: the same steps that open and close every day of the week (walk to the first lift, the home run) */
+function dailySet(){
+  const out=new Set(), n=WEEK.length; if(n<3 || !steps) return out;
+  const cnt={}; WEEK.forEach(d=>{ new Set(d.steps.map(s=>s.type+':'+s.name)).forEach(k=>cnt[k]=(cnt[k]||0)+1); });
+  const daily=s=>s.type!=='end' && cnt[s.type+':'+s.name]>=n;
+  for(let i=0;i<steps.length && daily(steps[i]);i++) out.add(i);
+  for(let i=steps.length-1;i>=0;i--){ if(steps[i].type==='end') continue; if(!daily(steps[i])) break; out.add(i); }
+  if(out.size >= steps.length-1) out.clear();
+  return out;
+}
+function shortName(s){ return !s ? '' : s.type==='run' && s.legs && s.legs.length ? s.legs[0].name : s.name; }
 function routeData(){
-  const f=[];
+  const f=[], D=dailySet(), me=(mode!=='off') ? (myPos()||[0,0]) : null;
+  const add=(c,col,props)=>{ if(c && c.length>1) f.push({ type:'Feature', properties:{...props, col}, geometry:{ type:'LineString', coordinates:c.map(x=>[x[1],x[0]]) } }); };
   for(const s of steps){
     if(s.type==='end') continue;
-    const props = { done:s.i<cur, active:s.i===cur, lift:s.type==='lift' };
-    if(s.type==='run' && s.segs) for(const g of s.segs) f.push({ type:'Feature', properties:{...props, col:g.color}, geometry:{ type:'LineString', coordinates:g.c.map(c=>[c[1],c[0]]) } });
-    else f.push({ type:'Feature', properties:{...props, col:s.color||''}, geometry:{ type:'LineString', coordinates:s.coords.map(c=>[c[1],c[0]]) } });
+    const base={ lift:s.type==='lift', daily:D.has(s.i), far: !!me && s.i>cur+2 };
+    const parts = (s.type==='run' && s.segs) ? s.segs.map(g=>({col:g.color, c:g.c})) : [{col:s.color||'', c:s.coords}];
+    if(s.i!==cur){ for(const p of parts) add(p.c, p.col, {...base, done:s.i<cur, active:false}); continue; }
+    // the step I'm on: behind me is filled in, the rest is still to ski
+    let bp=-1, bk=-1, bd=60;
+    if(me) parts.forEach((p,pi)=>p.c.forEach((x,k)=>{ const d=hav(me,[x[0],x[1]]); if(d<bd){ bd=d; bp=pi; bk=k; } }));
+    parts.forEach((p,pi)=>{
+      if(bp<0 || pi>bp) add(p.c, p.col, {...base, done:false, active:true});
+      else if(pi<bp) add(p.c, p.col, {...base, done:true, active:false});
+      else { add(p.c.slice(0,bk+1), p.col, {...base, done:true, active:false}); add(p.c.slice(bk), p.col, {...base, done:false, active:true}); }
+    });
   }
-  f.sort((a,b)=>(a.properties.active?1:0)-(b.properties.active?1:0));
+  const rank=p=>p.done?0:p.active?2:1;
+  f.sort((a,b)=>rank(a.properties)-rank(b.properties));
   return { type:'FeatureCollection', features:f };
 }
 let stepMarkers = [];
@@ -1013,7 +1052,21 @@ function buildMarkers(){
 buildMarkers();
 function drawRoute(){
   if(mapReady) map.getSource('route').setData(routeData());
-  stepMarkers.forEach(({g,m})=>{ const el=m.getElement(); el.style.opacity = g.idx.every(i=>i<cur) ? .35 : 1; el.classList.toggle('on', g.idx.includes(cur)); el.hidden = view!=='nav'; });
+  // while tracking only the next step is labelled; numbers come back when you stop
+  const trk = mode!=='off', nx = Math.min(cur+1, steps.length-1);
+  stepMarkers.forEach(({g,m})=>{ const el=m.getElement(); if(el.dataset.nums==null) el.dataset.nums=el.textContent;
+    const isNext = trk && g.idx.includes(nx);
+    el.textContent = isNext ? 'Next · '+shortName(steps[nx]) : el.dataset.nums; el.classList.toggle('next', isNext);
+    el.style.opacity = (!trk && g.idx.every(i=>i<cur)) ? .35 : 1; el.classList.toggle('on', !trk && g.idx.includes(cur));
+    el.hidden = view!=='nav' || (trk && !isNext); });
+  renderDoneChip();
+}
+function renderDoneChip(){
+  const c=$('doneChip'); if(!c || !steps) return;
+  const all=steps.filter(s=>s.type!=='end'), done=steps.slice(0,cur).filter(s=>s.type!=='end');
+  const reds=done.filter(s=>s.type==='run' && (s.color==='red' || (s.legs||[]).some(l=>l.color==='red'))).length;
+  c.hidden = !done.length;
+  c.lastChild.textContent = done.length+' of '+all.length+' done'+(reds ? ' · '+reds+' red'+(reds>1?'s':'') : '');
 }
 function set3D(on){
   is3D=on; $('dimBtn').textContent = on ? '2D' : '3D'; $('dimBtn').setAttribute('aria-pressed', on?'true':'false');
@@ -1154,10 +1207,10 @@ try{ new ResizeObserver(()=>fitMapBtns()).observe(document.querySelector('.mapwr
 function applyView(){
   const nav = view==='nav';
   $('navPanel').hidden = !nav; $('progPanel').hidden = nav; document.querySelector('.app').classList.toggle('prog-view', !nav); fitMapBtns();
-  $('legend').innerHTML = nav ? '<span><i class="lg-run"></i>Ski down ›</span><span><i class="lg-lift"></i>Lift up »</span>' : '<span><i class="lg-run"></i>Skied</span><span><i class="lg-left"></i>Still to ski</span>';
+  $('legend').innerHTML = nav ? '<span><i class="lg-ahead"></i>Ahead</span><span><i class="lg-done"></i>Done</span><span><i class="lg-you"></i>You</span>' : '<span><i class="lg-run"></i>Skied</span><span><i class="lg-left"></i>Still to ski</span>';
   if(!mapReady){ drawRoute(); return; }
   const vis2 = (id,on)=>map.setLayoutProperty(id,'visibility',on?'visible':'none');
-  ['route-glow','route-case','route','route-lift','route-arrows','lift-arrows'].forEach(id=>vis2(id,nav));
+  ['route-case','route','route-core','route-lift-done','route-lift','lift-arrows'].forEach(id=>vis2(id,nav));
   ['goal-plan','goal-left','goal-done-case','goal-done'].forEach(id=>vis2(id,!nav));
   map.setPaintProperty('runs','line-opacity', nav ? ['case',['==',['get','reach'],1],.9,.22] : .18);
   map.setPaintProperty('run-case','line-opacity', nav ? .7 : .2);
@@ -1250,7 +1303,7 @@ function renderPlaces(){
   const box=$('placeCats'); box.textContent='';
   for(const [k,n] of CAT_NAMES){ const b=document.createElement('button'); b.type='button'; b.className='pcat'; b.setAttribute('aria-pressed', placeCats[k]?'true':'false');
     const i=document.createElement('i'); i.style.background=POI_COL[k]; b.append(i, n);
-    b.onclick=()=>{ placeCats[k]=placeCats[k]?0:1; persist(); renderPlaces(); if(mapReady){ map.setFilter('pois', poiFilter()); map.setFilter('pois-valley', poiValleyFilter()); } };
+    b.onclick=()=>{ if(TRACKING_POI && !poiTrackOn){ poiTrackOn=true; for(const x in placeCats) placeCats[x]=0; } placeCats[k]=placeCats[k]?0:1; persist(); renderPlaces(); if(mapReady){ map.setFilter('pois', poiFilter()); map.setFilter('pois-valley', poiValleyFilter()); } };
     box.appendChild(b); }
 }
 $('placesBtn').onclick=()=>{ const h=!$('placesBox').hidden; $('placesBox').hidden=h; $('placesBtn').setAttribute('aria-pressed', h?'false':'true'); if(!h) renderPlaces(); };
@@ -1363,7 +1416,22 @@ function renderList(){
   const box = $('stepList'); box.textContent='';
   $('sheetTitle').textContent='Day '+DAY.day+' · '+DAY.title;
   $('sheetSub').textContent=DAY.date+' · '+(units==='imp'?(DAY.km*0.6214).toFixed(1)+' mi':DAY.km+' km')+' of runs · '+DAY.lifts+(DAY.lifts===1?' lift':' lifts')+' · '+(CONFIG.flat && DAY.end && DAY.end.name ? DAY.end.name : CONFIG.endName)+' '+DAY.arrive;
+  const D = dailySet();
   steps.forEach((s,i)=>{
+    if(D.has(i) && !foldOpen){
+      // the same steps every day fold into one row; tap to open them
+      if(D.has(i-1) && i>0) return;
+      let j=i; while(D.has(j+1)) j++;
+      const grp=steps.slice(i,j+1), f=document.createElement('button'); f.type='button';
+      f.className='srow fold'+(cur>=i && cur<=j ? ' cur' : '')+(cur>j ? ' done' : '');
+      f.innerHTML='<div class="badge daily"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a3 3 0 0 1 3-3h15"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 0 1-3 3H3"/></svg></div><div class="t"></div><div class="m"><span></span><small></small></div>';
+      const t=f.querySelector('.t'); t.textContent=(i===0 ? 'Every morning: ' : 'Every day home: ')+grp.map(shortName).join(' → ');
+      const sm=document.createElement('small'); sm.textContent='Same every day · '+grp.length+' step'+(grp.length>1?'s':'')+' · tap to see'; t.appendChild(sm);
+      f.querySelector('.m span').textContent = grp[0].at || '';
+      f.querySelector('.m small').textContent = fmtLen(grp.reduce((a,x)=>a+(x.len||0),0));
+      f.onclick=()=>{ foldOpen=true; renderList(); };
+      box.appendChild(f); return;
+    }
     const r = document.createElement('button'); r.type='button';
     r.className = 'srow' + (i===cur?' cur':'') + (i<cur?' done':'');
     r.innerHTML = '<div class="badge '+stepColor(s)+'">'+(i+1)+'</div><div class="t"></div><div class="m"><span></span><small></small></div>';
@@ -1375,6 +1443,20 @@ function renderList(){
     if(DAY.lunch===i){ const l=document.createElement('div'); l.className='lunchrow'; l.textContent='Sandwich stop · about 40 min'; box.appendChild(l); }
   });
 }
+/* Settings > Clear tracking history: every day's track, km, runs skied and changed plans */
+var foldOpen=false;
+$('clearHist').onclick=()=>{
+  const b=$('clearHist');
+  if(mode!=='off'){ toast('Stop tracking first, then clear.'); return; }
+  if(b.dataset.sure!=='1'){ b.dataset.sure='1'; b.textContent='Tap again: clears every day’s track, km and runs'; setTimeout(()=>{ b.dataset.sure=''; b.textContent='Clear tracking history'; }, 5000); return; }
+  b.dataset.sure=''; b.textContent='Clear tracking history';
+  store.vis={}; store.skied=[]; visFromStore();
+  Object.assign(st, {trail:[], dist:0, vert:0, max:0, elapsed:0, last:null, onLift:false}); cur=0; store.days={};
+  try{ localStorage.setItem(KEY, JSON.stringify(store)); }catch(e){}
+  if(NATIVE) toNative({cmd:'clear'});
+  selectDay(di); drawTrail(true); paintSkied(); renderProgress(); renderMenu();
+  toast('Tracking history cleared. Fresh start.');
+};
 function renderFollow(){ const b=$('followBtn2'); if(!b) return; b.setAttribute('aria-pressed', store.follow?'true':'false'); }
 $('followBtn2').onclick=()=>{ store.follow=!store.follow; if(!store.follow){ st.offSince=null; $('offroute').hidden=true; } persist(); renderFollow(); renderStep(); };
 renderFollow();
@@ -1489,6 +1571,7 @@ function onFix(p){
   if(snap) setYou(snap, Math.min(p.acc||10, 8));
   if(good && !st.onLift) markCoverage(here, Math.min(p.acc||15, 20));
   if(good) addTrail(here, !!st.onLift);
+  if(good && mode!=='off' && Date.now()-(st.rdT||0) > 4000){ st.rdT=Date.now(); drawRoute(); }
   if(good && typeof postPosition==='function') postPosition(here, p);
   updateProgress(snap ? {...p, lat:snap[0], lon:snap[1]} : p);
   // following a different run than suggested for a while: quietly suggest a new way back into the plan
@@ -1529,13 +1612,13 @@ async function keepAwake(){ try{ if('wakeLock' in navigator) wakeLock = await na
 document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible' && mode!=='off') keepAwake(); });
 function startGPS(){
   if(NATIVE){
-    stopSim(); mode='gps'; st.last=null; st.sm=null; st.prevSp=null; st.ema=null; st.lastT=null;
+    stopSim(); mode='gps'; st.last=null; st.sm=null; st.prevSp=null; st.ema=null; st.lastT=null; st.trailBreak=true;
     setPill('Finding GPS…','live'); $('goBtn').textContent='Stop'; $('goBtn').classList.add('stop'); setTrackUI(true);
     toNative({cmd:'start', base:{distM:st.dist||0, maxMps:st.max||0, vertM:st.vert||0, elapsedS:st.elapsed||0}}); nativeStepKey=null; nativeStep(); sendPlanToWatch(); keepAwake(); return;
   }
   if(!('geolocation' in navigator)){ setPill('No GPS here','err'); return; }
   stopSim();
-  mode='gps'; st.last=null; st.sm=null; st.prevSp=null; st.ema=null; st.lastT=null;
+  mode='gps'; st.last=null; st.sm=null; st.prevSp=null; st.ema=null; st.lastT=null; st.trailBreak=true;
   setPill('Finding GPS…','live'); $('goBtn').textContent='Stop'; $('goBtn').classList.add('stop'); setTrackUI(true);
   keepAwake();
   watchId = navigator.geolocation.watchPosition(pos=>{
@@ -1633,6 +1716,8 @@ function renderHome(){
 }
 function setTrackUI(on){
   APP.classList.toggle('tracking', !!on);
+  TRACKING_POI=!!on; poiTrackOn=false; if(mapReady){ map.setFilter('pois', poiFilter()); map.setFilter('pois-valley', poiValleyFilter()); }
+  if(typeof drawRoute==='function' && steps) drawRoute();
   renderHome(); fitMapBtns();
   if(on){ const k=dayKey(WEEK[di].day), d=store.days[k]||(store.days[k]={}); if(!d.startSkied) d.startSkied=[...skiedWays]; }
 }
@@ -2112,7 +2197,7 @@ tellNative(); groupLoop(); refreshGroup(); renderFriendsPill();
 { const q=new URLSearchParams(location.search).get('join') || (location.hash.match(/join=([A-Za-z0-9-]+)/)||[])[1]; if(q) setTimeout(()=>startJoin(q), 300); }
 
 /* expose for automated tests */
-window.__ski = { map, st, get steps(){return steps;}, get cur(){return cur;}, get di(){return di;}, startSim, stopSim, onFix, setX:x=>simX=x, selectDay, groupStats, openProgress, closeProgress, skied:()=>skiedWays.size, recap:openRecap, startJoin, refreshGroup, routeTo, get grp(){return grp;}, get gstate(){return gstate;}, matchFix, get match(){return st.match;}, _mode(m){ mode=m; }, setSun, planFromHere, applySteps, get liftStat(){return liftStat;}, set liftStat(v){liftStat=v;}, renderLifts, wearFor, resetPlan, setWx(v){ wx=v; renderWx(); } };
+window.__ski = { map, st, get steps(){return steps;}, get cur(){return cur;}, get di(){return di;}, startSim, stopSim, onFix, setX:x=>simX=x, selectDay, groupStats, openProgress, closeProgress, skied:()=>skiedWays.size, recap:openRecap, routeData, dailySet, trailFC, startJoin, refreshGroup, routeTo, get grp(){return grp;}, get gstate(){return gstate;}, matchFix, get match(){return st.match;}, _mode(m){ mode=m; }, setSun, planFromHere, applySteps, get liftStat(){return liftStat;}, set liftStat(v){liftStat=v;}, renderLifts, wearFor, resetPlan, setWx(v){ wx=v; renderWx(); } };
 
 renderUnits(); renderDayBar(); renderStats(); renderStep(); applyView(); renderHome(); applySun();
 if(NATIVE){ toNative({cmd:'ready'}); toNative({cmd:'ctx', lifts: liftLines, title: DAY.title, flat: !!CONFIG.flat}); sendPlanToWatch(); nativeStep(); }

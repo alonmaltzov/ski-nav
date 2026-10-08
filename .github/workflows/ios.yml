@@ -31,6 +31,9 @@ jobs:
         run: pip install playwright psycopg2-binary && python -m playwright install --with-deps chromium
       - name: Run tour
         run: python qa/run_web.py
+      - name: Map lines test (done/ahead, track gaps, daily steps, clear history)
+        timeout-minutes: 6
+        run: python qa/lines_test.py
       - name: Group test (organizer + friend, against the real schema on Postgres)
         timeout-minutes: 8
         env: { PGPASSWORD: qa }

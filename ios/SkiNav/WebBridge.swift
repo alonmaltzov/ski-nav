@@ -65,6 +65,9 @@ final class WebBridge: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
             LocationService.shared.compass((body["on"] as? Bool) ?? false)
         case "log":
             print("[web]", body["msg"] ?? "")
+        case "clear":
+            // Settings > Clear tracking history: the saved GPS logs go too
+            LocationService.shared.clearSaved()
         case "group":
             GroupLink.shared.configure(body)
         case "plan":
