@@ -95,7 +95,10 @@ ul{margin:0 0 6px;padding-left:20px;display:grid;gap:8px}
   if (!/^[A-Z0-9-]{4,16}$/.test(code)) { document.getElementById('err').hidden = false; code = ''; }
   var web = 'index.html' + (code ? '?join=' + encodeURIComponent(code) : '');
   var ua = navigator.userAgent || '';
-  var isIOS = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  // preview another phone's page: add &os=android or &os=ios to the link (for testing)
+  var force = (q.get('os') || '').toLowerCase();
+  if (force === 'android') ua = 'Android';
+  var isIOS = force === 'ios' || (force !== 'android' && (/iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)));
 
   if (isIOS) {
     document.getElementById('ios').hidden = false;
