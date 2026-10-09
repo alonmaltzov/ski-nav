@@ -1605,7 +1605,8 @@ function onFix(p){
   if(good && !st.onLift) markCoverage(here, Math.min(p.acc||15, 20));
   if(good) addTrail(here, !!st.onLift);
   if(good && mode!=='off' && Date.now()-(st.rdT||0) > 4000){ st.rdT=Date.now(); drawRoute(); }
-  if(good && typeof postPosition==='function') postPosition(here, p);
+  // friends need a rough position too: share fixes up to 100 m (city canyons, browsers often report 30 to 60 m)
+  if(typeof postPosition==='function' && (p.acc||99) <= 100) postPosition(good ? here : ll, p);
   updateProgress(snap ? {...p, lat:snap[0], lon:snap[1]} : p);
   // following a different run than suggested for a while: quietly suggest a new way back into the plan
   if(good && mode!=='off' && st.match && !st.onLift && (p.speed==null || p.speed>1)){

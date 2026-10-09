@@ -90,6 +90,14 @@ async def main():
             gb2 = rpc('trip_state', {'p_secret': (await B.evaluate('window.__ski.grp'))['secret']})
         posted = any(m['pos'] for m in gb2['members'] if m['name'] == 'Dana Levi')
         result('friend\'s phone sends its position while skiing (phone time %s:00)' % os.environ.get('QA_HOUR', '11'), posted)
+        # a rough browser fix (48 m) still reaches the group, and the organizer's map picks it up on its own (15 s poll)
+        await B.wait_for_timeout(20500)   # phones send at most every 20 s
+        await B.evaluate('([a,b]) => window.__ski.onFix({lat:a, lon:b, acc:48, speed:1, t:Date.now()+60000})', [bpt[0] + 0.0005, bpt[1]])
+        await B.wait_for_timeout(1500)
+        p48 = [m['pos'] for m in rpc('trip_state', {'p_secret': (await B.evaluate('window.__ski.grp'))['secret']})['members'] if m['name'] == 'Dana Levi'][0]
+        result('a rough 48 m fix is still shared', p48 is not None and abs(p48['lat'] - (bpt[0] + 0.0005)) < 0.0002, p48 and p48.get('acc'))
+        await A.wait_for_function("document.querySelectorAll('.fdot').length >= 1", timeout=20000)
+        result('friend shows up on the other phone without a refresh', await A.locator('.fdot').count() >= 1)
         result('own dot is drawn in my group colour', (await B.evaluate("getComputedStyle(document.querySelector('.youdot')).backgroundColor")) == 'rgb(124, 58, 237)', await B.evaluate("getComputedStyle(document.querySelector('.youdot')).backgroundColor"))
         if not posted:
             rpc('post_position', {'p_secret': (await B.evaluate('window.__ski.grp'))['secret'], 'p_lat': bpt[0], 'p_lon': bpt[1], 'p_acc': 8, 'p_speed': 9, 'p_on_lift': False, 'p_run': 'test run', 'p_km': 4.2})
