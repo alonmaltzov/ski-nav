@@ -61,6 +61,11 @@ jobs:
           set -o pipefail
           BUILD=$((100 + ${{ github.run_number }}))
           echo "BUILD=$BUILD" >> $GITHUB_ENV
+          # the generated Info.plists hard-code the build number, so stamp it into every one
+          for f in SkiNav/Info.plist SkiNavWatch/Info.plist SkiNavWidgets/Info.plist SkiNavWatchWidgets/Info.plist; do
+            /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD" "$f" 2>/dev/null || /usr/libexec/PlistBuddy -c "Add :CFBundleVersion string $BUILD" "$f"
+            echo "$f -> $(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$f")"
+          done
           xcodebuild -project SkiNav.xcodeproj -scheme SkiNav -configuration Release \
             -destination 'generic/platform=iOS' -archivePath build/SkiNav.xcarchive \
             -allowProvisioningUpdates \
