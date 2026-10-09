@@ -65,6 +65,12 @@ final class WebBridge: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
             LocationService.shared.compass((body["on"] as? Bool) ?? false)
         case "log":
             print("[web]", body["msg"] ?? "")
+        case "reloadApp":
+            // "Update" tapped: open the newest copy (tracking carries on natively and the page resumes it)
+            if let web = webView, let start = WebUpdater.startPage() {
+                print("[app] reloading into", start.fromDownload ? "downloaded" : "built-in", "web app")
+                web.loadFileURL(start.url, allowingReadAccessTo: start.url.deletingLastPathComponent())
+            }
         case "clear":
             // Settings > Clear tracking history: the saved GPS logs go too
             LocationService.shared.clearSaved()

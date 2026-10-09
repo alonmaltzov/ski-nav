@@ -402,6 +402,11 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .linkrow{display:grid;grid-template-columns:1fr;gap:8px}
 .linkrow>[hidden]{display:none}
 
+
+/* ===== update ready bar ===== */
+.updbar{position:fixed;left:12px;right:12px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:3000;display:flex;align-items:center;gap:10px;background:var(--ink);color:var(--panel);border-radius:16px;padding:10px 10px 10px 16px;font:700 1rem var(--f-ui);box-shadow:0 6px 24px rgb(0 0 0/.3)}
+.updbar span{flex:1}
+.updbar .xbtn{background:transparent;color:var(--panel)}
 /* ===== redesign: map-first home, floating tracking card, Sun mode, day recap ===== */
 .daybar{display:none!important}
 .top{grid-row:1}.mapwrap{grid-row:2}.bottom{grid-row:3}
@@ -2326,6 +2331,16 @@ $('gSplitSave').onclick=async()=>{ const v=$('gSplitLink').value.trim(); $('gErr
   if(!/^https:\/\/(www\.)?splitwise\.com\/\S+$/.test(v)){ gErr(new Error('Paste the invite link from Splitwise (it starts with https://www.splitwise.com/).')); return; }
   try{ await savePlan({split:v}); toast('Saved. Everyone sees “Split costs”.'); renderSplit(); }catch(e){ gErr(e); } };
 $('gSplitClear').onclick=async()=>{ try{ await savePlan({split:null}); $('gSplitLink').value=''; renderSplit(); }catch(e){ gErr(e); } };
+/* the iPhone app downloaded a newer version: offer it now instead of waiting for the next launch */
+function showUpdateReady(){
+  if($('updBar')) return;
+  const b=document.createElement('div'); b.id='updBar'; b.className='updbar'; b.setAttribute('role','status');
+  b.innerHTML='<span>New version ready</span><button type="button" class="btn primary sm" id="updGo">Update</button><button type="button" class="xbtn" id="updX" aria-label="Later">✕</button>';
+  document.body.appendChild(b);
+  $('updGo').onclick=()=>{ try{ persist(); }catch(e){} toNative({cmd:'reloadApp'}); };
+  $('updX').onclick=()=>b.remove();
+}
+if(window.__native){ const ev2=window.__native.event; window.__native.event=function(name){ if(name==='updateReady'){ showUpdateReady(); return; } return ev2.apply(this, arguments); }; }
 tellNative(); groupLoop(); refreshGroup(); renderFriendsPill();
 { const q=new URLSearchParams(location.search).get('join') || (location.hash.match(/join=([A-Za-z0-9-]+)/)||[])[1]; if(q) setTimeout(()=>startJoin(q), 300); }
 
