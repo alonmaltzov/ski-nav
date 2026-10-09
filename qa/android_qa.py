@@ -19,6 +19,11 @@ def adb(*a, check=False, timeout=60):
 def shot(name):
     with open(f'{OUT}/{name}.png', 'wb') as f: f.write(subprocess.run(['adb', 'exec-out', 'screencap', '-p'], capture_output=True, timeout=30).stdout)
 
+# CI emulators restart Google Play services for a few minutes after boot; wait until it has settled
+for _ in range(36):
+    if 'crashed service com.google.android.gms' not in adb('logcat', '-d', '-t', '300', 'ActivityManager:W', '*:S'): break
+    adb('logcat', '-c'); time.sleep(10)
+print('Play services settled')
 adb('install', '-r', '-g', APK, check=True, timeout=180)
 for p in ['ACCESS_FINE_LOCATION', 'ACCESS_COARSE_LOCATION', 'POST_NOTIFICATIONS', 'RECORD_AUDIO']:
     adb('shell', 'pm', 'grant', PKG, 'android.permission.' + p)
@@ -31,7 +36,7 @@ adb('shell', 'wm', 'dismiss-keyguard')
 adb('logcat', '-c')
 adb('shell', 'am', 'start', '-n', ACT, '--ez', 'qaTour', 'true', check=True)
 log = open(f'{OUT}/log.txt', 'w')
-proc = subprocess.Popen(['adb', 'logcat', '-v', 'brief', 'SkiNav:D', 'SkiNav-web:*', 'AndroidRuntime:E', 'ActivityManager:W', 'TextToSpeech:*', 'chromium:W', '*:S'], stdout=subprocess.PIPE, text=True)
+proc = subprocess.Popen(['adb', 'logcat', '-v', 'brief', 'SkiNav:D', 'SkiNav-web:*', 'AndroidRuntime:E', 'ActivityManager:I', 'TextToSpeech:*', 'chromium:W', '*:S'], stdout=subprocess.PIPE, text=True)
 t0 = time.time(); n = 0; done = False; loaded = False; tour = []
 os.set_blocking(proc.stdout.fileno(), False)
 while time.time() - t0 < 600:
@@ -83,13 +88,13 @@ def ev(expr):
                 print('  js error for', expr[:60], json.dumps(r)[:300])
             return r.get('result', {}).get('result', {}).get('value')
 
-res('bridge: page sees the app', ev('NATIVE && !!window.__ANDROID && platform()') == 'android')
+res('bridge: page sees the app', ev('!!(window.__ANDROID && window.webkit && window.webkit.messageHandlers.skinav && window.__ski)') is True)
 ev("document.querySelectorAll('[hidden]').length")  # warm up
 # close any sheet the first open shows, then Start
 ev("(function(){ document.querySelectorAll('#onb, .sheet').forEach(e=>{ if(e.id==='onb') e.hidden=true; }); return 1 })()")
 ev("document.getElementById('goBtn').click()")
 time.sleep(3)
-res('tracking started', ev('mode') == 'gps' and 'Skiing' in adb('shell', 'dumpsys', 'notification', '--noredact'), ev('mode'))
+res('tracking started', ev("document.getElementById('goBtn').classList.contains('stop') ? 'gps' : 'off'") == 'gps' and 'Skiing' in adb('shell', 'dumpsys', 'notification', '--noredact'), ev("document.getElementById('goBtn').classList.contains('stop') ? 'gps' : 'off'"))
 shot('track-1-started')
 # a straight line down from Avoriaz, ~12 m per second
 lat0, lon0 = 46.1936, 6.7689
@@ -99,7 +104,7 @@ def feed(i0, i1):
         adb('emu', 'geo', 'fix', f'{lon:.6f}', f'{lat:.6f}', f'{1800 - i * 2}')
         time.sleep(1)
 feed(0, 25)
-on1 = ev('st.dist')
+on1 = ev('window.__ski.st.dist')
 res('fixes reach the page (screen on)', on1 and on1 > 150, f'{on1} m')
 # screen off: the page sleeps, the service keeps collecting
 adb('shell', 'input', 'keyevent', 'KEYCODE_SLEEP'); time.sleep(2)
@@ -108,11 +113,11 @@ notif = adb('shell', 'dumpsys', 'notification', '--noredact')
 m = re.search(r'Skiing · ([0-9.]+) km', notif)
 res('notification counts km with the screen off', m and float(m.group(1)) > 0.3, m.group(0) if m else 'no Skiing notification')
 adb('shell', 'input', 'keyevent', 'KEYCODE_WAKEUP'); time.sleep(1); adb('shell', 'wm', 'dismiss-keyguard'); time.sleep(4)
-on2 = ev('st.dist')
+on2 = ev('window.__ski.st.dist')
 res('screen-off fixes arrive when the screen comes back', on2 and on1 and on2 > on1 + 250, f'{on1} m before, {on2} m after')
 shot('track-2-after-screen-off')
 ev("document.getElementById('goBtn').click()"); time.sleep(3)
-res('Stop ends tracking and the notification', ev('mode') == 'off' and 'Skiing ·' not in adb('shell', 'dumpsys', 'notification', '--noredact'))
+res('Stop ends tracking and the notification', ev("document.getElementById('goBtn').classList.contains('stop') ? 'gps' : 'off'") == 'off' and 'Skiing ·' not in adb('shell', 'dumpsys', 'notification', '--noredact'))
 res('a day log was saved', 'track-' in adb('shell', 'run-as', PKG, 'ls', 'files'))
 ws.close()
 
