@@ -60,12 +60,12 @@ async def main():
         await A.click('#gCopy'); await A.wait_for_timeout(300)
         clip = await A.evaluate('navigator.clipboard.readText()')
         result('copy puts the invite link on the clipboard', clip.endswith(code), clip)
-        CALL = 'https://call.whatsapp.com/voice/TestLink123'
+        CALL = 'https://chat.whatsapp.com/TestGroupInvite123'
         result('organizer sees the group call setup', await A.is_visible('#gCallSet'))
         await A.fill('#gCallLink', 'not a link'); await A.click('#gCallSave'); await A.wait_for_timeout(300)
-        result('a bad call link is refused', await A.is_visible('#gErr'))
+        result('a bad WhatsApp link is refused', await A.is_visible('#gErr'))
         await A.fill('#gCallLink', CALL); await A.click('#gCallSave'); await A.wait_for_timeout(800)
-        result('organizer saves the WhatsApp call link', (await A.get_attribute('#gCall', 'href')) == CALL)
+        result('organizer saves the WhatsApp group link', (await A.get_attribute('#gCall', 'href')) == CALL)
         await shot(A, 'group-call-setup')
 
         # friend opens the invite link
@@ -81,8 +81,8 @@ async def main():
         await B.wait_for_function('window.__ski.grp && window.__ski.gstate && document.getElementById("joinFlow").hidden', timeout=10000)
         gb = await B.evaluate('window.__ski.gstate')
         result('friend joins the trip', len(gb['members']) == 2 and gb['role'] == 'member', [m['name'] for m in gb['members']])
-        result('friend gets "Call the group"', (await B.get_attribute('#pickCall', 'href')) == CALL and (await B.get_attribute('#pickCall', 'target')) == '_blank')
-        result('friend can\'t change the call link', await B.locator('#gCallSet').is_hidden())
+        result('friend gets "Talk with the group"', (await B.get_attribute('#pickCall', 'href')) == CALL and (await B.get_attribute('#pickCall', 'target')) == '_blank')
+        result('friend can\'t change the WhatsApp link', await B.locator('#gCallSet').is_hidden())
         result('join link is removed from the address bar', 'join=' not in B.url, B.url)
         await shot(B, 'joined')
 
@@ -180,7 +180,7 @@ async def main():
         await B.evaluate('window.__ski.refreshGroup()'); await B.wait_for_timeout(1000)
         pv = rpc('trip_state', {'p_secret': g['secret']})['trip']['plan']
         result('organizer\'s plan style is shared with the group', pv.get('variant') == 'black', pv)
-        result('changing the plan style keeps the call link', pv.get('call') == CALL, pv)
+        result('changing the plan style keeps the WhatsApp link', pv.get('call') == CALL, pv)
 
         # friend can't change the plan or remove people
         try: rpc('set_plan', {'p_secret': (await B.evaluate('window.__ski.grp'))['secret'], 'p_plan': {'variant': 'red'}}); ok = False
