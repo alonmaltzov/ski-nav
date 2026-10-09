@@ -35,10 +35,10 @@ enum WebUpdater {
         print("[app] downloaded web app didn't start; using the built-in one")
     }
 
-    /// Check the website for a newer version (at most hourly). Uses ETags, so an unchanged page costs almost nothing.
+    /// Check the website for a newer version (every time the app opens, at most every 2 minutes). Uses ETags, so an unchanged page costs almost nothing.
     static func checkForUpdate(force: Bool = false) {
         guard !disabled else { return }
-        if !force, let last = defaults.object(forKey: "web.checkedAt") as? Date, Date().timeIntervalSince(last) < 3600 { return }
+        if !force, let last = defaults.object(forKey: "web.checkedAt") as? Date, Date().timeIntervalSince(last) < 120 { return }
         defaults.set(Date(), forKey: "web.checkedAt")
         Task.detached(priority: .background) {
             var fresh: [String: (Data, String?)] = [:]
@@ -68,7 +68,9 @@ enum WebUpdater {
                     if let e = etag { defaults.set(e, forKey: "web.etag." + p) }
                 }
                 defaults.set(Date(), forKey: "web.downloadedAt")
-                print("[app] web update downloaded:", fresh.keys.sorted().joined(separator: ", "), "(used next time the app opens)")
+                print("[app] web update downloaded:", fresh.keys.sorted().joined(separator: ", "))
+                // offer it right away (the page shows "New version ready · Update")
+                await MainActor.run { WebBridge.shared.send(event: "updateReady") }
             } catch {
                 print("[app] web update could not be saved:", error.localizedDescription)
             }
