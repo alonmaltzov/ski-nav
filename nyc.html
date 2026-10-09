@@ -1797,7 +1797,7 @@ window.__native = {
   },
   located(f){ if(mode==='gps' && st.last) return; showLocated(f); },
   heading(h){ if(!compassWanted) return; heading=h; compassOn=true; drawCone(); },
-  event(name){ if(name==='nocompass'){ disableCompass(); return; } if(name==='tracking' && mode!=='gps'){ console.warn('page restarted while tracking; resuming GPS'); startGPS(); return; } if(name==='denied'){ setPill('Location blocked','err'); $('nMeta').textContent='Location is off for Ski Nav. Settings > Ski Nav > Location > Always.'; } }
+  event(name){ if(name==='nocompass'){ disableCompass(); return; } if(name==='tracking' && mode!=='gps'){ console.warn('page restarted while tracking; resuming GPS'); startGPS(); return; } if(name==='denied'){ setPill('Location blocked','err'); $('nMeta').textContent= window.__ANDROID ? 'Location is off for Ski Nav. Settings > Apps > Ski Nav > Permissions > Location > Allow while using the app.' : 'Location is off for Ski Nav. Settings > Ski Nav > Location > Always.'; } }
 };
 function sendPlanToWatch(){
   if(!NATIVE) return;
@@ -2217,7 +2217,7 @@ async function rpc(fn, args){
   if(!r.ok) throw new Error((d && d.message) || ('Server error '+r.status));
   return d;
 }
-const platform = () => NATIVE ? 'ios' : /android/i.test(navigator.userAgent) ? 'android-web' : 'web';
+const platform = () => NATIVE ? (window.__ANDROID ? 'android' : 'ios') : /android/i.test(navigator.userAgent) ? 'android-web' : 'web';
 /* sharing stops at 6 pm only during the trip itself; practice days (NYC tests) share any time */
 function stopHour(){ const t=gstate && gstate.trip, n=new Date(), d=n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0'); return t && t.starts_on && d>=t.starts_on && d<=t.ends_on ? 18 : 24; }
 function tellNative(){ if(NATIVE) toNative({cmd:'group', url:GB&&GB.url||'', key:GB&&GB.key||'', secret: grp ? grp.secret : '', sharing: !!(grp && grp.sharing!==false), stopHour: stopHour()}); }
@@ -2652,7 +2652,7 @@ $('bsVoice').querySelectorAll('button').forEach(x=>x.onclick=()=>{ bset().voice=
 $('bsPlay').onclick=()=>{ $('briefSet').hidden=true; openBrief(); };
 $('bsDone').onclick=()=>{ $('briefSet').hidden=true; };
 $('briefSetBtn').onclick=()=>{ closeDrawer(); renderBriefSet(); $('briefSet').hidden=false; };
-function renderBriefRow(){ const b=bset(); $('briefSetSub').textContent = b.on ? b.time+' · '+(b.voice==='personal'?'my voice':'iPhone voice') : 'Off'; }
+function renderBriefRow(){ const b=bset(); $('briefSetSub').textContent = b.on ? b.time+' · '+(b.voice==='personal'?'my voice':(window.__ANDROID?'phone voice':'iPhone voice')) : 'Off'; }
 
 /* ---- first open ---- */
 function showOnb(){
@@ -2683,6 +2683,8 @@ tellNative(); groupLoop(); refreshGroup(); renderFriendsPill();
 window.__ski = { map, st, get steps(){return steps;}, get cur(){return cur;}, get di(){return di;}, startSim, stopSim, onFix, setX:x=>simX=x, selectDay, groupStats, openProgress, closeProgress, skied:()=>skiedWays.size, recap:openRecap, openBrief, openAsk, buildBrief, askQ:q=>ask(q.toLowerCase()), showOnb, routeData, dailySet, trailFC, startJoin, refreshGroup, routeTo, get grp(){return grp;}, get gview(){return gview;}, openPick, get gstate(){return gstate;}, matchFix, get match(){return st.match;}, _mode(m){ mode=m; }, setSun, planFromHere, applySteps, get liftStat(){return liftStat;}, set liftStat(v){liftStat=v;}, renderLifts, wearFor, resetPlan, setWx(v){ wx=v; renderWx(); } };
 
 renderUnits(); renderDayBar(); renderStats(); renderStep(); applyView(); renderHome(); applySun();
+/* android: phone voice labels, no Personal Voice */
+if(window.__ANDROID){ document.querySelectorAll('#bsVoice [data-v="default"], #oVoice [data-v="default"]').forEach(b=>b.textContent='Phone voice'); document.querySelectorAll('#bsVoice [data-v="personal"], #oVoice [data-v="personal"]').forEach(b=>b.hidden=true); }
 if(NATIVE){ toNative({cmd:'ready'}); toNative({cmd:'ctx', lifts: liftLines, title: DAY.title, flat: !!CONFIG.flat}); sendPlanToWatch(); nativeStep(); }
 setInterval(()=>{ if(mode!=='off'){ renderStats(); renderSchedule(); } }, 1000);
 })();
