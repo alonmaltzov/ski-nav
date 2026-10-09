@@ -203,7 +203,9 @@ class MainActivity : ComponentActivity(), SensorEventListener {
     }
 
     private fun handle(b: JSONObject) {
-        when (b.optString("cmd")) {
+        val cmd = b.optString("cmd")
+        if (cmd != "log") Log.d("SkiNav", "bridge: $cmd")
+        when (cmd) {
             "ready" -> {
                 pageReady = true
                 if (Track.tracking) { Log.i("SkiNav", "page reloaded during tracking, resuming"); event("tracking") }

@@ -31,7 +31,7 @@ adb('shell', 'wm', 'dismiss-keyguard')
 adb('logcat', '-c')
 adb('shell', 'am', 'start', '-n', ACT, '--ez', 'qaTour', 'true', check=True)
 log = open(f'{OUT}/log.txt', 'w')
-proc = subprocess.Popen(['adb', 'logcat', '-v', 'brief', 'SkiNav:*', 'SkiNav-web:*', 'AndroidRuntime:E', '*:S'], stdout=subprocess.PIPE, text=True)
+proc = subprocess.Popen(['adb', 'logcat', '-v', 'brief', 'SkiNav:D', 'SkiNav-web:*', 'AndroidRuntime:E', 'ActivityManager:W', 'TextToSpeech:*', 'chromium:W', '*:S'], stdout=subprocess.PIPE, text=True)
 t0 = time.time(); n = 0; done = False; loaded = False; tour = []
 os.set_blocking(proc.stdout.fileno(), False)
 while time.time() - t0 < 600:
@@ -49,6 +49,10 @@ while time.time() - t0 < 600:
         except Exception: pass
     if 'QA DONE' in line: done = True; break
 proc.kill()
+if not done:
+    shot('tour-stalled')
+    open(f'{OUT}/stall-logcat.txt', 'w').write(adb('logcat', '-d', '-t', '400', timeout=60))
+    open(f'{OUT}/stall-activity.txt', 'w').write(adb('shell', 'dumpsys', 'activity', 'top', timeout=60)[:20000])
 res('page loads with the map', loaded)
 res('screen tour ran to the end', done, f'{n} screens')
 bad = [r for r in tour if not r.get('ok')]
@@ -66,7 +70,7 @@ pid = adb('shell', 'pidof', PKG).strip()
 adb('forward', 'tcp:9222', f'localabstract:webview_devtools_remote_{pid}', check=True)
 import websocket  # websocket-client
 pages = json.load(urllib.request.urlopen('http://127.0.0.1:9222/json'))
-ws = websocket.create_connection([p for p in pages if p.get('type') == 'page'][0]['webSocketDebuggerUrl'], timeout=30)
+ws = websocket.create_connection([p for p in pages if p.get('type') == 'page'][0]['webSocketDebuggerUrl'], timeout=30, suppress_origin=True)
 mid = [0]
 def ev(expr):
     mid[0] += 1; ws.send(json.dumps({'id': mid[0], 'method': 'Runtime.evaluate', 'params': {'expression': expr, 'returnByValue': True, 'awaitPromise': True}}))
