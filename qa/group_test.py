@@ -66,6 +66,11 @@ async def main():
         result('a bad WhatsApp link is refused', await A.is_visible('#gErr'))
         await A.fill('#gCallLink', CALL); await A.click('#gCallSave'); await A.wait_for_timeout(800)
         result('organizer saves the WhatsApp group link', (await A.get_attribute('#gCall', 'href')) == CALL)
+        SPLIT = 'https://www.splitwise.com/join/TestSplit123?v=s'
+        await A.fill('#gSplitLink', 'https://example.com/x'); await A.click('#gSplitSave'); await A.wait_for_timeout(300)
+        result('a non-Splitwise link is refused', await A.is_visible('#gErr'))
+        await A.fill('#gSplitLink', SPLIT); await A.click('#gSplitSave'); await A.wait_for_timeout(800)
+        result('organizer saves the Splitwise link', (await A.get_attribute('#gSplit', 'href')) == SPLIT)
         await shot(A, 'group-call-setup')
 
         # friend opens the invite link
@@ -82,6 +87,7 @@ async def main():
         gb = await B.evaluate('window.__ski.gstate')
         result('friend joins the trip', len(gb['members']) == 2 and gb['role'] == 'member', [m['name'] for m in gb['members']])
         result('friend gets "Talk with the group"', (await B.get_attribute('#pickCall', 'href')) == CALL and (await B.get_attribute('#pickCall', 'target')) == '_blank')
+        result('friend gets "Split costs"', (await B.get_attribute('#pickSplit', 'href')) == SPLIT)
         result('friend can\'t change the WhatsApp link', await B.locator('#gCallSet').is_hidden())
         result('join link is removed from the address bar', 'join=' not in B.url, B.url)
         await shot(B, 'joined')
@@ -180,7 +186,7 @@ async def main():
         await B.evaluate('window.__ski.refreshGroup()'); await B.wait_for_timeout(1000)
         pv = rpc('trip_state', {'p_secret': g['secret']})['trip']['plan']
         result('organizer\'s plan style is shared with the group', pv.get('variant') == 'black', pv)
-        result('changing the plan style keeps the WhatsApp link', pv.get('call') == CALL, pv)
+        result('changing the plan style keeps the WhatsApp and Splitwise links', pv.get('call') == CALL and pv.get('split') == SPLIT, pv)
 
         # friend can't change the plan or remove people
         try: rpc('set_plan', {'p_secret': (await B.evaluate('window.__ski.grp'))['secret'], 'p_plan': {'variant': 'red'}}); ok = False
