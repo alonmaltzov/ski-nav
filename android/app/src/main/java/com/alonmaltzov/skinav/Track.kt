@@ -24,11 +24,12 @@ object Track {
     var onFixes: (() -> Unit)? = null
 
     fun begin(baseDistM: Double, baseMaxMps: Double) {
-        distM = baseDistM; maxMps = baseMaxMps; speedMps = 0.0; lastGood = null
+        distM = baseDistM; maxMps = baseMaxMps; speedMps = 0.0; lastGood = null; savedThisRun = 0
         tracking = true
     }
 
-    fun end() { tracking = false; speedMps = 0.0 }
+    private var savedThisRun = 0
+    fun end() { tracking = false; speedMps = 0.0; Log.i("SkiNav", "day log: $savedThisRun fixes saved this run") }
 
     fun fixJson(l: Location): JSONObject = JSONObject().apply {
         put("lat", l.latitude); put("lon", l.longitude)
@@ -63,7 +64,7 @@ object Track {
         try {
             val f = dayFile()
             if (!f.exists()) Log.i("SkiNav", "day log started: ${f.name}")
-            f.appendText(js.joinToString("") { it.toString() + "\n" })
+            f.appendText(js.joinToString("") { it.toString() + "\n" }); savedThisRun += js.size
         } catch (e: Exception) { Log.w("SkiNav", "track save failed", e) }
     }
 

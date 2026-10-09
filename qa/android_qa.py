@@ -34,6 +34,8 @@ adb('shell', 'settings', 'put', 'secure', 'location_mode', '3')
 adb('shell', 'svc', 'power', 'stayon', 'true')
 adb('shell', 'wm', 'dismiss-keyguard')
 
+# a position near Avoriaz so ME and the GPS checks have something to show
+adb('emu', 'geo', 'fix', '6.7689', '46.1936', '1800')
 # ---------- 1. screen tour ----------
 # The CI emulator's Google Play services sometimes crash and take every app using them down with them
 # ("depends on provider com.google.android.gms ... in dying proc"). That's the emulator, not Ski Nav:
@@ -130,7 +132,8 @@ res('screen-off fixes arrive when the screen comes back', on2 and on1 and on2 > 
 shot('track-2-after-screen-off')
 ev("document.getElementById('goBtn').click()"); time.sleep(3)
 res('Stop ends tracking and the notification', ev("document.getElementById('goBtn').classList.contains('stop') ? 'gps' : 'off'") == 'off' and 'Skiing ·' not in adb('shell', 'dumpsys', 'notification', '--noredact'))
-res('a day log was saved', 'day log started' in adb('logcat', '-d', '-s', 'SkiNav:I'))
+m = re.search(r'day log: (\d+) fixes saved', adb('logcat', '-d', '-s', 'SkiNav:I'))
+res('the day log was saved', m and int(m.group(1)) >= 40, m.group(0) if m else 'no day log line')
 ws.close()
 
 json.dump(results, open(f'{OUT}/results.json', 'w'), indent=1)
