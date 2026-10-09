@@ -1,90 +1,59 @@
 import SwiftUI
 import WidgetKit
 
-/// Watch face complication: one tap from the face into Ski Nav, plus where you are in the trip.
-/// Live speed and run on the wrist come from the iPhone's Live Activity in the Smart Stack
-/// (and from the app itself, which stays in front during a ski workout).
+/// Watch face complication. One complication that follows the day by itself:
+/// countdown before the trip, the plan on trip mornings, live speed / run / next lift while skiing,
+/// minutes to the top on a lift, and the day's totals when done. The watch app saves what to show
+/// (SkiFace, in the shared app group) and asks for a refresh when it changes.
 @main
 struct SkiNavComplications: WidgetBundle {
     var body: some Widget { SkiNavComplication() }
 }
 
-struct TripEntry: TimelineEntry {
+struct FaceEntry: TimelineEntry {
     let date: Date
-    let line: String     // "Day 1 of 6", "In 12 days", "Trip done"
-    let short: String    // "D1", "12d", ""
+    let face: SkiFace
 }
 
-enum Trip {
-    // Avoriaz: ski days Sun Jan 17 to Fri Jan 22, 2027
-    static let firstDay = DateComponents(calendar: .current, year: 2027, month: 1, day: 17).date!
-    static let days = 6
-
-    static func entry(_ d: Date) -> TripEntry {
+struct FaceProvider: TimelineProvider {
+    func placeholder(in context: Context) -> FaceEntry { FaceEntry(date: SkiFace.tripStart, face: SkiFace()) }
+    func getSnapshot(in context: Context, completion: @escaping (FaceEntry) -> Void) { completion(FaceEntry(date: .now, face: SkiFace.load())) }
+    func getTimeline(in context: Context, completion: @escaping (Timeline<FaceEntry>) -> Void) {
+        let face = SkiFace.load()
         let cal = Calendar.current
-        let n = cal.dateComponents([.day], from: cal.startOfDay(for: firstDay), to: cal.startOfDay(for: d)).day ?? 0
-        if n < 0 { return .init(date: d, line: "Avoriaz in \(-n) day\(n == -1 ? "" : "s")", short: "\(-n)d") }
-        if n < days { return .init(date: d, line: "Day \(n + 1) of \(days)", short: "D\(n + 1)") }
-        return .init(date: d, line: "Ski Nav", short: "")
-    }
-}
-
-struct TripProvider: TimelineProvider {
-    func placeholder(in context: Context) -> TripEntry { Trip.entry(Trip.firstDay) }
-    func getSnapshot(in context: Context, completion: @escaping (TripEntry) -> Void) { completion(Trip.entry(.now)) }
-    func getTimeline(in context: Context, completion: @escaping (Timeline<TripEntry>) -> Void) {
-        // one entry per midnight for the next week
-        let cal = Calendar.current
-        let today = cal.startOfDay(for: .now)
-        let entries = (0..<7).compactMap { cal.date(byAdding: .day, value: $0, to: today) }.map { Trip.entry($0 == today ? .now : $0) }
-        completion(Timeline(entries: entries, policy: .atEnd))
+        let now = Date()
+        var dates = [now]
+        // live numbers go stale after 15 min without news: switch to the morning / done view then
+        if face.tracking { dates.append(face.updated.addingTimeInterval(15 * 60 + 5)) }
+        // 6 pm (après ends) and the next midnights (new day, countdown)
+        if let six = cal.date(bySettingHour: 18, minute: 0, second: 5, of: now), six > now { dates.append(six) }
+        let midnight = cal.startOfDay(for: now)
+        for i in 1...3 { if let d = cal.date(byAdding: .day, value: i, to: midnight) { dates.append(d.addingTimeInterval(5)) } }
+        let entries = dates.filter { $0 >= now }.sorted().map { FaceEntry(date: $0, face: face) }
+        completion(Timeline(entries: entries, policy: .after(now.addingTimeInterval(30 * 60))))
     }
 }
 
 struct SkiNavComplication: Widget {
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: "SkiNavComplication", provider: TripProvider()) { e in
-            ComplicationView(e: e).containerBackground(.black, for: .widget)
+        StaticConfiguration(kind: SkiFace.kind, provider: FaceProvider()) { e in
+            ComplicationView(c: e.face.content(at: e.date)).containerBackground(.black, for: .widget)
         }
         .configurationDisplayName("Ski Nav")
-        .description("Open Ski Nav from your watch face.")
+        .description("Your ski day: the plan, live speed and run, lifts, and the day's totals.")
         .supportedFamilies([.accessoryCircular, .accessoryCorner, .accessoryRectangular, .accessoryInline])
     }
 }
 
 struct ComplicationView: View {
     @Environment(\.widgetFamily) private var family
-    let e: TripEntry
-    private let accent = Color(red: 1.0, green: 0.54, blue: 0.24)
-
+    let c: SkiFace.Content
     var body: some View {
         switch family {
-        case .accessoryCircular:
-            ZStack {
-                AccessoryWidgetBackground()
-                VStack(spacing: 0) {
-                    Image(systemName: "figure.skiing.downhill").font(.title3.weight(.semibold))
-                    if !e.short.isEmpty { Text(e.short).font(.caption2.weight(.bold)).widgetAccentable() }
-                }
-            }
-            .accessibilityLabel("Ski Nav, \(e.line)")
-        case .accessoryCorner:
-            Image(systemName: "figure.skiing.downhill").font(.title2.weight(.semibold))
-                .widgetLabel { Text(e.line) }
-                .accessibilityLabel("Ski Nav, \(e.line)")
-        case .accessoryInline:
-            Label(e.line == "Ski Nav" ? "Ski Nav" : "Ski Nav · \(e.line)", systemImage: "figure.skiing.downhill")
-        default:
-            HStack(spacing: 8) {
-                Image(systemName: "figure.skiing.downhill").font(.title2.weight(.semibold)).foregroundStyle(accent).widgetAccentable()
-                VStack(alignment: .leading, spacing: 0) {
-                    Text("SKI NAV").font(.caption2.weight(.bold)).foregroundStyle(accent).widgetAccentable()
-                    Text(e.line).font(.headline).lineLimit(1)
-                    Text("Tap for speed, run, next lift").font(.caption2).foregroundStyle(.secondary).lineLimit(1)
-                }
-                Spacer(minLength: 0)
-            }
-            .accessibilityElement(children: .combine)
+        case .accessoryCircular: FaceRing(c: c)
+        case .accessoryCorner: FaceCorner(c: c)
+        case .accessoryInline: FaceInline(c: c)
+        default: FaceRect(c: c)
         }
     }
 }

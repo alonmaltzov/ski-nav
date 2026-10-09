@@ -3,6 +3,7 @@ import HealthKit
 import CoreLocation
 import WatchConnectivity
 import WatchKit
+import WidgetKit
 
 /// One step of today's plan, as sent by the phone.
 struct PlanStep: Codable, Identifiable {
@@ -209,6 +210,41 @@ final class SkiSession: NSObject, ObservableObject {
         }
         builder = nil
         session = nil
+        publishFace(force: true)
+    }
+
+    // MARK: watch face complication
+
+    private var lastFaceReload = Date.distantPast
+    private var lastFaceKey = ""
+
+    /// Save what the complication shows and ask watchOS to redraw it: right away when the mode, lift or step
+    /// changes, otherwise at most once a minute (watchOS gives an app in a workout plenty of refreshes for that).
+    func publishFace(force: Bool = false) {
+        if SkiSession.demoScreen != nil { return }
+        var f = SkiFace.load()
+        let now = Date()
+        let key = SkiFace.key(now)
+        if f.dayKey != key { f = SkiFace(); f.dayKey = key }
+        if let p = plan {
+            f.day = p.day; f.title = p.title
+            f.kmPlan = p.steps.filter { $0.t == "run" }.reduce(0) { $0 + $1.len } / 1000
+            f.firstAt = p.steps.first?.at ?? ""
+            f.firstLift = p.steps.first { $0.t == "lift" }.map { SkiText.short($0.l) } ?? ""
+        }
+        if let g = glance {
+            f.g = g; f.tracking = true; f.updated = now
+        } else if f.tracking {
+            f.tracking = false; f.updated = now
+        }
+        f.save()
+        let modeKey = "\(f.tracking)\(f.g.onLift)\(current)\(f.day)"
+        let changed = modeKey != lastFaceKey
+        lastFaceKey = modeKey
+        if force || changed || now.timeIntervalSince(lastFaceReload) >= 60 {
+            lastFaceReload = now
+            WidgetCenter.shared.reloadTimelines(ofKind: SkiFace.kind)
+        }
     }
 
     func nextManually() { advance() }
@@ -242,6 +278,7 @@ final class SkiSession: NSObject, ObservableObject {
         onLift = engine.onLift
         lastPos = [loc.coordinate.latitude, loc.coordinate.longitude]
         ownGlance = SkiGlance.make(speedMps: engine.speedMps, totals: tot, onLift: engine.onLift, at: lastPos, step: glanceStep())
+        publishFace()
 
         // next step: reached the end of this one (loops need most of their length done first)
         if let s = step, s.t != "end" {
@@ -309,6 +346,7 @@ final class SkiSession: NSObject, ObservableObject {
         phoneGlance = g
         phoneAt = Date()
         phoneTracking = d["tracking"] as? Bool ?? false
+        publishFace()
     }
 
     fileprivate func receive(planData: Data) {
@@ -323,6 +361,7 @@ final class SkiSession: NSObject, ObservableObject {
         plan = p
         UserDefaults.standard.set(try? JSONEncoder().encode(p), forKey: "plan")
         if newDay { current = 0; engine.resetStep(); saveCurrent() }
+        publishFace(force: true)
     }
 }
 
@@ -347,6 +386,10 @@ extension SkiSession: WCSessionDelegate {
         if session.isReachable { Task { @MainActor in self.askForPlan() } }
     }
     nonisolated func session(_ session: WCSession, didReceiveUserInfo info: [String: Any]) {
+        if let live = info["live"] as? [String: Any] {
+            let copy = live as NSDictionary
+            Task { @MainActor in self.receive(live: copy as! [String: Any]) }
+        }
         if info["cmd"] as? String == "stopWorkout", let at = info["at"] as? Double { Task { @MainActor in self.stopFromPhone(at: at) } }
     }
     nonisolated func session(_ session: WCSession, didReceiveMessage msg: [String: Any]) {

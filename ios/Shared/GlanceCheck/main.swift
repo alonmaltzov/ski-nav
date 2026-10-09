@@ -28,3 +28,5 @@ let n = SkiGlance.make(speedMps: 10, totals: t, onLift: false, at: nil, step: ni
 check("no plan", n.run.isEmpty && n.speedKmh == 36, "\(n.speedKmh) '\(n.run)'")
 let rt = try! JSONDecoder().decode(SkiGlance.self, from: JSONEncoder().encode(l))
 check("phone to watch round trip", rt == l, "\(try! JSONEncoder().encode(l).count) bytes")
+
+faceChecks()

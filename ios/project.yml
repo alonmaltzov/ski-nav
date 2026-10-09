@@ -67,6 +67,8 @@ targets:
       - Shared/SkiText.swift
       - Shared/SkiGlance.swift
       - Shared/SkiStyle.swift
+      - Shared/SkiFace.swift
+      - Shared/SkiFaceViews.swift
     info:
       path: SkiNavWatch/Info.plist
       properties:
@@ -82,6 +84,7 @@ targets:
       path: SkiNavWatch/SkiNavWatch.entitlements
       properties:
         com.apple.developer.healthkit: true
+        com.apple.security.application-groups: [group.com.alonmaltzov.SkiNav]
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.alonmaltzov.SkiNav.watchkitapp
@@ -94,6 +97,15 @@ targets:
     platform: watchOS
     sources:
       - SkiNavWatchWidgets
+      - Shared/SkiFace.swift
+      - Shared/SkiFaceViews.swift
+      - Shared/SkiGlance.swift
+      - Shared/SkiText.swift
+      - Shared/SkiStyle.swift
+    entitlements:
+      path: SkiNavWatchWidgets/SkiNavWatchWidgets.entitlements
+      properties:
+        com.apple.security.application-groups: [group.com.alonmaltzov.SkiNav]
     info:
       path: SkiNavWatchWidgets/Info.plist
       properties:

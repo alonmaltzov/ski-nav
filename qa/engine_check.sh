@@ -30,6 +30,6 @@ for f in $D/plan-avoriaz.json $D/plan-nyc.json; do
   echo "[web] QA RESULT {\"check\":\"watch can read the phone's plan: $(basename $f)\",\"ok\":$ok,\"detail\":\"$r\"}" | tee -a "$OUT/log.txt"
 done
 # what the lock screen / island / watch show, from the shared SkiGlance
-swiftc ios/Shared/SkiEngine.swift ios/Shared/SkiText.swift ios/Shared/SkiGlance.swift ios/Shared/GlanceCheck/main.swift -o "$OUT/glance"
+swiftc ios/Shared/SkiEngine.swift ios/Shared/SkiText.swift ios/Shared/SkiGlance.swift ios/Shared/SkiFace.swift ios/Shared/GlanceCheck/face.swift ios/Shared/GlanceCheck/main.swift -o "$OUT/glance"
 "$OUT/glance" | tee -a "$OUT/log.txt"
 echo "[web] QA DONE" >> "$OUT/log.txt"
