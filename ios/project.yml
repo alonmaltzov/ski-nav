@@ -97,6 +97,7 @@ targets:
     platform: watchOS
     sources:
       - SkiNavWatchWidgets
+      - Shared/SkiEngine.swift
       - Shared/SkiFace.swift
       - Shared/SkiFaceViews.swift
       - Shared/SkiGlance.swift
