@@ -57,7 +57,6 @@ ul{margin:0 0 6px;padding-left:20px;display:grid;gap:8px}
         <li id="tfStep">Ask the organizer for the TestFlight invite.</li>
         <li>Install it, then come back to this message and tap the link again.</li>
       </ol>
-      <a class="btn ghost" id="webIos" href="#">Use it in Safari for now</a>
     </div>
   </div>
 
@@ -72,7 +71,6 @@ ul{margin:0 0 6px;padding-left:20px;display:grid;gap:8px}
         <li>Open the downloaded file. If Android asks, allow installing apps from your browser (once).</li>
         <li>Come back to this message and tap the link again.</li>
       </ol>
-      <a class="btn ghost" id="webAndroid" href="#">Use it in the browser for now</a>
     </div>
   </div>
 
@@ -102,13 +100,12 @@ ul{margin:0 0 6px;padding-left:20px;display:grid;gap:8px}
   if (isIOS) {
     document.getElementById('ios').hidden = false;
     document.getElementById('openApp').href = 'skinav://join?c=' + encodeURIComponent(code);
-    document.getElementById('webIos').href = web;
     document.getElementById('noApp').onclick = function(){ document.getElementById('getApp').hidden = false; this.hidden = true; };
     if (TESTFLIGHT_URL) document.getElementById('tfStep').innerHTML = '<a href="' + TESTFLIGHT_URL + '">Get it on TestFlight</a> (install TestFlight from the App Store first if it asks).';
   } else if (/Android/i.test(ua)) {
     document.getElementById('android').hidden = false;
-    document.getElementById('openAppA').href = 'skinav://join?c=' + encodeURIComponent(code);
-    document.getElementById('webAndroid').href = web;
+    // Android intent link: opens Ski Nav when it's installed, otherwise downloads it
+    document.getElementById('openAppA').href = 'intent://join?c=' + encodeURIComponent(code) + '#Intent;scheme=skinav;package=com.alonmaltzov.skinav;S.browser_fallback_url=' + encodeURIComponent(ANDROID_APK) + ';end';
     document.getElementById('apk').href = ANDROID_APK;
     document.getElementById('noAppA').onclick = function(){ document.getElementById('getAppA').hidden = false; this.hidden = true; };
   } else {
