@@ -21,6 +21,8 @@ certs = call('GET', '/v1/certificates?limit=200&fields[certificates]=name,certif
 n = 0
 for c in certs:
     a = c['attributes']
-    if a.get('name') == 'Created via API' and 'DEVELOPMENT' in (a.get('certificateType') or ''):
+    label = (a.get('name') or '') + ' ' + (a.get('displayName') or '')
+    if 'Created via API' in label and 'DEVELOPMENT' in (a.get('certificateType') or ''):
         call('DELETE', '/v1/certificates/' + c['id']); n += 1
+for c in certs: print('  ', c['attributes'].get('certificateType'), '|', c['attributes'].get('name'), '|', c['attributes'].get('displayName'))
 print(f'revoked {n} throwaway CI development certificate(s); {len(certs) - n} left untouched')
