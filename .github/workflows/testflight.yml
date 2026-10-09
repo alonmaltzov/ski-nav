@@ -26,7 +26,12 @@ jobs:
         run: |
           test -n "$P8" && test -n "$KID" || { echo "::error::ASC_KEY_P8 / ASC_KEY_ID secrets missing"; exit 1; }
           mkdir -p ~/private_keys
-          printf '%s\n' "$P8" > ~/private_keys/AuthKey_$KID.p8
+          printf '%s\n' "$P8" | tr -d '\r' > ~/private_keys/AuthKey_$KID.p8
+          F=~/private_keys/AuthKey_$KID.p8
+          # shape check only, never prints the key
+          echo "key file: $(wc -l < $F) lines, $(wc -c < $F) bytes, BEGIN line: $(grep -c 'BEGIN PRIVATE KEY' $F), END line: $(grep -c 'END PRIVATE KEY' $F)"
+          echo "key id length: ${#KID}"
+          grep -q 'BEGIN PRIVATE KEY' $F && grep -q 'END PRIVATE KEY' $F || { echo "::error::ASC_KEY_P8 isn't the .p8 file text. Paste the whole file, from -----BEGIN PRIVATE KEY----- to -----END PRIVATE KEY-----"; exit 1; }
           echo "KEY_PATH=$HOME/private_keys/AuthKey_$KID.p8" >> $GITHUB_ENV
       - name: Generate project
         working-directory: ios
