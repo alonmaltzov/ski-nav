@@ -106,6 +106,8 @@ res('bridge: page sees the app', ev('!!(window.__ANDROID && window.webkit && win
 ev("document.querySelectorAll('[hidden]').length")  # warm up
 # close any sheet the first open shows, then Start
 ev("(function(){ document.querySelectorAll('#onb, .sheet').forEach(e=>{ if(e.id==='onb') e.hidden=true; }); return 1 })()")
+# count every fix the app hands to the page
+ev("window.__qaN=0; (function(){ const f=window.__native.fixes; window.__native.fixes=function(a){ window.__qaN+=(a&&a.length)||0; return f.apply(this, arguments); }; })(); 1")
 ev("document.getElementById('goBtn').click()")
 time.sleep(3)
 res('tracking started', ev("document.getElementById('goBtn').classList.contains('stop') ? 'gps' : 'off'") == 'gps' and 'Skiing' in adb('shell', 'dumpsys', 'notification', '--noredact'), ev("document.getElementById('goBtn').classList.contains('stop') ? 'gps' : 'off'"))
@@ -118,8 +120,8 @@ def feed(i0, i1):
         adb('emu', 'geo', 'fix', f'{lon:.6f}', f'{lat:.6f}', f'{1800 - i * 2}')
         time.sleep(1)
 feed(0, 25)
-on1 = ev('window.__ski.st.dist')
-res('fixes reach the page (screen on)', on1 and on1 > 150, f'{on1} m')
+on1 = ev('window.__ski.st.dist'); n1 = ev('window.__qaN')
+res('fixes reach the page (screen on)', n1 and n1 >= 20 and on1 > 50, f'{n1} fixes, {on1:.0f} m on the map')
 # screen off: the page sleeps, the service keeps collecting
 adb('shell', 'input', 'keyevent', 'KEYCODE_SLEEP'); time.sleep(2)
 feed(25, 55)
@@ -127,8 +129,8 @@ notif = adb('shell', 'dumpsys', 'notification', '--noredact')
 m = re.search(r'Skiing · ([0-9.]+) km', notif)
 res('notification counts km with the screen off', m and float(m.group(1)) > 0.3, m.group(0) if m else 'no Skiing notification')
 adb('shell', 'input', 'keyevent', 'KEYCODE_WAKEUP'); time.sleep(1); adb('shell', 'wm', 'dismiss-keyguard'); time.sleep(4)
-on2 = ev('window.__ski.st.dist')
-res('screen-off fixes arrive when the screen comes back', on2 and on1 and on2 > on1 + 150, f'{on1} m before, {on2} m after')
+on2 = ev('window.__ski.st.dist'); n2 = ev('window.__qaN')
+res('screen-off fixes arrive when the screen comes back', n2 and n2 >= n1 + 25 and on2 > on1 + 50, f'{n1} -> {n2} fixes, {on1:.0f} -> {on2:.0f} m on the map')
 shot('track-2-after-screen-off')
 ev("document.getElementById('goBtn').click()"); time.sleep(3)
 res('Stop ends tracking and the notification', ev("document.getElementById('goBtn').classList.contains('stop') ? 'gps' : 'off'") == 'off' and 'Skiing ·' not in adb('shell', 'dumpsys', 'notification', '--noredact'))
