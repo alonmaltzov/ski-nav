@@ -13,12 +13,18 @@ concurrency:
 jobs:
   upload:
     name: Archive and upload to TestFlight
-    runs-on: macos-15
+    runs-on: macos-26
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - name: Tools
-        run: brew install xcodegen && xcodebuild -version
+        run: |
+          # App Store uploads need the iOS 26 SDK: use the newest Xcode 26 on the runner
+          ls -d /Applications/Xcode*.app
+          X=$(ls -d /Applications/Xcode_26*.app 2>/dev/null | sort -V | tail -1)
+          test -n "$X" || { echo "::error::no Xcode 26 on this runner"; exit 1; }
+          sudo xcode-select -s "$X"
+          brew install xcodegen && xcodebuild -version
       - name: API key
         env:
           P8: ${{ secrets.ASC_KEY_P8 }}
