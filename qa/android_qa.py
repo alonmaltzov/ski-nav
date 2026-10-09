@@ -106,6 +106,12 @@ res('bridge: page sees the app', ev('!!(window.__ANDROID && window.webkit && win
 ev("document.querySelectorAll('[hidden]').length")  # warm up
 # close any sheet the first open shows, then Start
 ev("(function(){ document.querySelectorAll('#onb, .sheet').forEach(e=>{ if(e.id==='onb') e.hidden=true; }); return 1 })()")
+# ME button without tracking: one location from Google's fused provider, blue dot on the map
+ev("document.getElementById('followBtn').click()")
+for _ in range(4):
+    adb('emu', 'geo', 'fix', '6.7689', '46.1936', '1800'); time.sleep(1.5)
+res('ME shows my location (no tracking)', ev("!!document.querySelector('.you')") is True)
+shot('me-located')
 # count every fix the app hands to the page
 ev("window.__qaN=0; (function(){ const f=window.__native.fixes; window.__native.fixes=function(a){ window.__qaN+=(a&&a.length)||0; return f.apply(this, arguments); }; })(); 1")
 ev("document.getElementById('goBtn').click()")
