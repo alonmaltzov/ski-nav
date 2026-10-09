@@ -217,7 +217,7 @@ async def main():
         await C.wait_for_selector('#jErr1:not([hidden])', timeout=10000)
         result('a bad invite link says so', 'valid' in await C.inner_text('#jErr1'), await C.inner_text('#jErr1'))
         await shot(C, 'join-bad-link')
-        # the invite landing page (join.html): iPhone gets "Open in the app", Android gets the web app
+        # the invite landing page (join.html): open the app, or install it (TestFlight / APK), or use the web app
         for name, ua in [('iphone', 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1'),
                          ('android', 'Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Mobile Safari/537.36')]:
             ctx = await b.new_context(viewport=dict(width=393, height=852), device_scale_factor=2, is_mobile=True, has_touch=True, user_agent=ua)
@@ -228,9 +228,14 @@ async def main():
                 href = await J.get_attribute('#openApp', 'href')
                 result('invite page on iPhone opens the app', href == 'skinav://join?c=' + code, href)
                 await J.click('#noApp'); web = await J.get_attribute('#webIos', 'href')
+                tf = await J.get_attribute('#tfStep a', 'href')
+                result('invite page on iPhone links to TestFlight', (tf or '').startswith('https://testflight.apple.com/join/'), tf)
             else:
-                result('invite page on Android has no app button', not await J.is_visible('#openApp'))
-                web = await J.get_attribute('#webOther', 'href')
+                href = await J.get_attribute('#openAppA', 'href')
+                result('invite page on Android opens the app', href == 'skinav://join?c=' + code, href)
+                await J.click('#noAppA'); web = await J.get_attribute('#webAndroid', 'href')
+                apk = await J.get_attribute('#apk', 'href')
+                result('invite page on Android links to the app download', (apk or '').endswith('/releases/download/android/SkiNav.apk'), apk)
             result('invite page (%s) links to the web app join' % name, web == 'index.html?join=' + code, web)
             await shot(J, 'invite-page-' + name); await ctx.close()
         await b.close()
