@@ -100,7 +100,7 @@ final class Guide: NSObject, AVSpeechSynthesizerDelegate, UNUserNotificationCent
                 }
                 AVAudioApplication.requestRecordPermission { ok in
                     DispatchQueue.main.async {
-                        if ok { self.startEngine() }
+                        if ok { self.triedServer = false; self.startEngine() }
                         else { self.emit(["type": "error", "msg": "To talk to me, allow the Microphone for Ski Nav in Settings."]) }
                     }
                 }
@@ -108,39 +108,69 @@ final class Guide: NSObject, AVSpeechSynthesizerDelegate, UNUserNotificationCent
         }
     }
 
-    private func startEngine() {
-        guard let rec = recognizer, rec.isAvailable else {
-            emit(["type": "error", "msg": "Speech recognition isn't available right now."]); return
+    private var heardSomething = false
+    private var triedServer = false
+
+    private func startEngine(onDevice: Bool = true) {
+        guard let rec = recognizer else {
+            emit(["type": "error", "msg": "Speech recognition isn't available on this iPhone."]); return
+        }
+        guard rec.isAvailable else {
+            emit(["type": "error", "msg": "Speech recognition isn't available right now. Check that Siri & Dictation is on in Settings, or tap a question below."]); return
         }
         synth.stopSpeaking(at: .immediate)
         task?.cancel(); task = nil
+        if engine.isRunning { engine.stop(); engine.inputNode.removeTap(onBus: 0) }
         let session = AVAudioSession.sharedInstance()
         do {
             try session.setCategory(.playAndRecord, mode: .measurement, options: [.duckOthers, .defaultToSpeaker, .allowBluetooth])
             try session.setActive(true, options: .notifyOthersOnDeactivation)
         } catch {
-            emit(["type": "error", "msg": "The microphone is busy."]); return
+            emit(["type": "error", "msg": "The microphone is busy (\(error.localizedDescription))."]); return
         }
         let req = SFSpeechAudioBufferRecognitionRequest()
         req.shouldReportPartialResults = true
-        if rec.supportsOnDeviceRecognition { req.requiresOnDeviceRecognition = true }
+        // on the phone first (private, works without signal); Apple's servers if the phone can't
+        req.requiresOnDeviceRecognition = onDevice && rec.supportsOnDeviceRecognition
         request = req
+        heardSomething = false
         let input = engine.inputNode
         input.removeTap(onBus: 0)
-        input.installTap(onBus: 0, bufferSize: 1024, format: input.outputFormat(forBus: 0)) { buffer, _ in req.append(buffer) }
+        let format = input.outputFormat(forBus: 0)
+        guard format.sampleRate > 0, format.channelCount > 0 else {
+            emit(["type": "error", "msg": "The microphone isn't giving any sound. Try again in a moment."]); request = nil; return
+        }
+        input.installTap(onBus: 0, bufferSize: 1024, format: format) { buffer, _ in req.append(buffer) }
         engine.prepare()
         do { try engine.start() } catch {
-            emit(["type": "error", "msg": "The microphone couldn't start."]); return
+            emit(["type": "error", "msg": "The microphone couldn't start (\(error.localizedDescription))."]); request = nil; return
         }
+        print("[app] listening (\(req.requiresOnDeviceRecognition ? "on the phone" : "Apple servers"))")
         emit(["type": "listening", "on": true])
         task = rec.recognitionTask(with: req) { [weak self] result, error in
             DispatchQueue.main.async {
-                guard let self else { return }
+                // ignore a task we already stopped or replaced (cancelling it reports an error too)
+                guard let self, self.request === req else { return }
                 if let r = result {
-                    self.emit(["type": "heard", "text": r.bestTranscription.formattedString, "final": r.isFinal])
+                    let text = r.bestTranscription.formattedString
+                    if !text.isEmpty { self.heardSomething = true }
+                    self.emit(["type": "heard", "text": text, "final": r.isFinal])
                     if r.isFinal { self.stopEngine() } else { self.armSilence(seconds: 1.6) }
                 }
-                if error != nil { self.stopEngine() }
+                if let e = error {
+                    print("[app] speech error:", e.localizedDescription, (e as NSError).domain, (e as NSError).code)
+                    let wasOnDevice = req.requiresOnDeviceRecognition
+                    let heard = self.heardSomething
+                    self.stopEngine()
+                    if heard { return }
+                    if wasOnDevice && !self.triedServer {
+                        // the phone's own recognizer isn't ready (dictation model not downloaded): use Apple's
+                        self.triedServer = true
+                        self.startEngine(onDevice: false)
+                    } else if (e as NSError).code != 216 && (e as NSError).code != 301 {   // 216/301 = we cancelled it
+                        self.emit(["type": "error", "msg": "I couldn't hear that (\(e.localizedDescription)). Tap a question below, or try again."])
+                    }
+                }
             }
         }
         armSilence(seconds: 7)   // nothing said at all: give up after 7 s
@@ -155,6 +185,11 @@ final class Guide: NSObject, AVSpeechSynthesizerDelegate, UNUserNotificationCent
     private func finishListening() {
         silence?.invalidate(); silence = nil
         guard request != nil else { return }
+        if !heardSomething {
+            task?.cancel(); stopEngine()
+            emit(["type": "error", "msg": "I didn't catch anything. Tap and talk, then say your question."])
+            return
+        }
         request?.endAudio()
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in self?.stopEngine() }
     }
