@@ -1,7 +1,7 @@
 name: TestFlight
 # Builds the iPhone + Watch app, signs it with the App Store Connect API key and uploads it to TestFlight.
 # Runs when native code changes land on main, or by hand from the Actions tab (Run workflow).
-# Web-only changes don't need a new build: the app updates its pages over the air.
+# Web-only changes don't need a new build: the app updates its pages over the air (OTA).
 on:
   push:
     branches: [main, 'tf/**']
