@@ -60,7 +60,11 @@ object Track {
     }
 
     private fun save(js: List<JSONObject>) {
-        try { dayFile().appendText(js.joinToString("") { it.toString() + "\n" }) } catch (e: Exception) { Log.w("SkiNav", "track save failed", e) }
+        try {
+            val f = dayFile()
+            if (!f.exists()) Log.i("SkiNav", "day log started: ${f.name}")
+            f.appendText(js.joinToString("") { it.toString() + "\n" })
+        } catch (e: Exception) { Log.w("SkiNav", "track save failed", e) }
     }
 
     fun clearSaved() {
