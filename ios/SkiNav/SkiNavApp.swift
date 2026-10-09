@@ -1,4 +1,5 @@
 import SwiftUI
+import UserNotifications
 
 @main
 struct SkiNavApp: App {
@@ -7,6 +8,7 @@ struct SkiNavApp: App {
 
     init() {
         WatchLink.shared.activate()
+        UNUserNotificationCenter.current().delegate = Guide.shared   // the morning brief notification opens the brief
         if !LocationService.shared.isTracking { SkiDay.endAll() }
     }
 

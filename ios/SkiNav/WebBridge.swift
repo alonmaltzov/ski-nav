@@ -40,6 +40,7 @@ final class WebBridge: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
             }
             flush()
             if let code = pendingJoin { pendingJoin = nil; send(event: "join:" + code) }
+            if Guide.shared.pendingBrief { Guide.shared.pendingBrief = false; send(event: "openBrief") }
         case "start":
             var base: SkiTotals?
             if let b = body["base"] as? [String: Any] {
@@ -71,6 +72,16 @@ final class WebBridge: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
                 print("[app] reloading into", start.fromDownload ? "downloaded" : "built-in", "web app")
                 web.loadFileURL(start.url, allowingReadAccessTo: start.url.deletingLastPathComponent())
             }
+        case "speak":
+            Guide.shared.speak(body)
+        case "listen":
+            Guide.shared.listen((body["on"] as? Bool) ?? false)
+        case "think":
+            Guide.shared.think(body)
+        case "briefSchedule":
+            Guide.shared.schedule(body)
+        case "personalVoice":
+            Guide.shared.requestPersonalVoice()
         case "clear":
             // Settings > Clear tracking history: the saved GPS logs go too
             LocationService.shared.clearSaved()
@@ -155,6 +166,7 @@ struct WebAppView: UIViewRepresentable {
            let url = Bundle.main.url(forResource: "qa-tour", withExtension: "js", subdirectory: "www"),
            let js = try? String(contentsOf: url, encoding: .utf8) {
             print("[app] QA tour enabled")
+            config.userContentController.addUserScript(WKUserScript(source: "window.__QA_TOUR=true;", injectionTime: .atDocumentStart, forMainFrameOnly: true))
             config.userContentController.addUserScript(WKUserScript(source: "window.__QA_WAIT=2500;\n" + js, injectionTime: .atDocumentEnd, forMainFrameOnly: true))
         }
         config.allowsInlineMediaPlayback = true

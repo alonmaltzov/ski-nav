@@ -1,0 +1,41 @@
+{
+  "_help": "The guide's script. Edit freely: the app picks up changes the next time it opens with a connection. Blanks you can use: {me} {title} {km} {lifts} {first} {weather} {wear} {lunch} {end} {endTime} {crew}. Days are 1 to 6 (Sun Jan 17 = 1). 'practice' is used on the NYC practice page.",
+  "name": "Snowy",
+  "days": {
+    "1": {
+      "open": "Morning {me}! Day one. The mountain doesn't know what's coming.",
+      "joke": "Reminder: the Folie Douce is a destination, not a warm-up.",
+      "close": "Boots on, goggles up. Let's go."
+    },
+    "2": {
+      "open": "Morning {me}. Day two, legs still attached?",
+      "joke": "Today we cross into Switzerland. Passports not needed, but the chocolate is mandatory.",
+      "close": "Have fun out there."
+    },
+    "3": {
+      "open": "Morning {me}. Halfway point, look at you.",
+      "joke": "Fun fact: nobody has ever regretted the second hot chocolate.",
+      "close": "See you at the bottom."
+    },
+    "4": {
+      "open": "Morning {me}. Day four. Your thighs have filed a complaint.",
+      "joke": "Complaint noted. Complaint ignored.",
+      "close": "Enjoy it."
+    },
+    "5": {
+      "open": "Morning {me}. Day five, you're basically a local now.",
+      "joke": "Locals don't stop for photos. You will. That's fine.",
+      "close": "Make it a good one."
+    },
+    "6": {
+      "open": "Morning {me}. Last day. Let's make it count.",
+      "joke": "Whoever skis the fewest reds today is buying the last round.",
+      "close": "One more time, with feeling."
+    },
+    "practice": {
+      "open": "Morning {me}. Practice day in New York.",
+      "joke": "No snow, no lifts, but the M15 bus counts as a gondola. Don't tell anyone.",
+      "close": "Let's test this thing."
+    }
+  }
+}
