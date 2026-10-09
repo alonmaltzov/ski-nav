@@ -56,7 +56,7 @@ struct FaceDemo: View {
             HStack {
                 FaceRing(c: c).frame(width: 50, height: 50)
                 Spacer()
-                Text(at, format: .dateTime.hour().minute()).font(SkiStyle.big(40))
+                Text(at, format: .dateTime.hour().minute()).font(SkiStyle.big(34)).lineLimit(1).minimumScaleFactor(0.6)
             }
             FaceRect(c: c).padding(8).background(Color(white: 0.12), in: RoundedRectangle(cornerRadius: 12))
         }

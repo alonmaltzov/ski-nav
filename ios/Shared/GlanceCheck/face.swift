@@ -12,7 +12,7 @@ func faceChecks() {
     var s = f; s.tracking = true; s.updated = at(10, 41)
     s.g.speedKmh = 42; s.g.km = 12.4; s.g.run = "Chaux Fleuries"; s.g.runColor = "red"; s.g.nextLift = "Ardent gondola"; s.g.nextLiftM = 1200
     let k = s.content(at: at(10, 42))
-    check("face: skiing", k.mode == .skiing && k.ringCenter == "42" && k.top == "ON A RED" && k.topRight == "12.4 of 24 km" && k.sub1 == "Next lift: Ardent gondola · 1.2 km" && abs(k.ring - 12.4 / 24) < 0.01,
+    check("face: skiing", k.mode == .skiing && k.ringCenter == "42" && k.top == "ON A RED" && k.topRight == "12.4 of 24 km" && k.sub1 == "Next: Ardent gondola · 1.2 km" && abs(k.ring - 12.4 / 24) < 0.01,
           "\(k.ringCenter) \(k.top) \(k.topRight) \(k.sub1)")
 
     var l = s; l.g.onLift = true; l.g.liftName = "Ardent gondola"; l.g.liftMin = 4; l.g.liftProgress = 0.6; l.g.then = "Lindarets"; l.g.thenColor = "blue"

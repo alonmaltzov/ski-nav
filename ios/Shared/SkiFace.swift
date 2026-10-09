@@ -80,7 +80,7 @@ struct SkiFace: Codable, Equatable {
             c.title = g.run.isEmpty ? "Skiing" : g.run; c.titleColor = colored ? g.runColor : ""
             c.bar = kmPlan > 0 ? min(1, g.km / kmPlan) : nil
             if !g.nextLift.isEmpty {
-                c.sub1 = "Next lift: \(g.nextLift)" + (g.nextLiftM >= 0 ? " · \(SkiText.km(Double(g.nextLiftM)))" : "")
+                c.sub1 = "Next: \(g.nextLift)" + (g.nextLiftM >= 0 ? " · \(SkiText.km(Double(g.nextLiftM)))" : "")
             } else { c.sub1 = "max \(g.maxKmh) km/h · \(g.vertM) m down" }
             c.corner = kmPlan > 0 ? "\(kmTxt) / \(planKm) KM" : "\(kmTxt) KM"
             c.inline = "\(g.speedKmh) km/h" + (g.run.isEmpty ? "" : " · \(g.run)")
@@ -103,7 +103,7 @@ struct SkiFace: Codable, Equatable {
             let d = n + 1
             let planned = day == d
             c.ring = 0; c.ringCenter = planned && kmPlan > 0 ? planKm : "D\(d)"; c.ringUnit = planned && kmPlan > 0 ? "KM PLAN" : "DAY"
-            c.top = "SKI NAV · DAY \(d)"; c.topRight = planned && !firstAt.isEmpty ? "skis on \(firstAt)" : ""
+            c.top = "DAY \(d)"; c.topRight = planned && !firstAt.isEmpty ? "skis on \(firstAt)" : ""
             c.title = planned && !title.isEmpty ? title : "Day \(d) of \(SkiFace.tripDays)"
             c.sub1 = planned && kmPlan > 0 ? "\(planKm) km planned" + (firstAt.isEmpty ? "" : " · first lift \(firstAt)") : "Open Ski Nav for today's plan"
             c.sub2 = planned && !firstLift.isEmpty ? "First: \(firstLift)" : ""
