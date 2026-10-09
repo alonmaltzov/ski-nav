@@ -61,7 +61,22 @@ ul{margin:0 0 6px;padding-left:20px;display:grid;gap:8px}
     </div>
   </div>
 
-  <!-- Android and everything else -->
+  <!-- Android -->
+  <div id="android" hidden style="display:grid;gap:10px">
+    <a class="btn primary" id="openAppA" href="#">Open in the Ski Nav app</a>
+    <button class="btn ghost" id="noAppA" type="button">I don’t have the app yet</button>
+    <div class="box" id="getAppA" hidden>
+      <b>Get the Android app (best: it keeps working with your phone in your pocket)</b>
+      <ol>
+        <li><a id="apk" href="#">Download Ski Nav for Android</a></li>
+        <li>Open the downloaded file. If Android asks, allow installing apps from your browser (once).</li>
+        <li>Come back to this message and tap the link again.</li>
+      </ol>
+      <a class="btn ghost" id="webAndroid" href="#">Use it in the browser for now</a>
+    </div>
+  </div>
+
+  <!-- everything else -->
   <div id="other" hidden style="display:grid;gap:10px">
     <a class="btn primary" id="webOther" href="#">Join the trip</a>
     <p class="note">Opens in your browser. Tip: add it to your home screen. Keep the screen on while you ski, so your friends can see you.</p>
@@ -72,7 +87,8 @@ ul{margin:0 0 6px;padding-left:20px;display:grid;gap:8px}
 <script>
 (function(){
   // Optional: link to the TestFlight public invite once the app is on TestFlight.
-  var TESTFLIGHT_URL = '';
+  var TESTFLIGHT_URL = 'https://testflight.apple.com/join/kPyVvmk9';
+  var ANDROID_APK = 'https://github.com/alonmaltzov/ski-nav/releases/download/android/SkiNav.apk';
   // Optional: the group server, to show who invited you (same values as CONFIG.group in index.html).
   var GROUP = window.__GROUP_BACKEND || {"url": "https://aklgkbiehjxpeevuqump.supabase.co", "key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFrbGdrYmllaGp4cGVldnVxdW1wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE0NjcxNzMsImV4cCI6MjEwNzA0MzE3M30.0sJYp4uYnDoqFOECqNZmA8tnZUQFAz8YAPHktvx1HI0"};
 
@@ -89,6 +105,12 @@ ul{margin:0 0 6px;padding-left:20px;display:grid;gap:8px}
     document.getElementById('webIos').href = web;
     document.getElementById('noApp').onclick = function(){ document.getElementById('getApp').hidden = false; this.hidden = true; };
     if (TESTFLIGHT_URL) document.getElementById('tfStep').innerHTML = '<a href="' + TESTFLIGHT_URL + '">Get it on TestFlight</a> (install TestFlight from the App Store first if it asks).';
+  } else if (/Android/i.test(ua)) {
+    document.getElementById('android').hidden = false;
+    document.getElementById('openAppA').href = 'skinav://join?c=' + encodeURIComponent(code);
+    document.getElementById('webAndroid').href = web;
+    document.getElementById('apk').href = ANDROID_APK;
+    document.getElementById('noAppA').onclick = function(){ document.getElementById('getAppA').hidden = false; this.hidden = true; };
   } else {
     document.getElementById('other').hidden = false;
     document.getElementById('webOther').href = web;
