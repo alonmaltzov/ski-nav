@@ -70,11 +70,25 @@ final class WatchLink: NSObject, WCSessionDelegate {
 
     /// Live numbers for the watch face while the phone tracks (only when the watch app is open and reachable).
     func sendLive(_ live: [String: Any], force: Bool) {
-        guard ready, WCSession.default.isReachable else { return }
+        guard ready else { return }
+        guard WCSession.default.isReachable else { pushComplication(live, force: force); return }
         let now = Date()
         guard force || now.timeIntervalSince(lastLive) >= 3 else { return }
         lastLive = now
         WCSession.default.sendMessage(["live": live], replyHandler: nil, errorHandler: nil)
+    }
+
+    /// Watch app closed and the phone tracking alone: keep the watch face complication current. Apple allows
+    /// about 50 of these a day, so at most every 15 minutes, plus lift changes while there's budget to spare.
+    private var lastComplication = Date.distantPast
+    private func pushComplication(_ live: [String: Any], force: Bool) {
+        let s = WCSession.default
+        guard s.isComplicationEnabled else { return }
+        let now = Date()
+        let gap: TimeInterval = force && s.remainingComplicationUserInfoTransfers > 25 ? 120 : 15 * 60
+        guard now.timeIntervalSince(lastComplication) >= gap, s.remainingComplicationUserInfoTransfers > 0 else { return }
+        lastComplication = now
+        s.transferCurrentComplicationUserInfo(["live": live])
     }
 
     func session(_ session: WCSession, activationDidCompleteWith state: WCSessionActivationState, error: Error?) {

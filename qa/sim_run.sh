@@ -120,7 +120,7 @@ if [ -n "$WATCH" ]; then
     boot_watch
   fi
   # the watch screens with a sample day: skiing, on a lift, steps list
-  for d in now lift steps; do
+  for d in now lift steps face-morning face-skiing face-lift face-done; do
     xcrun simctl launch --terminate-running-process "$WATCH" "$WBUNDLE" -demo $d >/dev/null 2>&1 && sleep 4 && \
       xcrun simctl io "$WATCH" screenshot "$OUT/97-watch-$d.png" >/dev/null 2>&1 || true
     [ -f "$OUT/97-watch-$d.png" ] && ok=true || ok=false
