@@ -70,13 +70,18 @@ pid = adb('shell', 'pidof', PKG).strip()
 adb('forward', 'tcp:9222', f'localabstract:webview_devtools_remote_{pid}', check=True)
 import websocket  # websocket-client
 pages = json.load(urllib.request.urlopen('http://127.0.0.1:9222/json'))
+print('devtools targets:', [(p.get('type'), p.get('url')) for p in pages])
+pages = [p for p in pages if 'index.html' in p.get('url', '')] or pages
 ws = websocket.create_connection([p for p in pages if p.get('type') == 'page'][0]['webSocketDebuggerUrl'], timeout=30, suppress_origin=True)
 mid = [0]
 def ev(expr):
     mid[0] += 1; ws.send(json.dumps({'id': mid[0], 'method': 'Runtime.evaluate', 'params': {'expression': expr, 'returnByValue': True, 'awaitPromise': True}}))
     while True:
         r = json.loads(ws.recv())
-        if r.get('id') == mid[0]: return r.get('result', {}).get('result', {}).get('value')
+        if r.get('id') == mid[0]:
+            if 'exceptionDetails' in r.get('result', {}) or 'error' in r:
+                print('  js error for', expr[:60], json.dumps(r)[:300])
+            return r.get('result', {}).get('result', {}).get('value')
 
 res('bridge: page sees the app', ev('NATIVE && !!window.__ANDROID && platform()') == 'android')
 ev("document.querySelectorAll('[hidden]').length")  # warm up
