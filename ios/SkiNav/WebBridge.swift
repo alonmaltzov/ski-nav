@@ -49,6 +49,7 @@ final class WebBridge: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
             }
             SkiDay.shared.begin(base: base)
             LocationService.shared.start()
+            WatchLink.shared.startWatchWorkout()
         case "ctx":
             // the resort's lift lines + today's title, so native lift detection matches the page
             SkiDay.shared.setContext(lifts: body["lifts"] as? [[[Double]]], title: body["title"] as? String, flat: body["flat"] as? Bool)
@@ -60,6 +61,7 @@ final class WebBridge: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
             SkiDay.shared.setStep(st, liftLine: body["lift"] as? [[Double]], index: (body["idx"] as? Int) ?? 0)
         case "stop":
             LocationService.shared.stop()
+            WatchLink.shared.stopWatchWorkout()
         case "locate":
             LocationService.shared.locate()
         case "compass":
