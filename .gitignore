@@ -4,3 +4,4 @@ ios/SkiNav/www/*.js
 ios/dd/
 ios/*.xcodeproj/
 ios/.team
+ios/.team-override
