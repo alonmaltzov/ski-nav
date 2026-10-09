@@ -2,7 +2,6 @@ name: TestFlight
 # Builds the iPhone + Watch app, signs it with the App Store Connect API key and uploads it to TestFlight.
 # Runs when native code changes land on main, or by hand from the Actions tab (Run workflow).
 # Web-only changes don't need a new build: the app updates its pages over the air (OTA).
-# (retry: app group on the watch app ids)
 on:
   push:
     branches: [main, 'tf/**']
@@ -45,6 +44,11 @@ jobs:
           fi
           grep -q 'BEGIN PRIVATE KEY' $F && grep -q 'END PRIVATE KEY' $F || { echo "::error::ASC_KEY_P8 isn't the .p8 file text. Paste the whole file, from -----BEGIN PRIVATE KEY----- to -----END PRIVATE KEY-----"; exit 1; }
           echo "KEY_PATH=$HOME/private_keys/AuthKey_$KID.p8" >> $GITHUB_ENV
+      - name: Free certificate slots (old CI certificates)
+        env:
+          KID: ${{ secrets.ASC_KEY_ID }}
+          ISS: ${{ secrets.ASC_ISSUER_ID }}
+        run: pip3 install --break-system-packages -q pyjwt cryptography && python3 ios/ci/clean_certs.py "$KEY_PATH" "$KID" "$ISS"
       - name: Generate project
         working-directory: ios
         run: |
@@ -92,6 +96,12 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with: { name: testflight-logs, path: 'ios/*.log' }
+      - name: Revoke this run's certificate
+        if: always()
+        env:
+          KID: ${{ secrets.ASC_KEY_ID }}
+          ISS: ${{ secrets.ASC_ISSUER_ID }}
+        run: test -f "$KEY_PATH" && python3 ios/ci/clean_certs.py "$KEY_PATH" "$KID" "$ISS" || true
       - name: Clean up key
         if: always()
         run: rm -rf ~/private_keys
