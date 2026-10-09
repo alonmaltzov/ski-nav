@@ -31,6 +31,11 @@ jobs:
           # shape check only, never prints the key
           echo "key file: $(wc -l < $F) lines, $(wc -c < $F) bytes, BEGIN line: $(grep -c 'BEGIN PRIVATE KEY' $F), END line: $(grep -c 'END PRIVATE KEY' $F)"
           echo "key id length: ${#KID}"
+          # pasted without the BEGIN/END lines: add them back
+          if ! grep -q 'BEGIN PRIVATE KEY' $F; then
+            { echo '-----BEGIN PRIVATE KEY-----'; grep -v '^$' $F; echo '-----END PRIVATE KEY-----'; } > $F.tmp && mv $F.tmp $F
+            echo "added BEGIN/END lines"
+          fi
           grep -q 'BEGIN PRIVATE KEY' $F && grep -q 'END PRIVATE KEY' $F || { echo "::error::ASC_KEY_P8 isn't the .p8 file text. Paste the whole file, from -----BEGIN PRIVATE KEY----- to -----END PRIVATE KEY-----"; exit 1; }
           echo "KEY_PATH=$HOME/private_keys/AuthKey_$KID.p8" >> $GITHUB_ENV
       - name: Generate project
