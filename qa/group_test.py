@@ -227,15 +227,12 @@ async def main():
             if name == 'iphone':
                 href = await J.get_attribute('#openApp', 'href')
                 result('invite page on iPhone opens the app', href == 'skinav://join?c=' + code, href)
-                await J.click('#noApp')
-                tf = await J.get_attribute('#tfStep a', 'href')
+                tf = await J.get_attribute('#getIos', 'href')
                 result('invite page on iPhone links to TestFlight', (tf or '').startswith('https://testflight.apple.com/join/'), tf)
             else:
                 href = await J.get_attribute('#openAppA', 'href') or ''
                 result('invite page on Android opens the app (or downloads it)', href.startswith('intent://join?c=' + code + '#Intent;scheme=skinav;package=com.alonmaltzov.skinav;S.browser_fallback_url='), href[:120])
-                await J.click('#noAppA')
-                apk = await J.get_attribute('#apk', 'href')
-                result('invite page on Android links to the app download', (apk or '').endswith('/releases/download/android/SkiNav.apk'), apk)
+                result('invite page on Android downloads the app when missing', 'releases%2Fdownload%2Fandroid%2FSkiNav.apk' in href, '')
             result('invite page (%s) has no browser option (apps only)' % name, await J.locator('a[href^="index.html"]').count() == 0)
             await shot(J, 'invite-page-' + name); await ctx.close()
         await b.close()
