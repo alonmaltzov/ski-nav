@@ -32,6 +32,9 @@ struct Plan: Codable {
 /// live speed / distance / max / vertical, lift detection, and the next step of the plan.
 @MainActor
 final class SkiSession: NSObject, ObservableObject {
+    static let shared = SkiSession()
+    /// true when the iPhone started this workout (so the iPhone's Stop may end it)
+    private var startedByPhone = false
     // live numbers
     @Published var running = false
     @Published var speedKmh: Double = 0
@@ -181,7 +184,21 @@ final class SkiSession: NSObject, ObservableObject {
         }
     }
 
+    func startFromPhone() {
+        guard !running else { return }
+        startedByPhone = true
+        start()
+    }
+
+    /// The iPhone's Stop: end the workout only if the iPhone started it, and only for a recent stop.
+    func stopFromPhone(at: Double) {
+        guard running, startedByPhone, Date().timeIntervalSince1970 - at < 600 else { return }
+        print("[watch] stopped from the iPhone")
+        stop()
+    }
+
     func stop() {
+        startedByPhone = false
         running = false
         location.stopUpdatingLocation()
         timer?.invalidate(); timer = nil
@@ -329,7 +346,11 @@ extension SkiSession: WCSessionDelegate {
     nonisolated func sessionReachabilityDidChange(_ session: WCSession) {
         if session.isReachable { Task { @MainActor in self.askForPlan() } }
     }
+    nonisolated func session(_ session: WCSession, didReceiveUserInfo info: [String: Any]) {
+        if info["cmd"] as? String == "stopWorkout", let at = info["at"] as? Double { Task { @MainActor in self.stopFromPhone(at: at) } }
+    }
     nonisolated func session(_ session: WCSession, didReceiveMessage msg: [String: Any]) {
+        if msg["cmd"] as? String == "stopWorkout", let at = msg["at"] as? Double { Task { @MainActor in self.stopFromPhone(at: at) } }
         if let live = msg["live"] as? [String: Any] {
             let copy = live as NSDictionary
             Task { @MainActor in self.receive(live: copy as! [String: Any]) }

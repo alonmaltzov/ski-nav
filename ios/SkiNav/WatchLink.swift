@@ -1,5 +1,6 @@
 import Foundation
 import WatchConnectivity
+import HealthKit
 
 /// Phone -> watch: today's plan (kept until delivered) and, while tracking, live stats + current step.
 final class WatchLink: NSObject, WCSessionDelegate {
@@ -39,6 +40,31 @@ final class WatchLink: NSObject, WCSessionDelegate {
             print("[app] plan sent to watch")
         } catch {
             print("[app] plan to watch failed:", error.localizedDescription)
+        }
+    }
+
+    private let health = HKHealthStore()
+
+    /// Start on the phone = start the ski workout on the watch too, so the watch tracks with its own GPS
+    /// (more accurate on the wrist, and the watch face stays live). Apple launches the watch app for this.
+    func startWatchWorkout() {
+        guard WCSession.isSupported(), WCSession.default.isPaired, HKHealthStore.isHealthDataAvailable() else { return }
+        let cfg = HKWorkoutConfiguration()
+        cfg.activityType = .downhillSkiing
+        cfg.locationType = .outdoor
+        health.startWatchApp(with: cfg) { ok, err in
+            print("[app] start workout on watch:", ok ? "ok" : (err?.localizedDescription ?? "failed"))
+        }
+    }
+
+    /// Stop on the phone = stop the watch workout it started (the watch ignores this if it was started on the wrist).
+    func stopWatchWorkout() {
+        guard ready else { return }
+        let msg: [String: Any] = ["cmd": "stopWorkout", "at": Date().timeIntervalSince1970]
+        if WCSession.default.isReachable {
+            WCSession.default.sendMessage(msg, replyHandler: nil) { _ in WCSession.default.transferUserInfo(msg) }
+        } else {
+            WCSession.default.transferUserInfo(msg)
         }
     }
 

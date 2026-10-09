@@ -42,8 +42,14 @@ targets:
         NSMotionUsageDescription: Ski Nav uses the compass to show which way you are facing, only when you turn it on.
         NSMicrophoneUsageDescription: Ski Nav listens only while you hold or tap the guide's talk button, to answer your question.
         NSSpeechRecognitionUsageDescription: Ski Nav turns your question into text on your iPhone to answer it. Nothing is sent anywhere.
+        NSHealthShareUsageDescription: Ski Nav starts the ski workout on your Apple Watch when you tap Start.
+        NSHealthUpdateUsageDescription: Ski Nav saves each ski day as a Downhill Skiing workout.
         NSSupportsLiveActivities: true
         NSSupportsLiveActivitiesFrequentUpdates: true
+    entitlements:
+      path: SkiNav/SkiNav.entitlements
+      properties:
+        com.apple.developer.healthkit: true
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.alonmaltzov.SkiNav
