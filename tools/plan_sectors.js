@@ -155,8 +155,8 @@ window.__planSectors = function(variant, opts){
     morzine: p => box(46.115,46.200,6.58,6.738)(p),
     crosets: p => swissPt(p) && box(46.150,46.198,6.78,6.92)(p),
     champoussin: p => swissPt(p) && box(46.198,46.262,6.80,6.92)(p),
-    chatel: p => !swissPt(p) && box(46.212,46.300,6.74,6.90)(p),
-    torgon: p => swissPt(p) && box(46.275,46.340,6.78,6.92)(p),
+    chatel: p => !swissPt(p) && box(46.212,46.300,6.74,6.835)(p),                       // Pré-la-Joux + Linga
+    torgon: p => (swissPt(p) && box(46.262,46.340,6.78,6.92)(p)) || (!swissPt(p) && box(46.255,46.300,6.835,6.90)(p)),  // Super-Châtel + Torgon
   };
   for(const spec of opts.days){
     const day=W[spec.day-1]; Object.assign(day, spec.meta||{});
