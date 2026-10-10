@@ -1,8 +1,9 @@
 """Re-plan the 'reds first' week inside the app's own code (headless Chrome), then write it back.
-Usage: python3 tools/improve_week.py [variant]   (default red)"""
+Usage: python3 tools/improve_week.py [variant] [opts.json]   (default red)"""
 import json, os, sys, math
 from playwright.sync_api import sync_playwright
 V = sys.argv[1] if len(sys.argv) > 1 else 'red'
+OPTS = json.load(open(sys.argv[2])) if len(sys.argv) > 2 else {}
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 H = os.path.join(ROOT, 'index.html')
 src = open(H, encoding='utf-8').read()
@@ -18,7 +19,7 @@ with sync_playwright() as p:
     pg.route('**/*.tile*', lambda r: r.abort())
     pg.goto('http://skinav.local/index-improve.html')
     pg.wait_for_function('typeof window.__improveWeek === "function" && !!window.__ski', timeout=60000)
-    res = pg.evaluate("v => window.__improveWeek(v)", V)
+    res = pg.evaluate("([v, o]) => window.__improveWeek(v, o)", [V, OPTS])
     week = json.loads(pg.evaluate("v => window.__weekJSON(v)", V))
     b.close()
 print('\n'.join(res['log']))
