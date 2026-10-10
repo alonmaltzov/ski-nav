@@ -4,12 +4,15 @@
  * Swiss days, are back on the French side by the cut-off. Lunch is 40 min nearest 12:30.
  * Needs tools/links.js (Morzine and Chatel connections) loaded first. */
 window.__planSectors = function(variant, opts){
-  opts = Object.assign({start: 9*3600+15*60, finish: 16*3600+45*60, crossBy: 16*3600, lunchAt: 12*3600+30*60, lunchMin: 40,
+  opts = Object.assign({start: 9*3600, runSpeed: 4.2, queue: 150, lookahead: true, finish: 16*3600+45*60, crossBy: 16*3600, lunchAt: 12*3600+30*60, lunchMin: 40,
     weight: {red: 3, black: 2.2, blue: 1.4, green: 0}, days: []}, opts||{});
   __addLinks(); RG = buildGraph();
   const g = RG, W = WEEKS[variant], log = [];
-  const runSpeed = 3.3, liftTime = len => 240 + len/3.6;
-  const stepTime = s => s.type==='lift' ? liftTime(s.len||0) : (s.len||0)/runSpeed;
+  // timing: skiing ~15 km/h average with stops; lifts = queue + ride at the lift's own speed
+  const runSpeed = opts.runSpeed;
+  const LIFT_V = {gon:5.5, cab:6, mix:5, fun:6, cha:4.2};
+  const liftV = bi => (bi!=null && BG[bi]) ? (LIFT_V[BG[bi][1]] || 3) : 4;
+  const stepTime = s => s.type==='lift' ? opts.queue + (s.len||0)/liftV(s._bi) : (s.len||0)/runSpeed;
   const fmt = t => { t=Math.round(t/60); return Math.floor(t/60)+':'+String(t%60).padStart(2,'0'); };
   const COL = {nov:'green', eas:'blue', int:'red', adv:'black', exp:'black', fre:'black'};
 
@@ -26,8 +29,8 @@ window.__planSectors = function(variant, opts){
     for(const [v,c] of sources){ if(c<dist[v]){ dist[v]=c; pe[v]=['start']; push(c,v); } }
     while(H.length){ const [d,v]=pop(); if(d>dist[v]) continue;
       for(const e of g.adj[v]){ let c=e[1];
-        if(e[2]==='l'){ if(isDragLift(BG[e[3]])) c+=1800; c += 140; }      // lifts: queue + real riding time vs fast skiing
-        if(e[2]==='r') c *= 8/runSpeed;                                       // graph runs at 8 m/s; we ski ~3.3
+        if(e[2]==='l'){ const b=BG[e[3]]; let len=0; for(let j=0;j<b[3].length-1;j++) len+=hav(b[3][j],b[3][j+1]); c = opts.queue + len/liftV(e[3]) + (isDragLift(b)&&!/^(Walk|Bus)/.test(b[2]||'')?600:0); }
+        if(e[2]==='r') c *= 8/runSpeed;                                       // graph runs at 8 m/s
         if(discount && e[2]==='r' && discount.has(e[3])) c*=0.08;
         const nd=d+c; if(nd<dist[e[0]]){ dist[e[0]]=nd; prev[e[0]]=v; pe[e[0]]=e; push(nd,e[0]); } } }
     return {dist,prev,pe};
@@ -114,7 +117,11 @@ window.__planSectors = function(variant, opts){
         if(spec.swiss){ const sw=lastSwissEnd([...r1.steps, ...r2.steps, ...rh.steps], t); if(sw!=null && sw+lunchLeft(t+cost) > opts.crossBy) continue; }
         const fresh = seenWeek.has(x.name+'|'+x.color) ? 0.35 : 1;
         const value = opts.weight[x.color] * Math.min(x.total, 2500) * fresh;
-        const score = value / (cost + 120);
+        let score = value / (cost + 120);
+        if(opts.lookahead){ const D2=from(x.bottom); let bn=0;
+          for(const y of T){ if(y===x||done.has(y)) continue; const c1=costTo(D2,y.top); if(!c1) continue; const r2y=route(y.top,y.bottom,y.set); if(!r2y) continue;
+            const fy=seenWeek.has(y.name+'|'+y.color)?0.35:1; const v=opts.weight[y.color]*Math.min(y.total,2500)*fy/(c1.c*0.6+r2y.t+120); if(v>bn) bn=v; }
+          score = 0.6*score + 0.4*bn; }
         if(!best || score>best.score) best={x, r1, r2, cost, score};
       }
       if(!best){ const why={}; const W_=k=>why[k]=(why[k]||0)+1;
