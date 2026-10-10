@@ -24,6 +24,7 @@ ul{margin:0 0 6px;padding-left:20px;display:grid;gap:8px}
 .btn{display:flex;align-items:center;justify-content:center;min-height:56px;border-radius:16px;font-size:1.1rem;font-weight:700;text-decoration:none;border:0;width:100%;cursor:pointer;font-family:inherit}
 .primary{background:var(--ink);color:var(--panel)}
 .ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.lead{margin:0 0 6px;font-size:1.05rem;line-height:1.4}
 .note{margin:0;color:var(--muted);font-size:.95rem;text-align:center}
 .box{background:var(--bg);border-radius:16px;padding:14px 16px;font-size:.98rem;display:grid;gap:8px}
 .box b{font-size:1rem}
@@ -40,47 +41,26 @@ ul{margin:0 0 6px;padding-left:20px;display:grid;gap:8px}
   <span class="dates" id="dates">Portes du Soleil</span>
 </div>
 <div class="sheet">
-  <ul>
-    <li><b>The plan for each day</b>: which runs and lifts, on a map that works offline</li>
-    <li><b>See where everyone is</b> on the mountain, and find each other</li>
-    <li><b>Your speed, km and runs</b> for every day</li>
-  </ul>
+  <p class="lead">Each day's plan on the map, and where everyone is on the mountain.</p>
   <p class="err" id="err" hidden>This invite link is missing its code. Ask for the link again.</p>
 
-  <!-- iPhone -->
+  <!-- iPhone: open the app, or get it from TestFlight -->
   <div id="ios" hidden style="display:grid;gap:10px">
-    <a class="btn primary" id="openApp" href="#">Open in the Ski Nav app</a>
-    <button class="btn ghost" id="noApp" type="button">I don’t have the app yet</button>
-    <div class="box" id="getApp" hidden>
-      <b>Get the iPhone app (best: it keeps working with your phone in your pocket)</b>
-      <ol>
-        <li id="tfStep">Ask the organizer for the TestFlight invite.</li>
-        <li>Install it, then come back to this message and tap the link again.</li>
-      </ol>
-    </div>
+    <a class="btn primary" id="openApp" href="#">Open in Ski Nav</a>
+    <a class="btn ghost" id="getIos" href="#">Get the app</a>
+    <p class="note">New? Get the app, then tap this invite link again.</p>
   </div>
 
-  <!-- Android -->
+  <!-- Android: one button opens the app, or downloads it when it isn't installed -->
   <div id="android" hidden style="display:grid;gap:10px">
-    <a class="btn primary" id="openAppA" href="#">Open in the Ski Nav app</a>
-    <button class="btn ghost" id="noAppA" type="button">I don’t have the app yet</button>
-    <div class="box" id="getAppA" hidden>
-      <b>Get the Android app (best: it keeps working with your phone in your pocket)</b>
-      <ol>
-        <li><a id="apk" href="#">Download Ski Nav for Android</a></li>
-        <li>Open the downloaded file. If Android asks, allow installing apps from your browser (once).</li>
-        <li>Come back to this message and tap the link again.</li>
-      </ol>
-    </div>
+    <a class="btn primary" id="openAppA" href="#">Join with Ski Nav</a>
+    <p class="note">No app yet? This downloads it. Install, then tap this invite link again.</p>
   </div>
 
-  <!-- everything else -->
-  <div id="other" hidden style="display:grid;gap:10px">
-    <a class="btn primary" id="webOther" href="#">Join the trip</a>
-    <p class="note">Opens in your browser. Tip: add it to your home screen. Keep the screen on while you ski, so your friends can see you.</p>
+  <!-- computer -->
+  <div id="other" hidden>
+    <p class="note">Open this link on your phone to join.</p>
   </div>
-
-  <p class="note">Takes 30 seconds. No account or password.</p>
 </div>
 <script>
 (function(){
@@ -103,17 +83,13 @@ ul{margin:0 0 6px;padding-left:20px;display:grid;gap:8px}
   if (isIOS) {
     document.getElementById('ios').hidden = false;
     document.getElementById('openApp').href = 'skinav://join?c=' + encodeURIComponent(code);
-    document.getElementById('noApp').onclick = function(){ document.getElementById('getApp').hidden = false; this.hidden = true; };
-    if (TESTFLIGHT_URL) document.getElementById('tfStep').innerHTML = '<a href="' + TESTFLIGHT_URL + '">Get it on TestFlight</a> (install TestFlight from the App Store first if it asks).';
+    document.getElementById('getIos').href = TESTFLIGHT_URL;
   } else if (/Android/i.test(ua)) {
     document.getElementById('android').hidden = false;
     // Android intent link: opens Ski Nav when it's installed, otherwise downloads it
     document.getElementById('openAppA').href = 'intent://join?c=' + encodeURIComponent(code) + '#Intent;scheme=skinav;package=com.alonmaltzov.skinav;S.browser_fallback_url=' + encodeURIComponent(ANDROID_APK) + ';end';
-    document.getElementById('apk').href = ANDROID_APK;
-    document.getElementById('noAppA').onclick = function(){ document.getElementById('getAppA').hidden = false; this.hidden = true; };
   } else {
     document.getElementById('other').hidden = false;
-    document.getElementById('webOther').href = web;
   }
 
   if (GROUP && GROUP.url && code) {
