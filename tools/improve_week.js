@@ -4,7 +4,13 @@
  * Uses the app's own piste graph (buildGraph) and step builder (pathSteps), so the steps are the
  * same shape the app makes when it re-plans from where you are. */
 window.__improveWeek = function(variant, opts){
-  opts = Object.assign({latestArrive: 16*3600+15*60, maxAddPerDay: 5, maxDetour:{red:45*60, black:35*60, blue:35*60}}, opts||{});
+  opts = Object.assign({latestArrive: 16*3600+15*60, maxAddPerDay: 5, maxDetour:{red:45*60, black:35*60, blue:35*60},
+    swiss: [], crossBy: 15*3600+45*60, swap: null, rebuild: null}, opts||{});
+  const swissDay = d => opts.swiss.includes(d.day);
+  const swissNames = new Set(GROUPS.filter(x=>x.a==='Switzerland').map(x=>x.n+'|'+x.c));
+  const frNames = new Set(GROUPS.filter(x=>x.a!=='Switzerland').map(x=>x.n+'|'+x.c));
+  const isSwissStep = s => s.type==='run' && (s.legs||[]).some(l=>swissNames.has(l.name+'|'+l.color) && !frNames.has(l.name+'|'+l.color));
+  const lastSwiss = d => { let k=-1; d.steps.forEach((s,i)=>{ if(isSwissStep(s)) k=i; }); return k; };
   if(!RG) RG = buildGraph();
   const g = RG, W = WEEKS[variant];
   const runSpeed = 3.3, liftTime = len => 240 + len/3.6;
@@ -30,20 +36,20 @@ window.__improveWeek = function(variant, opts){
   const runOk = v => BG[g.vLine[v]][0]==='R' || g.vIdx[v]===0;
   // shortest-time search from a point, cached (one search per stop, reused for every candidate run)
   const cache = new Map();
-  function from(a, discount){
-    const key = a[0].toFixed(5)+','+a[1].toFixed(5)+(discount?':d'+[...discount][0]:'');
+  function from(a, discount, rad){
+    const key = a[0].toFixed(5)+','+a[1].toFixed(5)+(discount?':d'+[...discount][0]:'')+(rad?':r'+rad:'');
     if(cache.has(key)) return cache.get(key);
-    const src = nearV(a, 60, runOk).slice(0,12).map(([v,d])=>[v, 6+d/g.walkV]);
+    const src = nearV(a, rad||60, runOk).slice(0,12).map(([v,d])=>[v, 6+d/g.walkV]);
     const D = src.length ? dij(src, discount) : null; cache.set(key, D); return D;
   }
-  function costTo(D, b){
+  function costTo(D, b, rad){
     if(!D) return null; let best=null;
-    for(const [v,d] of nearV(b, 60, v=>g.usable(v))){ const c=D.dist[v]+d/g.walkV; if(isFinite(c) && (!best||c<best.c)) best={v,c}; }
+    for(const [v,d] of nearV(b, rad||60, v=>g.usable(v))){ const c=D.dist[v]+d/g.walkV; if(isFinite(c) && (!best||c<best.c)) best={v,c}; }
     return best;
   }
   function stepsTo(D, best, a){ return pathSteps(D, best.v, a).filter(s=>s.type==='lift' || (s.len||0)>40); }
-  function route(a, b, discount){
-    const D=from(a, discount); const best=costTo(D,b); if(!best) return null;
+  function route(a, b, discount, rad){
+    const D=from(a, discount, rad); const best=costTo(D,b,rad); if(!best) return null;
     const st=stepsTo(D,best,a); return [st, st.reduce((t,x)=>t+stepTime(x),0)];
   }
 
@@ -95,6 +101,30 @@ window.__improveWeek = function(variant, opts){
   }
 
   const log = [];
+  // ---------- 0. move days around and build new ones from a list of runs ----------
+  if(opts.swap){ for(const [a,b] of opts.swap){
+    const A=W[a-1], B=W[b-1]; const keep=['day','date'];
+    const ca=Object.assign({},A), cb=Object.assign({},B);
+    Object.keys(A).forEach(k=>{ if(!keep.includes(k)) delete A[k]; }); Object.keys(B).forEach(k=>{ if(!keep.includes(k)) delete B[k]; });
+    Object.keys(cb).forEach(k=>{ if(!keep.includes(k)) A[k]=cb[k]; }); Object.keys(ca).forEach(k=>{ if(!keep.includes(k)) B[k]=ca[k]; });
+    log.push('Swapped days '+a+' and '+b);
+  } }
+  if(opts.rebuild){ for(const [dn, spec] of Object.entries(opts.rebuild)){
+    const day=W[dn-1]; const start=[day.start.lat, day.start.lon], end=[day.end.lat, day.end.lon];
+    let cur=start, steps=[];
+    for(const name of spec.targets){
+      const gi = GROUPS.findIndex(x=>x.n===name.n && x.c===name.c && (!name.a || x.a===name.a) && groupWays[GROUPS.indexOf(x)]);
+      if(gi<0){ log.push('Rebuild: no run '+name.n); continue; }
+      const T=chainOf(gi); const r1=route(cur, T.top) || route(cur, T.top, null, 200); const r2=route(T.top, T.bottom, T.ways) || route(T.top, T.bottom, T.ways, 150);
+      if(!r1||!r2){ log.push('Rebuild: no way to '+name.n); continue; }
+      if(!r2[0].some(s=>(s.legs||[]).some(l=>l.name===name.n))) log.push('Rebuild: route misses '+name.n);
+      steps.push(...r1[0], ...r2[0]); cur=T.bottom;
+    }
+    const rh=route(cur, end) || route(cur, end, null, 200); if(!rh){ log.push('Rebuild: no way home from '+cur); continue; } day.homeStep=steps.length; steps.push(...rh[0]);
+    day.steps=steps; Object.assign(day, spec.meta||{});
+    log.push('Day '+dn+' built: '+steps.length+' steps');
+  } }
+  W.forEach(retime);
   // ---------- 1. cut laps that only repeat ----------
   // a lap only goes if every metre of its run was already skied (by the map, not just by name)
   const cell = p => Math.floor(p[0]*4000)+':'+Math.floor(p[1]*2800);
@@ -145,6 +175,7 @@ window.__improveWeek = function(variant, opts){
     let best=null; const cands=[];
     for(const day of W){
       if((added[day.day]||0) >= opts.maxAddPerDay) continue;
+      if(opts.areas && opts.areas[day.day] && !opts.areas[day.day].includes(T.x.a)) continue;
       const lastK = (day.homeStep!=null ? day.homeStep : day.steps.length) - 1;
       for(let k=2; k<lastK; k++){
         const a=endPt(day.steps[k]), b=startPt(day.steps[k+1]); if(!a||!b) continue;
@@ -162,6 +193,10 @@ window.__improveWeek = function(variant, opts){
       const st=[...stepsTo(from(c.a),c.c1,c.a), ...r2[0], ...stepsTo(Dback,c.c3,T.bottom)];
       const cost=st.reduce((t,x)=>t+stepTime(x),0);
       if(cost > opts.maxDetour[T.x.c]*1.6 || c.day._arriveS + cost > opts.latestArrive) continue;
+      if(swissDay(c.day)){ const ls=lastSwiss(c.day);
+        const newsSwiss = st.some(isSwissStep);
+        const endSwiss = c.k < ls ? c.day.steps[ls].t1 + cost : (newsSwiss ? c.day.steps[c.k].t1 + cost : -1);
+        if(endSwiss > opts.crossBy) continue; }
       if(!best || cost<best.cost) best=Object.assign(c,{cost,steps:st});
     }
     if(!best){ log.push('Could not fit '+T.x.c+' '+T.x.n+' ('+T.x.a+') without arriving after '+fmt(opts.latestArrive)); continue; }
@@ -173,6 +208,6 @@ window.__improveWeek = function(variant, opts){
     log.push('Day '+best.day.day+': added '+T.x.c+' '+T.x.n+' ('+T.x.a+'), +'+Math.round(best.cost/60)+' min');
   }
   W.forEach(day=>{ retime(day); wayHome(day); });
-  return {log, days: W.map(d=>({day:d.day, km:d.km, lifts:d.lifts, arrive:d.arrive, steps:d.steps.length}))};
+  return {log, days: W.map(d=>({day:d.day, title:d.title, km:d.km, lifts:d.lifts, arrive:d.arrive, homeAt:d.steps[d.homeStep]&&d.steps[d.homeStep].at, swissOut: lastSwiss(d)>=0 ? fmt(d.steps[lastSwiss(d)].t1) : null, steps:d.steps.length}))};
 };
 window.__weekJSON = v => JSON.stringify(WEEKS[v]);

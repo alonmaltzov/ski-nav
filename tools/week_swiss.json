@@ -1,0 +1,99 @@
+{
+  "latestArrive": 60300,
+  "crossBy": 57600,
+  "maxAddPerDay": 6,
+  "swiss": [
+    2,
+    4,
+    5
+  ],
+  "swap": [
+    [
+      4,
+      6
+    ]
+  ],
+  "rebuild": {
+    "4": {
+      "targets": [
+        {
+          "n": "Chavanette (Le Mur Suisse)",
+          "c": "black",
+          "a": "Switzerland"
+        },
+        {
+          "n": "Pauvre Conche",
+          "c": "black"
+        },
+        {
+          "n": "Conchette",
+          "c": "black"
+        },
+        {
+          "n": "Grand Conche",
+          "c": "black"
+        },
+        {
+          "n": "Grand Conche",
+          "c": "red",
+          "a": "Switzerland"
+        },
+        {
+          "n": "Loquet",
+          "c": "black"
+        },
+        {
+          "n": "Crosets",
+          "c": "red"
+        },
+        {
+          "n": "Marcheuson",
+          "c": "red"
+        },
+        {
+          "n": "Planachaux",
+          "c": "red",
+          "a": "Switzerland"
+        },
+        {
+          "n": "Ripaille – Grand Paradis",
+          "c": "red"
+        },
+        {
+          "n": "Stade",
+          "c": "red",
+          "a": "Switzerland"
+        }
+      ],
+      "meta": {
+        "title": "Switzerland: the Swiss Wall + Swiss blacks",
+        "sector": "swiss_blacks",
+        "black": true
+      }
+    }
+  },
+  "areas": {
+    "1": [
+      "Avoriaz"
+    ],
+    "2": [
+      "Switzerland",
+      "Avoriaz"
+    ],
+    "3": [
+      "Châtel",
+      "Avoriaz"
+    ],
+    "4": [
+      "Switzerland",
+      "Avoriaz"
+    ],
+    "5": [
+      "Switzerland",
+      "Avoriaz"
+    ],
+    "6": [
+      "Avoriaz"
+    ]
+  }
+}
