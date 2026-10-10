@@ -48,9 +48,9 @@
     {
       "day": 5,
       "area": "chatel",
-      "title": "Châtel",
+      "title": "Châtel: Pré-la-Joux + Linga",
       "meta": {
-        "title": "Châtel",
+        "title": "Châtel: Pré-la-Joux + Linga",
         "sector": "chatel",
         "black": true
       },
@@ -60,9 +60,9 @@
       "day": 6,
       "area": "torgon",
       "swiss": true,
-      "title": "Torgon",
+      "title": "Super-Châtel + Torgon",
       "meta": {
-        "title": "Switzerland: Torgon",
+        "title": "Switzerland: Super-Châtel + Torgon",
         "sector": "torgon",
         "black": true
       },
