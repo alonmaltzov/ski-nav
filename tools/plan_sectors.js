@@ -98,11 +98,19 @@ window.__planSectors = function(variant, opts){
 
   // ---- plan one day ----
   const seenWeek = new Set();
+  // every day opens and closes the same way (the app folds these into one "every day" row):
+  // L'Amara -> Proclou chair in the morning, the Crête run into La Folie Douce at the end
+  const clone = o => JSON.parse(JSON.stringify(o));
+  const D1 = W[0].steps; const PREFIX = (D1[0] && D1[1] && D1[1].type==='lift' && /Proclou/.test(D1[1].name)) ? clone(D1.slice(0,2)) : null;
+  const lastCrete = W.map(d=>d.steps[d.steps.length-1]).find(x=>x && x.type==='run' && x.name==='Crête');
+  const SUFFIX = lastCrete ? clone(lastCrete) : null;
   function planDay(day, spec){
     const start=[day.start.lat, day.start.lon], end=[day.end.lat, day.end.lon];
     const T = targetsIn(spec.area).filter(x=>!(spec.skipNames||[]).includes(x.name));
     const main = new Set(T); let filling=false;
+    const homeAt = SUFFIX ? [SUFFIX.coords[0][0], SUFFIX.coords[0][1]] : end;
     let cur=start, t=opts.start, steps=[], lunchDone=false, done=new Set();
+    if(PREFIX){ steps=clone(PREFIX); const lc=PREFIX[1].coords; cur=[lc[lc.length-1][0], lc[lc.length-1][1]]; t+=PREFIX.reduce((a,x)=>a+stepTime(x),0); }
     const lunchLeft = tnow => (!lunchDone && tnow < opts.lunchAt+3600) ? opts.lunchMin*60 : 0;
     for(let guard=0; guard<60; guard++){
       let best=null;
@@ -110,8 +118,8 @@ window.__planSectors = function(variant, opts){
         const r1=route(cur, x.top); if(!r1) continue;
         const r2=route(x.top, x.bottom, x.set); if(!r2) continue;
         if(!coveredBy(r2.steps, x)) continue;
-        const cost=r1.t+r2.t; if(cost > (steps.length ? 75 : 200)*60) continue;
-        const rh=route(x.bottom, end); if(!rh) continue;
+        const cost=r1.t+r2.t; if(cost > (steps.length > (PREFIX?PREFIX.length:0) ? 75 : 200)*60) continue;
+        const rh=route(x.bottom, homeAt); if(!rh) continue;
         const tEnd=t+cost+lunchLeft(t+cost);
         if(tEnd+rh.t > opts.finish) continue;
         if(spec.swiss){ const sw=lastSwissEnd([...r1.steps, ...r2.steps, ...rh.steps], t); if(sw!=null && sw+lunchLeft(t+cost) > opts.crossBy) continue; }
@@ -137,7 +145,8 @@ window.__planSectors = function(variant, opts){
       const cs=cellsOf([...best.r1.steps, ...best.r2.steps]); for(const x of T) if(!done.has(x) && coveredBy(null, x, cs)) done.add(x);
       done.add(best.x); cur=best.x.bottom; t+=best.cost; if(t>=opts.lunchAt){ if(!lunchDone){ t+=opts.lunchMin*60; lunchDone=true; } }
     }
-    const rh=route(cur, end); day.homeStep=steps.length; if(rh) steps.push(...rh.steps); else log.push('Day '+day.day+': no way home!');
+    const rh=route(cur, homeAt); day.homeStep=steps.length; if(rh) steps.push(...rh.steps); else log.push('Day '+day.day+': no way home!');
+    if(SUFFIX) steps.push(clone(SUFFIX));
     day.steps=steps; retime(day);
     T.forEach(x=>{ if(done.has(x)) seenWeek.add(x.name+'|'+x.color); });
     const TM=T.filter(x=>main.has(x)); const miss=TM.filter(x=>!done.has(x));
