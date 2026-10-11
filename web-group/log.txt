@@ -1,0 +1,56 @@
+[web] QA RESULT {"check": "people button is in the menu", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "organizer creates the trip", "ok": true, "detail": "AVZ-16D2"}
+[web] QA RESULT {"check": "invite link shows the code", "ok": true, "detail": "https://alonmaltzov.github.io/ski-nav/join.html?c=AVZ-16D2"}
+[web] QA RESULT {"check": "copy puts the invite link on the clipboard", "ok": true, "detail": "https://alonmaltzov.github.io/ski-nav/join.html?c=AVZ-16D2"}
+[web] QA RESULT {"check": "organizer sees the group call setup", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "a bad WhatsApp link is refused", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "organizer saves the WhatsApp group link", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "a non-Splitwise link is refused", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "organizer saves the Splitwise link", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "join screen shows who invited you", "ok": true, "detail": "Alon invited you to"}
+[web] QA RESULT {"check": "Continue is off until a name is typed", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "friend joins the trip", "ok": true, "detail": "['Alon', 'Dana Levi']"}
+[web] QA RESULT {"check": "friend gets \"Talk with the group\"", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "friend gets \"Split costs\"", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "friend can't change the WhatsApp link", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "join link is removed from the address bar", "ok": true, "detail": "file:///home/runner/work/ski-nav/ski-nav/index.html"}
+[web] QA RESULT {"check": "friend's phone sends its position while skiing (phone time 11:00)", "ok": true, "detail": ""}
+[friend] console error Failed to load resource: net::ERR_TIMED_OUT
+[web] QA RESULT {"check": "a rough 48 m fix is still shared", "ok": true, "detail": "48"}
+[web] QA RESULT {"check": "friend shows up on the other phone without a refresh", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "own dot is drawn in my group colour", "ok": true, "detail": "rgb(124, 58, 237)"}
+[web] QA RESULT {"check": "people button stays visible while tracking", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "friend appears on the organizer's map", "ok": true, "detail": "1"}
+[web] QA RESULT {"check": "friends pill shows 1 friend", "ok": true, "detail": "All 1"}
+[web] QA RESULT {"check": "pill shows everyone by default", "ok": true, "detail": "All 2"}
+[web] QA RESULT {"check": "friend on a lift gets the lift badge", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "ALL shows a friend who is off the route", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "people pill opens \"On your map\"", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "Everyone mode hides the switches", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "switching someone off removes their dot", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "pill shows \"1 of 2\"", "ok": true, "detail": "1 of 2"}
+[web] QA RESULT {"check": "ALL leaves out people you hid", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "your choice is remembered on this phone", "ok": true, "detail": "1 of 2"}
+[web] QA RESULT {"check": "tapping a name flies to them", "ok": true, "detail": "{'lng': 6.775640000000067, 'lat': 46.20311000000001}"}
+[web] QA RESULT {"check": "friend card opens", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "friend card has distance and ETA", "ok": true, "detail": "1.2 km / 18 min"}
+[web] QA RESULT {"check": "Route to them ends at the friend", "ok": true, "detail": "Dana Levi"}
+[web] QA RESULT {"check": "meeting point shows on the friend's map", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "meeting point card opens", "ok": true, "detail": "At 11:15 \u00b7 set by Alon \u00b7 60 m from you"}
+[web] QA RESULT {"check": "friend sees the organizer on the map", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "organizer's plan style is shared with the group", "ok": true, "detail": "{'call': 'https://chat.whatsapp.com/TestGroupInvite123', 'split': 'https://www.splitwise.com/join/TestSplit123?v=s', 'variant': 'black'}"}
+[web] QA RESULT {"check": "changing the plan style keeps the WhatsApp and Splitwise links", "ok": true, "detail": "{'call': 'https://chat.whatsapp.com/TestGroupInvite123', 'split': 'https://www.splitwise.com/join/TestSplit123?v=s', 'variant': 'black'}"}
+[web] QA RESULT {"check": "a friend can't change the plan", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "friend doesn't get Remove buttons", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "sharing off hides the friend from the map", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "organizer removes a member", "ok": true, "detail": ""}
+[friend] console error Failed to load resource: the server responded with a status of 400 (Bad Request)
+[web] QA RESULT {"check": "removed friend leaves the group on their phone", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "a bad invite link says so", "ok": true, "detail": "This invite link isn\u2019t valid any more. Ask for a new one."}
+[web] QA RESULT {"check": "invite page on iPhone opens the app", "ok": true, "detail": "skinav://join?c=AVZ-16D2"}
+[web] QA RESULT {"check": "invite page on iPhone links to TestFlight", "ok": true, "detail": "https://testflight.apple.com/join/kPyVvmk9"}
+[web] QA RESULT {"check": "invite page (iphone) has no browser option (apps only)", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "invite page on Android opens the app (or downloads it)", "ok": true, "detail": "intent://join?c=AVZ-16D2#Intent;scheme=skinav;package=com.alonmaltzov.skinav;S.browser_fallback_url=https%3A%2F%2Fgithub"}
+[web] QA RESULT {"check": "invite page on Android downloads the app when missing", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "invite page (android) has no browser option (apps only)", "ok": true, "detail": ""}
+[web] QA DONE

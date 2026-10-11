@@ -1,0 +1,18 @@
+[web] QA RESULT {"check": "daily steps found (first lift in the morning, home run)", "ok": true, "detail": "[0, 1, 77, 76]"}
+[web] QA RESULT {"check": "daily steps fold into one row each in Steps", "ok": true, "detail": "2"}
+[web] QA RESULT {"check": "morning row says it is the same every day", "ok": true, "detail": "Every morning: Proclou \u2192 Proclou chair | Same every day \u00b7 2 steps \u00b7 tap to see | 9:00 | 3.2 km"}
+[web] QA RESULT {"check": "tapping the row shows the steps", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "replay moved along the plan", "ok": true, "detail": "step 6"}
+[web] QA RESULT {"check": "done steps are drawn filled in (not removed)", "ok": true, "detail": "8"}
+[web] QA RESULT {"check": "steps ahead are drawn as an outline", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "daily steps are marked", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "cafes and restaurants hide while tracking", "ok": true, "detail": "[\"all\",[\"in\",[\"get\",\"c\"],[\"literal\",[\"none\"]]],[\"any\",[\"==\",[\"get\",\"mtn\"],1],[\"!"}
+[web] QA RESULT {"check": "only the next step is labelled while tracking", "ok": true, "detail": "['Next \u00b7 Cr\u00eate']"}
+[web] QA RESULT {"check": "done today chip shows", "ok": true, "detail": "5 of 78 done \u00b7 1 red"}
+[web] QA RESULT {"check": "your track is drawn above the route", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "step numbers come back when you stop", "ok": true, "detail": "53"}
+[web] QA RESULT {"check": "Stop then Start leaves a gap, no straight line across town", "ok": true, "detail": "2 pieces, longest hop 39 m"}
+[web] QA RESULT {"check": "a GPS jump while tracking also leaves a gap", "ok": true, "detail": "3 pieces"}
+[web] QA RESULT {"check": "clear asks for a second tap", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "Clear tracking history empties the track and the saved days", "ok": true, "detail": "15 -> 0 points, saved days [[0,0]]"}
+[web] QA DONE

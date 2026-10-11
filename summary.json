@@ -1,0 +1,2638 @@
+{
+ "engine": {
+  "audits": [],
+  "results": [
+   {
+    "check": "native engine matches web: Avoriaz day 1",
+    "ok": true,
+    "detail": "swift 33.49 km, max 53.6 km/h, vert 5173 m vs web 33.49 km"
+   },
+   {
+    "check": "native engine matches web: NYC practice",
+    "ok": true,
+    "detail": "swift 8.05 km, max 15.9 km/h, vert 42 m vs web 8.05 km"
+   },
+   {
+    "check": "watch can read the phone's plan: plan-avoriaz.json",
+    "ok": true,
+    "detail": "OK 38"
+   },
+   {
+    "check": "watch can read the phone's plan: plan-nyc.json",
+    "ok": true,
+    "detail": "OK 8"
+   },
+   {
+    "check": "glance: short name 'Chaux Fleuries'",
+    "ok": true,
+    "detail": "Chaux Fleuries"
+   },
+   {
+    "check": "glance: short name 'Ardent gondola'",
+    "ok": true,
+    "detail": "Ardent gondola"
+   },
+   {
+    "check": "glance: short name 'Chaux Fleurie chair'",
+    "ok": true,
+    "detail": "Chaux Fleurie chair"
+   },
+   {
+    "check": "glance: short name 'Proclou'",
+    "ok": true,
+    "detail": "Proclou"
+   },
+   {
+    "check": "glance: skiing",
+    "ok": true,
+    "detail": "42 km/h Chaux Fleuries next Ardent gondola 1469 m"
+   },
+   {
+    "check": "glance: planned lift",
+    "ok": true,
+    "detail": "Ardent gondola 59% 2 min then Parchets"
+   },
+   {
+    "check": "glance: unplanned lift",
+    "ok": true,
+    "detail": "Lift '' 0"
+   },
+   {
+    "check": "glance: no plan",
+    "ok": true,
+    "detail": "36 ''"
+   },
+   {
+    "check": "glance: phone to watch round trip",
+    "ok": true,
+    "detail": "265 bytes"
+   },
+   {
+    "check": "glance: face: trip morning",
+    "ok": true,
+    "detail": "morning Ch\u00e2tel side | 24 km planned \u00b7 first lift 9:15 | DAY 3"
+   },
+   {
+    "check": "glance: face: skiing",
+    "ok": true,
+    "detail": "42 ON A RED 12.4 of 24 km Next: Ardent gondola \u00b7 1.2 km"
+   },
+   {
+    "check": "glance: face: on a lift",
+    "ok": true,
+    "detail": "4 top in 4 min Then: Lindarets, blue"
+   },
+   {
+    "check": "glance: face: live numbers go stale after 15 min",
+    "ok": true,
+    "detail": "done"
+   },
+   {
+    "check": "glance: face: day done",
+    "ok": true,
+    "detail": "Folie Douce till 6 26.1 km Tomorrow: Day 4"
+   },
+   {
+    "check": "glance: face: countdown",
+    "ok": true,
+    "detail": "Avoriaz in 10 days"
+   },
+   {
+    "check": "glance: face: yesterday's totals don't show the next morning",
+    "ok": true,
+    "detail": "morning"
+   },
+   {
+    "check": "glance: face: save round trip",
+    "ok": true,
+    "detail": ""
+   }
+  ],
+  "errors": [],
+  "done": true,
+  "shots": []
+ },
+ "ios-sim": {
+  "audits": [
+   {
+    "screen": "main",
+    "page": "index.html",
+    "vw": 402,
+    "vh": 874,
+    "targets": 10,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "menu",
+    "page": "index.html",
+    "vw": 402,
+    "vh": 874,
+    "targets": 10,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": "drawer"
+   },
+   {
+    "screen": "menu-settings",
+    "page": "index.html",
+    "vw": 402,
+    "vh": 874,
+    "targets": 15,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": "drawer"
+   },
+   {
+    "screen": "brief",
+    "page": "index.html",
+    "vw": 402,
+    "vh": 874,
+    "targets": 15,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [
+     {
+      "el": "#menuBtn \"Week, places and settings\"",
+      "by": "#bEyebrow \"SUN JAN 17 \u00b7 MORNING BRIEF\""
+     },
+     {
+      "el": "#wxPill \"Today's brief: the day, weather, what to\"",
+      "by": "#bEyebrow \"SUN JAN 17 \u00b7 MORNING BRIEF\""
+     },
+     {
+      "el": "#followBtn \"ME\"",
+      "by": "#bClose \"Close\""
+     },
+     {
+      "el": "#compassBtn \"Compass\"",
+      "by": "div.gstage"
+     },
+     {
+      "el": "#fitBtn \"ALL\"",
+      "by": "div.gstage"
+     },
+     {
+      "el": "#dimBtn \"3D\"",
+      "by": "div.gstage"
+     },
+     {
+      "el": "#placesBtn \"Places on the map\"",
+      "by": "#bCap \"Morning! Day one. The mountain doesn't k\""
+     },
+     {
+      "el": "#goBtn \"Start skiing\"",
+      "by": "#bAsk \"Ask\""
+     },
+     {
+      "el": "#stepsBtn \"Steps\"",
+      "by": "#bToday \"Weather and lifts in detail\""
+     },
+     {
+      "el": "#progBtn \"Runs\"",
+      "by": "#bToday \"Weather and lifts in detail\""
+     }
+    ],
+    "offscreen": [],
+    "crowded": [
+     {
+      "a": "#followBtn \"ME\"",
+      "b": "#bClose \"Close\"",
+      "gap": -46
+     },
+     {
+      "a": "#goBtn \"Start skiing\"",
+      "b": "#bPause \"Pause\"",
+      "gap": -50
+     },
+     {
+      "a": "#goBtn \"Start skiing\"",
+      "b": "#bAsk \"Ask\"",
+      "gap": -50
+     },
+     {
+      "a": "#goBtn \"Start skiing\"",
+      "b": "#bGo \"Start skiing\"",
+      "gap": -50
+     },
+     {
+      "a": "#stepsBtn \"Steps\"",
+      "b": "#bToday \"Weather and lifts in detail\"",
+      "gap": -48
+     },
+     {
+      "a": "#progBtn \"Runs\"",
+      "b": "#bToday \"Weather and lifts in detail\"",
+      "gap": -48
+     }
+    ],
+    "tinyText": [
+     {
+      "el": "span \"24 lifts\"",
+      "px": 11.52
+     },
+     {
+      "el": "span \"First move\"",
+      "px": 11.52
+     },
+     {
+      "el": "span \"Partly cloudy\"",
+      "px": 11.52
+     }
+    ],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "today",
+    "page": "index.html",
+    "vw": 402,
+    "vh": 874,
+    "targets": 1,
+    "needsScroll": 1,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": "todaySheet"
+   },
+   {
+    "screen": "ask",
+    "page": "index.html",
+    "vw": 402,
+    "vh": 874,
+    "targets": 19,
+    "needsScroll": 0,
+    "small": [
+     {
+      "el": "button \"What\u2019s next?\"",
+      "w": 124,
+      "h": 40
+     },
+     {
+      "el": "button \"Where\u2019s lunch?\"",
+      "w": 141,
+      "h": 40
+     },
+     {
+      "el": "button \"Any lifts closed?\"",
+      "w": 149,
+      "h": 40
+     },
+     {
+      "el": "button \"Plan from here\"",
+      "w": 136,
+      "h": 40
+     },
+     {
+      "el": "button \"How much today?\"",
+      "w": 159,
+      "h": 40
+     },
+     {
+      "el": "button \"Call the group\"",
+      "w": 131,
+      "h": 40
+     }
+    ],
+    "gloveSmall": [],
+    "covered": [
+     {
+      "el": "#menuBtn \"Week, places and settings\"",
+      "by": "rect"
+     },
+     {
+      "el": "#wxPill \"Today's brief: the day, weather, what to\"",
+      "by": "#aState \"Ask me anything about today\""
+     },
+     {
+      "el": "#followBtn \"ME\"",
+      "by": "#aClose \"Close\""
+     },
+     {
+      "el": "#compassBtn \"Compass\"",
+      "by": "div.abub.me \"What\u2019s next?\""
+     },
+     {
+      "el": "#fitBtn \"ALL\"",
+      "by": "#aConvo \"What\u2019s next?First up: Ski Proclou (green\""
+     },
+     {
+      "el": "#dimBtn \"3D\"",
+      "by": "#aConvo \"What\u2019s next?First up: Ski Proclou (green\""
+     },
+     {
+      "el": "#placesBtn \"Places on the map\"",
+      "by": "#aConvo \"What\u2019s next?First up: Ski Proclou (green\""
+     },
+     {
+      "el": "#goBtn \"Start skiing\"",
+      "by": "button \"Call the group\""
+     },
+     {
+      "el": "#stepsBtn \"Steps\"",
+      "by": "#aHold \"Tap and talk\""
+     },
+     {
+      "el": "#progBtn \"Runs\"",
+      "by": "#aHold \"Tap and talk\""
+     }
+    ],
+    "offscreen": [],
+    "crowded": [
+     {
+      "a": "#followBtn \"ME\"",
+      "b": "#aClose \"Close\"",
+      "gap": -38
+     },
+     {
+      "a": "#goBtn \"Start skiing\"",
+      "b": "button \"How much today?\"",
+      "gap": -40
+     },
+     {
+      "a": "#goBtn \"Start skiing\"",
+      "b": "button \"Call the group\"",
+      "gap": -40
+     },
+     {
+      "a": "#goBtn \"Start skiing\"",
+      "b": "#aHold \"Tap and talk\"",
+      "gap": -12
+     },
+     {
+      "a": "#stepsBtn \"Steps\"",
+      "b": "#aHold \"Tap and talk\"",
+      "gap": -50
+     },
+     {
+      "a": "#progBtn \"Runs\"",
+      "b": "#aHold \"Tap and talk\"",
+      "gap": -50
+     }
+    ],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "steps",
+    "page": "index.html",
+    "vw": 402,
+    "vh": 874,
+    "targets": 11,
+    "needsScroll": 68,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": "sheet"
+   },
+   {
+    "screen": "progress",
+    "page": "index.html",
+    "vw": 402,
+    "vh": 874,
+    "targets": 14,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "runs-list",
+    "page": "index.html",
+    "vw": 402,
+    "vh": 874,
+    "targets": 12,
+    "needsScroll": 171,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": "runsSheet"
+   },
+   {
+    "screen": "places",
+    "page": "index.html",
+    "vw": 402,
+    "vh": 874,
+    "targets": 15,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "map-3d",
+    "page": "index.html",
+    "vw": 402,
+    "vh": 874,
+    "targets": 10,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "map-all",
+    "page": "index.html",
+    "vw": 402,
+    "vh": 874,
+    "targets": 10,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "test-mode",
+    "page": "index.html",
+    "vw": 402,
+    "vh": 874,
+    "targets": 7,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": "simSheet"
+   },
+   {
+    "screen": "replay",
+    "page": "index.html",
+    "vw": 402,
+    "vh": 874,
+    "targets": 12,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "replay-sun",
+    "page": "index.html",
+    "vw": 402,
+    "vh": 874,
+    "targets": 12,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "plan-from-here",
+    "page": "index.html",
+    "vw": 402,
+    "vh": 874,
+    "targets": 11,
+    "needsScroll": 69,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": "sheet"
+   },
+   {
+    "screen": "recap",
+    "page": "index.html",
+    "vw": 402,
+    "vh": 874,
+    "targets": 3,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": "recapSheet"
+   },
+   {
+    "screen": "me-button",
+    "page": "index.html",
+    "vw": 402,
+    "vh": 874,
+    "targets": 10,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "gps-tracking",
+    "page": "index.html",
+    "vw": 402,
+    "vh": 874,
+    "targets": 12,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "nyc-main",
+    "page": "nyc.html",
+    "vw": 402,
+    "vh": 874,
+    "targets": 10,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "nyc-menu",
+    "page": "nyc.html",
+    "vw": 402,
+    "vh": 874,
+    "targets": 7,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": "drawer"
+   }
+  ],
+  "results": [
+   {
+    "check": "page loads and map is ready (index.html)",
+    "ok": true,
+    "detail": "79 steps"
+   },
+   {
+    "check": "gear opens settings",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "settings fit without scrolling",
+    "ok": true,
+    "detail": "763 vs 763"
+   },
+   {
+    "check": "week fits without scrolling",
+    "ok": true,
+    "detail": "652 vs 652"
+   },
+   {
+    "check": "Follow the plan toggle works (off by default)",
+    "ok": true,
+    "detail": "false -> true -> false"
+   },
+   {
+    "check": "menu lists the days",
+    "ok": true,
+    "detail": "6 day buttons"
+   },
+   {
+    "check": "tapping Day 2 switches the plan",
+    "ok": true,
+    "detail": "Avoriaz -> Morzine + Les Gets"
+   },
+   {
+    "check": "menu closes",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "live lift status loads from the internet",
+    "ok": true,
+    "detail": "7 of 182 open"
+   },
+   {
+    "check": "guide button opens the morning brief",
+    "ok": true,
+    "detail": "Morning! Day one. The mountain doesn't know what's coming. What are we doing tod"
+   },
+   {
+    "check": "Today sheet opens",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "Ask answers a question",
+    "ok": true,
+    "detail": "First up: Ski Proclou (green), planned for 9:00.Steps"
+   },
+   {
+    "check": "steps sheet closes",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "next and previous step buttons",
+    "ok": true,
+    "detail": "0 -> 1 -> 0"
+   },
+   {
+    "check": "Remaining filter chip toggles",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "Runs view returns to route",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "tracking shows the stats card",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "Sun mode switches on",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "trail of where you have been is recorded",
+    "ok": true,
+    "detail": "1235 trail points"
+   },
+   {
+    "check": "free ski by default: no off-route banner",
+    "ok": true,
+    "detail": "hidden"
+   },
+   {
+    "check": "test replay moves the skier and counts km",
+    "ok": true,
+    "detail": "km=9.92 max=53 step 0->11 pill=\"Test replay\""
+   },
+   {
+    "check": "Plan from here builds a connected route",
+    "ok": true,
+    "detail": "{\"routed\":0,\"rejoin\":11,\"minutes\":0} max gap 52 m"
+   },
+   {
+    "check": "Plan from here explains what it did",
+    "ok": true,
+    "detail": "You\u2019re already on the plan. Next up: Take Prodains Express 3S gondola."
+   },
+   {
+    "check": "day recap shows the day",
+    "ok": true,
+    "detail": "km=9.9 vert=156 top=53 lifts=4 goal=1 of 62 +1 today"
+   },
+   {
+    "check": "home sheet is back after stopping",
+    "ok": true,
+    "detail": "Avoriaz"
+   },
+   {
+    "check": "stop & reset clears the replay",
+    "ok": true,
+    "detail": "km=0.00"
+   },
+   {
+    "check": "ME shows my location without tracking",
+    "ok": true,
+    "detail": "blue dot on map"
+   },
+   {
+    "check": "compass button responds",
+    "ok": true,
+    "detail": "pressed=false (no compass on this device, turned itself off)"
+   },
+   {
+    "check": "native GPS fixes arrive",
+    "ok": true,
+    "detail": "23 fixes, raw path 254 m, speeds none, acc 5 m, alt undefined"
+   },
+   {
+    "check": "simulator route is moving (test harness)",
+    "ok": true,
+    "detail": "23 fixes, raw path 254 m, speeds none, acc 5 m, alt undefined"
+   },
+   {
+    "check": "moving GPS turns into km and speed",
+    "ok": true,
+    "detail": "km=0.25 speed=27 max=35 pill=\"GPS \u00b15 m\" vs raw path 254 m"
+   },
+   {
+    "check": "following link",
+    "ok": true,
+    "detail": "nyc.html"
+   },
+   {
+    "check": "page loads and map is ready (nyc.html)",
+    "ok": true,
+    "detail": "8 steps"
+   },
+   {
+    "check": "Practice in NYC link opens the NYC map",
+    "ok": true,
+    "detail": "nyc.html"
+   },
+   {
+    "check": "NYC page has a working way back",
+    "ok": true,
+    "detail": "index.html"
+   },
+   {
+    "check": "lock screen and Dynamic Island views render",
+    "ok": true,
+    "detail": "90-glances.png"
+   },
+   {
+    "check": "watch screen renders: now",
+    "ok": true,
+    "detail": "97-watch-now.png"
+   },
+   {
+    "check": "watch screen renders: lift",
+    "ok": true,
+    "detail": "97-watch-lift.png"
+   },
+   {
+    "check": "watch screen renders: steps",
+    "ok": true,
+    "detail": "97-watch-steps.png"
+   },
+   {
+    "check": "watch screen renders: face-morning",
+    "ok": true,
+    "detail": "97-watch-face-morning.png"
+   },
+   {
+    "check": "watch screen renders: face-skiing",
+    "ok": true,
+    "detail": "97-watch-face-skiing.png"
+   },
+   {
+    "check": "watch screen renders: face-lift",
+    "ok": true,
+    "detail": "97-watch-face-lift.png"
+   },
+   {
+    "check": "watch screen renders: face-done",
+    "ok": true,
+    "detail": "97-watch-face-done.png"
+   }
+  ],
+  "errors": [],
+  "done": true,
+  "shots": [
+   "01-main.png",
+   "02-menu.png",
+   "03-menu-settings.png",
+   "04-brief.png",
+   "05-today.png",
+   "06-ask.png",
+   "07-steps.png",
+   "08-progress.png",
+   "09-runs-list.png",
+   "10-places.png",
+   "11-map-3d.png",
+   "12-map-all.png",
+   "13-test-mode.png",
+   "14-replay.png",
+   "15-replay-sun.png",
+   "16-plan-from-here.png",
+   "17-recap.png",
+   "18-me-button.png",
+   "19-gps-tracking.png",
+   "19-watch-live.png",
+   "20-nyc-main.png",
+   "21-nyc-menu.png",
+   "90-glances.png",
+   "97-watch-face-done.png",
+   "97-watch-face-lift.png",
+   "97-watch-face-morning.png",
+   "97-watch-face-skiing.png",
+   "97-watch-lift.png",
+   "97-watch-now.png",
+   "97-watch-steps.png",
+   "99-final.png"
+  ]
+ },
+ "web-group": {
+  "audits": [],
+  "results": [
+   {
+    "check": "people button is in the menu",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "organizer creates the trip",
+    "ok": true,
+    "detail": "AVZ-16D2"
+   },
+   {
+    "check": "invite link shows the code",
+    "ok": true,
+    "detail": "https://alonmaltzov.github.io/ski-nav/join.html?c=AVZ-16D2"
+   },
+   {
+    "check": "copy puts the invite link on the clipboard",
+    "ok": true,
+    "detail": "https://alonmaltzov.github.io/ski-nav/join.html?c=AVZ-16D2"
+   },
+   {
+    "check": "organizer sees the group call setup",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "a bad WhatsApp link is refused",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "organizer saves the WhatsApp group link",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "a non-Splitwise link is refused",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "organizer saves the Splitwise link",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "join screen shows who invited you",
+    "ok": true,
+    "detail": "Alon invited you to"
+   },
+   {
+    "check": "Continue is off until a name is typed",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "friend joins the trip",
+    "ok": true,
+    "detail": "['Alon', 'Dana Levi']"
+   },
+   {
+    "check": "friend gets \"Talk with the group\"",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "friend gets \"Split costs\"",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "friend can't change the WhatsApp link",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "join link is removed from the address bar",
+    "ok": true,
+    "detail": "file:///home/runner/work/ski-nav/ski-nav/index.html"
+   },
+   {
+    "check": "friend's phone sends its position while skiing (phone time 11:00)",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "a rough 48 m fix is still shared",
+    "ok": true,
+    "detail": "48"
+   },
+   {
+    "check": "friend shows up on the other phone without a refresh",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "own dot is drawn in my group colour",
+    "ok": true,
+    "detail": "rgb(124, 58, 237)"
+   },
+   {
+    "check": "people button stays visible while tracking",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "friend appears on the organizer's map",
+    "ok": true,
+    "detail": "1"
+   },
+   {
+    "check": "friends pill shows 1 friend",
+    "ok": true,
+    "detail": "All 1"
+   },
+   {
+    "check": "pill shows everyone by default",
+    "ok": true,
+    "detail": "All 2"
+   },
+   {
+    "check": "friend on a lift gets the lift badge",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "ALL shows a friend who is off the route",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "people pill opens \"On your map\"",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "Everyone mode hides the switches",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "switching someone off removes their dot",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "pill shows \"1 of 2\"",
+    "ok": true,
+    "detail": "1 of 2"
+   },
+   {
+    "check": "ALL leaves out people you hid",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "your choice is remembered on this phone",
+    "ok": true,
+    "detail": "1 of 2"
+   },
+   {
+    "check": "tapping a name flies to them",
+    "ok": true,
+    "detail": "{'lng': 6.775640000000067, 'lat': 46.20311000000001}"
+   },
+   {
+    "check": "friend card opens",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "friend card has distance and ETA",
+    "ok": true,
+    "detail": "1.2 km / 18 min"
+   },
+   {
+    "check": "Route to them ends at the friend",
+    "ok": true,
+    "detail": "Dana Levi"
+   },
+   {
+    "check": "meeting point shows on the friend's map",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "meeting point card opens",
+    "ok": true,
+    "detail": "At 11:15 \u00b7 set by Alon \u00b7 60 m from you"
+   },
+   {
+    "check": "friend sees the organizer on the map",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "organizer's plan style is shared with the group",
+    "ok": true,
+    "detail": "{'call': 'https://chat.whatsapp.com/TestGroupInvite123', 'split': 'https://www.splitwise.com/join/TestSplit123?v=s', 'variant': 'black'}"
+   },
+   {
+    "check": "changing the plan style keeps the WhatsApp and Splitwise links",
+    "ok": true,
+    "detail": "{'call': 'https://chat.whatsapp.com/TestGroupInvite123', 'split': 'https://www.splitwise.com/join/TestSplit123?v=s', 'variant': 'black'}"
+   },
+   {
+    "check": "a friend can't change the plan",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "friend doesn't get Remove buttons",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "sharing off hides the friend from the map",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "organizer removes a member",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "removed friend leaves the group on their phone",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "a bad invite link says so",
+    "ok": true,
+    "detail": "This invite link isn\u2019t valid any more. Ask for a new one."
+   },
+   {
+    "check": "invite page on iPhone opens the app",
+    "ok": true,
+    "detail": "skinav://join?c=AVZ-16D2"
+   },
+   {
+    "check": "invite page on iPhone links to TestFlight",
+    "ok": true,
+    "detail": "https://testflight.apple.com/join/kPyVvmk9"
+   },
+   {
+    "check": "invite page (iphone) has no browser option (apps only)",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "invite page on Android opens the app (or downloads it)",
+    "ok": true,
+    "detail": "intent://join?c=AVZ-16D2#Intent;scheme=skinav;package=com.alonmaltzov.skinav;S.browser_fallback_url=https%3A%2F%2Fgithub"
+   },
+   {
+    "check": "invite page on Android downloads the app when missing",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "invite page (android) has no browser option (apps only)",
+    "ok": true,
+    "detail": ""
+   }
+  ],
+  "errors": [],
+  "done": true,
+  "shots": [
+   "01-group-start.png",
+   "02-group-organizer.png",
+   "03-group-call-setup.png",
+   "04-join-welcome.png",
+   "05-join-name.png",
+   "06-join-location.png",
+   "07-joined.png",
+   "08-organizer-map-friend.png",
+   "09-all-shows-everyone.png",
+   "10-choose-who.png",
+   "11-friend-card.png",
+   "12-route-to-friend.png",
+   "13-friend-sees-meet.png",
+   "14-meet-card.png",
+   "15-group-friend.png",
+   "16-group-organizer-2.png",
+   "17-join-bad-link.png",
+   "18-invite-page-iphone.png",
+   "19-invite-page-android.png"
+  ]
+ },
+ "web-iphone16": {
+  "audits": [
+   {
+    "screen": "main",
+    "page": "index.html",
+    "vw": 393,
+    "vh": 852,
+    "targets": 10,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "menu",
+    "page": "index.html",
+    "vw": 393,
+    "vh": 852,
+    "targets": 10,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": "drawer"
+   },
+   {
+    "screen": "menu-settings",
+    "page": "index.html",
+    "vw": 393,
+    "vh": 852,
+    "targets": 15,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": "drawer"
+   },
+   {
+    "screen": "brief",
+    "page": "index.html",
+    "vw": 393,
+    "vh": 852,
+    "targets": 15,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [
+     {
+      "el": "#menuBtn \"Week, places and settings\"",
+      "by": "#bEyebrow \"SUN JAN 17 \u00b7 MORNING BRIEF\""
+     },
+     {
+      "el": "#wxPill \"Today's brief: the day, weather, what to\"",
+      "by": "#bEyebrow \"SUN JAN 17 \u00b7 MORNING BRIEF\""
+     },
+     {
+      "el": "#followBtn \"ME\"",
+      "by": "#bClose \"Close\""
+     },
+     {
+      "el": "#compassBtn \"Compass\"",
+      "by": "div.gstage"
+     },
+     {
+      "el": "#fitBtn \"ALL\"",
+      "by": "div.gstage"
+     },
+     {
+      "el": "#dimBtn \"3D\"",
+      "by": "div.gstage"
+     },
+     {
+      "el": "#placesBtn \"Places on the map\"",
+      "by": "#bCap \"Morning! Day one. The mountain doesn't k\""
+     },
+     {
+      "el": "#goBtn \"Start skiing\"",
+      "by": "#bAsk \"Ask\""
+     },
+     {
+      "el": "#stepsBtn \"Steps\"",
+      "by": "#bToday \"Weather and lifts in detail\""
+     },
+     {
+      "el": "#progBtn \"Runs\"",
+      "by": "#bToday \"Weather and lifts in detail\""
+     }
+    ],
+    "offscreen": [],
+    "crowded": [
+     {
+      "a": "#followBtn \"ME\"",
+      "b": "#bClose \"Close\"",
+      "gap": -46
+     },
+     {
+      "a": "#goBtn \"Start skiing\"",
+      "b": "#bPause \"Pause\"",
+      "gap": -50
+     },
+     {
+      "a": "#goBtn \"Start skiing\"",
+      "b": "#bAsk \"Ask\"",
+      "gap": -50
+     },
+     {
+      "a": "#goBtn \"Start skiing\"",
+      "b": "#bGo \"Start skiing\"",
+      "gap": -50
+     },
+     {
+      "a": "#stepsBtn \"Steps\"",
+      "b": "#bToday \"Weather and lifts in detail\"",
+      "gap": -48
+     },
+     {
+      "a": "#progBtn \"Runs\"",
+      "b": "#bToday \"Weather and lifts in detail\"",
+      "gap": -48
+     }
+    ],
+    "tinyText": [
+     {
+      "el": "span \"24 lifts\"",
+      "px": 11.52
+     },
+     {
+      "el": "span \"First move\"",
+      "px": 11.52
+     },
+     {
+      "el": "span \"Partly cloudy\"",
+      "px": 11.52
+     }
+    ],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "today",
+    "page": "index.html",
+    "vw": 393,
+    "vh": 852,
+    "targets": 1,
+    "needsScroll": 1,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": "todaySheet"
+   },
+   {
+    "screen": "ask",
+    "page": "index.html",
+    "vw": 393,
+    "vh": 852,
+    "targets": 19,
+    "needsScroll": 0,
+    "small": [
+     {
+      "el": "button \"What\u2019s next?\"",
+      "w": 142,
+      "h": 40
+     },
+     {
+      "el": "button \"Where\u2019s lunch?\"",
+      "w": 161,
+      "h": 40
+     },
+     {
+      "el": "button \"Any lifts closed?\"",
+      "w": 170,
+      "h": 40
+     },
+     {
+      "el": "button \"Plan from here\"",
+      "w": 157,
+      "h": 40
+     },
+     {
+      "el": "button \"How much today?\"",
+      "w": 181,
+      "h": 40
+     },
+     {
+      "el": "button \"Call the group\"",
+      "w": 151,
+      "h": 40
+     }
+    ],
+    "gloveSmall": [],
+    "covered": [
+     {
+      "el": "#menuBtn \"Week, places and settings\"",
+      "by": "rect"
+     },
+     {
+      "el": "#wxPill \"Today's brief: the day, weather, what to\"",
+      "by": "span \"Ask me anything about todayWorks on your\""
+     },
+     {
+      "el": "#followBtn \"ME\"",
+      "by": "#aClose \"Close\""
+     },
+     {
+      "el": "#compassBtn \"Compass\"",
+      "by": "#aConvo \"What\u2019s next?First up: Ski Proclou (green\""
+     },
+     {
+      "el": "#fitBtn \"ALL\"",
+      "by": "#aConvo \"What\u2019s next?First up: Ski Proclou (green\""
+     },
+     {
+      "el": "#dimBtn \"3D\"",
+      "by": "#aConvo \"What\u2019s next?First up: Ski Proclou (green\""
+     },
+     {
+      "el": "#placesBtn \"Places on the map\"",
+      "by": "#aConvo \"What\u2019s next?First up: Ski Proclou (green\""
+     },
+     {
+      "el": "#goBtn \"Start skiing\"",
+      "by": "#aSugs \"What\u2019s next?Where\u2019s lunch?Any lifts clos\""
+     },
+     {
+      "el": "#stepsBtn \"Steps\"",
+      "by": "#aHold \"Tap and talk\""
+     },
+     {
+      "el": "#progBtn \"Runs\"",
+      "by": "#aHold \"Tap and talk\""
+     }
+    ],
+    "offscreen": [],
+    "crowded": [
+     {
+      "a": "#followBtn \"ME\"",
+      "b": "#aClose \"Close\"",
+      "gap": -33
+     },
+     {
+      "a": "#compassBtn \"Compass\"",
+      "b": "#aClose \"Close\"",
+      "gap": -1
+     },
+     {
+      "a": "#goBtn \"Start skiing\"",
+      "b": "button \"How much today?\"",
+      "gap": -40
+     },
+     {
+      "a": "#goBtn \"Start skiing\"",
+      "b": "button \"Call the group\"",
+      "gap": -40
+     },
+     {
+      "a": "#goBtn \"Start skiing\"",
+      "b": "#aHold \"Tap and talk\"",
+      "gap": -12
+     },
+     {
+      "a": "#stepsBtn \"Steps\"",
+      "b": "#aHold \"Tap and talk\"",
+      "gap": -50
+     },
+     {
+      "a": "#progBtn \"Runs\"",
+      "b": "#aHold \"Tap and talk\"",
+      "gap": -50
+     }
+    ],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "steps",
+    "page": "index.html",
+    "vw": 393,
+    "vh": 852,
+    "targets": 10,
+    "needsScroll": 69,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": "sheet"
+   },
+   {
+    "screen": "progress",
+    "page": "index.html",
+    "vw": 393,
+    "vh": 852,
+    "targets": 14,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "runs-list",
+    "page": "index.html",
+    "vw": 393,
+    "vh": 852,
+    "targets": 11,
+    "needsScroll": 172,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": "runsSheet"
+   },
+   {
+    "screen": "places",
+    "page": "index.html",
+    "vw": 393,
+    "vh": 852,
+    "targets": 15,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "map-3d",
+    "page": "index.html",
+    "vw": 393,
+    "vh": 852,
+    "targets": 10,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "map-all",
+    "page": "index.html",
+    "vw": 393,
+    "vh": 852,
+    "targets": 10,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "test-mode",
+    "page": "index.html",
+    "vw": 393,
+    "vh": 852,
+    "targets": 7,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": "simSheet"
+   },
+   {
+    "screen": "replay",
+    "page": "index.html",
+    "vw": 393,
+    "vh": 852,
+    "targets": 12,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "replay-sun",
+    "page": "index.html",
+    "vw": 393,
+    "vh": 852,
+    "targets": 12,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "plan-from-here",
+    "page": "index.html",
+    "vw": 393,
+    "vh": 852,
+    "targets": 9,
+    "needsScroll": 71,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": "sheet"
+   },
+   {
+    "screen": "recap",
+    "page": "index.html",
+    "vw": 393,
+    "vh": 852,
+    "targets": 3,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": "recapSheet"
+   },
+   {
+    "screen": "nyc-main",
+    "page": "nyc.html",
+    "vw": 393,
+    "vh": 852,
+    "targets": 10,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "nyc-menu",
+    "page": "nyc.html",
+    "vw": 393,
+    "vh": 852,
+    "targets": 7,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": "drawer"
+   }
+  ],
+  "results": [
+   {
+    "check": "page loads and map is ready (index.html)",
+    "ok": true,
+    "detail": "79 steps"
+   },
+   {
+    "check": "gear opens settings",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "settings fit without scrolling",
+    "ok": true,
+    "detail": "728 vs 728"
+   },
+   {
+    "check": "week fits without scrolling",
+    "ok": true,
+    "detail": "643 vs 643"
+   },
+   {
+    "check": "Follow the plan toggle works (off by default)",
+    "ok": true,
+    "detail": "false -> true -> false"
+   },
+   {
+    "check": "menu lists the days",
+    "ok": true,
+    "detail": "6 day buttons"
+   },
+   {
+    "check": "tapping Day 2 switches the plan",
+    "ok": true,
+    "detail": "Avoriaz -> Morzine + Les Gets"
+   },
+   {
+    "check": "menu closes",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "live lift status loads from the internet",
+    "ok": true,
+    "detail": "7 of 182 open"
+   },
+   {
+    "check": "guide button opens the morning brief",
+    "ok": true,
+    "detail": "Morning! Day one. The mountain doesn't know what's coming. What are we doing tod"
+   },
+   {
+    "check": "Today sheet opens",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "Ask answers a question",
+    "ok": true,
+    "detail": "First up: Ski Proclou (green), planned for 9:00.Steps"
+   },
+   {
+    "check": "steps sheet closes",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "next and previous step buttons",
+    "ok": true,
+    "detail": "0 -> 1 -> 0"
+   },
+   {
+    "check": "Remaining filter chip toggles",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "Runs view returns to route",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "tracking shows the stats card",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "Sun mode switches on",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "trail of where you have been is recorded",
+    "ok": true,
+    "detail": "1272 trail points"
+   },
+   {
+    "check": "free ski by default: no off-route banner",
+    "ok": true,
+    "detail": "hidden"
+   },
+   {
+    "check": "test replay moves the skier and counts km",
+    "ok": true,
+    "detail": "km=9.80 max=52 step 0->11 pill=\"Test replay\""
+   },
+   {
+    "check": "Plan from here builds a connected route",
+    "ok": true,
+    "detail": "{\"routed\":1,\"rejoin\":12,\"minutes\":4} max gap 52 m"
+   },
+   {
+    "check": "Plan from here explains what it did",
+    "ok": true,
+    "detail": "New route from where you are: 1 step (about 4 min), then back on the plan at Cr\u00f4t (blue) \u2192 Jean Vuarnet (red) \u2192 Cr\u00f4t (bl"
+   },
+   {
+    "check": "day recap shows the day",
+    "ok": true,
+    "detail": "km=11.2 vert=161 top=52 lifts=5 goal=1 of 62 +1 today"
+   },
+   {
+    "check": "home sheet is back after stopping",
+    "ok": true,
+    "detail": "Avoriaz"
+   },
+   {
+    "check": "stop & reset clears the replay",
+    "ok": true,
+    "detail": "km=0.00"
+   },
+   {
+    "check": "following link",
+    "ok": true,
+    "detail": "nyc.html"
+   },
+   {
+    "check": "page loads and map is ready (nyc.html)",
+    "ok": true,
+    "detail": "8 steps"
+   },
+   {
+    "check": "Practice in NYC link opens the NYC map",
+    "ok": true,
+    "detail": "nyc.html"
+   },
+   {
+    "check": "NYC page has a working way back",
+    "ok": true,
+    "detail": "index.html"
+   }
+  ],
+  "errors": [],
+  "done": true,
+  "shots": [
+   "01-main.png",
+   "02-menu.png",
+   "03-menu-settings.png",
+   "04-brief.png",
+   "05-today.png",
+   "06-ask.png",
+   "07-steps.png",
+   "08-progress.png",
+   "09-runs-list.png",
+   "10-places.png",
+   "11-map-3d.png",
+   "12-map-all.png",
+   "13-test-mode.png",
+   "14-replay.png",
+   "15-replay-sun.png",
+   "16-plan-from-here.png",
+   "17-recap.png",
+   "18-nyc-main.png",
+   "19-nyc-menu.png"
+  ]
+ },
+ "web-iphoneSE": {
+  "audits": [
+   {
+    "screen": "main",
+    "page": "index.html",
+    "vw": 375,
+    "vh": 667,
+    "targets": 10,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "menu",
+    "page": "index.html",
+    "vw": 375,
+    "vh": 667,
+    "targets": 10,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": "drawer"
+   },
+   {
+    "screen": "menu-settings",
+    "page": "index.html",
+    "vw": 375,
+    "vh": 667,
+    "targets": 15,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": "drawer"
+   },
+   {
+    "screen": "brief",
+    "page": "index.html",
+    "vw": 375,
+    "vh": 667,
+    "targets": 15,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [
+     {
+      "el": "#menuBtn \"Week, places and settings\"",
+      "by": "#bEyebrow \"SUN JAN 17 \u00b7 MORNING BRIEF\""
+     },
+     {
+      "el": "#wxPill \"Today's brief: the day, weather, what to\"",
+      "by": "#bEyebrow \"SUN JAN 17 \u00b7 MORNING BRIEF\""
+     },
+     {
+      "el": "#followBtn \"ME\"",
+      "by": "#bClose \"Close\""
+     },
+     {
+      "el": "#compassBtn \"Compass\"",
+      "by": "div.gstage"
+     },
+     {
+      "el": "#fitBtn \"ALL\"",
+      "by": "div.gstage"
+     },
+     {
+      "el": "#dimBtn \"3D\"",
+      "by": "div.gstage"
+     },
+     {
+      "el": "#placesBtn \"Places on the map\"",
+      "by": "#bCap \"Morning! Day one. The mountain doesn't k\""
+     },
+     {
+      "el": "#goBtn \"Start skiing\"",
+      "by": "#bAsk \"Ask\""
+     },
+     {
+      "el": "#stepsBtn \"Steps\"",
+      "by": "#bToday \"Weather and lifts in detail\""
+     },
+     {
+      "el": "#progBtn \"Runs\"",
+      "by": "#bToday \"Weather and lifts in detail\""
+     }
+    ],
+    "offscreen": [],
+    "crowded": [
+     {
+      "a": "#followBtn \"ME\"",
+      "b": "#bClose \"Close\"",
+      "gap": -46
+     },
+     {
+      "a": "#goBtn \"Start skiing\"",
+      "b": "#bPause \"Pause\"",
+      "gap": -50
+     },
+     {
+      "a": "#goBtn \"Start skiing\"",
+      "b": "#bAsk \"Ask\"",
+      "gap": -50
+     },
+     {
+      "a": "#goBtn \"Start skiing\"",
+      "b": "#bGo \"Start skiing\"",
+      "gap": -50
+     },
+     {
+      "a": "#stepsBtn \"Steps\"",
+      "b": "#bToday \"Weather and lifts in detail\"",
+      "gap": -48
+     },
+     {
+      "a": "#progBtn \"Runs\"",
+      "b": "#bToday \"Weather and lifts in detail\"",
+      "gap": -48
+     }
+    ],
+    "tinyText": [
+     {
+      "el": "span \"24 lifts\"",
+      "px": 11.52
+     },
+     {
+      "el": "span \"First move\"",
+      "px": 11.52
+     },
+     {
+      "el": "span \"Partly cloudy\"",
+      "px": 11.52
+     }
+    ],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "today",
+    "page": "index.html",
+    "vw": 375,
+    "vh": 667,
+    "targets": 1,
+    "needsScroll": 1,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": "todaySheet"
+   },
+   {
+    "screen": "ask",
+    "page": "index.html",
+    "vw": 375,
+    "vh": 667,
+    "targets": 19,
+    "needsScroll": 0,
+    "small": [
+     {
+      "el": "button \"What\u2019s next?\"",
+      "w": 142,
+      "h": 40
+     },
+     {
+      "el": "button \"Where\u2019s lunch?\"",
+      "w": 161,
+      "h": 40
+     },
+     {
+      "el": "button \"Any lifts closed?\"",
+      "w": 170,
+      "h": 40
+     },
+     {
+      "el": "button \"Plan from here\"",
+      "w": 157,
+      "h": 40
+     },
+     {
+      "el": "button \"How much today?\"",
+      "w": 181,
+      "h": 40
+     },
+     {
+      "el": "button \"Call the group\"",
+      "w": 151,
+      "h": 40
+     }
+    ],
+    "gloveSmall": [],
+    "covered": [
+     {
+      "el": "#menuBtn \"Week, places and settings\"",
+      "by": "rect"
+     },
+     {
+      "el": "#wxPill \"Today's brief: the day, weather, what to\"",
+      "by": "span \"Ask me anything about todayWorks on your\""
+     },
+     {
+      "el": "#followBtn \"ME\"",
+      "by": "#aClose \"Close\""
+     },
+     {
+      "el": "#compassBtn \"Compass\"",
+      "by": "#aConvo \"What\u2019s next?First up: Ski Proclou (green\""
+     },
+     {
+      "el": "#fitBtn \"ALL\"",
+      "by": "#aConvo \"What\u2019s next?First up: Ski Proclou (green\""
+     },
+     {
+      "el": "#dimBtn \"3D\"",
+      "by": "#aConvo \"What\u2019s next?First up: Ski Proclou (green\""
+     },
+     {
+      "el": "#placesBtn \"Places on the map\"",
+      "by": "#aConvo \"What\u2019s next?First up: Ski Proclou (green\""
+     },
+     {
+      "el": "#goBtn \"Start skiing\"",
+      "by": "button \"How much today?\""
+     },
+     {
+      "el": "#stepsBtn \"Steps\"",
+      "by": "#aHold \"Tap and talk\""
+     },
+     {
+      "el": "#progBtn \"Runs\"",
+      "by": "#aHold \"Tap and talk\""
+     }
+    ],
+    "offscreen": [],
+    "crowded": [
+     {
+      "a": "#followBtn \"ME\"",
+      "b": "#aClose \"Close\"",
+      "gap": -33
+     },
+     {
+      "a": "#compassBtn \"Compass\"",
+      "b": "#aClose \"Close\"",
+      "gap": -1
+     },
+     {
+      "a": "#goBtn \"Start skiing\"",
+      "b": "button \"How much today?\"",
+      "gap": -40
+     },
+     {
+      "a": "#goBtn \"Start skiing\"",
+      "b": "button \"Call the group\"",
+      "gap": -40
+     },
+     {
+      "a": "#goBtn \"Start skiing\"",
+      "b": "#aHold \"Tap and talk\"",
+      "gap": -12
+     },
+     {
+      "a": "#stepsBtn \"Steps\"",
+      "b": "#aHold \"Tap and talk\"",
+      "gap": -50
+     },
+     {
+      "a": "#progBtn \"Runs\"",
+      "b": "#aHold \"Tap and talk\"",
+      "gap": -50
+     }
+    ],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "steps",
+    "page": "index.html",
+    "vw": 375,
+    "vh": 667,
+    "targets": 8,
+    "needsScroll": 71,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": "sheet"
+   },
+   {
+    "screen": "progress",
+    "page": "index.html",
+    "vw": 375,
+    "vh": 667,
+    "targets": 14,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "runs-list",
+    "page": "index.html",
+    "vw": 375,
+    "vh": 667,
+    "targets": 8,
+    "needsScroll": 175,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": "runsSheet"
+   },
+   {
+    "screen": "places",
+    "page": "index.html",
+    "vw": 375,
+    "vh": 667,
+    "targets": 15,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "map-3d",
+    "page": "index.html",
+    "vw": 375,
+    "vh": 667,
+    "targets": 10,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "map-all",
+    "page": "index.html",
+    "vw": 375,
+    "vh": 667,
+    "targets": 10,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "test-mode",
+    "page": "index.html",
+    "vw": 375,
+    "vh": 667,
+    "targets": 7,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": "simSheet"
+   },
+   {
+    "screen": "replay",
+    "page": "index.html",
+    "vw": 375,
+    "vh": 667,
+    "targets": 12,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "replay-sun",
+    "page": "index.html",
+    "vw": 375,
+    "vh": 667,
+    "targets": 12,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "plan-from-here",
+    "page": "index.html",
+    "vw": 375,
+    "vh": 667,
+    "targets": 6,
+    "needsScroll": 74,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": "sheet"
+   },
+   {
+    "screen": "recap",
+    "page": "index.html",
+    "vw": 375,
+    "vh": 667,
+    "targets": 3,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": "recapSheet"
+   },
+   {
+    "screen": "nyc-main",
+    "page": "nyc.html",
+    "vw": 375,
+    "vh": 667,
+    "targets": 10,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": null
+   },
+   {
+    "screen": "nyc-menu",
+    "page": "nyc.html",
+    "vw": 375,
+    "vh": 667,
+    "targets": 7,
+    "needsScroll": 0,
+    "small": [],
+    "gloveSmall": [],
+    "covered": [],
+    "offscreen": [],
+    "crowded": [],
+    "tinyText": [],
+    "overflowX": [],
+    "modal": "drawer"
+   }
+  ],
+  "results": [
+   {
+    "check": "page loads and map is ready (index.html)",
+    "ok": true,
+    "detail": "79 steps"
+   },
+   {
+    "check": "gear opens settings",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "settings fit without scrolling",
+    "ok": true,
+    "detail": "611 vs 611"
+   },
+   {
+    "check": "week fits without scrolling",
+    "ok": true,
+    "detail": "608 vs 608"
+   },
+   {
+    "check": "Follow the plan toggle works (off by default)",
+    "ok": true,
+    "detail": "false -> true -> false"
+   },
+   {
+    "check": "menu lists the days",
+    "ok": true,
+    "detail": "6 day buttons"
+   },
+   {
+    "check": "tapping Day 2 switches the plan",
+    "ok": true,
+    "detail": "Avoriaz -> Morzine + Les Gets"
+   },
+   {
+    "check": "menu closes",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "live lift status loads from the internet",
+    "ok": true,
+    "detail": "7 of 182 open"
+   },
+   {
+    "check": "guide button opens the morning brief",
+    "ok": true,
+    "detail": "Morning! Day one. The mountain doesn't know what's coming. What are we doing tod"
+   },
+   {
+    "check": "Today sheet opens",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "Ask answers a question",
+    "ok": true,
+    "detail": "First up: Ski Proclou (green), planned for 9:00.Steps"
+   },
+   {
+    "check": "steps sheet closes",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "next and previous step buttons",
+    "ok": true,
+    "detail": "0 -> 1 -> 0"
+   },
+   {
+    "check": "Remaining filter chip toggles",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "Runs view returns to route",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "tracking shows the stats card",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "Sun mode switches on",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "trail of where you have been is recorded",
+    "ok": true,
+    "detail": "1221 trail points"
+   },
+   {
+    "check": "free ski by default: no off-route banner",
+    "ok": true,
+    "detail": "hidden"
+   },
+   {
+    "check": "test replay moves the skier and counts km",
+    "ok": true,
+    "detail": "km=9.92 max=52 step 0->10 pill=\"Test replay\""
+   },
+   {
+    "check": "Plan from here builds a connected route",
+    "ok": true,
+    "detail": "{\"routed\":1,\"rejoin\":11,\"minutes\":1} max gap 52 m"
+   },
+   {
+    "check": "Plan from here explains what it did",
+    "ok": true,
+    "detail": "New route from where you are: 1 step (about 1 min), then back on the plan at Prodains Express 3S gondola. They start at "
+   },
+   {
+    "check": "day recap shows the day",
+    "ok": true,
+    "detail": "km=10.0 vert=155 top=52 lifts=4 goal=1 of 62 +1 today"
+   },
+   {
+    "check": "home sheet is back after stopping",
+    "ok": true,
+    "detail": "Avoriaz"
+   },
+   {
+    "check": "stop & reset clears the replay",
+    "ok": true,
+    "detail": "km=0.00"
+   },
+   {
+    "check": "following link",
+    "ok": true,
+    "detail": "nyc.html"
+   },
+   {
+    "check": "page loads and map is ready (nyc.html)",
+    "ok": true,
+    "detail": "8 steps"
+   },
+   {
+    "check": "Practice in NYC link opens the NYC map",
+    "ok": true,
+    "detail": "nyc.html"
+   },
+   {
+    "check": "NYC page has a working way back",
+    "ok": true,
+    "detail": "index.html"
+   }
+  ],
+  "errors": [],
+  "done": true,
+  "shots": [
+   "01-main.png",
+   "02-menu.png",
+   "03-menu-settings.png",
+   "04-brief.png",
+   "05-today.png",
+   "06-ask.png",
+   "07-steps.png",
+   "08-progress.png",
+   "09-runs-list.png",
+   "10-places.png",
+   "11-map-3d.png",
+   "12-map-all.png",
+   "13-test-mode.png",
+   "14-replay.png",
+   "15-replay-sun.png",
+   "16-plan-from-here.png",
+   "17-recap.png",
+   "18-nyc-main.png",
+   "19-nyc-menu.png"
+  ]
+ },
+ "web-lines": {
+  "audits": [],
+  "results": [
+   {
+    "check": "daily steps found (first lift in the morning, home run)",
+    "ok": true,
+    "detail": "[0, 1, 77, 76]"
+   },
+   {
+    "check": "daily steps fold into one row each in Steps",
+    "ok": true,
+    "detail": "2"
+   },
+   {
+    "check": "morning row says it is the same every day",
+    "ok": true,
+    "detail": "Every morning: Proclou \u2192 Proclou chair | Same every day \u00b7 2 steps \u00b7 tap to see | 9:00 | 3.2 km"
+   },
+   {
+    "check": "tapping the row shows the steps",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "replay moved along the plan",
+    "ok": true,
+    "detail": "step 6"
+   },
+   {
+    "check": "done steps are drawn filled in (not removed)",
+    "ok": true,
+    "detail": "8"
+   },
+   {
+    "check": "steps ahead are drawn as an outline",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "daily steps are marked",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "cafes and restaurants hide while tracking",
+    "ok": true,
+    "detail": "[\"all\",[\"in\",[\"get\",\"c\"],[\"literal\",[\"none\"]]],[\"any\",[\"==\",[\"get\",\"mtn\"],1],[\"!"
+   },
+   {
+    "check": "only the next step is labelled while tracking",
+    "ok": true,
+    "detail": "['Next \u00b7 Cr\u00eate']"
+   },
+   {
+    "check": "done today chip shows",
+    "ok": true,
+    "detail": "5 of 78 done \u00b7 1 red"
+   },
+   {
+    "check": "your track is drawn above the route",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "step numbers come back when you stop",
+    "ok": true,
+    "detail": "53"
+   },
+   {
+    "check": "Stop then Start leaves a gap, no straight line across town",
+    "ok": true,
+    "detail": "2 pieces, longest hop 39 m"
+   },
+   {
+    "check": "a GPS jump while tracking also leaves a gap",
+    "ok": true,
+    "detail": "3 pieces"
+   },
+   {
+    "check": "clear asks for a second tap",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "Clear tracking history empties the track and the saved days",
+    "ok": true,
+    "detail": "15 -> 0 points, saved days [[0,0]]"
+   }
+  ],
+  "errors": [],
+  "done": true,
+  "shots": [
+   "01-steps-folded.png",
+   "02-avoriaz-tracking.png",
+   "03-nyc-track-gap.png",
+   "04-settings-clear.png"
+  ]
+ }
+}

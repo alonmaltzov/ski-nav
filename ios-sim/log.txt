@@ -1,0 +1,144 @@
+[app] QA tour enabled
+[app] loading built-in /Users/runner/Library/Developer/CoreSimulator/Devices/E952A9B0-CC78-435C-BF08-06AD47FE1076/data/Containers/Bundle/Application/6779CB8E-7A20-4A01-A15B-6A0D633CFCDD/SkiNav.app/www/index.html 7723833
+[app] group: none
+[app] watch not ready yet, plan queued
+[web] DOM ready, title=Avoriaz Ski Nav
+[web] page loaded, map=true
+[app] page finished loading
+[web] QA RESULT {"check":"page loads and map is ready (index.html)","ok":true,"detail":"79 steps"}
+[web] QA SCREEN main
+[web] QA AUDIT {"screen":"main","page":"index.html","vw":402,"vh":874,"targets":10,"needsScroll":0,"small":[],"gloveSmall":[],"covered":[],"offscreen":[],"crowded":[],"tinyText":[],"overflowX":[],"modal":null}
+[web] QA SCREEN menu
+[web] QA AUDIT {"screen":"menu","page":"index.html","vw":402,"vh":874,"targets":10,"needsScroll":0,"small":[],"gloveSmall":[],"covered":[],"offscreen":[],"crowded":[],"tinyText":[],"overflowX":[],"modal":"drawer"}
+[app] watch link: on paired: false installed: false
+[app] watch not ready yet, plan queued
+[web] QA SCREEN menu-settings
+[web] QA AUDIT {"screen":"menu-settings","page":"index.html","vw":402,"vh":874,"targets":15,"needsScroll":0,"small":[],"gloveSmall":[],"covered":[],"offscreen":[],"crowded":[],"tinyText":[],"overflowX":[],"modal":"drawer"}
+[web] QA RESULT {"check":"gear opens settings","ok":true,"detail":""}
+[web] QA RESULT {"check":"settings fit without scrolling","ok":true,"detail":"763 vs 763"}
+[web] QA RESULT {"check":"week fits without scrolling","ok":true,"detail":"652 vs 652"}
+[web] QA RESULT {"check":"Follow the plan toggle works (off by default)","ok":true,"detail":"false -> true -> false"}
+[web] QA RESULT {"check":"menu lists the days","ok":true,"detail":"6 day buttons"}
+[app] watch not ready yet, plan queued
+[web] QA RESULT {"check":"tapping Day 2 switches the plan","ok":true,"detail":"Avoriaz -> Morzine + Les Gets"}
+[app] watch not ready yet, plan queued
+[web] QA RESULT {"check":"menu closes","ok":true,"detail":""}
+[web] QA RESULT {"check":"live lift status loads from the internet","ok":true,"detail":"7 of 182 open"}
+[web] QA SCREEN brief
+[web] QA AUDIT {"screen":"brief","page":"index.html","vw":402,"vh":874,"targets":15,"needsScroll":0,"small":[],"gloveSmall":[],"covered":[{"el":"#menuBtn \"Week, places and settings\"","by":"#bEyebrow \"SUN JAN 17 · MORNING BRIEF\""},{"el":"#wxPill \"Today's brief: the day, weather, what to\"","by":"#bEyebrow \"SUN JAN 17 · MORNING BRIEF\""},{"el":"#followBtn \"ME\"","by":"#bClose \"Close\""},{"el":"#compassBtn \"Compass\"","by":"div.gstage"},{"el":"#fitBtn \"ALL\"","by":"div.gstage"},{"el":"#dimBtn \"3D\"","by":"div.gstage"},{"el":"#placesBtn \"Places on the map\"","by":"#bCap \"Morning! Day one. The mountain doesn't k\""},{"el":"#goBtn \"Start skiing\"","by":"#bAsk \"Ask\""},{"el":"#stepsBtn \"Steps\"","by":"#bToday \"Weather and lifts in detail\""},{"el":"#progBtn \"Runs\"","by":"#bToday \"Weather and lifts in detail\""}],"offscreen":[],"crowded":[{"a":"#followBtn \"ME\"","b":"#bClose \"Close\"","gap":-46},{"a":"#goBtn \"Start skiing\"","b":"#bPause \"Pause\"","gap":-50},{"a":"#goBtn \"Start skiing\"","b":"#bAsk \"Ask\"","gap":-50},{"a":"#goBtn \"Start skiing\"","b":"#bGo \"Start skiing\"","gap":-50},{"a":"#stepsBtn \"Steps\"","b":"#bToday \"Weather and lifts in detail\"","gap":-48},{"a":"#progBtn \"Runs\"","b":"#bToday \"Weather and lifts in detail\"","gap":-48}],"tinyText":[{"el":"span \"24 lifts\"","px":11.52},{"el":"span \"First move\"","px":11.52},{"el":"span \"Partly cloudy\"","px":11.52}],"overflowX":[],"modal":null}
+[web] QA RESULT {"check":"guide button opens the morning brief","ok":true,"detail":"Morning! Day one. The mountain doesn't know what's coming. What are we doing tod"}
+[web] QA SCREEN today
+[web] QA AUDIT {"screen":"today","page":"index.html","vw":402,"vh":874,"targets":1,"needsScroll":1,"small":[],"gloveSmall":[],"covered":[],"offscreen":[],"crowded":[],"tinyText":[],"overflowX":[],"modal":"todaySheet"}
+[web] QA RESULT {"check":"Today sheet opens","ok":true,"detail":""}
+[web] QA SCREEN ask
+[web] QA AUDIT {"screen":"ask","page":"index.html","vw":402,"vh":874,"targets":19,"needsScroll":0,"small":[{"el":"button \"What’s next?\"","w":124,"h":40},{"el":"button \"Where’s lunch?\"","w":141,"h":40},{"el":"button \"Any lifts closed?\"","w":149,"h":40},{"el":"button \"Plan from here\"","w":136,"h":40},{"el":"button \"How much today?\"","w":159,"h":40},{"el":"button \"Call the group\"","w":131,"h":40}],"gloveSmall":[],"covered":[{"el":"#menuBtn \"Week, places and settings\"","by":"rect"},{"el":"#wxPill \"Today's brief: the day, weather, what to\"","by":"#aState \"Ask me anything about today\""},{"el":"#followBtn \"ME\"","by":"#aClose \"Close\""},{"el":"#compassBtn \"Compass\"","by":"div.abub.me \"What’s next?\""},{"el":"#fitBtn \"ALL\"","by":"#aConvo \"What’s next?First up: Ski Proclou (green\""},{"el":"#dimBtn \"3D\"","by":"#aConvo \"What’s next?First up: Ski Proclou (green\""},{"el":"#placesBtn \"Places on the map\"","by":"#aConvo \"What’s next?First up: Ski Proclou (green\""},{"el":"#goBtn \"Start skiing\"","by":"button \"Call the group\""},{"el":"#stepsBtn \"Steps\"","by":"#aHold \"Tap and talk\""},{"el":"#progBtn \"Runs\"","by":"#aHold \"Tap and talk\""}],"offscreen":[],"crowded":[{"a":"#followBtn \"ME\"","b":"#aClose \"Close\"","gap":-38},{"a":"#goBtn \"Start skiing\"","b":"button \"How much today?\"","gap":-40},{"a":"#goBtn \"Start skiing\"","b":"button \"Call the group\"","gap":-40},{"a":"#goBtn \"Start skiing\"","b":"#aHold \"Tap and talk\"","gap":-12},{"a":"#stepsBtn \"Steps\"","b":"#aHold \"Tap and talk\"","gap":-50},{"a":"#progBtn \"Runs\"","b":"#aHold \"Tap and talk\"","gap":-50}],"tinyText":[],"overflowX":[],"modal":null}
+[web] QA RESULT {"check":"Ask answers a question","ok":true,"detail":"First up: Ski Proclou (green), planned for 9:00.Steps"}
+[web] QA SCREEN steps
+[web] QA AUDIT {"screen":"steps","page":"index.html","vw":402,"vh":874,"targets":11,"needsScroll":68,"small":[],"gloveSmall":[],"covered":[],"offscreen":[],"crowded":[],"tinyText":[],"overflowX":[],"modal":"sheet"}
+[web] QA RESULT {"check":"steps sheet closes","ok":true,"detail":""}
+[web] QA RESULT {"check":"next and previous step buttons","ok":true,"detail":"0 -> 1 -> 0"}
+[web] QA SCREEN progress
+[web] QA AUDIT {"screen":"progress","page":"index.html","vw":402,"vh":874,"targets":14,"needsScroll":0,"small":[],"gloveSmall":[],"covered":[],"offscreen":[],"crowded":[],"tinyText":[],"overflowX":[],"modal":null}
+[web] QA RESULT {"check":"Remaining filter chip toggles","ok":true,"detail":""}
+[web] QA SCREEN runs-list
+[web] QA AUDIT {"screen":"runs-list","page":"index.html","vw":402,"vh":874,"targets":12,"needsScroll":171,"small":[],"gloveSmall":[],"covered":[],"offscreen":[],"crowded":[],"tinyText":[],"overflowX":[],"modal":"runsSheet"}
+[web] QA RESULT {"check":"Runs view returns to route","ok":true,"detail":""}
+[web] QA SCREEN places
+[web] QA AUDIT {"screen":"places","page":"index.html","vw":402,"vh":874,"targets":15,"needsScroll":0,"small":[],"gloveSmall":[],"covered":[],"offscreen":[],"crowded":[],"tinyText":[],"overflowX":[],"modal":null}
+[web] WARN You are using the same source for a hillshade layer and for 3D terrain. Please consider using two separate sources to improve rendering quality.
+[web] QA SCREEN map-3d
+[web] QA AUDIT {"screen":"map-3d","page":"index.html","vw":402,"vh":874,"targets":10,"needsScroll":0,"small":[],"gloveSmall":[],"covered":[],"offscreen":[],"crowded":[],"tinyText":[],"overflowX":[],"modal":null}
+[web] QA SCREEN map-all
+[web] QA AUDIT {"screen":"map-all","page":"index.html","vw":402,"vh":874,"targets":10,"needsScroll":0,"small":[],"gloveSmall":[],"covered":[],"offscreen":[],"crowded":[],"tinyText":[],"overflowX":[],"modal":null}
+[web] QA SCREEN test-mode
+[web] QA AUDIT {"screen":"test-mode","page":"index.html","vw":402,"vh":874,"targets":7,"needsScroll":0,"small":[],"gloveSmall":[],"covered":[],"offscreen":[],"crowded":[],"tinyText":[],"overflowX":[],"modal":"simSheet"}
+[web] QA SCREEN replay
+[web] QA AUDIT {"screen":"replay","page":"index.html","vw":402,"vh":874,"targets":12,"needsScroll":0,"small":[],"gloveSmall":[],"covered":[],"offscreen":[],"crowded":[],"tinyText":[],"overflowX":[],"modal":null}
+[web] QA RESULT {"check":"tracking shows the stats card","ok":true,"detail":""}
+[web] QA SCREEN replay-sun
+[web] QA AUDIT {"screen":"replay-sun","page":"index.html","vw":402,"vh":874,"targets":12,"needsScroll":0,"small":[],"gloveSmall":[],"covered":[],"offscreen":[],"crowded":[],"tinyText":[],"overflowX":[],"modal":null}
+[web] QA RESULT {"check":"Sun mode switches on","ok":true,"detail":""}
+[web] QA RESULT {"check":"trail of where you have been is recorded","ok":true,"detail":"1235 trail points"}
+[web] QA RESULT {"check":"free ski by default: no off-route banner","ok":true,"detail":"hidden"}
+[web] QA RESULT {"check":"test replay moves the skier and counts km","ok":true,"detail":"km=9.92 max=53 step 0->11 pill=\"Test replay\""}
+[app] watch not ready yet, plan queued
+[web] QA RESULT {"check":"Plan from here builds a connected route","ok":true,"detail":"{\"routed\":0,\"rejoin\":11,\"minutes\":0} max gap 52 m"}
+[web] QA SCREEN plan-from-here
+[web] QA AUDIT {"screen":"plan-from-here","page":"index.html","vw":402,"vh":874,"targets":11,"needsScroll":69,"small":[],"gloveSmall":[],"covered":[],"offscreen":[],"crowded":[],"tinyText":[],"overflowX":[],"modal":"sheet"}
+[web] QA RESULT {"check":"Plan from here explains what it did","ok":true,"detail":"You’re already on the plan. Next up: Take Prodains Express 3S gondola."}
+[app] watch not ready yet, plan queued
+[web] QA SCREEN recap
+[web] QA AUDIT {"screen":"recap","page":"index.html","vw":402,"vh":874,"targets":3,"needsScroll":0,"small":[],"gloveSmall":[],"covered":[],"offscreen":[],"crowded":[],"tinyText":[],"overflowX":[],"modal":"recapSheet"}
+[web] QA RESULT {"check":"day recap shows the day","ok":true,"detail":"km=9.9 vert=156 top=53 lifts=4 goal=1 of 62 +1 today"}
+[web] QA RESULT {"check":"home sheet is back after stopping","ok":true,"detail":"Avoriaz"}
+[web] QA RESULT {"check":"stop & reset clears the replay","ok":true,"detail":"km=0.00"}
+[web] QA RESULT {"check":"ME shows my location without tracking","ok":true,"detail":"blue dot on map"}
+[web] QA SCREEN me-button
+[web] QA AUDIT {"screen":"me-button","page":"index.html","vw":402,"vh":874,"targets":10,"needsScroll":0,"small":[],"gloveSmall":[],"covered":[],"offscreen":[],"crowded":[],"tinyText":[],"overflowX":[],"modal":null}
+[web] QA RESULT {"check":"compass button responds","ok":true,"detail":"pressed=false (no compass on this device, turned itself off)"}
+[web] QA GPS START
+[app] location updates on, auth=3
+[app] watch not ready yet, plan queued
+[app] gps #1 46.19331,6.76815 acc=5 speed=-1.0 batch=1
+[app] live activity started
+[app] gps #2 46.19320,6.76814 acc=5 speed=-1.0 batch=1
+[app] probe 46.19320,6.76814 age=0s callbacks=2 state=0
+[app] gps #3 46.19309,6.76812 acc=5 speed=-1.0 batch=1
+[app] gps #4 46.19298,6.76811 acc=5 speed=-1.0 batch=1
+[app] probe 46.19298,6.76811 age=0s callbacks=4 state=0
+[app] gps #5 46.19286,6.76809 acc=5 speed=-1.0 batch=1
+[app] gps #6 46.19276,6.76803 acc=5 speed=-1.0 batch=1
+[app] probe 46.19276,6.76803 age=0s callbacks=6 state=0
+[app] gps #7 46.19266,6.76796 acc=5 speed=-1.0 batch=1
+[app] gps #8 46.19256,6.76790 acc=5 speed=-1.0 batch=1
+[app] probe 46.19256,6.76790 age=0s callbacks=8 state=0
+[app] gps #9 46.19246,6.76783 acc=5 speed=-1.0 batch=1
+[app] gps #10 46.19253,6.76773 acc=5 speed=-1.0 batch=1
+[app] probe 46.19253,6.76773 age=0s callbacks=10 state=0
+[app] gps #11 46.19260,6.76764 acc=5 speed=-1.0 batch=1
+[web] QA SCREEN gps-tracking
+[web] QA AUDIT {"screen":"gps-tracking","page":"index.html","vw":402,"vh":874,"targets":12,"needsScroll":0,"small":[],"gloveSmall":[],"covered":[],"offscreen":[],"crowded":[],"tinyText":[],"overflowX":[],"modal":null}
+[app] gps #12 46.19266,6.76754 acc=5 speed=-1.0 batch=1
+[app] probe 46.19266,6.76754 age=0s callbacks=12 state=0
+[app] gps #13 46.19273,6.76745 acc=5 speed=-1.0 batch=1
+[app] gps #14 46.19280,6.76735 acc=5 speed=-1.0 batch=1
+[app] probe 46.19280,6.76735 age=0s callbacks=14 state=0
+[app] gps #15 46.19291,6.76731 acc=5 speed=-1.0 batch=1
+[app] gps #16 46.19302,6.76727 acc=5 speed=-1.0 batch=1
+[app] probe 46.19302,6.76727 age=0s callbacks=16 state=0
+[app] gps #17 46.19312,6.76722 acc=5 speed=-1.0 batch=1
+[app] gps #18 46.19323,6.76718 acc=5 speed=-1.0 batch=1
+[app] probe 46.19323,6.76718 age=0s callbacks=18 state=0
+[app] gps #19 46.19332,6.76713 acc=5 speed=-1.0 batch=1
+[app] gps #20 46.19341,6.76709 acc=5 speed=-1.0 batch=1
+[app] probe 46.19341,6.76709 age=0s callbacks=20 state=0
+[app] gps #21 46.19350,6.76705 acc=5 speed=-1.0 batch=1
+[app] gps #22 46.19359,6.76700 acc=5 speed=-1.0 batch=1
+[app] probe 46.19359,6.76700 age=0s callbacks=22 state=0
+[app] gps #23 46.19367,6.76694 acc=5 speed=-1.0 batch=1
+[web] QA RESULT {"check":"native GPS fixes arrive","ok":true,"detail":"23 fixes, raw path 254 m, speeds none, acc 5 m, alt undefined"}
+[web] QA RESULT {"check":"simulator route is moving (test harness)","ok":true,"detail":"23 fixes, raw path 254 m, speeds none, acc 5 m, alt undefined"}
+[web] QA RESULT {"check":"moving GPS turns into km and speed","ok":true,"detail":"km=0.25 speed=27 max=35 pill=\"GPS ±5 m\" vs raw path 254 m"}
+[web] QA RESULT {"check":"following link","ok":true,"detail":"nyc.html"}
+[app] group: none
+[app] watch not ready yet, plan queued
+[web] DOM ready, title=Avoriaz Ski Nav
+[web] page loaded, map=true
+[app] page finished loading
+[web] QA RESULT {"check":"page loads and map is ready (nyc.html)","ok":true,"detail":"8 steps"}
+[web] QA RESULT {"check":"Practice in NYC link opens the NYC map","ok":true,"detail":"nyc.html"}
+[web] QA SCREEN nyc-main
+[web] QA AUDIT {"screen":"nyc-main","page":"nyc.html","vw":402,"vh":874,"targets":10,"needsScroll":0,"small":[],"gloveSmall":[],"covered":[],"offscreen":[],"crowded":[],"tinyText":[],"overflowX":[],"modal":null}
+[web] QA SCREEN nyc-menu
+[web] QA AUDIT {"screen":"nyc-menu","page":"nyc.html","vw":402,"vh":874,"targets":7,"needsScroll":0,"small":[],"gloveSmall":[],"covered":[],"offscreen":[],"crowded":[],"tinyText":[],"overflowX":[],"modal":"drawer"}
+[web] QA RESULT {"check":"NYC page has a working way back","ok":true,"detail":"index.html"}
+[web] QA DONE
+com.alonmaltzov.SkiNav: 5764
+[web] QA RESULT {"check":"lock screen and Dynamic Island views render","ok":true,"detail":"90-glances.png"}
+[web] QA RESULT {"check":"watch screen renders: now","ok":true,"detail":"97-watch-now.png"}
+[web] QA RESULT {"check":"watch screen renders: lift","ok":true,"detail":"97-watch-lift.png"}
+[web] QA RESULT {"check":"watch screen renders: steps","ok":true,"detail":"97-watch-steps.png"}
+[web] QA RESULT {"check":"watch screen renders: face-morning","ok":true,"detail":"97-watch-face-morning.png"}
+[web] QA RESULT {"check":"watch screen renders: face-skiing","ok":true,"detail":"97-watch-face-skiing.png"}
+[web] QA RESULT {"check":"watch screen renders: face-lift","ok":true,"detail":"97-watch-face-lift.png"}
+[web] QA RESULT {"check":"watch screen renders: face-done","ok":true,"detail":"97-watch-face-done.png"}
