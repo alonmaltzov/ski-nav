@@ -1,0 +1,72 @@
+{
+  "days": [
+    {
+      "day": 1,
+      "area": "avoriaz",
+      "title": "Avoriaz",
+      "meta": {
+        "title": "Avoriaz",
+        "sector": "avoriaz",
+        "black": true
+      }
+    },
+    {
+      "day": 2,
+      "area": "morzine",
+      "title": "Morzine + Les Gets",
+      "meta": {
+        "title": "Morzine + Les Gets",
+        "sector": "morzine",
+        "black": true
+      },
+      "fill": "avoriaz"
+    },
+    {
+      "day": 3,
+      "area": "crosets",
+      "swiss": true,
+      "title": "Les Crosets + Champéry",
+      "meta": {
+        "title": "Switzerland: Les Crosets + Champéry",
+        "sector": "crosets",
+        "black": true
+      },
+      "fill": "avoriaz"
+    },
+    {
+      "day": 4,
+      "area": "champoussin",
+      "swiss": true,
+      "title": "Champoussin + Morgins",
+      "meta": {
+        "title": "Switzerland: Champoussin + Morgins",
+        "sector": "champoussin",
+        "black": true
+      },
+      "fill": "avoriaz"
+    },
+    {
+      "day": 5,
+      "area": "chatel",
+      "title": "Châtel: Pré-la-Joux + Linga",
+      "meta": {
+        "title": "Châtel: Pré-la-Joux + Linga",
+        "sector": "chatel",
+        "black": true
+      },
+      "fill": "avoriaz"
+    },
+    {
+      "day": 6,
+      "area": "torgon",
+      "swiss": true,
+      "title": "Super-Châtel + Torgon",
+      "meta": {
+        "title": "Switzerland: Super-Châtel + Torgon",
+        "sector": "torgon",
+        "black": true
+      },
+      "fill": "avoriaz"
+    }
+  ]
+}
