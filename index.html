@@ -1448,10 +1448,19 @@ function applyView(){
 }
 const SHADE2D=['interpolate',['linear'],['zoom'],10,0.8,14,0.55,16,0.35];
 let panoAuto=false;   // 3D was switched on by the overview, not by you
-function panoView(bounds, dur, zin){ if(!is3D) panoAuto=true; is3D=true; map.setPaintProperty('shade','hillshade-exaggeration',0.42); $('dimBtn').textContent='2D'; $('dimBtn').setAttribute('aria-pressed','true'); map.setTerrain({source:'dem', exaggeration:1.5});
-  const cam=map.cameraForBounds(bounds,{padding:{top:30,bottom:30,left:20,right:70}, bearing:180});
-  if(!cam) return; const z=Math.max(10.3, (cam.zoom||11)+(zin==null?0:zin));   // the mountain relief needs zoom 10+   // tilted, the far side shrinks: zoom in a little
-  map.easeTo({center:cam.center, zoom:z, bearing:180, pitch:58, duration:dur==null?700:dur}); }
+function panoView(bounds, dur, zin, pts){ if(!is3D) panoAuto=true; is3D=true; map.setPaintProperty('shade','hillshade-exaggeration',0.42);
+  $('dimBtn').textContent='2D'; $('dimBtn').setAttribute('aria-pressed','true'); map.setTerrain({source:'dem', exaggeration:1.5});
+  const pad={top:30,bottom:30,left:20,right:70};
+  const cam=map.cameraForBounds(bounds,{padding:pad, bearing:180}); if(!cam) return;
+  // tilted, the near side grows: step the zoom until everything that should show is on screen
+  const want=(pts||[]).concat([[bounds[0][0],bounds[0][1]],[bounds[1][0],bounds[0][1]],[bounds[0][0],bounds[1][1]],[bounds[1][0],bounds[1][1]]]);
+  const was={center:map.getCenter(), zoom:map.getZoom(), bearing:map.getBearing(), pitch:map.getPitch()};
+  const W=map.getContainer().clientWidth, H=map.getContainer().clientHeight; let z=(cam.zoom||11)+(zin==null?0:zin);
+  for(let k=0;k<12;k++){ map.jumpTo({center:cam.center, zoom:z, bearing:180, pitch:58});
+    const ok=want.every(([lo,la])=>{ const q=map.project([lo,la]); return q.x>=pad.left && q.x<=W-pad.right && q.y>=pad.top && q.y<=H-pad.bottom; });
+    if(ok) break; z-=0.25; }
+  map.jumpTo(was); map.easeTo({center:cam.center, zoom:z, bearing:180, pitch:58, duration:dur==null?700:dur});
+}
 function openProgress(){ view='prog'; setFollow(false); applyView(); renderProgress(); panoView(scopeBounds, 0, 0.3); map.triggerRepaint(); closeDrawer(); }
 function closeProgress(){ view='nav'; if(panoAuto && is3D){ panoAuto=false; set3D(false); } if(map.getLayer('flash')){ map.removeLayer('flash'); map.removeSource('flash'); } applyView(); map.fitBounds(routeBounds,{padding:PAD, pitch: is3D?55:0}); }
 $('progBtn').onclick=openProgress; $('progClose').onclick=closeProgress; $('goalCard').onclick=openProgress;
@@ -2489,10 +2498,11 @@ $('pickSheet').onclick=e=>{ if(e.target.id==='pickSheet') $('pickSheet').hidden=
 $('fitBtn').onclick=()=>{
   setFollow(false);
   if(view==='prog'){ panoView(scopeBounds, null, 0.3); return; }
-  if(!APP.classList.contains('tracking')){ const b0=new maplibregl.LngLatBounds(routeBounds[0], routeBounds[1]); panoView([[b0.getWest(),b0.getSouth()],[b0.getEast(),b0.getNorth()]]); return; }
   const b=new maplibregl.LngLatBounds(routeBounds[0], routeBounds[1]);
   const me=myPos(); if(me) b.extend([me[1],me[0]]);
   for(const m of friendsOf()) if(shown(m) && m.pos && m.pos.age_s < 3*3600) b.extend([m.pos.lon, m.pos.lat]);
+  if(!APP.classList.contains('tracking')){ panoView([[b.getWest(),b.getSouth()],[b.getEast(),b.getNorth()]], 0); return; }   // overview: looking south in 3D
+  if(panoAuto && is3D){ panoAuto=false; set3D(false); }
   map.fitBounds(b,{padding:{top:PAD.top+40, bottom:PAD.bottom+40, left:PAD.left+30, right:PAD.right+30}, pitch: is3D?55:0, maxZoom:16});
 };
 /* ---------- group call: a WhatsApp call link the organizer pastes once ---------- */
@@ -2737,7 +2747,7 @@ tellNative(); groupLoop(); refreshGroup(); renderFriendsPill();
 { const q=new URLSearchParams(location.search).get('join') || (location.hash.match(/join=([A-Za-z0-9-]+)/)||[])[1]; if(q) setTimeout(()=>startJoin(q), 300); }
 
 /* expose for automated tests */
-window.__ski = { map, st, get steps(){return steps;}, get cur(){return cur;}, get di(){return di;}, startSim, stopSim, onFix, setX:x=>simX=x, selectDay, groupStats, openProgress, closeProgress, skied:()=>skiedWays.size, recap:openRecap, openBrief, openAsk, buildBrief, askQ:q=>ask(q.toLowerCase()), showOnb, routeData, dailySet, trailFC, startJoin, refreshGroup, routeTo, get grp(){return grp;}, get gview(){return gview;}, openPick, get gstate(){return gstate;}, matchFix, get match(){return st.match;}, _mode(m){ mode=m; }, setSun, planFromHere, applySteps, get liftStat(){return liftStat;}, set liftStat(v){liftStat=v;}, renderLifts, wearFor, resetPlan, setWx(v){ wx=v; renderWx(); } };
+window.__ski = { map, st, get steps(){return steps;}, get cur(){return cur;}, get di(){return di;}, startSim, stopSim, onFix, setX:x=>simX=x, selectDay, groupStats, openProgress, closeProgress, panoView, skied:()=>skiedWays.size, recap:openRecap, openBrief, openAsk, buildBrief, askQ:q=>ask(q.toLowerCase()), showOnb, routeData, dailySet, trailFC, startJoin, refreshGroup, routeTo, get grp(){return grp;}, get gview(){return gview;}, openPick, get gstate(){return gstate;}, matchFix, get match(){return st.match;}, _mode(m){ mode=m; }, setSun, planFromHere, applySteps, get liftStat(){return liftStat;}, set liftStat(v){liftStat=v;}, renderLifts, wearFor, resetPlan, setWx(v){ wx=v; renderWx(); } };
 
 renderUnits(); renderDayBar(); renderStats(); renderStep(); applyView(); renderHome(); applySun();
 /* android: phone voice labels, no Personal Voice */
