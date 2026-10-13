@@ -7,7 +7,7 @@ import psycopg2
 from psycopg2.extras import Json
 
 PORT = int(sys.argv[1]); DSN = sys.argv[2]
-ALLOWED = {'create_trip', 'trip_preview', 'join_trip', 'trip_state', 'post_position', 'set_sharing', 'update_me', 'set_meet', 'set_plan', 'remove_member'}
+ALLOWED = {'create_trip', 'trip_preview', 'join_trip', 'trip_state', 'post_position', 'set_sharing', 'update_me', 'set_meet', 'set_plan', 'remove_member', 'set_games'}
 
 class H(BaseHTTPRequestHandler):
     def _cors(self):

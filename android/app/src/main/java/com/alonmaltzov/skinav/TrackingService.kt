@@ -34,6 +34,7 @@ class TrackingService : Service() {
             val locs = r.locations
             if (locs.isEmpty()) return
             Track.add(locs)
+            locs.forEach { Games.onFix(this@TrackingService, it) }
             locs.lastOrNull { it.accuracy <= 100 }?.let { GroupLink.maybePost(it, Track.distM / 1000) }
             val now = System.currentTimeMillis()
             if (now - lastNotif > 5000) { lastNotif = now; NotificationManagerCompat.from(this@TrackingService).notifySafe(NOTIF_ID, build()) }
