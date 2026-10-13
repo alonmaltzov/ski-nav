@@ -89,6 +89,8 @@ final class WebBridge: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
             LocationService.shared.clearSaved()
         case "group":
             GroupLink.shared.configure(body)
+        case "games":
+            Games.shared.configure(body)
         case "plan":
             // today's steps, forwarded to the watch so it can show "next step" on the wrist
             WatchLink.shared.sendPlan(body)

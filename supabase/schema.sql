@@ -29,6 +29,8 @@ create table if not exists members (
   seen_at    timestamptz
 );
 create index if not exists members_trip on members(trip_id);
+-- games: opt-out of rounds, top speed and border crossing per day ({"rounds":true,"top:2027-01-18":20.5,"swiss:2027-01-18":1790000000000})
+alter table members add column if not exists games jsonb not null default '{}'::jsonb;
 
 -- latest position only (one row per member): nothing is kept as a history
 create table if not exists positions (
@@ -128,7 +130,7 @@ begin
     'me', me.id,
     'role', me.role,
     'members', coalesce((select json_agg(json_build_object(
-        'id', m.id, 'name', m.name, 'color', m.color, 'role', m.role, 'sharing', m.sharing, 'platform', m.platform,
+        'id', m.id, 'name', m.name, 'color', m.color, 'role', m.role, 'sharing', m.sharing, 'platform', m.platform, 'games', m.games,
         'pos', case when p.member_id is null or not m.sharing then null else json_build_object(
           'lat', p.lat, 'lon', p.lon, 'acc', p.acc, 'speed', p.speed, 'on_lift', p.on_lift, 'run', p.run, 'km', p.km,
           'age_s', extract(epoch from now() - p.updated_at)::int) end)
@@ -210,13 +212,25 @@ begin
   return found;
 end $$;
 
+-- games: merge my numbers (small json, at most a few keys a day)
+create or replace function set_games(p_secret uuid, p_games jsonb) returns boolean
+language plpgsql security definer set search_path = public as $$
+declare me members;
+begin
+  me := _me(p_secret);
+  if me.id is null then raise exception 'not a member' using errcode = '42501'; end if;
+  if p_games is null or jsonb_typeof(p_games) <> 'object' or length(p_games::text) > 2000 then return false; end if;
+  update members set games = games || p_games where id = me.id and length((games || p_games)::text) < 20000;
+  return true;
+end $$;
+
 -- the app can call these with the public anon key; nothing else is reachable
 do $$
 declare f text;
 begin
   foreach f in array array['create_trip(text,text,text,date,date,text)','trip_preview(text)','join_trip(text,text,text,text)','trip_state(uuid)',
     'post_position(uuid,double precision,double precision,real,real,boolean,text,real)','set_sharing(uuid,boolean)','update_me(uuid,text,text)',
-    'set_meet(uuid,double precision,double precision,text,text)','set_plan(uuid,jsonb)','remove_member(uuid,uuid)'] loop
+    'set_meet(uuid,double precision,double precision,text,text)','set_plan(uuid,jsonb)','remove_member(uuid,uuid)','set_games(uuid,jsonb)'] loop
     execute 'revoke all on function ' || f || ' from public';
     if exists (select 1 from pg_roles where rolname = 'anon') then execute 'grant execute on function ' || f || ' to anon'; end if;
     if exists (select 1 from pg_roles where rolname = 'authenticated') then execute 'grant execute on function ' || f || ' to authenticated'; end if;

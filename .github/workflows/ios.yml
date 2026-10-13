@@ -34,6 +34,9 @@ jobs:
       - name: Map lines test (done/ahead, track gaps, daily steps, clear history)
         timeout-minutes: 6
         run: python qa/lines_test.py
+      - name: Games test (STOPPP, passport check, Speed King)
+        timeout-minutes: 5
+        run: python qa/games_test.py
       - name: Group test (organizer + friend, against the real schema on Postgres)
         timeout-minutes: 8
         env: { PGPASSWORD: qa }

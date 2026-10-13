@@ -110,6 +110,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
             if (!pageReady) { WebUpdater.discard(this); usingDownload = false; web.loadUrl(START) }
         }, 15_000)
         Track.onFixes = { if (resumed) flush() }
+        Games.onEvent = { e -> if (pageReady) event(e) }
     }
 
     override fun onNewIntent(intent: Intent) { super.onNewIntent(intent); setIntent(intent); handleIntent(intent) }
@@ -132,7 +133,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         WebUpdater.check(this) { main.post { event("updateReady") } }
     }
     override fun onPause() { resumed = false; super.onPause() }
-    override fun onDestroy() { Track.onFixes = null; guide.destroy(); compass(false); super.onDestroy() }
+    override fun onDestroy() { Track.onFixes = null; Games.onEvent = null; guide.destroy(); compass(false); super.onDestroy() }
 
     // ---------- serving the web app ----------
     private inner class Client : WebViewClient() {
@@ -234,6 +235,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
             "reloadApp" -> { usingDownload = WebUpdater.useDownload(this); web.loadUrl(START) }
             "clear" -> Track.clearSaved()
             "group" -> GroupLink.configure(b)
+            "games" -> Games.configure(b)
             // "ctx", "step", "plan": lift lines, current step and the watch plan are iPhone/Watch only for now
         }
     }
