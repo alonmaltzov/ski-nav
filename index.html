@@ -831,11 +831,11 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
   <div class="sheethead"><h3>Games</h3><button class="btn ghost sm" id="gamesDone" type="button">Done</button></div>
   <div class="gzeb">TODAY’S ROUNDS</div><div id="gToday"></div>
   <div class="gzrow3"><span id="gKingNow"></span><button class="btn ghost sm" id="gKingShow" type="button">Podium</button></div>
-  <button class="grow toggle" id="gStop" type="button" role="switch" aria-pressed="true"><span>STOPPP flask breaks<small>3 a day between 11:00 and 3:00, at the bottom of a long lift. A different person’s round each time.</small></span><span class="sw"></span></button>
-  <button class="grow toggle" id="gRounds" type="button" role="switch" aria-pressed="true"><span>Count me in for rounds<small>Off: you still get the STOPPP, you’re just never the one picked.</small></span><span class="sw"></span></button>
-  <button class="grow toggle" id="gBorder" type="button" role="switch" aria-pressed="true"><span>Passport check<small>Who crosses into Switzerland first in the morning.</small></span><span class="sw"></span></button>
-  <button class="grow toggle" id="gSpeed" type="button" role="switch" aria-pressed="true"><span>Speed King<small>Top speed on reds and blues, announced at La Folie Douce.</small></span><span class="sw"></span></button>
-  <button class="grow toggle" id="gSfx" type="button" role="switch" aria-pressed="true"><span>Sound clips<small>Start, Stop, the brief, Steps, closed lifts and the games.</small></span><span class="sw"></span></button>
+  <button class="grow toggle" id="gStop" type="button" role="switch" aria-pressed="true"><span>STOPPP<small>3 flask breaks a day, on long lifts.</small></span><span class="sw"></span></button>
+  <button class="grow toggle" id="gRounds" type="button" role="switch" aria-pressed="true"><span>Count me in for rounds<small>Off: you drink, you don’t pour.</small></span><span class="sw"></span></button>
+  <button class="grow toggle" id="gBorder" type="button" role="switch" aria-pressed="true"><span>Passport race<small>First into Switzerland wins.</small></span><span class="sw"></span></button>
+  <button class="grow toggle" id="gSpeed" type="button" role="switch" aria-pressed="true"><span>Speed King<small>Fastest on reds and blues. Crowned at Folie Douce.</small></span><span class="sw"></span></button>
+  <button class="grow toggle" id="gSfx" type="button" role="switch" aria-pressed="true"><span>Sound clips<small>The crew’s voice notes.</small></span><span class="sw"></span></button>
 </div></div>
 <div class="sheet" id="briefSet" hidden>
   <div class="sheetin" role="dialog" aria-label="Morning brief settings">
@@ -843,7 +843,8 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
     <button class="grow toggle" id="bsOn" type="button" role="switch" aria-pressed="true"><span>Every trip morning<small>A notification; tap it to hear the brief</small></span><span class="sw"></span></button>
     <label class="grow"><span>Time</span><input class="tinput" id="bsTime" type="time" value="08:30"></label>
     <div class="grow col"><span>Voice</span><div class="seg" id="bsVoice"><button type="button" data-v="default" aria-pressed="true">iPhone voice</button><button type="button" data-v="personal" aria-pressed="false">My voice</button></div></div>
-    <p class="note" id="bsVoiceNote" style="margin:0" hidden>“My voice” uses Personal Voice. Make it once in iPhone Settings › Accessibility › Personal Voice (about 15 minutes), then allow Ski Nav to use it.</p>
+    <p class="note" id="bsVoiceNote" style="margin:0" hidden>“My voice” needs Personal Voice: iPhone Settings › Accessibility › Personal Voice.</p>
+    <p class="note" style="margin:0">Sounds robotic? Download a Premium voice: Settings › Accessibility › Spoken Content › Voices › English.</p>
     <button class="btn primary" id="bsPlay" type="button">Play today’s brief</button>
   </div>
 </div>
@@ -1571,7 +1572,7 @@ function renderMenu(){
     if(i===ti || i===di){ const m=document.createElement('small'); if(i===ti) m.className='today'; m.textContent=(i===ti?'Today · ':'')+(sd.dist>500?'skied '+fmtLen(sd.dist):kmTxt+' · '+d.lifts+(d.lifts===1?' lift':' lifts')); b.querySelector('.dt').appendChild(m); }
     if(sd.dist>500) b.querySelector('.dr').innerHTML='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-label="Skied"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>'; else if(!(i===ti || i===di)) b.querySelector('.dr').textContent=kmTxt;
     b.setAttribute('aria-label', d.date+', '+d.title+(sd.dist>500?', skied':'')+(i===ti?', today':''));
-    b.onclick=()=>{ selectDay(i); closeDrawer(); if(daySwiss()){ playSfx('passport'); toast('Swiss day: bring your passports 🇨🇭'); } };
+    b.onclick=()=>{ selectDay(i); closeDrawer(); if(daySwiss()){ playSfx('passport'); toast('Swiss day. Passports 🇨🇭'); } };
     box.appendChild(b);
   });
   const g=groupStats().filter(x=>GOALCOL().includes(x.c)); const tot=g.length, done=g.filter(x=>x.done).length, plan=g.filter(x=>x.plan).length;
@@ -2122,11 +2123,11 @@ function renderLifts(){
   /* the home button stays short: the dot says it, the guide reads it out on tap */
   const lp=$('liftsDot'); if(lp){ lp.className='ldot '+(off?'off':closed.length?'part':'ok'); }
   if(off){ dot.classList.add('off'); $('liftsPillTxt').textContent='Lifts'; }
-  else if(closed.length){ dot.classList.add('part'); $('liftsPillTxt').textContent='Lifts · '+closed.length+' shut'; }
+  else if(closed.length){ dot.classList.add('part'); $('liftsPillTxt').textContent='Lifts · '+closed.length; }
   else { dot.classList.add('ok'); $('liftsPillTxt').textContent='Lifts'; }
   $('liftsBig').textContent = liftStat.open+' of '+liftStat.total+' lifts open';
   const when = new Date(liftStat.t); $('liftsUpdated').textContent='checked '+when.getHours()+':'+String(when.getMinutes()).padStart(2,'0');
-  $('liftsNote').textContent = off ? 'The ski area is not running yet (season starts in December). Closures will show here and Plan from here will avoid them.' : (closed.length ? 'Some lifts in today’s plan are closed. Use Plan from here to go around them.' : 'Every lift in today’s plan is open.');
+  $('liftsNote').textContent = off ? 'Not running yet. Season starts in December.' : (closed.length ? 'Some plan lifts are shut. Plan from here goes around them.' : 'Every lift in today’s plan is open.');
   const box=$('liftRows'); box.textContent='';
   for(const x of pl){ const st_=liftStatusOf(x.bi); const row=document.createElement('div'); row.className='lrow';
     const a=document.createElement('span'); a.textContent=x.s.name; const b=document.createElement('span');
@@ -2176,20 +2177,21 @@ function renderWx(){
 }
 function openToday(){ renderWx(); renderLifts(); $('todaySheet').hidden=false; fetchWx(false); fetchLifts(false); }
 $('liftsPill').onclick=liftCheck;
-/* the Lifts button: fresh status, spoken every time; the change-of-plan clip first when a plan lift is closed */
+/* the Lifts button: opens the lift list, plays the clip, then the guide reads the status. Every tap. */
 async function liftCheck(){
   const b=$('liftsPill'); b.classList.add('busy');
+  renderWx(); renderLifts(); $('todaySheet').hidden=false; setTimeout(()=>{ const c=$('liftCard'); c && c.scrollIntoView && c.scrollIntoView({block:'start', behavior:'smooth'}); }, 50);
   try{ await fetchLifts(true); }catch(e){}
   b.classList.remove('busy');
   let line, shut=[];
-  if(!liftStat) line='I can’t reach the lift status right now. Try again with a connection.';
-  else if(!resortRunning()) line='The lifts aren’t running right now. The season starts in December.';
+  if(!liftStat) line='No signal for lift status. Try again in a bit.';
+  else if(!resortRunning()) line='Lifts aren’t running yet. See you in December.';
   else { shut=planLifts().filter(x=>{ const v=liftStatusOf(x.bi); return v && v!=='open'; });
-    line = shut.length ? (shut.length===1 ? shut[0].s.name+' is closed. Tap Plan from here when you get there.' : shut.length+' lifts on today’s plan are closed: '+shut.slice(0,3).map(x=>x.s.name).join(', ')+'. Tap Plan from here when you get there.')
-                       : 'All '+planLifts().length+' lifts on today’s plan are open. '+liftStat.open+' of '+liftStat.total+' open across the area.'; }
-  toast(line);
+    line = shut.length ? (shut.length===1 ? shut[0].s.name+' is shut. Plan from here fixes it.' : shut.length+' plan lifts shut: '+shut.slice(0,3).map(x=>x.s.name).join(', ')+'. Plan from here fixes it.')
+                       : 'All '+planLifts().length+' plan lifts open. Go.'; }
+  renderLifts();
   const say_=()=>{ try{ speak([line]); }catch(e){} };
-  if(shut.length) playSfx('closed', say_); else say_();
+  playSfx('closed', say_);   // the crew's clip every tap, then the guide reads the status
   return line;
 }
 $('closeToday').onclick=()=>{ $('todaySheet').hidden=true; };
@@ -2565,12 +2567,12 @@ function fireStop(s, loud){
   nx.forEach(w=>{ const i=document.createElement('i'); i.className='gzav sm'; i.style.background=w.color; i.textContent=initials(w.name); box.appendChild(i); });
   $('stopNextRow').hidden=!nx.length;
   $('stopSheet').hidden=false;
-  const say_=()=>{ if(loud && typeof speak==='function' && (!NATIVE || document.visibilityState==='visible')){ try{ speak([(mine?'Your round.':who.name.split(' ')[0]+'’s round.')+' Flask out at the top.']); }catch(e){} } };
+  const say_=()=>{ if(loud && typeof speak==='function' && (!NATIVE || document.visibilityState==='visible')){ try{ speak([(mine?'Your round.':who.name.split(' ')[0]+'’s round.')+' Flask out up top.']); }catch(e){} } };
   if(loud){ try{ navigator.vibrate && navigator.vibrate([300,120,300,120,600]); }catch(e){} }
   if(loud || document.visibilityState==='visible') playSfx('stoppp', say_); else say_();
 }
 $('stopOk').onclick=()=>{ $('stopSheet').hidden=true; };
-$('stopSkip').onclick=()=>{ $('stopSheet').hidden=true; games.rounds=false; saveGames(); gPost({rounds:false}, true); toast('You’re out of the rounds today. Turn it back on in Settings › Games.'); renderGames(); tellGamesNative(); };
+$('stopSkip').onclick=()=>{ $('stopSheet').hidden=true; games.rounds=false; saveGames(); gPost({rounds:false}, true); toast('You’re out of rounds today.'); renderGames(); tellGamesNative(); };
 /* who crossed into Switzerland first this morning */
 function borderRank(day){
   const rows=[]; const ms = gstate && gstate.members ? gstate.members : [];
@@ -2600,7 +2602,7 @@ function speedRank(day){
   return rows.sort((a,b)=>b.v-a.v);
 }
 function showKing(){
-  const day=gDay(), rows=speedRank(day); if(!rows.length){ toast('No top speeds yet today. Ski a red or a blue.'); return; }
+  const day=gDay(), rows=speedRank(day); if(!rows.length){ toast('No speeds yet. Go fast on a red.'); return; }
   const u = units==='imp' ? 'mph' : 'km/h', sp = v => Math.round(speedOut(v));
   $('kingLine').textContent = (rows[0].me ? 'You hit ' : rows[0].name.split(' ')[0]+' hit ')+sp(rows[0].v)+' '+u+(games.topRun&&rows[0].me&&games.topRun[day]?' on '+games.topRun[day]:'')+'. Top speed counts on reds and blues only.';
   const pod=$('kingPod'); pod.textContent='';
@@ -2809,7 +2811,7 @@ function showUpdateReady(){
 if(window.__native){ const ev2=window.__native.event; window.__native.event=function(name){ if(name==='updateReady'){ showUpdateReady(); return; } return ev2.apply(this, arguments); }; }
 /* ---------- the guide: morning brief + ask, spoken on the phone ---------- */
 const BRIEF_URL='https://alonmaltzov.github.io/ski-nav/brief.json', BKEY='skinav-brief', ONB='skinav-onb';
-const BRIEF_FALLBACK={"name": "Snowy", "days": {"1": {"open": "Morning {me}! Day one. The mountain doesn't know what's coming.", "joke": "Reminder: the Folie Douce is a destination, not a warm-up.", "close": "Boots on, goggles up. Let's go."}, "2": {"open": "Morning {me}. Day two, legs still attached?", "joke": "Today we cross into Switzerland. Passports not needed, but the chocolate is mandatory.", "close": "Have fun out there."}, "3": {"open": "Morning {me}. Halfway point, look at you.", "joke": "Fun fact: nobody has ever regretted the second hot chocolate.", "close": "See you at the bottom."}, "4": {"open": "Morning {me}. Day four. Your thighs have filed a complaint.", "joke": "Complaint noted. Complaint ignored.", "close": "Enjoy it."}, "5": {"open": "Morning {me}. Day five, you're basically a local now.", "joke": "Locals don't stop for photos. You will. That's fine.", "close": "Make it a good one."}, "6": {"open": "Morning {me}. Last day. Let's make it count.", "joke": "Whoever skis the fewest reds today is buying the last round.", "close": "One more time, with feeling."}, "practice": {"open": "Morning {me}. Practice day in New York.", "joke": "No snow, no lifts, but the M15 bus counts as a gondola. Don't tell anyone.", "close": "Let's test this thing."}}};
+const BRIEF_FALLBACK={"name": "Snowy", "days": {"1": {"open": "Morning {me}. Day one. Fresh legs, zero excuses.", "joke": "Folie Douce is the finish line, not the warm-up."}, "2": {"open": "Morning {me}. Day two. Legs still attached?", "joke": "Nobody ever regretted the second hot chocolate."}, "3": {"open": "Morning {me}. Halfway. Look at you.", "joke": "Your thighs filed a complaint. Complaint ignored."}, "4": {"open": "Morning {me}. Day four. Basically a local now.", "joke": "Locals don’t stop for photos. You will."}, "5": {"open": "Morning {me}. Day five. Pace yourself. Or don’t.", "joke": "Slowest one today buys the vin chaud."}, "6": {"open": "Morning {me}. Last day. Make it count.", "joke": "Fewest reds today buys the last round."}, "practice": {"open": "Morning {me}. NYC practice run.", "joke": "The M15 counts as a gondola. Don’t tell anyone."}}};
 let briefScript=(()=>{ try{ return JSON.parse(localStorage.getItem(BKEY)||'null'); }catch(e){ return null; } })() || BRIEF_FALLBACK;
 fetch(BRIEF_URL+'?t='+Math.floor(Date.now()/36e5), {cache:'no-cache'}).then(r=>r.ok?r.json():null).then(j=>{ if(j && j.days){ briefScript=j; try{ localStorage.setItem(BKEY, JSON.stringify(j)); }catch(e){} } }).catch(()=>{});
 const bset = () => store.brief || (store.brief={on:true, time:'08:30', voice:'default'});
@@ -2818,10 +2820,10 @@ const heardToday = () => store.briefHeard===todayStr();
 const sayNum = v => (v<0?'minus ':'')+Math.abs(Math.round(v));
 function briefFacts(){
   const me = (typeof grp!=='undefined' && grp && grp.name ? grp.name.split(' ')[0] : '');
-  const km = units==='imp' ? (DAY.km*0.6214).toFixed(1)+' miles' : Math.round(DAY.km)+' kilometers';
+  const km = units==='imp' ? Math.round(DAY.km*0.6214)+' miles' : Math.round(DAY.km)+' k';
   const f = { me, title:DAY.title.replace(/\s*\+\s*/g,' and '), km, lifts:String(DAY.lifts), first:(steps[0]&&steps[0].at)||'', end:(CONFIG.flat && DAY.end && DAY.end.name) ? DAY.end.name : (CONFIG.endName||''), endTime:DAY.arrive||'',
     lunch: DAY.lunch!=null && steps[DAY.lunch+1] ? (steps[DAY.lunch+1].at||'') : '', weather:'', wear:'', crew:'', closed:0 };
-  if(typeof wx!=='undefined' && wx){ const cond=(WX_CODES[wx.now.weather_code]||'').toLowerCase(); f.weather = sayNum(wx.now.temperature_2m)+' degrees'+(cond?' and '+cond:''); const w=wearFor(wx); f.wear = w[0] ? w[0].charAt(0).toLowerCase()+w[0].slice(1) : ''; }
+  if(typeof wx!=='undefined' && wx){ const cond=(WX_CODES[wx.now.weather_code]||'').toLowerCase(); f.weather = sayNum(wx.now.temperature_2m)+' degrees'+(cond?', '+cond:''); const w=wearFor(wx); f.wear = w[0] ? w[0].charAt(0).toLowerCase()+w[0].slice(1) : ''; }
   try{ if(typeof planLifts==='function' && typeof liftStatusOf==='function' && resortRunning()) f.closed = planLifts().filter(x=>liftStatusOf(x.bi) && liftStatusOf(x.bi)!=='open').length; }catch(e){}
   if(typeof gstate!=='undefined' && gstate && grp){ const n=gstate.members.filter(m=>m.id!==grp.member_id).length; if(n) f.crew = n+(n===1?' friend':' friends')+' in the group'; }
   return f;
@@ -2831,15 +2833,11 @@ const fill = (t,f) => String(t||'').replace(/\{(\w+)\}/g, (m,k)=>f[k]!=null ? f[
 function buildBrief(){
   const f=briefFacts(), p=persona(), S=[];
   S.push(fill(p.open || 'Morning {me}.', f));
-  S.push(fill('What are we doing today? We’re skiing {title}: {km} and {lifts} lifts.', f).replace(' and 1 lifts',' and 1 lift'));
-  if(f.first) S.push('First move at '+f.first+'.');
-  if(f.weather) S.push('It’s '+f.weather+(f.wear ? ', so '+f.wear+'.' : '.'));
-  if(f.closed) S.push(f.closed+(f.closed===1?' lift on our plan is':' lifts on our plan are')+' closed right now. Tap Plan from here when you get there.');
-  if(f.lunch) S.push('Sandwich stop around '+f.lunch+'.');
-  if(f.end && f.endTime) S.push(f.end+' at '+f.endTime+'.');
-  if(f.crew) S.push(f.crew.charAt(0).toUpperCase()+f.crew.slice(1)+' today.');
+  const swiss=/^switzerland:\s*/i.test(DAY.title||'');
+  S.push(fill('{title} today'+(swiss?', passports in':'')+'. {km}'+(f.endTime ? ', Folie Douce by {endTime}.' : '.'), {...f, title:f.title.replace(/^switzerland:\s*/i,'')}));
+  if(f.weather) S.push(f.weather.charAt(0).toUpperCase()+f.weather.slice(1)+'.'+(f.wear ? ' '+f.wear.charAt(0).toUpperCase()+f.wear.slice(1)+'.' : ''));
+  if(f.closed) S.push(f.closed+(f.closed===1?' plan lift is':' plan lifts are')+' shut. Plan from here fixes it.');
   if(p.joke) S.push(fill(p.joke, f));
-  S.push(fill(p.close || 'Have fun out there.', f));
   return {S, f};
 }
 /* voice: the iPhone speaks natively (AVSpeechSynthesizer, Personal Voice if chosen); the web uses the browser voice */
@@ -2848,8 +2846,12 @@ function speak(parts, onPart, onDone){
   stopSpeak(); speakQ={parts, onPart, onDone}; setTalking(true);
   if(NATIVE){ toNative({cmd:'speak', parts, voice:bset().voice}); return; }
   if(!('speechSynthesis' in window)){ parts.forEach((_,i)=>onPart&&onPart(i)); setTalking(false); onDone&&onDone(); return; }
-  parts.forEach((t,i)=>{ const u=new SpeechSynthesisUtterance(t); u.rate=1.02; u.onstart=()=>{ speakIdx=i; onPart&&onPart(i); }; if(i===parts.length-1) u.onend=()=>{ setTalking(false); speakQ=null; onDone&&onDone(); }; speechSynthesis.speak(u); });
+  parts.forEach((t,i)=>{ const u=new SpeechSynthesisUtterance(t); u.rate=1.06; u.pitch=1.05; const bv=bestWebVoice(); if(bv) u.voice=bv; u.onstart=()=>{ speakIdx=i; onPart&&onPart(i); }; if(i===parts.length-1) u.onend=()=>{ setTalking(false); speakQ=null; onDone&&onDone(); }; speechSynthesis.speak(u); });
 }
+/* browsers: skip the robotic default, take the most natural English voice there is */
+function bestWebVoice(){ try{ const vs=speechSynthesis.getVoices().filter(v=>/^en[-_]/i.test(v.lang)); if(!vs.length) return null;
+  const pref=[/premium/i,/enhanced/i,/natural/i,/\b(ava|zoe|evan|nathan|serena|samantha)\b/i,/google (us|uk) english/i,/aria|jenny|guy/i];
+  for(const r of pref){ const v=vs.find(x=>r.test(x.name)); if(v) return v; } return vs.find(v=>/en[-_]us/i.test(v.lang))||vs[0]; }catch(e){ return null; } }
 function stopSpeak(){ if(NATIVE) toNative({cmd:'speak', stop:true}); else if('speechSynthesis' in window) speechSynthesis.cancel(); speakQ=null; speakPaused=false; setTalking(false); }
 function pauseSpeak(){ if(!speakQ) return false; speakPaused=!speakPaused; if(NATIVE) toNative({cmd:'speak', pause:speakPaused}); else if(speakPaused) speechSynthesis.pause(); else speechSynthesis.resume(); setTalking(!speakPaused); return speakPaused; }
 function setTalking(on){ ['briefSheet','askSheet','onb'].forEach(id=>$(id).classList.toggle('talking', !!on)); }
@@ -3028,22 +3030,22 @@ function renderBriefRow(){ const b=bset(); $('briefSetSub').textContent = b.on ?
 /* ---- first open: the guide walks you through the real screen ---- */
 const TOUR=[
   { hero:true, next:'Allow location',
-    say:(o)=>(o.name ? 'Hi '+o.name+', welcome to '+CONFIG.title+'. ' : 'Hi, I’m your guide. ')+'Quick tour, 30 seconds. First: allow location and pick Always, so I can follow your runs with the phone in your pocket.',
-    html:(o)=>(o.name ? '<b>Hi '+esc(o.name)+', welcome to '+esc(CONFIG.title)+'.</b> ' : '<b>Hi, I’m your guide.</b> ')+'Quick tour, 30 seconds.<br>First: allow location and pick <b>Always</b>, so I can follow your runs with the phone in your pocket.',
-    note:'Only after you tap Start skiing. Only your group sees your dot.',
+    say:(o)=>(o.name ? 'Hey '+o.name+'! ' : 'Hey! ')+'I’m your guide. Allow location, pick Always.',
+    html:(o)=>'<b>'+(o.name ? 'Hey '+esc(o.name)+'!' : 'Hey!')+' I’m your guide.</b><br>Allow location, pick <b>Always</b>.',
+    note:'Only while skiing. Only the crew sees you.',
     go(){ if(NATIVE) toNative({cmd:'locate'}); else if(navigator.geolocation) navigator.geolocation.getCurrentPosition(()=>{},()=>{}); } },
   { el:['legend','homeEyebrow','homeTitle','homeMeta'],
-    say:()=>'This is today. Thick lines are today’s runs, the arrows show the way, and we finish at '+DAY.end.name+'.',
-    html:()=>'This is <b>today</b>. Thick lines are today’s runs, the arrows show the way, and we finish at <b>'+esc(DAY.end.name)+'</b>.' },
+    say:()=>'Today’s plan. Follow the arrows to '+DAY.end.name+'.',
+    html:()=>'<b>Today’s plan.</b> Follow the arrows to <b>'+esc(DAY.end.name)+'</b>.' },
   { el:['goBtn'], el2:['wxPill'],
-    say:()=>'Every morning at '+bset().time+' I play the brief, up top. Then tap Start skiing and put the phone away. I’ll call out every lift and run.',
-    html:()=>'Every morning at '+esc(bset().time)+' I play <b>the brief</b> up top. Then tap <b>Start skiing</b> and put the phone away. I’ll call out every lift and run.' },
+    say:()=>'Brief at '+bset().time+'. Then Start skiing, phone in pocket. I’ll do the talking.',
+    html:()=>'<b>Brief</b> at '+esc(bset().time)+'. Then <b>Start skiing</b>, phone in pocket. I’ll do the talking.' },
   { el:['legend'], el2:['progClose'], prog:true,
-    say:()=>'Runs, in the menu, shows the whole week. Each colour is a day, and the bars show what’s left to ski. Today brings you back.',
-    html:()=>'<b>Runs</b>, in the menu, shows the whole week. Each colour is a day, and the bars show what’s left to ski. <b>‹ Today</b> brings you back.' },
+    say:()=>'The whole week, one colour a day. Today takes you back.',
+    html:()=>'<b>The whole week</b>, one colour a day. It lives in the menu. <b>‹ Today</b> takes you back.' },
   { el:['fitBtn'], el2:['kingBtn'], next:'Let’s ski',
-    say:()=>'Tap All to see the crew on the map. And three games run by themselves: STOPPP, the passport race, and Speed King, right here under the crown.',
-    html:()=>'Tap <b>ALL</b> to see the crew on the map. And 3 games run by themselves:',
+    say:()=>'All shows the crew. The crown is Speed King. Games run by themselves.',
+    html:()=>'<b>ALL</b> shows the crew. The crown is Speed King. Games run by themselves:',
     chips:['🥃 STOPPP','🇨🇭 Passport race','👑 Speed King'] }
 ];
 const tour={i:-1, o:{}, voice:false};

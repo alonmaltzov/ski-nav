@@ -45,8 +45,9 @@ final class Guide: NSObject, AVSpeechSynthesizerDelegate, UNUserNotificationCent
         parts = texts.map { text in
             let u = AVSpeechUtterance(string: text)
             u.voice = voice
-            u.rate = AVSpeechUtteranceDefaultSpeechRate
-            u.postUtteranceDelay = 0.12
+            u.rate = AVSpeechUtteranceDefaultSpeechRate * 1.04   // a touch quicker and brighter: less robot
+            u.pitchMultiplier = 1.06
+            u.postUtteranceDelay = 0.22
             return u
         }
         parts.forEach { synth.speak($0) }
@@ -59,8 +60,13 @@ final class Guide: NSObject, AVSpeechSynthesizerDelegate, UNUserNotificationCent
            let v = all.first(where: { $0.voiceTraits.contains(.isPersonalVoice) }) {
             return v
         }
-        let best = all.filter { $0.language == "en-US" && !$0.voiceTraits.contains(.isNoveltyVoice) }
-            .max { $0.quality.rawValue < $1.quality.rawValue }
+        // Premium beats Enhanced beats the default; among equals prefer the natural-sounding ones
+        let liked = ["Zoe", "Ava", "Evan", "Nathan", "Samantha"]
+        let best = all.filter { $0.language.hasPrefix("en-") && !$0.voiceTraits.contains(.isNoveltyVoice) }
+            .max { a, b in
+                let sa = a.quality.rawValue * 10 + (liked.contains { a.name.hasPrefix($0) } ? 2 : 0) + (a.language == "en-US" ? 1 : 0)
+                let sb = b.quality.rawValue * 10 + (liked.contains { b.name.hasPrefix($0) } ? 2 : 0) + (b.language == "en-US" ? 1 : 0)
+                return sa < sb }
         return best ?? AVSpeechSynthesisVoice(language: "en-US")
     }
 

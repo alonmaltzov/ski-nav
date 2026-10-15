@@ -56,7 +56,7 @@ async def device(p, name, vp):
     # a friend who joined
     await pg.evaluate("window.__ski.showOnb({name:'Dana'})"); await pg.wait_for_timeout(500)
     t = await pg.inner_text('#tourTxt')
-    result(f'[{name}] friends who join are greeted by name', t.startswith('Hi Dana, welcome to'), t[:60])
+    result(f'[{name}] friends who join are greeted by name', t.startswith('Hey Dana!'), t[:60])
     await shot(pg, os.path.join(OUT, f'{name}-join.png'))
     await pg.click('#tourSkip')
     result(f'[{name}] no page errors', not errs, errs[:3])
