@@ -3057,7 +3057,7 @@ function tourRect(ids){
 function tourPlace(){
   const S=TOUR[tour.i]; if(!S) return;
   const H=innerHeight, W=innerWidth, holes=$('tourHoles'), rings=$('tourRings'), bub=$('tourBub'), tail=$('tourTail');
-  holes.textContent=''; rings.textContent='';
+  holes.textContent=''; rings.textContent=''; bub.style.right='';
   const rs=[tourRect(S.el), tourRect(S.el2)].filter(Boolean);
   rs.forEach(r=>{ const rad=Math.min(18, r.h/2);
     const h=document.createElementNS('http://www.w3.org/2000/svg','rect'); h.setAttribute('x',r.x); h.setAttribute('y',r.y); h.setAttribute('width',r.w); h.setAttribute('height',r.h); h.setAttribute('rx',rad); holes.appendChild(h);
@@ -3076,6 +3076,10 @@ function tourPlace(){
     if(above && (!below || p.y+p.h/2 > H/2)){ y=above[1]-bh; side='down'; }
     else if(below){ y=below[0]; side='up'; }
     else if(fit.length){ const g=fit.sort((a,b)=>(b[1]-b[0])-(a[1]-a[0]))[0]; y=g[0]+(g[1]-g[0]-bh)/2; side=null; }
+    else if(Math.min(...rs.map(q=>q.x)) > W*0.6){
+      /* the targets sit in the right-hand column: narrow the bubble so it sits beside them */
+      bub.style.right=(W-Math.min(...rs.map(q=>q.x))+14)+'px'; const h2=bub.offsetHeight;
+      y=Math.max(top, Math.min(bot-h2, p.y+p.h/2-h2/2)); side=null; }
     else { y=Math.max(top, bot-bh); side=null; } }
   bub.style.top=y+'px';
   const bl=bub.getBoundingClientRect().left;
