@@ -12,7 +12,7 @@ async def main():
     async with async_playwright() as p:
         b = await p.chromium.launch(args=['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--autoplay-policy=no-user-gesture-required'])
         ctx = await b.new_context(viewport={'width': 393, 'height': 852}, device_scale_factor=1, is_mobile=True, has_touch=True)
-        await ctx.add_init_script("localStorage.setItem('skinav-onb','1'); window.__QA_ACK=true;")
+        await ctx.add_init_script("localStorage.setItem('skinav-onb','1'); window.__QA_ACK=true; if(!localStorage.getItem('skinav-games')) localStorage.setItem('skinav-games', JSON.stringify({pass:{'2027-01-19':1}}));")
         pg = await ctx.new_page(); errs = []
         pg.on('pageerror', lambda e: errs.append(str(e)))
         await pg.clock.install(time=datetime.datetime(2027, 1, 19, 8, 45))
