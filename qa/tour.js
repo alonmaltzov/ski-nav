@@ -178,12 +178,13 @@
     result('next and previous step buttons', s1 === s0 + 1 && s2 === s0, `${s0} -> ${s1} -> ${s2}`);
 
     // runs progress + list
-    await tap('progBtn', 900); await screen('progress', { settle: 1200 });
+    await tap('menuBtn', 600); await tap('goalCard', 900); await screen('progress', { settle: 1200 });
+    result('Runs has a clear way back to today', !!$('progClose') && /Today/.test($('progClose').textContent), $('progClose') ? $('progClose').textContent : 'none');
     const chips = document.querySelectorAll('#progChips button');
     if (chips[1]) { chips[1].click(); await sleep(500); result('Remaining filter chip toggles', chips[1].getAttribute('aria-pressed') === 'true', ''); chips[0].click(); }
     await tap('runsListBtn'); await screen('runs-list');
     await tap('closeRuns'); await tap('progClose', 700);
-    result('Runs view returns to route', !$('navPanel').hidden, '');
+    result('‹ Today returns to the day plan', !$('navPanel').hidden, '');
 
     // map buttons
     await tap('placesBtn'); await screen('places');
