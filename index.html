@@ -254,6 +254,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .hbtns{display:flex;gap:8px;flex:none}
 .xbtn{background:var(--panel)}
 .sethead{justify-content:flex-start;gap:10px}
+.tourlink{margin-left:auto;display:flex;align-items:center;gap:6px;min-height:44px;padding:0 14px;border-radius:22px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:700 .95rem var(--f-ui)}
 .sect{margin:4px 4px -4px}
 .goalcard{border:0;background:var(--panel);border-radius:18px;padding:14px 16px;gap:10px}
 .goalcard .ghead{display:flex;justify-content:space-between;align-items:baseline}
@@ -495,20 +496,36 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .gmicbig{width:24px;height:24px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230b1620' stroke-width='2.4' stroke-linecap='round'%3E%3Crect x='9' y='3' width='6' height='12' rx='3'/%3E%3Cpath d='M5 11a7 7 0 0 0 14 0M12 18v3'/%3E%3C/svg%3E") center/24px no-repeat}
 .ahold.on .gmicbig{filter:invert(1)}
 .tinput{height:44px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:700 1.1rem var(--f-ui);padding:0 10px}
-.onb{position:fixed;inset:0;z-index:2700;background:var(--bg);display:flex;flex-direction:column}
+.onb{position:fixed;inset:0;z-index:2700}
 .onb[hidden]{display:none}
-.ostep{flex:1;display:flex;flex-direction:column;min-height:0}
-.ostep[hidden]{display:none}
-.ohero{flex:1;background:linear-gradient(#4d6f8c,#2e4a63);color:#fff;padding:calc(40px + env(safe-area-inset-top,0px)) 24px 44px;display:flex;flex-direction:column;justify-content:flex-end;gap:8px}
-.ohero .gbig{width:120px;height:120px;align-self:center;margin-bottom:10px}
-.ohero h1{margin:0;font:800 2.8rem/.95 var(--f-num)}
-.oinv,.osub{font-size:1.02rem;opacity:.92}
-.osheet{background:var(--panel);border-radius:24px 24px 0 0;margin-top:-22px;padding:22px 20px calc(22px + env(safe-area-inset-bottom,0px));display:grid;gap:12px}
-.oplain{padding:calc(48px + env(safe-area-inset-top,0px)) 20px calc(22px + env(safe-area-inset-bottom,0px));gap:16px}
-.oplain h2{margin:0;font:800 2.1rem/1 var(--f-num)}
-.orow{display:flex;align-items:center;gap:14px}
-.ocard{background:var(--panel);border-radius:16px;padding:14px 16px;display:grid;gap:2px}
-.ocard small{color:var(--muted)}
+.tdim{position:absolute;inset:0;width:100%;height:100%}
+.tring{position:absolute;border:3px solid #ff8a3d;box-shadow:0 0 0 7px rgba(255,138,61,.3);pointer-events:none;transition:all .25s ease}
+.thero{position:absolute;left:0;right:0;top:calc(70px + env(safe-area-inset-top,0px));display:flex;justify-content:center}
+.thero[hidden]{display:none}
+.tglow{width:150px;height:150px;border-radius:50%;background:rgba(255,138,61,.18);box-shadow:0 0 0 18px rgba(255,138,61,.1);display:flex;align-items:center;justify-content:center}
+.tglow svg{width:120px;height:120px}
+.onb.blur .tdimrect{fill:rgba(11,22,32,.72)}
+.tbub{position:absolute;left:12px;right:12px;max-width:440px;margin:0 auto;background:var(--panel);color:var(--ink);border-radius:22px;box-shadow:0 14px 40px rgba(0,0,0,.35);padding:14px 16px 12px;transition:top .25s ease}
+.ttail{position:absolute;width:20px;height:20px;background:var(--panel);transform:rotate(45deg);border-radius:3px}
+.thead{display:flex;align-items:center;gap:10px;position:relative}
+.tav{width:52px;height:52px;border-radius:50%;flex:none;box-shadow:0 0 0 2px var(--line);display:flex;align-items:center;justify-content:center}
+.onb.talking .tav{box-shadow:0 0 0 3px #ff8a3d,0 0 0 8px rgba(255,138,61,.25)}
+.tav svg{width:50px;height:50px}
+.tmeta{flex:1;display:grid;gap:6px}
+.tdots{display:flex;gap:5px}.tdots i{width:7px;height:7px;border-radius:4px;background:var(--line)}.tdots i.on{background:var(--ink)}.tdots i.cur{width:18px}
+.tstat{display:flex;align-items:center;gap:7px;font-size:.8rem;font-weight:700;color:var(--muted);min-height:18px}
+.twave{display:none;gap:2px;align-items:center;height:16px}.twave i{width:3px;border-radius:2px;background:#ff8a3d;height:6px}
+.onb.talking .twave{display:flex}.onb.talking .twave i{animation:twv .9s ease-in-out infinite}
+.twave i:nth-child(2){animation-delay:.15s!important}.twave i:nth-child(3){animation-delay:.3s!important}.twave i:nth-child(4){animation-delay:.45s!important}
+@keyframes twv{0%,100%{height:5px}50%{height:16px}}
+.tskip{border:none;background:none;color:var(--muted);font:600 .95rem var(--f-ui);align-self:flex-start;padding:4px 0 8px 8px;min-height:36px}
+.ttxt{font-size:1.1rem;line-height:1.38;margin-top:8px}
+.tnote{font-size:.85rem;color:var(--muted);margin-top:6px}.tnote:empty{display:none}
+.tchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.tchips:empty{display:none}
+.tchips span{display:flex;align-items:center;gap:6px;height:34px;border-radius:17px;background:var(--bg);padding:0 11px;font-size:.88rem;font-weight:700}
+.tbtns{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}
+.tbtns .btn{min-height:46px}
+#tourReplay{width:46px;padding:0;display:flex;align-items:center;justify-content:center}
 .jchecks{margin:0;padding:14px 16px;background:var(--panel);border-radius:16px;display:grid;gap:8px;list-style:none}
 .jchecks li{position:relative;padding-left:28px}
 .jchecks li::before{content:'';position:absolute;left:0;top:1px;width:20px;height:20px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2315803d' stroke-width='2.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/20px no-repeat}
@@ -723,7 +740,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
       <p class="gerr" id="gErr" hidden></p>
     </div>
     <div class="mpane" id="menuSettings" hidden>
-      <div class="drawerhead sethead"><button class="xbtn" id="settingsBack" type="button" aria-label="Back to the week"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><h2>Settings</h2></div>
+      <div class="drawerhead sethead"><button class="xbtn" id="settingsBack" type="button" aria-label="Back to the week"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><h2>Settings</h2><button class="tourlink" id="tourBtn" type="button" aria-label="Replay the tour"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Tour</button></div>
       <div class="group">
         <div class="grow col"><span>Plan style</span><div class="seg seg3" id="styleSeg"><button type="button" data-v="red" aria-pressed="true">Reds first</button><button type="button" data-v="std" aria-pressed="false">Blue + red</button><button type="button" data-v="black" aria-pressed="false">With blacks</button></div></div>
         <div class="grow"><span>Sun mode</span><div class="seg" id="sunSeg"><button type="button" data-v="auto" aria-pressed="true">Auto</button><button type="button" data-v="on" aria-pressed="false">On</button><button type="button" data-v="off" aria-pressed="false">Off</button></div></div>
@@ -827,28 +844,14 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 </div>
 
 <div class="onb" id="onb" hidden>
-  <div class="ostep" id="o1">
-    <div class="ohero"><div class="gbig"><svg class="gface" viewBox="14 14 92 100" aria-hidden="true"><circle cx="60" cy="64" r="44" fill="#fff" stroke="#d6e0e8" stroke-width="3"/><rect x="30" y="30" width="60" height="20" rx="10" fill="#ff8a3d" stroke="#0b1620" stroke-width="4"/><circle cx="47" cy="60" r="5" fill="#2b3640"/><circle cx="73" cy="60" r="5" fill="#2b3640"/><circle cx="38" cy="72" r="5" fill="#ffc9c9" opacity=".8"/><circle cx="82" cy="72" r="5" fill="#ffc9c9" opacity=".8"/><path class="gm-smile" d="M48 76 Q60 88 72 76" fill="none" stroke="#2b3640" stroke-width="4" stroke-linecap="round"/><ellipse class="gm-talk" cx="60" cy="80" rx="10" ry="7" fill="#7a1f2b"/><ellipse class="gm-o" cx="60" cy="80" rx="5" ry="4.5" fill="#2b3640"/><path d="M28 98 Q60 114 92 98 L94 108 Q60 124 26 108 Z" fill="#d81f26"/></svg></div><span class="oinv">Hi, I’m Snowy, your ski guide.</span><h1 id="oTitle"></h1><span class="osub" id="oSub"></span></div>
-    <div class="osheet">
-      <ul class="jlist"><li><b>A plan for every day</b>, runs and lifts, on a map that works offline</li><li><b>A morning brief</b>, spoken: the day, the weather, what to wear</li><li><b>Your crew on the map</b>, one tap to talk or split costs</li></ul>
-      <button class="btn primary jbtn" id="o1Go" type="button">Set me up · 1 minute</button>
-      <p class="jnote">3 quick steps. Change anything later in Settings.</p>
-    </div>
-  </div>
-  <div class="ostep oplain" id="o2" hidden>
-    <div class="jprog"><i class="on"></i><i></i></div>
-    <h2>Track every run, phone in your pocket</h2>
-    <p class="jsub">Choose “Allow While Using App”, then “Change to Always Allow” when asked, so km and runs keep counting with the phone locked.</p>
-    <ul class="jchecks"><li>Only after you tap Start skiing</li><li>Only your group sees your dot</li></ul>
-    <div class="jbottom jcol"><button class="btn primary jbtn" id="o2Go" type="button">Allow location</button><button class="btn ghost jbtn" id="o2Skip" type="button">Not now</button></div>
-  </div>
-  <div class="ostep oplain" id="o3" hidden>
-    <div class="jprog"><i class="on"></i><i class="on"></i></div>
-    <div class="orow"><div class="gmid"><svg class="gface" viewBox="14 14 92 100" aria-hidden="true"><circle cx="60" cy="64" r="44" fill="#fff" stroke="#d6e0e8" stroke-width="3"/><rect x="30" y="30" width="60" height="20" rx="10" fill="#ff8a3d" stroke="#0b1620" stroke-width="4"/><circle cx="47" cy="60" r="5" fill="#2b3640"/><circle cx="73" cy="60" r="5" fill="#2b3640"/><circle cx="38" cy="72" r="5" fill="#ffc9c9" opacity=".8"/><circle cx="82" cy="72" r="5" fill="#ffc9c9" opacity=".8"/><path class="gm-smile" d="M48 76 Q60 88 72 76" fill="none" stroke="#2b3640" stroke-width="4" stroke-linecap="round"/><ellipse class="gm-talk" cx="60" cy="80" rx="10" ry="7" fill="#7a1f2b"/><ellipse class="gm-o" cx="60" cy="80" rx="5" ry="4.5" fill="#2b3640"/><path d="M28 98 Q60 114 92 98 L94 108 Q60 124 26 108 Z" fill="#d81f26"/></svg></div><div><h2>Your morning brief</h2><p class="jsub" style="margin:0">Every trip morning, the day in 60 seconds. A different joke each day.</p></div></div>
-    <div class="ocard"><b>Every trip morning at 8:30</b><small>On automatically. Change it in Settings.</small></div>
-    <div class="seg" id="oVoice"><button type="button" data-v="default" aria-pressed="true">iPhone voice</button><button type="button" data-v="personal" aria-pressed="false">My voice</button></div>
-    <button class="btn ghost" id="oSample" type="button">▶ Hear a sample</button>
-    <div class="jbottom jcol"><button class="btn primary jbtn" id="o3Go" type="button">Sounds good</button></div>
+  <svg class="tdim" aria-hidden="true"><defs><mask id="tourMask"><rect width="100%" height="100%" fill="#fff"/><g id="tourHoles"></g></mask></defs><rect class="tdimrect" width="100%" height="100%" fill="rgba(11,22,32,.62)" mask="url(#tourMask)"/></svg>
+  <div id="tourRings"></div>
+  <div class="thero" id="tourHero" hidden><div class="tglow"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="64" r="44" fill="#fff" stroke="#d6e0e8" stroke-width="2"/><path d="M22 50 Q60 30 98 50 L98 44 Q60 22 22 44 Z" fill="#0b1620"/><rect x="30" y="30" width="60" height="20" rx="10" fill="#ff8a3d" stroke="#0b1620" stroke-width="3"/><rect x="36" y="34" width="22" height="12" rx="6" fill="#ffd0a8"/><rect x="62" y="34" width="22" height="12" rx="6" fill="#ffd0a8"/><circle cx="47" cy="58" r="4.5" fill="#2b3640"/><circle cx="73" cy="58" r="4.5" fill="#2b3640"/><circle cx="38" cy="70" r="5" fill="#ffc9c9" opacity=".8"/><circle cx="82" cy="70" r="5" fill="#ffc9c9" opacity=".8"/><ellipse cx="60" cy="78" rx="10" ry="7" fill="#7a1f2b"/><ellipse cx="60" cy="81" rx="6" ry="3" fill="#e5687a"/><path d="M28 96 Q60 112 92 96 L94 106 Q60 122 26 106 Z" fill="#d81f26"/></svg></div></div>
+  <div class="tbub" id="tourBub" role="dialog" aria-modal="true" aria-label="Quick tour">
+    <span class="ttail" id="tourTail"></span>
+    <div class="thead"><div class="tav"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="64" r="44" fill="#fff" stroke="#d6e0e8" stroke-width="2"/><path d="M22 50 Q60 30 98 50 L98 44 Q60 22 22 44 Z" fill="#0b1620"/><rect x="30" y="30" width="60" height="20" rx="10" fill="#ff8a3d" stroke="#0b1620" stroke-width="3"/><rect x="36" y="34" width="22" height="12" rx="6" fill="#ffd0a8"/><rect x="62" y="34" width="22" height="12" rx="6" fill="#ffd0a8"/><circle cx="47" cy="58" r="4.5" fill="#2b3640"/><circle cx="73" cy="58" r="4.5" fill="#2b3640"/><circle cx="38" cy="70" r="5" fill="#ffc9c9" opacity=".8"/><circle cx="82" cy="70" r="5" fill="#ffc9c9" opacity=".8"/><ellipse cx="60" cy="78" rx="10" ry="7" fill="#7a1f2b"/><ellipse cx="60" cy="81" rx="6" ry="3" fill="#e5687a"/><path d="M28 96 Q60 112 92 96 L94 106 Q60 122 26 106 Z" fill="#d81f26"/></svg></div><div class="tmeta"><div class="tdots" id="tourDots"></div><div class="tstat"><span class="twave"><i></i><i></i><i></i><i></i></span><span id="tourStat"></span></div></div><button class="tskip" id="tourSkip" type="button">Skip</button></div>
+    <div class="ttxt" id="tourTxt" aria-live="polite"></div><div class="tnote" id="tourNote"></div><div class="tchips" id="tourChips"></div>
+    <div class="tbtns"><button class="btn ghost" id="tourReplay" type="button" aria-label="Say it again"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></button><button class="btn primary" id="tourNext" type="button">Next</button></div>
   </div>
 </div>
 
@@ -2821,7 +2824,7 @@ function speak(parts, onPart, onDone){
 }
 function stopSpeak(){ if(NATIVE) toNative({cmd:'speak', stop:true}); else if('speechSynthesis' in window) speechSynthesis.cancel(); speakQ=null; speakPaused=false; setTalking(false); }
 function pauseSpeak(){ if(!speakQ) return false; speakPaused=!speakPaused; if(NATIVE) toNative({cmd:'speak', pause:speakPaused}); else if(speakPaused) speechSynthesis.pause(); else speechSynthesis.resume(); setTalking(!speakPaused); return speakPaused; }
-function setTalking(on){ ['briefSheet','askSheet'].forEach(id=>$(id).classList.toggle('talking', !!on)); }
+function setTalking(on){ ['briefSheet','askSheet','onb'].forEach(id=>$(id).classList.toggle('talking', !!on)); }
 /* events from the iPhone: {type:'part', i} {type:'done'} {type:'heard', text, final} {type:'listening', on} {type:'thought', text}  */
 window.__guide = { on(e){
   if(e.type==='part' && speakQ){ speakIdx=e.i; speakQ.onPart && speakQ.onPart(e.i); }
@@ -2997,23 +3000,99 @@ $('bsDone').onclick=()=>{ $('briefSet').hidden=true; };
 $('briefSetBtn').onclick=()=>{ closeDrawer(); renderBriefSet(); $('briefSet').hidden=false; };
 function renderBriefRow(){ const b=bset(); $('briefSetSub').textContent = b.on ? b.time+' · '+(b.voice==='personal'?'my voice':(window.__ANDROID?'phone voice':'iPhone voice')) : 'Off'; }
 
-/* ---- first open ---- */
-function showOnb(){
-  $('oTitle').textContent=CONFIG.title; $('oSub').textContent=CONFIG.subtitle||'';
-  ['o1','o2','o3'].forEach((id,i)=>$(id).hidden=i!==0); $('onb').hidden=false;
+/* ---- first open: the guide walks you through the real screen ---- */
+const TOUR=[
+  { hero:true, next:'Allow location',
+    say:(o)=>(o.name ? 'Hi '+o.name+', welcome to '+CONFIG.title+'. ' : 'Hi, I’m your guide. ')+'Quick tour, 30 seconds. First: allow location and pick Always, so I can follow your runs with the phone in your pocket.',
+    html:(o)=>(o.name ? '<b>Hi '+esc(o.name)+', welcome to '+esc(CONFIG.title)+'.</b> ' : '<b>Hi, I’m your guide.</b> ')+'Quick tour, 30 seconds.<br>First: allow location and pick <b>Always</b>, so I can follow your runs with the phone in your pocket.',
+    note:'Only after you tap Start skiing. Only your group sees your dot.',
+    go(){ if(NATIVE) toNative({cmd:'locate'}); else if(navigator.geolocation) navigator.geolocation.getCurrentPosition(()=>{},()=>{}); } },
+  { el:['legend','homeEyebrow','homeTitle','homeMeta'],
+    say:()=>'This is today. Thick lines are today’s runs, the arrows show the way, and we finish at '+DAY.end.name+'.',
+    html:()=>'This is <b>today</b>. Thick lines are today’s runs, the arrows show the way, and we finish at <b>'+esc(DAY.end.name)+'</b>.' },
+  { el:['goBtn'], el2:['wxPill'],
+    say:()=>'Every morning at '+bset().time+' I play the brief, up top. Then tap Start skiing and put the phone away. I’ll call out every lift and run.',
+    html:()=>'Every morning at '+esc(bset().time)+' I play <b>the brief</b> up top. Then tap <b>Start skiing</b> and put the phone away. I’ll call out every lift and run.' },
+  { el:['legend'], el2:['runsListBtn','progClose'], prog:true,
+    say:()=>'Runs shows the whole week. Each colour is a day, and the bars show what’s left to ski. Route plays the day on the map.',
+    html:()=>'<b>Runs</b> shows the whole week. Each colour is a day, and the bars show what’s left to ski. <b>Route</b> plays the day on the map.' },
+  { el:['fitBtn'], next:'Let’s ski',
+    say:()=>'Tap All to see the crew on the map. And three games run by themselves: STOPPP, the passport race, and Speed King.',
+    html:()=>'Tap <b>ALL</b> to see the crew on the map. And 3 games run by themselves:',
+    chips:['🥃 STOPPP','🇨🇭 Passport race','👑 Speed King'] }
+];
+const tour={i:-1, o:{}, voice:false};
+function esc(t){ return String(t).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function tourRect(ids){
+  let r=null;
+  for(const id of ids||[]){ const e=$(id); if(!e || e.hidden || !e.offsetParent) continue; const b=e.getBoundingClientRect(); if(!b.width || !b.height) continue;
+    r = r ? {l:Math.min(r.l,b.left), t:Math.min(r.t,b.top), r:Math.max(r.r,b.right), b:Math.max(r.b,b.bottom)} : {l:b.left, t:b.top, r:b.right, b:b.bottom}; }
+  return r && {x:r.l-4, y:r.t-4, w:r.r-r.l+8, h:r.b-r.t+8};
 }
-$('o1Go').onclick=()=>{ $('o1').hidden=true; $('o2').hidden=false; };
-const o2next=()=>{ $('o2').hidden=true; $('o3').hidden=false; };
-$('o2Go').onclick=()=>{ if(NATIVE) toNative({cmd:'locate'}); else if(navigator.geolocation) navigator.geolocation.getCurrentPosition(()=>{},()=>{}); setTimeout(o2next, 400); };
-$('o2Skip').onclick=o2next;
-$('oVoice').querySelectorAll('button').forEach(x=>x.onclick=()=>{ bset().voice=x.dataset.v; $('oVoice').querySelectorAll('button').forEach(y=>y.setAttribute('aria-pressed', y===x?'true':'false')); if(x.dataset.v==='personal' && NATIVE) toNative({cmd:'personalVoice'}); });
-$('oSample').onclick=()=>speak(['Hi, I’m Snowy. Every morning I’ll tell you the plan, the weather and what to wear. Sound good?']);
-$('o3Go').onclick=()=>{ stopSpeak(); try{ localStorage.setItem(ONB,'1'); }catch(e){} persist(); $('onb').hidden=true; scheduleBrief(); renderBriefRow(); };
+function tourPlace(){
+  const S=TOUR[tour.i]; if(!S) return;
+  const H=innerHeight, W=innerWidth, holes=$('tourHoles'), rings=$('tourRings'), bub=$('tourBub'), tail=$('tourTail');
+  holes.textContent=''; rings.textContent='';
+  const rs=[tourRect(S.el), tourRect(S.el2)].filter(Boolean);
+  rs.forEach(r=>{ const rad=Math.min(18, r.h/2);
+    const h=document.createElementNS('http://www.w3.org/2000/svg','rect'); h.setAttribute('x',r.x); h.setAttribute('y',r.y); h.setAttribute('width',r.w); h.setAttribute('height',r.h); h.setAttribute('rx',rad); holes.appendChild(h);
+    const g=document.createElement('div'); g.className='tring'; Object.assign(g.style,{left:(r.x-4)+'px', top:(r.y-4)+'px', width:(r.w+2)+'px', height:(r.h+2)+'px', borderRadius:(rad+4)+'px'}); rings.appendChild(g); });
+  $('onb').classList.toggle('blur', !!S.hero);
+  const bh=bub.offsetHeight;
+  let y, side=null, tx=W/2;
+  if(S.hero){ y=Math.min(H-bh-20, 250); side='up'; }
+  else {
+    /* the free bands between highlighted things; the bubble goes in one, next to the main target */
+    const M=16, top=50, bot=H-12, p=rs[0]; tx=p.x+p.w/2;
+    const occ=rs.map(r=>[r.y-M, r.y+r.h+M]).sort((a,b)=>a[0]-b[0]); const gaps=[]; let at=top;
+    for(const [a,b] of occ){ if(a>at) gaps.push([at,a]); at=Math.max(at,b); } if(bot>at) gaps.push([at,bot]);
+    const fit=gaps.filter(g=>g[1]-g[0]>=bh);
+    const above=fit.find(g=>Math.abs(g[1]-(p.y-M))<1), below=fit.find(g=>Math.abs(g[0]-(p.y+p.h+M))<1);
+    if(above && (!below || p.y+p.h/2 > H/2)){ y=above[1]-bh; side='down'; }
+    else if(below){ y=below[0]; side='up'; }
+    else if(fit.length){ const g=fit.sort((a,b)=>(b[1]-b[0])-(a[1]-a[0]))[0]; y=g[0]+(g[1]-g[0]-bh)/2; side=null; }
+    else { y=Math.max(top, bot-bh); side=null; } }
+  bub.style.top=y+'px';
+  const bl=bub.getBoundingClientRect().left;
+  tail.style.left=Math.max(22, Math.min(bub.offsetWidth-42, tx-bl-10))+'px';
+  tail.style.top = side==='up' ? '-9px' : ''; tail.style.bottom = side==='down' ? '-9px' : ''; tail.hidden=!side;
+}
+function tourSay(){ const S=TOUR[tour.i]; if(!S || !tour.voice) return; $('tourStat').textContent='';
+  try{ speak([S.say(tour.o)], null, ()=>{ $('tourStat').textContent=''; }); }catch(e){} }
+function tourShow(i){
+  const prev=TOUR[tour.i]; if(prev && prev.prog && !(TOUR[i]&&TOUR[i].prog) && view==='prog') closeProgress();
+  tour.i=i; const S=TOUR[i];
+  $('tourHero').hidden=!S.hero;
+  const d=$('tourDots'); d.textContent=''; TOUR.forEach((_,k)=>{ const x=document.createElement('i'); if(k<=i) x.className='on'; if(k===i) x.classList.add('cur'); d.appendChild(x); });
+  d.setAttribute('aria-label','Step '+(i+1)+' of '+TOUR.length);
+  $('tourTxt').innerHTML=S.html(tour.o); $('tourNote').textContent=S.note||'';
+  const c=$('tourChips'); c.textContent=''; (S.chips||[]).forEach(t=>{ const x=document.createElement('span'); x.textContent=t; c.appendChild(x); });
+  $('tourNext').textContent=S.next||'Next';
+  $('onb').hidden=false;
+  if(S.prog && view!=='prog') openProgress();
+  tourPlace(); setTimeout(tourPlace, S.prog ? 450 : 60);
+  tourSay();
+}
+function showOnb(o){ closeDrawer(); document.querySelectorAll('.sheet,.gsheet').forEach(x=>x.hidden=true); if(view==='prog') closeProgress();
+  tour.o=o||{}; tour.voice=NATIVE; tourShow(0); }
+function tourEnd(){
+  stopSpeak(); const S=TOUR[tour.i]; if(S && S.prog && view==='prog') closeProgress();
+  tour.i=-1; $('onb').hidden=true;
+  try{ localStorage.setItem(ONB,'1'); }catch(e){} persist(); scheduleBrief(); renderBriefRow();
+  setTimeout(sfxToday, 300);
+}
+$('tourNext').onclick=()=>{ const S=TOUR[tour.i]; if(!S || tour.busy) return; tour.voice=true; stopSpeak(); if(S.go) S.go();
+  if(tour.i>=TOUR.length-1){ tourEnd(); return; }
+  const n=tour.i+1; if(S.go){ tour.busy=true; setTimeout(()=>{ tour.busy=false; if(tour.i===n-1) tourShow(n); }, 400); } else tourShow(n); };
+$('tourSkip').onclick=tourEnd;
+$('tourReplay').onclick=()=>{ tour.voice=true; tourSay(); };
+$('tourBtn').onclick=()=>showOnb();
+addEventListener('resize', ()=>{ if(tour.i>=0) tourPlace(); });
 
 /* the iPhone opened the app from the 8:30 notification */
 if(window.__native){ const ev3=window.__native.event; window.__native.event=function(name){ if(name==='openBrief'){ setTimeout(()=>openBrief(true), 600); return; } return ev3.apply(this, arguments); }; }
 /* friends who joined from an invite get the morning brief step after joining */
-{ const _fj=finishJoin; finishJoin=async function(share){ await _fj(share); let seen=false; try{ seen=!!localStorage.getItem(ONB); }catch(e){} if(grp && !seen && !window.__QA_ACK){ ['o1','o2'].forEach(id=>$(id).hidden=true); $('o3').hidden=false; $('onb').hidden=false; } }; }
+{ const _fj=finishJoin; finishJoin=async function(share){ await _fj(share); let seen=false; try{ seen=!!localStorage.getItem(ONB); }catch(e){} if(grp && !seen && !window.__QA_ACK) showOnb({name:(grp.name||'').split(' ')[0]}); }; }
 renderGuidePill(); renderBriefRow(); setInterval(renderGuidePill, 60e3);
 { let seen=false; try{ seen=!!localStorage.getItem(ONB); }catch(e){}
   const joining=/[?#&](join|c)=/.test(location.search+location.hash);
@@ -3023,11 +3102,11 @@ tellNative(); groupLoop(); refreshGroup(); renderFriendsPill();
 { const q=new URLSearchParams(location.search).get('join') || (location.hash.match(/join=([A-Za-z0-9-]+)/)||[])[1]; if(q) setTimeout(()=>startJoin(q), 300); }
 
 /* expose for automated tests */
-window.__ski = { map, st, sfx, playSfx, sfxToday, sfxLiftCheck, sfxKeys:()=>Object.keys(SFX_DATA), sfxSrc:k=>SFX_DATA[k], planLiftOids:()=>planLifts().map(x=>LIFTMAP[x.bi]||[]), get steps(){return steps;}, get cur(){return cur;}, get di(){return di;}, startSim, stopSim, onFix, setX:x=>simX=x, selectDay, groupStats, openProgress, closeProgress, get games(){return games;}, stopPlan, fireStop, showKing, showBorder, gamesOnFix, renderGames, tellGamesNative, panoView, skied:()=>skiedWays.size, recap:openRecap, openBrief, openAsk, buildBrief, askQ:q=>ask(q.toLowerCase()), showOnb, routeData, dailySet, trailFC, startJoin, refreshGroup, routeTo, get grp(){return grp;}, get gview(){return gview;}, openPick, get gstate(){return gstate;}, matchFix, get match(){return st.match;}, _mode(m){ mode=m; }, setSun, planFromHere, applySteps, get liftStat(){return liftStat;}, set liftStat(v){liftStat=v;}, renderLifts, wearFor, resetPlan, setWx(v){ wx=v; renderWx(); } };
+window.__ski = { map, st, tour, tourShow, tourEnd, sfx, playSfx, sfxToday, sfxLiftCheck, sfxKeys:()=>Object.keys(SFX_DATA), sfxSrc:k=>SFX_DATA[k], planLiftOids:()=>planLifts().map(x=>LIFTMAP[x.bi]||[]), get steps(){return steps;}, get cur(){return cur;}, get di(){return di;}, startSim, stopSim, onFix, setX:x=>simX=x, selectDay, groupStats, openProgress, closeProgress, get games(){return games;}, stopPlan, fireStop, showKing, showBorder, gamesOnFix, renderGames, tellGamesNative, panoView, skied:()=>skiedWays.size, recap:openRecap, openBrief, openAsk, buildBrief, askQ:q=>ask(q.toLowerCase()), showOnb, routeData, dailySet, trailFC, startJoin, refreshGroup, routeTo, get grp(){return grp;}, get gview(){return gview;}, openPick, get gstate(){return gstate;}, matchFix, get match(){return st.match;}, _mode(m){ mode=m; }, setSun, planFromHere, applySteps, get liftStat(){return liftStat;}, set liftStat(v){liftStat=v;}, renderLifts, wearFor, resetPlan, setWx(v){ wx=v; renderWx(); } };
 
 renderUnits(); renderDayBar(); renderStats(); renderStep(); applyView(); renderHome(); applySun();
 /* android: phone voice labels, no Personal Voice */
-if(window.__ANDROID){ document.querySelectorAll('#bsVoice [data-v="default"], #oVoice [data-v="default"]').forEach(b=>b.textContent='Phone voice'); document.querySelectorAll('#bsVoice [data-v="personal"], #oVoice [data-v="personal"]').forEach(b=>b.hidden=true); }
+if(window.__ANDROID){ document.querySelectorAll('#bsVoice [data-v="default"]').forEach(b=>b.textContent='Phone voice'); document.querySelectorAll('#bsVoice [data-v="personal"]').forEach(b=>b.hidden=true); }
 if(NATIVE){ toNative({cmd:'ready'}); toNative({cmd:'ctx', lifts: liftLines, title: DAY.title, flat: !!CONFIG.flat}); sendPlanToWatch(); nativeStep(); }
 setInterval(()=>{ if(mode!=='off'){ renderStats(); renderSchedule(); } }, 1000);
 })();

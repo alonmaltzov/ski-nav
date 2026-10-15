@@ -40,6 +40,9 @@ jobs:
       - name: Sound clips (which clip plays when)
         timeout-minutes: 5
         run: python qa/sfx_test.py
+      - name: First-time tour (5 steps, Skip, Replay, joiners)
+        timeout-minutes: 6
+        run: python qa/tour_test.py
       - name: Group test (organizer + friend, against the real schema on Postgres)
         timeout-minutes: 8
         env: { PGPASSWORD: qa }
