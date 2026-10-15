@@ -1,0 +1,5771 @@
+[
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Aller chavanette",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Blanchots",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Bleue chavanette",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Fornet",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Marmotte snowcross",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Retour chavanette",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Alpages",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Lanches",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Patenaille",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Pschott snowcross",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Td4 choucas",
+"status": "Closed"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Td6 fornet",
+"status": "Closed"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Ts3 cubore montriond",
+"status": "Closed"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Ts3 cubore morzine",
+"status": "Closed"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk chavanette 1",
+"status": "Closed"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk chavanette 2",
+"status": "Closed"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Avoriaz-les crosets via chavanette",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Champ ski barmettes",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Lecherette",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Abricotine",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Blue velvet",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Cascade",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Combe a floret",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Covagnes",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Grand plan",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "La crete",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Parchets",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Sapinette",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Stade francois dides",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Chaux fleurie",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Cubore montriond",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Tannes",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Vautna",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "Frontaliere snowcross",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "",
+"type": "",
+"title": "Snowpark stash",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "",
+"type": "",
+"title": "Rando vanne",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "",
+"type": "",
+"title": "Rando choco-peaux",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tlc ardent",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Td4 lindarets",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Td4 mossettes",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Td6 brochaux",
+"status": "Closed"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Td6 cases",
+"status": "Closed"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Td6 chaux fleurie",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Td6 lechere",
+"status": "Closed"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Td6 prolays",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk barmettes",
+"status": "Closed"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Avoriaz - chatel via chaux fleurie",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Avoriaz - les crosets via les cases",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Avoriaz - les crosets via mossettes france",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Montriond - avoriaz",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Super morzine",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Proclou 1 glisse",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Super morzine",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Seraussaix",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Super morzine",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Alpage de seraussaix",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Super morzine",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Le q'mont",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Super morzine",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Les gernes",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Super morzine",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Proclou",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Super morzine",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Tetras",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Super morzine",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Zore",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Super morzine",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Plan des bolles",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Super morzine",
+"kind": "Slopes",
+"color": "",
+"type": "",
+"title": "Snowpark lil stash",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Super morzine",
+"kind": "Slopes",
+"color": "",
+"type": "",
+"title": "Rando cretes de zore",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Super morzine",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tlc super",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Super morzine",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Td4 zore",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Super morzine",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Td6 proclou",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Super morzine",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Td6 seraussaix",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Super morzine",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk baron",
+"status": "Closed"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Super morzine",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Morzine-avoriaz (secteur super morzine)",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Plateau/station",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Champ ski plateau",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Plateau/station",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Dromonts",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Plateau/station",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Trashers",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Plateau/station",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Boulevard skieurs",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Plateau/station",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Melezes",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Plateau/station",
+"kind": "Slopes",
+"color": "",
+"type": "",
+"title": "Snowpark chapelle",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Plateau/station",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Ts3 plateau",
+"status": "Closed"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Plateau/station",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Ts6 tour",
+"status": "Closed"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Plateau/station",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk chapelle",
+"status": "Closed"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Plateau/station",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk des trashers",
+"status": "Closed"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Plateau/station",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk dromonts 1",
+"status": "Closed"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Plateau/station",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk dromonts 2",
+"status": "Closed"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Plateau/station",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk ecoles 1",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Plateau/station",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk ecoles 2",
+"status": "Closed"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Plateau/station",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk prodains",
+"status": "Closed"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Plateau/station",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tph prodains 3s",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Bleue d'arare",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Bleue du lac",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Le crot",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Stade d'arare",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Bleue surf",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Bleue snowpark",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Jean vuarnet",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Stade tete aux boeufs",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Vaineuve",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Creux de la neige",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "Arete des intrets",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "Combe du machon",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "Combette",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "Coupe du monde",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "Crozats snowcross",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "",
+"type": "",
+"title": "Snowpark arare",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Soba run boardercross",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "",
+"type": "",
+"title": "Rando jordieres",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "",
+"type": "",
+"title": "Rando montee de la becque",
+"status": "Coming soon"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Td6 lac-intrets",
+"status": "Closed"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Td6 grandes combes",
+"status": "Closed"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tsd stade",
+"status": "Closed"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk arare 2",
+"status": "Closed"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk arare1",
+"status": "Closed"
+},
+{
+"resort": "avoriaz-1800-ski-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Morzine-avoriaz via prodains express",
+"status": "Coming soon"
+},
+{
+"resort": "champery-lifts",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "7 champery-croix de culet",
+"status": "Opened"
+},
+{
+"resort": "champery-lifts",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "18 baby planachaux",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "10 crosets",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "12 pauvre conche",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "14 grand conche",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "15 mossettes",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "2 chavanette",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "5 grand paradis",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "6 planachaux",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "1 ripaille 1",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "1 ripaille 2",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "11 chapelle",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "13 cubore",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "3 lechereuse",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "8 marcheuson",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "9 hameau",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Kids club",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Liaisons champery",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Crosets-avoriaz",
+"status": "Opened"
+},
+{
+"resort": "champery-lifts",
+"sector": "Liaisons champery",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Crosets-avoriaz via chavanette",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Liaisons champery",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Crosets-avoriaz via grand conche",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Liaisons champery",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Crosets-avoriaz via mossettes suisse",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Liaisons champery",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Crosets-champoussin",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Liaisons champery",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Crosets-morgin",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Liaisons champery",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Portes du soleil",
+"status": "Opened"
+},
+{
+"resort": "champery-lifts",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "1 la chapelle",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "10 ripaille",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "14 grand conche bleue",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "17 pauvre conche",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "2 le hameau",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "25 mossettes grand conche",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "27 cubore",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "5 planachaux bleue",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "6 les crosets",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "7 marcheuson bleue",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "8 lechereuse",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "11 ripaille - grand paradis",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "16 grand conche rouge",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "21 les mossettes",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "26 les cases",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "3 les crosets rouge",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "4 marcheuson rouge",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "9 planachaux",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "15 grand conche noire",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "18 pauvre conche",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "22 le loquet",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "23 conchette",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "",
+"type": "",
+"title": "Superpark des crosets",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "",
+"type": "",
+"title": "Atc avalanche training center",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "",
+"type": "",
+"title": "Fun slope des crosets",
+"status": "Closed"
+},
+{
+"resort": "champery-lifts",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "",
+"type": "",
+"title": "Ski nocturne champery-crosets",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Coquelet",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "DÉbutant",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Poussin",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Tapis super",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Bellevue",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Chalet neuf",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Chanterelle",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Chermeu",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Piste green",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Le boude superieure",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Le lac",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Maxime",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Le boude inferieure",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Panoramique inferieure",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Chermillon bleu",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Chermillon superieure",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "FoliÈre",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "La combe superieure",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Chermillon inferieure",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "La combe inferieure",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "La variante",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "Barbossine",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "Ombrieux",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tc super-chÂtel",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tsd morclan",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tsd portes du soleil",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tsd conche",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk chalet neuf 1",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk chalet neuf 2",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk chermeu",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk des bossons",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk des coqs 1",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk des coqs 2",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk des coquelets",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk des debutants",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk des poussinets",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk des poussins",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk du lac",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk pre de la vieille",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Super chatel",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tapis super-chÂtel",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Linga",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "L'itinÉraire superieure",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Linga",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "La forgne",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Linga",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "La leiche",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Linga",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "L'aity superieure",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Linga",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Le linga superieure",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Linga",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Les combes",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Linga",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "L'aity inferieure",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Linga",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Le linga inferieure",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Linga",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Le linga intermediaire",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Linga",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Le stade du linga",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Linga",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Le stade de la forgne",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Linga",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "L'aity",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Linga",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "Francoise macchi",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Linga",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tsd du linga",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Linga",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tsd de l'echo alpin",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Linga",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tsd gabelou",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Linga",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tsd les combes",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Linga",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk du stade",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Barbossine",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Douanier",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Barbossine",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Panoramique superieure",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Barbossine",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Douanier",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Barbossine",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Tour de don",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Barbossine",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Onnaz",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Barbossine",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Contrebandiers",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Barbossine",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "L'epervier",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Barbossine",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "L'ecureuil",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Barbossine",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Ts de barbossine",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Barbossine",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Ts petit-chÂtel",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Barbossine",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk des contrebandiers",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Barbossine",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk du douanier",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Barbossine",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk tour de don",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Barbossine",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk de chaux longe",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Barbossine",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk onnaz",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "PrÉ la joux",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "La belette superieure",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "PrÉ la joux",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Les covagnys",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "PrÉ la joux",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Les rubis",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "PrÉ la joux",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Tapis",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "PrÉ la joux",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "La belette inferieure",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "PrÉ la joux",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Le chÉsery",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "PrÉ la joux",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Les blattins",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "PrÉ la joux",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "L'itineraire inferieure",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "PrÉ la joux",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "La casse-noisette superieure",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "PrÉ la joux",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "La perdrix blanche superieure",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "PrÉ la joux",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Les rennes",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "PrÉ la joux",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Les rochassons superieure",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "PrÉ la joux",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "PrÉ la joux superieure",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "PrÉ la joux",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "La casse-noisette inferieure",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "PrÉ la joux",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "La perdrix blanche inferieure",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "PrÉ la joux",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Les rochassons inferieure",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "PrÉ la joux",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "PrÉ la joux inferieure",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "PrÉ la joux",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "PrÉ la joux intermediaire",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "PrÉ la joux",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "Les renards superieure",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "PrÉ la joux",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "Les rhododendrons inferieure",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "PrÉ la joux",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "Les renards inferieure",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "PrÉ la joux",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "Les rhododendrons superieure",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "PrÉ la joux",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tapis de prÉ la joux",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "PrÉ la joux",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tsd chaux des rosÉes",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "PrÉ la joux",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tsd de cornebois",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "PrÉ la joux",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tsd de prÉ la joux",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "PrÉ la joux",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tsd des rochassons",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "PrÉ la joux",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tsd de pierre longue",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "PrÉ la joux",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk de covagnys",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "PrÉ la joux",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk du queyset",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "PrÉ la joux",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk du rubis",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "ActivitÉs annexes",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Snow park",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "ActivitÉs annexes",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Boarder ludique",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "ActivitÉs annexes",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Aire de luges de sous-vonnes",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "ActivitÉs annexes",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Aire de luges prÉ la joux",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "ActivitÉs annexes",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Aire de luges super chatel",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "ActivitÉs annexes",
+"kind": "Slopes",
+"color": "",
+"type": "",
+"title": "La franco suisse",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "ActivitÉs annexes",
+"kind": "Slopes",
+"color": "",
+"type": "",
+"title": "La morclan",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "ActivitÉs annexes",
+"kind": "Slopes",
+"color": "",
+"type": "",
+"title": "Barbossine",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "ActivitÉs annexes",
+"kind": "Slopes",
+"color": "",
+"type": "",
+"title": "La serpentine",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "ActivitÉs annexes",
+"kind": "Slopes",
+"color": "",
+"type": "",
+"title": "Happy valley",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Liaison portes du soleil",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Chatel - avoriaz",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Liaison portes du soleil",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Super chatel - linga",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Liaison portes du soleil",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Chatel - morgins",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Liaison portes du soleil",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Petit chatel - super chatel",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Liaison portes du soleil",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Petit chatel - torgon",
+"status": "Closed"
+},
+{
+"resort": "chatel-ski-lifts",
+"sector": "Liaison portes du soleil",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Super chatel - torgon",
+"status": "Closed"
+},
+{
+"resort": "les-gets-ski-lifts",
+"sector": "Liaisons",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Chavannes / mont-chéry",
+"status": "Closed"
+},
+{
+"resort": "les-gets-ski-lifts",
+"sector": "Liaisons",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Les gets / nyon",
+"status": "Closed"
+},
+{
+"resort": "les-gets-ski-lifts",
+"sector": "Liaisons",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Les gets / pleney",
+"status": "Closed"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Aller chavanette",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Blanchots",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Bleue chavanette",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Fornet",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Marmotte snowcross",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Retour chavanette",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Alpages",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Lanches",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Patenaille",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Pschott snowcross",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Td4 choucas",
+"status": "Closed"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Td6 fornet",
+"status": "Closed"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Ts3 cubore montriond",
+"status": "Closed"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Ts3 cubore morzine",
+"status": "Closed"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk chavanette 1",
+"status": "Closed"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk chavanette 2",
+"status": "Closed"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Chavanette/cubore",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Avoriaz-les crosets via chavanette",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Champ ski barmettes",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Lecherette",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Abricotine",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Blue velvet",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Cascade",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Combe a floret",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Covagnes",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Grand plan",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "La crete",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Parchets",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Sapinette",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Stade francois dides",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Chaux fleurie",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Cubore montriond",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Tannes",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Vautna",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "Frontaliere snowcross",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "",
+"type": "",
+"title": "Snowpark stash",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "",
+"type": "",
+"title": "Rando vanne",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Slopes",
+"color": "",
+"type": "",
+"title": "Rando choco-peaux",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tlc ardent",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Td4 lindarets",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Td4 mossettes",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Td6 brochaux",
+"status": "Closed"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Td6 cases",
+"status": "Closed"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Td6 chaux fleurie",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Td6 lechere",
+"status": "Closed"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Td6 prolays",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk barmettes",
+"status": "Closed"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Avoriaz - chatel via chaux fleurie",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Avoriaz - les crosets via les cases",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Avoriaz - les crosets via mossettes france",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Lindarets/mossette",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Montriond - avoriaz",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Super morzine",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Proclou 1 glisse",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Super morzine",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Seraussaix",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Super morzine",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Alpage de seraussaix",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Super morzine",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Le q'mont",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Super morzine",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Les gernes",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Super morzine",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Proclou",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Super morzine",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Tetras",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Super morzine",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Zore",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Super morzine",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Plan des bolles",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Super morzine",
+"kind": "Slopes",
+"color": "",
+"type": "",
+"title": "Snowpark lil stash",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Super morzine",
+"kind": "Slopes",
+"color": "",
+"type": "",
+"title": "Rando cretes de zore",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Super morzine",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tlc super",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Super morzine",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Td4 zore",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Super morzine",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Td6 proclou",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Super morzine",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Td6 seraussaix",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Super morzine",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk baron",
+"status": "Closed"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Super morzine",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Morzine-avoriaz (secteur super morzine)",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Plateau/station",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Champ ski plateau",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Plateau/station",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Dromonts",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Plateau/station",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Trashers",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Plateau/station",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Boulevard skieurs",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Plateau/station",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Melezes",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Plateau/station",
+"kind": "Slopes",
+"color": "",
+"type": "",
+"title": "Snowpark chapelle",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Plateau/station",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Ts3 plateau",
+"status": "Closed"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Plateau/station",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Ts6 tour",
+"status": "Closed"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Plateau/station",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk chapelle",
+"status": "Closed"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Plateau/station",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk des trashers",
+"status": "Closed"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Plateau/station",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk dromonts 1",
+"status": "Closed"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Plateau/station",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk dromonts 2",
+"status": "Closed"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Plateau/station",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk ecoles 1",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Plateau/station",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk ecoles 2",
+"status": "Closed"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Plateau/station",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk prodains",
+"status": "Closed"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Plateau/station",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tph prodains 3s",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Bleue d'arare",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Bleue du lac",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Le crot",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Stade d'arare",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Bleue surf",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Bleue snowpark",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Jean vuarnet",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Stade tete aux boeufs",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Vaineuve",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Creux de la neige",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "Arete des intrets",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "Combe du machon",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "Combette",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "Coupe du monde",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "Crozats snowcross",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "",
+"type": "",
+"title": "Snowpark arare",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Soba run boardercross",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "",
+"type": "",
+"title": "Rando jordieres",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Slopes",
+"color": "",
+"type": "",
+"title": "Rando montee de la becque",
+"status": "Coming soon"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Td6 lac-intrets",
+"status": "Closed"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Td6 grandes combes",
+"status": "Closed"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tsd stade",
+"status": "Closed"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk arare 2",
+"status": "Closed"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk arare1",
+"status": "Closed"
+},
+{
+"resort": "montriond-ski-slopes-and-lifts",
+"sector": "Arare/hauts-forts",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Morzine-avoriaz via prodains express",
+"status": "Coming soon"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Liaisons morgins",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Champoussin-croset",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Liaisons morgins",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Champoussin-morgins",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Liaisons morgins",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Champoussin-morgins (via piste didier défago)",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Liaisons morgins",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Chatel-morgins",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Liaisons morgins",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Morgins-champoussin",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Liaisons morgins",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Morgins-chatel via ts corbeau",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Remontees morgins",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "40 tc morgins",
+"status": "Opened"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Remontees morgins",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "52 fil neige",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Remontees morgins",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "31 pointe de l'au",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Remontees morgins",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "36 aiguille des champeys",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Remontees morgins",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "41 chaux",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Remontees morgins",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "46 bochasses",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Remontees morgins",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "48 corbeau",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Remontees morgins",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "20 gueilly",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Remontees morgins",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "30 champey",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Remontees morgins",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "33 derriere-pertuis",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Remontees morgins",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "34 sepaya i",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Remontees morgins",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "35 sepaya ii",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Remontees morgins",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "42 gourtet",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Remontees morgins",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "43 la truche",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Remontees morgins",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "49 ecottis",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Remontees morgins",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "51 geant",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Remontees morgins",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "61 culet",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Remontees morgins",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "62 snowly i",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Remontees morgins",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "64 tapis mini-gourtet",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Pistes morgins",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Bochasses",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Pistes morgins",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Bochasses par restaurant",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Pistes morgins",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Corbeau a",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Pistes morgins",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Corbeau b",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Pistes morgins",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Didier defago bleue",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Pistes morgins",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Ecottis",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Pistes morgins",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Foilleuse",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Pistes morgins",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Gueilly-champoussin",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Pistes morgins",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Pertuis",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Pistes morgins",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Planaille",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Pistes morgins",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Sepaya",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Pistes morgins",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Tovassiere - morgins",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Pistes morgins",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Champeys",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Pistes morgins",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Col des portes du soleil - les crosets",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Pistes morgins",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Culet",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Pistes morgins",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Dronnaire",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Pistes morgins",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Foilleuse les bochasses",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Pistes morgins",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "L'hermine",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Pistes morgins",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "La chaux",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Pistes morgins",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Les chapelles",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Pistes morgins",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Pierre a cornieule",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Pistes morgins",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Plan-joyeux",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Pistes morgins",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "Didier defago noire",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Pistes morgins",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Rivella boardercross",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Pistes morgins",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Rivella speedcheck",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Pistes morgins",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Ski nocturne champoussin",
+"status": "Closed"
+},
+{
+"resort": "morgins-ski-lifts",
+"sector": "Pistes morgins",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Ski nocturne morgins",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Nyon",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "La chouette",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Nyon",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Zone débutants",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Nyon",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Le lièvre partie haute",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Nyon",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Les freux",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Nyon",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Les granges",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Nyon",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Les paquerages",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Nyon",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Les poireaux",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Nyon",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Les raverettes",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Nyon",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Le lièvre partie basse",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Nyon",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "L'aigle rouge",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Nyon",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "La combe",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Nyon",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Le chamois",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Nyon",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Les lanches",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Nyon",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "L'aigle noir",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Nyon",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Boardercross des freux",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Nyon",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Boardercross de nyon",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Nyon",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Snow park de nyon",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Nyon",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Espace luge plateau de nyon",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Nyon",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tph de nyon",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Nyon",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tsd les troncs",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Nyon",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Ts des raverettes",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Nyon",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Ts du pré favre",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Nyon",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Ts pointe de nyon",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Nyon",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk du poireau 1",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Nyon",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk du poireau 2",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Nyon",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tapis de l'aiglon",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Pleney",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Zone débutants",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Pleney",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Mas verjus",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Pleney",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Corbeau",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Pleney",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Daguet",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Pleney",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Grizzli",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Pleney",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Le bouchet",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Pleney",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Nabor",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Pleney",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Retour des nants",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Pleney",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Piste b partie haute",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Pleney",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Piste b partie basse",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Pleney",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Renard",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Pleney",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Daim",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Pleney",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Abeille",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Pleney",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Fouine",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Pleney",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Hermine",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Pleney",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Le stade",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Pleney",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "Olympique partie haute",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Pleney",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "Olympique partie basse",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Pleney",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Espace luge les marmottes",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Pleney",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tc du pleney",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Pleney",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Ts de nabor",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Pleney",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Ts des fys",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Pleney",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Ts des mouilles",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Pleney",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tsd belvédère",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Pleney",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Ts de la crusaz",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Pleney",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tapis viking",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Pleney",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tapis de nabor",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Pleney",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk bouchet",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Pleney",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk mas verjus",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Pleney",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Pleney - les gets",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Chamossiere",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Le tétras",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Chamossiere",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Les choucas",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Chamossiere",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Bellemouille",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Chamossiere",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "L'eterlou",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Chamossiere",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Les arbis",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Chamossiere",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Les blanchots",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Chamossiere",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Les chevrelles",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Chamossiere",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "Les creux",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Chamossiere",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tsd chamossière",
+"status": "Closed"
+},
+{
+"resort": "morzine-ski-lifts",
+"sector": "Chamossiere",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Ts les têtes",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "La chevrerie",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Les favieres verte",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "La chevrerie",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Ecole 1",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "La chevrerie",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Les etangs",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "La chevrerie",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Les sapins",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "La chevrerie",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Les sapins bis",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "La chevrerie",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Alpages",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "La chevrerie",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Les favieres bleue",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "La chevrerie",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Ecole 2",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "La chevrerie",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Le chal",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "La chevrerie",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Savine",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "La chevrerie",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Le mur",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "La chevrerie",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Grand-souvroz",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "La chevrerie",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "Les vous",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "La chevrerie",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Le torchon",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "La chevrerie",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Les follys",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "La chevrerie",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Cabri",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "La chevrerie",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Ecole 2",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "La chevrerie",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Ecole 1",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "La chevrerie",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Les etangs",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "Saint jean d'aulps",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "La bray",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "Saint jean d'aulps",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Les lanches verte",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "Saint jean d'aulps",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Terchette",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "Saint jean d'aulps",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Graydon bleue",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "Saint jean d'aulps",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Les lanches bleue",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "Saint jean d'aulps",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Les tetes bleue",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "Saint jean d'aulps",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Chanterelles",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "Saint jean d'aulps",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Graydon bis",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "Saint jean d'aulps",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Follys",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "Saint jean d'aulps",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Chargeau",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "Saint jean d'aulps",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Graydon rouge",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "Saint jean d'aulps",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "La grande terche",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "Saint jean d'aulps",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Le lac",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "Saint jean d'aulps",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Les lanches rouge",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "Saint jean d'aulps",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Les tetes rouge",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "Saint jean d'aulps",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Esserailloux",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "Saint jean d'aulps",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Eterlou",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "Saint jean d'aulps",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "La terche",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "Saint jean d'aulps",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "L'aigle",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "Saint jean d'aulps",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tc grande terche",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "Saint jean d'aulps",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Ts de graydon",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "Saint jean d'aulps",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Ts des tetes",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "Saint jean d'aulps",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Ts du chargeau",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "Saint jean d'aulps",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk d'esserailloux",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "Saint jean d'aulps",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk de la bray",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "Saint jean d'aulps",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk de la terchette",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "Saint jean d'aulps",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk du lac",
+"status": "Closed"
+},
+{
+"resort": "saint-jean-daulps-ski-lifts",
+"sector": "Saint jean d'aulps",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk lanches",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Braitaz",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Marmotte",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Braitaz",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Accès braitaz",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Braitaz",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Belette",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Braitaz",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Blanchot haut",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Braitaz",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Boardercross braitaz",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Braitaz",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Blanchot bas",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Braitaz",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Stade slalom",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Braitaz",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Lynx",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Braitaz",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tc la panthiaz",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Braitaz",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Ts de braitaz",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Cret-beni",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Bamby",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Cret-beni",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Dahu",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Cret-beni",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Ourson",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Cret-beni",
+"kind": "Slopes",
+"color": "green",
+"type": "Piste verte",
+"title": "Pingouin",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Cret-beni",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Biche bas",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Cret-beni",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Biche haut",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Cret-beni",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Hermine",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Cret-beni",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Huski 1",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Cret-beni",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Huski 2",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Cret-beni",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Renard",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Cret-beni",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Sanglier",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Cret-beni",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Stade slalom",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Cret-beni",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Chable",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Cret-beni",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Cerf bas",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Cret-beni",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Cerf haut",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Cret-beni",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Loup",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Cret-beni",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "Cerf intermédiaire",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Cret-beni",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "Boardercross crêt-béni",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Cret-beni",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tsd cret-beni",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Cret-beni",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Ts les fontaines",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Cret-beni",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk la combe",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Cret-beni",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk le bambi",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Cret-beni",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk le dahu",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Cret-beni",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk les pres 1",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Cret-beni",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Tk les pres 2",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Liaisons chapelle ab",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "La chapelle d'abondance - torgon",
+"status": "Closed"
+},
+{
+"resort": "ski-lifts-la-chapelle-dabondance",
+"sector": "Liaisons chapelle ab",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Navette crÊt-beni - la panthiaz",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "7 champery-croix de culet",
+"status": "Opened"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "18 baby planachaux",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "10 crosets",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "12 pauvre conche",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "14 grand conche",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "15 mossettes",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "2 chavanette",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "5 grand paradis",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "6 planachaux",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "1 ripaille 1",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "1 ripaille 2",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "11 chapelle",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "13 cubore",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "3 lechereuse",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "8 marcheuson",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "9 hameau",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Remontees champery",
+"kind": "Ski lifts",
+"color": "",
+"type": "",
+"title": "Kids club",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "1 la chapelle",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "10 ripaille",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "14 grand conche bleue",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "17 pauvre conche",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "2 le hameau",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "25 mossettes grand conche",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "27 cubore",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "5 planachaux bleue",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "6 les crosets",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "7 marcheuson bleue",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "blue",
+"type": "Piste bleue",
+"title": "8 lechereuse",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "11 ripaille - grand paradis",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "16 grand conche rouge",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "21 les mossettes",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "26 les cases",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "3 les crosets rouge",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "4 marcheuson rouge",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "red",
+"type": "Piste rouge",
+"title": "9 planachaux",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "15 grand conche noire",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "18 pauvre conche",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "22 le loquet",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "black",
+"type": "Piste noire",
+"title": "23 conchette",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "",
+"type": "",
+"title": "Superpark des crosets",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "",
+"type": "",
+"title": "Atc avalanche training center",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "",
+"type": "",
+"title": "Fun slope des crosets",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Pistes champery",
+"kind": "Slopes",
+"color": "",
+"type": "",
+"title": "Ski nocturne champery-crosets",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Liaisons champery",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Crosets-avoriaz",
+"status": "Opened"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Liaisons champery",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Crosets-avoriaz via chavanette",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Liaisons champery",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Crosets-avoriaz via grand conche",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Liaisons champery",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Crosets-avoriaz via mossettes suisse",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Liaisons champery",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Crosets-champoussin",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Liaisons champery",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Crosets-morgin",
+"status": "Closed"
+},
+{
+"resort": "val-dilliez-ski-lifts-les-crosets-champoussin",
+"sector": "Liaisons champery",
+"kind": "Liaisons",
+"color": "",
+"type": "",
+"title": "Portes du soleil",
+"status": "Opened"
+}
+]
