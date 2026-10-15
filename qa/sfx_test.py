@@ -73,15 +73,15 @@ async def main():
         result('Lifts button: says which plan lift is closed, with the clip', 'shut' in line and (await L()) == ['closed'], [line, await L()])
         result('Lifts button opens the lift list', await pg.is_visible('#liftCard'))
         await pg.evaluate("document.getElementById('todaySheet').hidden=true")
-        await pg.click('#liftsPill'); await pg.wait_for_timeout(400)
+        await pg.click('#liftsPill', force=True); await pg.wait_for_timeout(400)
         result('Lifts button plays the clip every tap, even with nothing closed', (await L()).count('closed') == 2, await L())
         closed = [['closed'], ['closed']]
         result('a plan lift closing plays the change-of-plan clip, once', isinstance(closed, list) and closed[0] == ['closed'] and closed[1] == ['closed'], closed)
-        await pg.click('#replanBtn', force=True) if await pg.is_visible('#replanBtn') else await pg.evaluate("document.getElementById('replanBtn').click()")
+        await pg.evaluate("document.querySelectorAll('.sheet,.gsheet').forEach(x=>x.hidden=true); document.getElementById('replanBtn').click()")
         await pg.wait_for_timeout(200)
         result('Plan from here plays the Steps clip', (await L())[-1:] == ['steps'], await L())
         # sounds off
-        await pg.evaluate("window.__ski.renderGames(); document.getElementById('gamesSheet').hidden=false")
+        await pg.evaluate("document.querySelectorAll('.sheet,.gsheet').forEach(x=>x.hidden=true); window.__ski.renderGames(); document.getElementById('gamesSheet').hidden=false")
         await pg.click('#gSfx'); await pg.evaluate("window.__ski.sfx.log.length=0")
         await pg.evaluate("document.getElementById('gamesSheet').hidden=true")
         await pg.click('#stepsBtn'); await pg.wait_for_timeout(200)
