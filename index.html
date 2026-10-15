@@ -3073,10 +3073,12 @@ function openBrief(auto){
   chip(f.first||'-', 'First move');
   chip(typeof wx!=='undefined' && wx ? tUnit(wx.now.temperature_2m) : '-', typeof wx!=='undefined' && wx ? (WX_CODES[wx.now.weather_code]||'') : 'No weather yet');
   $('bWear').hidden=!f.wear; $('bWear').innerHTML='<b>Wear:</b> '; $('bWear').append(f.wear);
-  const cap=$('bCap'); const show=i=>{ cap.textContent=''; S.forEach((t,k)=>{ if(VOICE && (k<i-1 || k>i+1)) return; const el=document.createElement(k===i?'b':'span'); el.textContent=t+' '; cap.appendChild(el); }); };
-  show(0); $('briefSheet').hidden=false; $('bPause').textContent='❚❚'; $('bPause').setAttribute('aria-label','Pause');
+  /* the crew's clip plays first; Shai's lines appear once it's over */
+  const cap=$('bCap'); const showAll=()=>{ cap.textContent=''; S.forEach((t,k)=>{ const el=document.createElement(k===0?'b':'span'); el.textContent=t+' '; cap.appendChild(el); }); };
+  cap.textContent=''; $('briefSheet').hidden=false; $('bPause').textContent='❚❚'; $('bPause').setAttribute('aria-label','Pause');
   store.briefHeard=todayStr(); store.briefClip=todayStr(); persist(); renderGuidePill();
-  const go=()=>{ if(!$('briefSheet').hidden) speak(S, show, ()=>{ $('bPause').textContent='↻'; $('bPause').setAttribute('aria-label','Play again'); }); };
+  setTalking(true);
+  const go=()=>{ setTalking(false); if($('briefSheet').hidden) return; showAll(); if(VOICE) speak(S, null, ()=>{ $('bPause').textContent='↻'; $('bPause').setAttribute('aria-label','Play again'); }); };
   playSfx('brief', go);
 }
 $('bClose').onclick=()=>{ stopSpeak(); $('briefSheet').hidden=true; };
