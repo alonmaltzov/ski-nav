@@ -39,12 +39,12 @@ final class Games {
             if stopOn, hour < 16, let since = liftSince, f.t - since >= 180_000,
                let s = stops.first(where: { f.t >= $0.at && !fired("stop\($0.n)") }) {
                 mark("stop\(s.n)")
-                notify(id: "stop-\(s.n)", title: "STOPPP 🥃", body: "\(s.who) round: flask out at the top of this lift.", event: "stop:\(s.n)")
+                notify(id: "stop-\(s.n)", title: "STOPPP 🥃", body: "\(s.who) round: flask out at the top of this lift.", event: "stop:\(s.n)", sound: "stoppp.caf")
             }
         } else { liftSince = nil }
         if borderOn, hour < 12, !fired("swiss"), Games.swiss(f.lat, f.lon, border) {
             mark("swiss")
-            notify(id: "swiss", title: "Welcome to Switzerland 🇨🇭", body: "Passport check: who crossed first? Open Ski Nav to see.", event: nil)
+            notify(id: "swiss", title: "Welcome to Switzerland 🇨🇭", body: "Passport check: who crossed first? Open Ski Nav to see.", event: nil, sound: "passport.caf")
         }
     }
 
@@ -57,9 +57,10 @@ final class Games {
         return lon > (b.last?.last ?? 180)
     }
 
-    private func notify(id: String, title: String, body: String, event: String?) {
+    private func notify(id: String, title: String, body: String, event: String?, sound: String) {
         let c = UNMutableNotificationContent()
-        c.title = title; c.body = body; c.sound = .default
+        c.title = title; c.body = body
+        c.sound = Bundle.main.url(forResource: sound, withExtension: nil) != nil ? UNNotificationSound(named: UNNotificationSoundName(sound)) : .default
         if #available(iOS 15.0, *) { c.interruptionLevel = .timeSensitive }
         UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: "game-\(id)", content: c, trigger: nil))
         print("[games]", title, body)

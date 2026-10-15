@@ -128,11 +128,11 @@ class MainActivity : ComponentActivity(), SensorEventListener {
     }
 
     override fun onResume() {
-        super.onResume(); resumed = true
+        super.onResume(); resumed = true; Games.foreground = true
         flush()
         WebUpdater.check(this) { main.post { event("updateReady") } }
     }
-    override fun onPause() { resumed = false; super.onPause() }
+    override fun onPause() { resumed = false; Games.foreground = false; super.onPause() }
     override fun onDestroy() { Track.onFixes = null; Games.onEvent = null; guide.destroy(); compass(false); super.onDestroy() }
 
     // ---------- serving the web app ----------

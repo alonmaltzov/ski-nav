@@ -1,0 +1,74 @@
+"""Sound clips: which clip plays for which moment. Usage: python3 qa/sfx_test.py -> qa-out/web-sfx/"""
+import asyncio, datetime, json, os
+from playwright.async_api import async_playwright
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+OUT = os.path.join(os.environ.get('QA_OUT', os.path.join(ROOT, 'qa-out')), 'web-sfx'); os.makedirs(OUT, exist_ok=True)
+log = open(os.path.join(OUT, 'log.txt'), 'w'); fails = []
+def result(check, ok, detail=''):
+    log.write('[web] QA RESULT ' + json.dumps({'check': check, 'ok': bool(ok), 'detail': str(detail)}) + '\n'); log.flush()
+    print(('PASS ' if ok else 'FAIL ') + check + (' - ' + str(detail) if detail != '' else ''))
+    if not ok: fails.append(check)
+async def main():
+    async with async_playwright() as p:
+        b = await p.chromium.launch(args=['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--autoplay-policy=no-user-gesture-required'])
+        ctx = await b.new_context(viewport={'width': 393, 'height': 852}, device_scale_factor=1, is_mobile=True, has_touch=True)
+        await ctx.add_init_script("localStorage.setItem('skinav-onb','1'); window.__QA_ACK=true;")
+        pg = await ctx.new_page(); errs = []
+        pg.on('pageerror', lambda e: errs.append(str(e)))
+        await pg.clock.install(time=datetime.datetime(2027, 1, 19, 8, 45))
+        await pg.goto('file://' + os.path.join(ROOT, 'index.html'))
+        await pg.wait_for_function('window.__ski && window.__ski.map && window.__ski.steps', timeout=60000)
+        L = lambda: pg.evaluate('window.__ski.sfx.log.slice()')
+        keys = await pg.evaluate('window.__ski.sfxKeys()')
+        result('all 9 clips are in the page', sorted(keys) == sorted(['brief', 'closed', 'passport', 'speedking', 'start', 'steps', 'stop', 'stoppp', 'today']), keys)
+        dur = await pg.evaluate('''() => new Promise(r => { const a = new Audio(window.__ski.sfxSrc('stoppp')); a.onloadedmetadata = () => r(a.duration); a.onerror = () => r(-1); })''')
+        result('clips decode', dur > 1.5, round(dur, 2))
+        await pg.clock.run_for(2500)
+        result('opening the app plays today\'s plan', (await L())[:1] == ['today'], await L())
+        await pg.evaluate("document.dispatchEvent(new Event('visibilitychange'))"); await pg.clock.run_for(1500)
+        result('only once a day', (await L()).count('today') == 1, await L())
+        await pg.evaluate("window.__ski.sfx.log.length=0")
+        await pg.click('#stepsBtn'); await pg.wait_for_timeout(200)
+        result('Steps plays its clip', (await L()) == ['steps'], await L())
+        await pg.evaluate("document.getElementById('sheet').hidden=true; window.__ski.sfx.log.length=0")
+        await pg.evaluate("window.__ski.openBrief()"); await pg.wait_for_timeout(300)
+        first = await L()
+        await pg.evaluate("document.getElementById('bClose').click(); window.__ski.openBrief()"); await pg.wait_for_timeout(300)
+        result('first brief of the day plays the clip, the second does not', first == ['brief'] and (await L()) == ['brief'], [first, await L()])
+        await pg.evaluate("document.getElementById('bClose').click(); window.__ski.sfx.log.length=0")
+        await pg.evaluate("navigator.geolocation.watchPosition=()=>1; navigator.geolocation.getCurrentPosition=()=>{};")
+        await pg.click('#goBtn'); await pg.wait_for_timeout(200)
+        result('Start skiing plays its clip', (await L()) == ['start'], await L())
+        await pg.click('#goBtn'); await pg.wait_for_timeout(200)
+        result('Stop plays its clip', (await L()) == ['start', 'stop'], await L())
+        await pg.evaluate("document.querySelectorAll('.sheet,.gsheet').forEach(x=>x.hidden=true); window.__ski.sfx.log.length=0")
+        await pg.evaluate("window.__ski.fireStop(window.__ski.stopPlan()[0], true)"); await pg.wait_for_timeout(200)
+        result('STOPPP plays its clip', (await L()) == ['stoppp'], await L())
+        await pg.evaluate("document.getElementById('stopOk').click()")
+        # passport + Speed King with sample data
+        await pg.evaluate('''() => { const g = window.__ski.games, d = new Date(), day = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+            g.swiss[day] = Date.now(); g.top[day] = 19.5; window.__ski.sfx.log.length=0; window.__ski.showBorder(true); document.getElementById('borderOk').click(); window.__ski.showKing(); }''')
+        await pg.wait_for_timeout(200)
+        result('passport check and Speed King play their clips', (await L()) == ['passport', 'speedking'], await L())
+        await pg.evaluate("document.getElementById('kingOk').click(); window.__ski.sfx.log.length=0")
+        # a plan lift closes
+        closed = await pg.evaluate('''() => { const oids = window.__ski.planLiftOids(); if (!oids.length || !oids[0].length) return 'no plan lifts';
+            const by = {}; oids.flat().forEach(o => by[o] = 'open'); oids[0].forEach(o => by[o] = 'closed');
+            window.__ski.liftStat = {t: Date.now(), last: '', by, open: 100, total: 100}; if (window.__ski.sfx.el) { window.__ski.sfx.el.pause(); window.__ski.sfx.el = null; }
+            window.__ski.sfxLiftCheck(); const a = window.__ski.sfx.log.slice(); window.__ski.sfxLiftCheck(); return [a, window.__ski.sfx.log.slice()]; }''')
+        result('a plan lift closing plays the change-of-plan clip, once', isinstance(closed, list) and closed[0] == ['closed'] and closed[1] == ['closed'], closed)
+        await pg.click('#replanBtn', force=True) if await pg.is_visible('#replanBtn') else await pg.evaluate("document.getElementById('replanBtn').click()")
+        await pg.wait_for_timeout(200)
+        result('Plan from here plays the Steps clip', (await L())[-1:] == ['steps'], await L())
+        # sounds off
+        await pg.evaluate("window.__ski.renderGames(); document.getElementById('gamesSheet').hidden=false")
+        await pg.click('#gSfx'); await pg.evaluate("window.__ski.sfx.log.length=0")
+        await pg.evaluate("document.getElementById('gamesSheet').hidden=true")
+        await pg.click('#stepsBtn'); await pg.wait_for_timeout(200)
+        result('Sound clips off: nothing plays', (await L()) == [], await L())
+        await pg.screenshot(path=os.path.join(OUT, '01-games-sheet.png'))
+        result('no page errors', not errs, errs[:3])
+        await b.close()
+    log.close()
+    if fails: raise SystemExit(1)
+asyncio.run(main())
