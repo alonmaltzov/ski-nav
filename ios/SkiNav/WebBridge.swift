@@ -174,6 +174,7 @@ struct WebAppView: UIViewRepresentable {
             config.userContentController.addUserScript(WKUserScript(source: "window.__QA_WAIT=2500;\n" + js, injectionTime: .atDocumentEnd, forMainFrameOnly: true))
         }
         config.allowsInlineMediaPlayback = true
+        config.mediaTypesRequiringUserActionForPlayback = []   // sound clips play without a tap
         let web = WKWebView(frame: .zero, configuration: config)
         web.isOpaque = false
         web.backgroundColor = .systemBackground

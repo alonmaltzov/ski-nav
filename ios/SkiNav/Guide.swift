@@ -259,7 +259,8 @@ final class Guide: NSObject, AVSpeechSynthesizerDelegate, UNUserNotificationCent
 
     func userNotificationCenter(_ c: UNUserNotificationCenter, willPresent n: UNNotification,
                                 withCompletionHandler done: @escaping (UNNotificationPresentationOptions) -> Void) {
-        done([.banner, .sound])
+        // games: the open page plays the clip itself, so no second sound
+        done(n.request.identifier.hasPrefix("game-") ? [.banner, .list] : [.banner, .sound])
     }
 
     func userNotificationCenter(_ c: UNUserNotificationCenter, didReceive r: UNNotificationResponse,

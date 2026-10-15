@@ -22,6 +22,7 @@ object Games {
     private var liftSince: Long? = null
     private var lastClimb = 0L
     var onEvent: ((String) -> Unit)? = null
+    @Volatile var foreground = false   // the open page plays the clip, so the notification stays quiet
 
     @Synchronized fun configure(b: JSONObject) {
         b.optJSONObject("on")?.let { stopOn = it.optBoolean("stop", true); borderOn = it.optBoolean("border", true) }
@@ -56,13 +57,13 @@ object Games {
         if (stopOn && hour < 16 && since != null && l.time - since >= 180_000) {
             stops.firstOrNull { l.time >= it.at && !fired("stop${it.n}") }?.let { s ->
                 mark("stop${s.n}")
-                notify(ctx, 7100 + s.n, "STOPPP 🥃", "${s.who} round: flask out at the top of this lift.")
+                notify(ctx, 7100 + s.n, SkiNavApp.CH_STOP, "STOPPP 🥃", "${s.who} round: flask out at the top of this lift.")
                 onEvent?.invoke("stop:${s.n}")
             }
         }
         if (borderOn && hour < 12 && !fired("swiss") && swiss(l.latitude, l.longitude)) {
             mark("swiss")
-            notify(ctx, 7200, "Welcome to Switzerland 🇨🇭", "Passport check: who crossed first? Open Ski Nav to see.")
+            notify(ctx, 7200, SkiNavApp.CH_SWISS, "Welcome to Switzerland 🇨🇭", "Passport check: who crossed first? Open Ski Nav to see.")
         }
     }
 
@@ -75,10 +76,10 @@ object Games {
         return lon > border.last()[1]
     }
 
-    private fun notify(ctx: android.content.Context, id: Int, title: String, body: String) {
+    private fun notify(ctx: android.content.Context, id: Int, channel: String, title: String, body: String) {
         val open = PendingIntent.getActivity(ctx, id, Intent(ctx, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP),
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
-        val n = NotificationCompat.Builder(ctx, SkiNavApp.CH_GAMES).setSmallIcon(R.drawable.ic_stat)
+        val n = NotificationCompat.Builder(ctx, if (foreground) SkiNavApp.CH_GAMES_QUIET else channel).setSmallIcon(R.drawable.ic_stat)
             .setContentTitle(title).setContentText(body).setStyle(NotificationCompat.BigTextStyle().bigText(body))
             .setPriority(NotificationCompat.PRIORITY_HIGH).setCategory(NotificationCompat.CATEGORY_MESSAGE)
             .setVibrate(longArrayOf(0, 300, 120, 300, 120, 600)).setAutoCancel(true).setContentIntent(open).build()

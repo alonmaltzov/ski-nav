@@ -37,6 +37,9 @@ jobs:
       - name: Games test (STOPPP, passport check, Speed King)
         timeout-minutes: 5
         run: python qa/games_test.py
+      - name: Sound clips (which clip plays when)
+        timeout-minutes: 5
+        run: python qa/sfx_test.py
       - name: Group test (organizer + friend, against the real schema on Postgres)
         timeout-minutes: 8
         env: { PGPASSWORD: qa }
