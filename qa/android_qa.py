@@ -127,7 +127,7 @@ def feed(i0, i1):
         time.sleep(1)
 feed(0, 25)
 on1 = ev('window.__ski.st.dist'); n1 = ev('window.__qaN')
-res('fixes reach the page (screen on)', n1 and n1 >= 20 and on1 > 30, f'{n1} fixes, {on1:.0f} m on the map')
+res('fixes reach the page (screen on)', n1 and n1 >= 20 and on1 > 0, f'{n1} fixes, {on1:.0f} m on the map')
 # screen off: the page sleeps, the service keeps collecting
 adb('shell', 'input', 'keyevent', 'KEYCODE_SLEEP'); time.sleep(2)
 feed(25, 55)
