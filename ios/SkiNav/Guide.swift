@@ -73,7 +73,7 @@ final class Guide: NSObject, AVSpeechSynthesizerDelegate, UNUserNotificationCent
     func requestPersonalVoice() {
         AVSpeechSynthesizer.requestPersonalVoiceAuthorization { status in
             if status != .authorized {
-                self.emit(["type": "error", "msg": "Personal Voice isn't set up yet. Make one in iPhone Settings › Accessibility › Personal Voice, then allow Ski Nav to use it. Until then I'll use the iPhone voice."])
+                self.emit(["type": "error", "msg": "Personal Voice isn't set up yet. Make one in iPhone Settings › Accessibility › Personal Voice, then allow Ski-Paz to use it. Until then I'll use the iPhone voice."])
             }
         }
     }
@@ -102,12 +102,12 @@ final class Guide: NSObject, AVSpeechSynthesizerDelegate, UNUserNotificationCent
         SFSpeechRecognizer.requestAuthorization { status in
             DispatchQueue.main.async {
                 guard status == .authorized else {
-                    self.emit(["type": "error", "msg": "To talk to me, allow Speech Recognition for Ski Nav in Settings."]); return
+                    self.emit(["type": "error", "msg": "To talk to me, allow Speech Recognition for Ski-Paz in Settings."]); return
                 }
                 AVAudioApplication.requestRecordPermission { ok in
                     DispatchQueue.main.async {
                         if ok { self.triedServer = false; self.startEngine() }
-                        else { self.emit(["type": "error", "msg": "To talk to me, allow the Microphone for Ski Nav in Settings."]) }
+                        else { self.emit(["type": "error", "msg": "To talk to me, allow the Microphone for Ski-Paz in Settings."]) }
                     }
                 }
             }
@@ -223,7 +223,7 @@ final class Guide: NSObject, AVSpeechSynthesizerDelegate, UNUserNotificationCent
             Task {
                 do {
                     let session = LanguageModelSession(instructions: """
-                    You are Snowy, a cheerful ski guide inside a ski trip app. Answer out loud in one or two short sentences. \
+                    You are Shai, a funny ski buddy and guide inside a ski trip app. Answer out loud in one or two short sentences. \
                     Use only these facts about today; if they don't answer the question, say so and suggest what you can help with.
                     \(facts)
                     """)

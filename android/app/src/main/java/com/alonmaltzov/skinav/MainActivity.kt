@@ -227,7 +227,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
             "compass" -> compass(b.optBoolean("on"))
             "speak" -> guide.speak(b)
             "listen" -> if (b.optBoolean("on")) withPerms(listOf(Manifest.permission.RECORD_AUDIO)) { ok ->
-                if (ok) guide.listen(true) else js("window.__guide && window.__guide.on({type:'error',msg:'To talk to me, allow the microphone for Ski Nav in Settings.'})")
+                if (ok) guide.listen(true) else js("window.__guide && window.__guide.on({type:'error',msg:'To talk to me, allow the microphone for Ski-Paz in Settings.'})")
             } else guide.listen(false)
             "think" -> js("window.__guide && window.__guide.on({type:'thought'})")   // open questions: iPhone only for now
             "briefSchedule" -> withPerms(notifPerm.ifEmpty { listOf(Manifest.permission.INTERNET) }) { Guide.schedule(this, b) }

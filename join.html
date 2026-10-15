@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Join the trip · Ski Nav</title>
-<meta name="description" content="You're invited to a ski trip on Ski Nav: the plan for every day and where everyone is on the mountain.">
-<meta property="og:title" content="Join our ski trip on Ski Nav">
+<title>Join the trip · Ski-Paz</title>
+<meta name="description" content="You're invited to a ski trip on Ski-Paz: the plan for every day and where everyone is on the mountain.">
+<meta property="og:title" content="Join our ski trip on Ski-Paz">
 <meta property="og:description" content="The plan for every day, and where everyone is on the mountain.">
 <meta name="theme-color" content="#2e4a63">
 <style>
@@ -46,14 +46,14 @@ ul{margin:0 0 6px;padding-left:20px;display:grid;gap:8px}
 
   <!-- iPhone: open the app, or get it from TestFlight -->
   <div id="ios" hidden style="display:grid;gap:10px">
-    <a class="btn primary" id="openApp" href="#">Open in Ski Nav</a>
+    <a class="btn primary" id="openApp" href="#">Open in Ski-Paz</a>
     <a class="btn ghost" id="getIos" href="#">Get the app</a>
     <p class="note">New? Get the app, then tap this invite link again.</p>
   </div>
 
   <!-- Android: one button opens the app, or downloads it when it isn't installed -->
   <div id="android" hidden style="display:grid;gap:10px">
-    <a class="btn primary" id="openAppA" href="#">Join with Ski Nav</a>
+    <a class="btn primary" id="openAppA" href="#">Join with Ski-Paz</a>
     <p class="note">No app yet? This downloads it. Install, then tap this invite link again.</p>
   </div>
 
@@ -86,7 +86,7 @@ ul{margin:0 0 6px;padding-left:20px;display:grid;gap:8px}
     document.getElementById('getIos').href = TESTFLIGHT_URL;
   } else if (/Android/i.test(ua)) {
     document.getElementById('android').hidden = false;
-    // Android intent link: opens Ski Nav when it's installed, otherwise downloads it
+    // Android intent link: opens Ski-Paz when it's installed, otherwise downloads it
     document.getElementById('openAppA').href = 'intent://join?c=' + encodeURIComponent(code) + '#Intent;scheme=skinav;package=com.alonmaltzov.skinav;S.browser_fallback_url=' + encodeURIComponent(ANDROID_APK) + ';end';
   } else {
     document.getElementById('other').hidden = false;

@@ -13,7 +13,7 @@ class SkiNavApp : Application() {
         app = this
         val nm = getSystemService(NotificationManager::class.java)
         nm.createNotificationChannel(NotificationChannel(CH_TRACK, "Ski day tracking", NotificationManager.IMPORTANCE_LOW).apply {
-            description = "Shows your live ski stats while Ski Nav is tracking"
+            description = "Shows your live ski stats while Ski-Paz is tracking"
             setShowBadge(false)
         })
         nm.createNotificationChannel(NotificationChannel(CH_BRIEF, "Morning brief", NotificationManager.IMPORTANCE_DEFAULT).apply {
@@ -27,7 +27,7 @@ class SkiNavApp : Application() {
         })
         gameChannel(CH_STOP, "STOPPP", "Flask breaks, 3 a day on a long lift", R.raw.sfx_stoppp)
         gameChannel(CH_SWISS, "Passport check", "First into Switzerland in the morning", R.raw.sfx_passport)
-        gameChannel(CH_GAMES_QUIET, "Games (app open)", "Games while Ski Nav is open; the app plays the sound itself", null)
+        gameChannel(CH_GAMES_QUIET, "Games (app open)", "Games while Ski-Paz is open; the app plays the sound itself", null)
     }
 
     companion object {

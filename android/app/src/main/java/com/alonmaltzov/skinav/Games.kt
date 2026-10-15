@@ -63,7 +63,7 @@ object Games {
         }
         if (borderOn && hour < 12 && !fired("swiss") && swiss(l.latitude, l.longitude)) {
             mark("swiss")
-            notify(ctx, 7200, SkiNavApp.CH_SWISS, "Welcome to Switzerland 🇨🇭", "Passport check: who crossed first? Open Ski Nav to see.")
+            notify(ctx, 7200, SkiNavApp.CH_SWISS, "Welcome to Switzerland 🇨🇭", "Passport check: who crossed first? Open Ski-Paz to see.")
         }
     }
 

@@ -44,7 +44,7 @@ final class Games {
         } else { liftSince = nil }
         if borderOn, hour < 12, !fired("swiss"), Games.swiss(f.lat, f.lon, border) {
             mark("swiss")
-            notify(id: "swiss", title: "Welcome to Switzerland 🇨🇭", body: "Passport check: who crossed first? Open Ski Nav to see.", event: nil, sound: "passport.caf")
+            notify(id: "swiss", title: "Welcome to Switzerland 🇨🇭", body: "Passport check: who crossed first? Open Ski-Paz to see.", event: nil, sound: "passport.caf")
         }
     }
 

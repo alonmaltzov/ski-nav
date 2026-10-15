@@ -32,7 +32,7 @@ jobs:
             echo "$KS" | base64 -d > "$RUNNER_TEMP/skinav.jks"
             echo "SKINAV_KEYSTORE=$RUNNER_TEMP/skinav.jks" >> $GITHUB_ENV
             echo "SKINAV_KEYSTORE_PASSWORD=skinav-android" >> $GITHUB_ENV
-            echo "signing with the Ski Nav key"
+            echo "signing with the Ski-Paz key"
           else
             echo "::warning::SKINAV_KEYSTORE_B64 secret missing: debug-signed build, not published"
           fi
@@ -64,6 +64,6 @@ jobs:
         if: github.ref == 'refs/heads/main' && env.SKINAV_KEYSTORE != ''
         env: { GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' }
         run: |
-          gh release view android >/dev/null 2>&1 || gh release create android --title "Ski Nav for Android" --notes "Install: open this link on your Android phone, download SkiNav.apk, allow installing from your browser once."
+          gh release view android >/dev/null 2>&1 || gh release create android --title "Ski-Paz for Android" --notes "Install: open this link on your Android phone, download SkiNav.apk, allow installing from your browser once."
           gh release upload android SkiNav.apk --clobber
           echo "::notice::Android build ${{ github.run_number }} published: https://github.com/${{ github.repository }}/releases/download/android/SkiNav.apk"

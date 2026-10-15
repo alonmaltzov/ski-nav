@@ -105,24 +105,24 @@ struct SkiFace: Codable, Equatable {
             c.ring = 0; c.ringCenter = planned && kmPlan > 0 ? planKm : "D\(d)"; c.ringUnit = planned && kmPlan > 0 ? "KM PLAN" : "DAY"
             c.top = "DAY \(d)"; c.topRight = planned && !firstAt.isEmpty ? "skis on \(firstAt)" : ""
             c.title = planned && !title.isEmpty ? title : "Day \(d) of \(SkiFace.tripDays)"
-            c.sub1 = planned && kmPlan > 0 ? "\(planKm) km planned" + (firstAt.isEmpty ? "" : " · first lift \(firstAt)") : "Open Ski Nav for today's plan"
+            c.sub1 = planned && kmPlan > 0 ? "\(planKm) km planned" + (firstAt.isEmpty ? "" : " · first lift \(firstAt)") : "Open Ski-Paz for today's plan"
             c.sub2 = planned && !firstLift.isEmpty ? "First: \(firstLift)" : ""
             c.corner = "DAY \(d)"
-            c.inline = "Ski Nav · Day \(d)" + (planned && kmPlan > 0 ? " · \(planKm) km" : "")
+            c.inline = "Ski-Paz · Day \(d)" + (planned && kmPlan > 0 ? " · \(planKm) km" : "")
             return c
         }
         if n < 0 {
             var c = Content(mode: .countdown)
             let left = -n
             c.ring = max(0, 1 - Double(left) / 100); c.ringCenter = "\(left)"; c.ringUnit = left == 1 ? "DAY" : "DAYS"
-            c.top = "SKI NAV"; c.title = "Avoriaz in \(left) day\(left == 1 ? "" : "s")"
+            c.top = "SKI-PAZ"; c.title = "Avoriaz in \(left) day\(left == 1 ? "" : "s")"
             c.sub1 = "Skis on: Sun Jan 17"
             c.corner = "AVORIAZ IN \(left)D"
             c.inline = "Avoriaz in \(left) day\(left == 1 ? "" : "s")"
             return c
         }
         var c = Content(mode: .idle)
-        c.ringCenter = "⛷"; c.top = "SKI NAV"; c.title = "Ski Nav"; c.sub1 = "Tap to open"; c.corner = "SKI NAV"; c.inline = "Ski Nav"
+        c.ringCenter = "⛷"; c.top = "SKI-PAZ"; c.title = "Ski-Paz"; c.sub1 = "Tap to open"; c.corner = "SKI-PAZ"; c.inline = "Ski-Paz"
         return c
     }
 }
