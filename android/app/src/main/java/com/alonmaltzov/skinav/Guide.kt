@@ -44,6 +44,7 @@ class Guide(private val ctx: Context, private val emit: (JSONObject) -> Unit) {
             if (t.isLanguageAvailable(loc) >= TextToSpeech.LANG_AVAILABLE) t.language = loc
             // the best-quality English voice installed (network voices are skipped: the mountain has no signal)
             t.voices?.filter { it.locale.language == "en" && !it.isNetworkConnectionRequired }?.maxByOrNull { it.quality }?.let { t.voice = it }
+            t.setSpeechRate(1.05f); t.setPitch(1.05f)   // a touch quicker and brighter: less robot
             t.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
                 override fun onStart(id: String) { id.removePrefix("p").toIntOrNull()?.let { at = it; ev("part", "i" to it) } }
                 override fun onDone(id: String) { if (id == "p${parts.size - 1}") { parts = emptyList(); ev("done") } }

@@ -70,9 +70,11 @@ async def main():
         await pg.evaluate("window.__ski.sfx.log.length=0; if (window.__ski.sfx.el) { window.__ski.sfx.el.pause(); window.__ski.sfx.el = null; }")
         await pg.route('**/winter.intermaps.com/**', lambda r: r.fulfill(status=503))
         line = await pg.evaluate("(async () => { const oids = window.__ski.planLiftOids(); const by = {}; oids.flat().forEach(o => by[o] = 'open'); oids[0].forEach(o => by[o] = 'closed'); window.__ski.liftStat = {t: Date.now(), last: '', by, open: 100, total: 100}; return await window.__ski.liftCheck(); })()")
-        result('Lifts button: says which plan lift is closed, with the clip', 'closed' in line and (await L()) == ['closed'], [line, await L()])
+        result('Lifts button: says which plan lift is closed, with the clip', 'shut' in line and (await L()) == ['closed'], [line, await L()])
+        result('Lifts button opens the lift list', await pg.is_visible('#liftCard'))
+        await pg.evaluate("document.getElementById('todaySheet').hidden=true")
         await pg.click('#liftsPill'); await pg.wait_for_timeout(400)
-        result('Lifts button works every tap', (await L()).count('closed') == 2, await L())
+        result('Lifts button plays the clip every tap, even with nothing closed', (await L()).count('closed') == 2, await L())
         closed = [['closed'], ['closed']]
         result('a plan lift closing plays the change-of-plan clip, once', isinstance(closed, list) and closed[0] == ['closed'] and closed[1] == ['closed'], closed)
         await pg.click('#replanBtn', force=True) if await pg.is_visible('#replanBtn') else await pg.evaluate("document.getElementById('replanBtn').click()")
