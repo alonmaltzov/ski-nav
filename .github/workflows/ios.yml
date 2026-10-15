@@ -16,14 +16,14 @@ jobs:
     name: QA in headless Chrome (iPhone 16 + SE sizes)
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    services:
-      postgres:
-        image: public.ecr.aws/docker/library/postgres:16
-        env: { POSTGRES_PASSWORD: qa }
-        ports: ['5432:5432']
-        options: --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
     steps:
       - uses: actions/checkout@v4
+      # the runner's own Postgres (no image pull, so no registry rate limits)
+      - name: Start Postgres
+        run: |
+          sudo systemctl start postgresql.service
+          for i in $(seq 1 20); do pg_isready -h 127.0.0.1 && break; sleep 1; done
+          sudo -u postgres psql -c "alter user postgres password 'qa';"
       - uses: actions/setup-python@v5
         with: { python-version: '3.12' }
       - name: Install Playwright
