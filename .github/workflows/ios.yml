@@ -46,6 +46,9 @@ jobs:
       - name: Slopes and lifts (live status, closed runs, reconnect)
         timeout-minutes: 5
         run: python qa/slopes_test.py
+      - name: Passport check (Swiss days, slide to confirm, nudges)
+        timeout-minutes: 5
+        run: python qa/passport_test.py
       - name: Group test (organizer + friend, against the real schema on Postgres)
         timeout-minutes: 8
         env: { PGPASSWORD: qa }

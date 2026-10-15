@@ -12,7 +12,7 @@ async def main():
     async with async_playwright() as p:
         b = await p.chromium.launch(args=['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--autoplay-policy=no-user-gesture-required'])
         ctx = await b.new_context(viewport={'width': 393, 'height': 852}, device_scale_factor=1, is_mobile=True, has_touch=True)
-        await ctx.add_init_script("localStorage.setItem('skinav-onb','1'); window.__QA_ACK=true;")
+        await ctx.add_init_script("localStorage.setItem('skinav-onb','1'); window.__QA_ACK=true; if(!localStorage.getItem('skinav-games')) localStorage.setItem('skinav-games', JSON.stringify({pass:{'2027-01-19':1}}));")
         pg = await ctx.new_page(); errs = []
         pg.on('pageerror', lambda e: errs.append(str(e)))
         await pg.clock.install(time=datetime.datetime(2027, 1, 19, 8, 45))
@@ -42,6 +42,10 @@ async def main():
         result('Steps plays its clip', (await L()) == ['steps'], await L())
         await pg.evaluate("document.getElementById('sheet').hidden=true; window.__ski.sfx.log.length=0")
         await pg.evaluate("window.__ski.openBrief()"); await pg.wait_for_timeout(300)
+        early = await pg.evaluate("document.getElementById('bCap').textContent")
+        result('Shai\'s lines wait for the clip to finish', early == '', early[:40])
+        await pg.wait_for_function("document.getElementById('bCap').textContent.length > 10", timeout=15000)
+        result('then all of them show at once', await pg.evaluate("document.querySelectorAll('#bCap > *').length") >= 3)
         first = await L()
         await pg.evaluate("document.getElementById('bClose').click(); window.__ski.openBrief()"); await pg.wait_for_timeout(300)
         result('every brief plays the clip', first == ['brief'] and (await L()) == ['brief', 'brief'], [first, await L()])

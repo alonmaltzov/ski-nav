@@ -162,7 +162,9 @@
     { let ok = false; for (let i = 0; i < 20 && !ok; i++) { ok = !!(window.__ski.liftStat); if (!ok) await sleep(500); }
       result('live lift status loads from the internet', ok, ok ? (window.__ski.liftStat.open + ' of ' + window.__ski.liftStat.total + ' open') : 'no data (offline?)'); }
     if ($('wxPill') && !$('wxPill').hidden) {
-      await tap('wxPill', 1200); await screen('brief');
+      await tap('wxPill', 1200);
+      for (let i = 0; i < 20 && !$('bCap').textContent; i++) await sleep(500);   // Shai's lines appear after the crew's clip
+      await screen('brief');
       result('guide button opens the morning brief', !$('briefSheet').hidden && $('bCap').textContent.length > 10, ($('bCap').textContent || '').slice(0, 80));
       await tap('bToday', 800); await screen('today'); result('Today sheet opens', !$('todaySheet').hidden, ''); await tap('closeToday');
       if (window.__ski.openAsk) { window.__ski.openAsk(false); await sleep(400); const b = [...document.querySelectorAll('#aSugs button')][0]; b && b.click(); await sleep(900); await screen('ask');
