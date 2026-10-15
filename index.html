@@ -58,6 +58,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--f-ui);margin:0;over
 .stepnum.on{transform:scale(1.3)}
 .speed.paused #spd{color:var(--muted)}
 .mapbtns{position:absolute;right:12px;top:12px;display:grid;gap:10px;z-index:500}
+.kingbtn{display:flex;flex-direction:column;gap:1px;align-items:center;justify-content:center}.kingbtn small{font:800 .68rem var(--f-ui);line-height:1}.kingbtn small:empty{display:none}.kingbtn[hidden]{display:none}
 .mbtn{width:50px;height:50px;border-radius:14px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:700 .9rem var(--f-ui);display:grid;place-items:center;box-shadow:0 2px 8px rgb(0 0 0/.12)}
 .mbtn.compass{font-size:.8rem;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 35%,transparent)}
 .prog-view #followBtn,.prog-view #compassBtn,.prog-view .speedrow,.prog-view .stats{display:none}
@@ -195,7 +196,8 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 /* progress panel (replaces the step card) */
 .prog{display:grid;gap:10px}
 .proghead{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.proghead h2{margin:0;font:700 1.35rem var(--f-num)}
+.proghead h2{margin:0;font:700 1.35rem var(--f-num);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.backtoday{display:flex;align-items:center;gap:4px;padding-left:10px}
 .totals{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .tot{display:grid;gap:5px}
 .tot b{font:700 1.5rem/1 var(--f-num);font-variant-numeric:tabular-nums}
@@ -252,6 +254,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .drawerhead{align-items:center}
 .drawerhead h2{font:800 1.8rem/1.05 var(--f-num)}
 .hbtns{display:flex;gap:8px;flex:none}
+.invitebtn{width:auto!important;padding:0 12px;gap:6px;display:flex;align-items:center;font:700 .9rem var(--f-ui)}
 .xbtn{background:var(--panel)}
 .sethead{justify-content:flex-start;gap:10px}
 .tourlink{margin-left:auto;display:flex;align-items:center;gap:6px;min-height:44px;padding:0 14px;border-radius:22px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:700 .95rem var(--f-ui)}
@@ -346,6 +349,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .meetpin b{background:var(--ink);color:var(--panel);font:700 .85rem var(--f-ui);padding:6px 10px;border-radius:10px;white-space:nowrap;box-shadow:0 2px 8px rgb(11 22 32/.3)}
 .meetpin i{width:2px;height:12px;background:var(--ink)}
 @media (max-width:389px){.drawerhead h2{font-size:1.5rem;white-space:nowrap}.drawerhead .hbtns{gap:6px}}
+.tpill.busy{opacity:.6}
 .tpill.friends{gap:0;padding:0 12px}
 .tpill.friends .av{width:24px;height:24px;border-radius:50%;box-sizing:border-box;display:block;border:2px solid var(--panel);margin-left:-8px;flex:none}
 .tpill.friends .av:first-child{margin-left:0}
@@ -551,6 +555,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .app.tracking .homesum{display:none}
 .app:not(.tracking) .next,.app:not(.tracking) .then{display:none}
 .app:not(.tracking) .actions{grid-template-columns:1fr 1fr}
+.app:not(.tracking) #stepsBtn{grid-column:1/-1}
 .app:not(.tracking) #goBtn{grid-column:1/-1;min-height:62px;font-size:1.25rem;font-weight:700;background:var(--ink);color:var(--panel);border-radius:18px}
 .app.tracking .actions{grid-template-columns:1fr 1fr 1.3fr}
 .app.tracking #goBtn{order:3}
@@ -626,7 +631,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
     <button class="floatmenu" id="menuBtn" type="button" aria-label="Week, places and settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     <div class="toppills" id="topPills">
       <button class="tpill guidepill" id="wxPill" type="button" aria-label="Today's brief: the day, weather, what to wear and lifts"><span class="gpface"><svg class="gface" viewBox="14 14 92 100" aria-hidden="true"><circle cx="60" cy="64" r="44" fill="#fff" stroke="#d6e0e8" stroke-width="3"/><rect x="30" y="30" width="60" height="20" rx="10" fill="#ff8a3d" stroke="#0b1620" stroke-width="4"/><circle cx="47" cy="60" r="5" fill="#2b3640"/><circle cx="73" cy="60" r="5" fill="#2b3640"/><circle cx="38" cy="72" r="5" fill="#ffc9c9" opacity=".8"/><circle cx="82" cy="72" r="5" fill="#ffc9c9" opacity=".8"/><path class="gm-smile" d="M48 76 Q60 88 72 76" fill="none" stroke="#2b3640" stroke-width="4" stroke-linecap="round"/><ellipse class="gm-talk" cx="60" cy="80" rx="10" ry="7" fill="#7a1f2b"/><ellipse class="gm-o" cx="60" cy="80" rx="5" ry="4.5" fill="#2b3640"/><path d="M28 98 Q60 114 92 98 L94 108 Q60 124 26 108 Z" fill="#d81f26"/></svg><i class="gmic" aria-hidden="true"></i></span><span class="gtxt"><b>Brief</b><small><i class="ldot" id="wxLiftDot" hidden></i><span id="wxPillTxt">Today</span></small></span></button>
-      <button class="tpill" id="liftsPill" type="button" aria-label="Lift status" hidden><i class="ldot" id="liftsDot"></i><span id="liftsPillTxt">Lifts</span></button>
+      <button class="tpill" id="liftsPill" type="button" aria-label="Check lift status"><i class="ldot" id="liftsDot"></i><span id="liftsPillTxt">Lifts</span></button>
     </div>
     <div class="placesbox" id="placesBox" hidden><b>Show on map</b><div id="placeCats" style="display:grid;gap:6px"></div></div>
     <div class="homebanner" id="homeBanner" hidden></div>
@@ -639,6 +644,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
       <button class="mbtn" id="fitBtn" type="button" title="Show whole route">ALL</button>
       <button class="mbtn" id="dimBtn" type="button" aria-pressed="false" title="Switch 2D / 3D">3D</button>
       <button class="mbtn" id="placesBtn" type="button" aria-pressed="false" title="Places on the map" aria-label="Places on the map"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 21s-6.5-6.2-6.5-11A6.5 6.5 0 0 1 18.5 10c0 4.8-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg></button>
+      <button class="mbtn kingbtn" id="kingBtn" type="button" aria-label="Speed King"><svg viewBox="0 0 24 18" width="24" height="18" aria-hidden="true"><path d="M2 16 L1 4 L7 9 L12 1 L17 9 L23 4 L22 16 Z" fill="#FFC21A" stroke="#B7791F" stroke-width="1.4" stroke-linejoin="round"/></svg><small id="kingTop"></small></button>
     </div>
   </div>
 
@@ -664,14 +670,13 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
     <div class="actions">
       <button class="btn primary" id="goBtn" type="button">Start skiing</button>
       <button class="btn ghost" id="stepsBtn" type="button">Steps</button>
-      <button class="btn ghost" id="progBtn" type="button">Runs</button>
       <button class="btn ghost" id="replanBtn" type="button">Plan from here</button>
     </div>
   </footer>
 
   <footer class="bottom" id="progPanel" hidden>
     <div class="prog">
-      <div class="proghead"><h2 id="progTitle">Blue &amp; red runs</h2><div style="display:flex;gap:8px"><button class="btn ghost sm" id="runsListBtn" type="button">List</button><button class="btn ghost sm" id="progClose" type="button">Route</button></div></div>
+      <div class="proghead"><button class="btn ghost sm backtoday" id="progClose" type="button" aria-label="Back to today"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Today</button><h2 id="progTitle">Blue &amp; red runs</h2><button class="btn ghost sm" id="runsListBtn" type="button">List</button></div>
       <div class="totals">
         <div class="tot"><b id="totBlue">0 / 0</b><div class="bar"><i class="b" id="barBlue"></i></div><span>Blue skied</span></div>
         <div class="tot"><b id="totRed">0 / 0</b><div class="bar"><i class="r" id="barRed"></i></div><span>Red skied</span></div>
@@ -693,10 +698,10 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
     <div class="mpane" id="menuMain">
       <div class="drawerhead">
         <div><h2 id="tripTitle">Avoriaz week</h2><p id="tripSub"></p></div>
-        <div class="hbtns"><button class="xbtn" id="groupBtn" type="button" aria-label="Group"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6M15 14.5c3 0 5.5 2 5.5 5"/></svg></button><button class="xbtn" id="settingsBtn" type="button" aria-label="Settings"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button><button class="xbtn" id="drawerClose" type="button" aria-label="Close menu"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+        <div class="hbtns"><button class="xbtn invitebtn" id="groupBtn" type="button" aria-label="Invite friends"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6M15 14.5c3 0 5.5 2 5.5 5"/></svg><span id="groupBtnTxt">Invite</span></button><button class="xbtn" id="settingsBtn" type="button" aria-label="Settings"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button><button class="xbtn" id="drawerClose" type="button" aria-label="Close menu"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
       </div>
       <button class="goalcard" id="goalCard" type="button">
-        <span class="ghead"><span class="sub" id="goalLabel">Week goal</span><span class="maplink">Map ›</span></span>
+        <span class="ghead"><span class="sub" id="goalLabel">Week goal</span><span class="maplink">Runs ›</span></span>
         <span class="gline"><span class="big" id="goalBig">0 of 0</span><span class="sub" id="goalSub"></span></span>
         <div class="bar"><i class="b" id="goalBarDone"></i><i class="p" id="goalBarPlan"></i></div>
       </button>
@@ -1522,7 +1527,7 @@ function panoView(bounds, dur, zin, pts){ if(!is3D) panoAuto=true; is3D=true; ma
 }
 function openProgress(){ view='prog'; setFollow(false); applyView(); renderProgress(); panoView(scopeBounds, 0, 0.3); map.triggerRepaint(); closeDrawer(); }
 function closeProgress(){ view='nav'; if(panoAuto && is3D){ panoAuto=false; set3D(false); } if(map.getLayer('flash')){ map.removeLayer('flash'); map.removeSource('flash'); } applyView(); map.fitBounds(routeBounds,{padding:PAD, pitch: is3D?55:0}); }
-$('progBtn').onclick=openProgress; $('progClose').onclick=closeProgress; $('goalCard').onclick=openProgress;
+$('progClose').onclick=closeProgress; $('goalCard').onclick=openProgress;
 document.querySelectorAll('#progChips button').forEach(b=>b.onclick=()=>{ progFilter=b.dataset.f; document.querySelectorAll('#progChips button').forEach(x=>x.setAttribute('aria-pressed', x===b?'true':'false')); applyView(); });
 function renderProgress(){
   const g=groupStats();
@@ -1550,7 +1555,7 @@ function renderProgress(){
 /* ---------- week menu ---------- */
 function openDrawer(){ renderMenu(); showSettings(false); $('drawer').hidden=false; }
 function closeDrawer(){ $('drawer').hidden=true; }
-$('menuBtn').onclick=openDrawer; $('dayTitle').onclick=openDrawer; $('drawerClose').onclick=closeDrawer;
+$('menuBtn').onclick=()=>{ playSfx('today'); openDrawer(); }; $('dayTitle').onclick=openDrawer; $('drawerClose').onclick=closeDrawer;
 $('drawer').onclick=e=>{ if(e.target.id==='drawer') closeDrawer(); };
 function renderMenu(){
   $('tripTitle').textContent=CONFIG.title; $('tripSub').textContent=CONFIG.subtitle; $('otherApp').textContent=CONFIG.other.label; $('otherApp').href=CONFIG.other.href;
@@ -1566,7 +1571,7 @@ function renderMenu(){
     if(i===ti || i===di){ const m=document.createElement('small'); if(i===ti) m.className='today'; m.textContent=(i===ti?'Today · ':'')+(sd.dist>500?'skied '+fmtLen(sd.dist):kmTxt+' · '+d.lifts+(d.lifts===1?' lift':' lifts')); b.querySelector('.dt').appendChild(m); }
     if(sd.dist>500) b.querySelector('.dr').innerHTML='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-label="Skied"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>'; else if(!(i===ti || i===di)) b.querySelector('.dr').textContent=kmTxt;
     b.setAttribute('aria-label', d.date+', '+d.title+(sd.dist>500?', skied':'')+(i===ti?', today':''));
-    b.onclick=()=>{ selectDay(i); closeDrawer(); };
+    b.onclick=()=>{ selectDay(i); closeDrawer(); if(daySwiss()){ playSfx('passport'); toast('Swiss day: bring your passports 🇨🇭'); } };
     box.appendChild(b);
   });
   const g=groupStats().filter(x=>GOALCOL().includes(x.c)); const tot=g.length, done=g.filter(x=>x.done).length, plan=g.filter(x=>x.plan).length;
@@ -1578,6 +1583,7 @@ function renderMenu(){
 
   document.querySelectorAll('#unitSeg [data-v]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.v===units?'true':'false'));
 }
+function daySwiss(){ try{ return steps.some(st_=>(st_.coords||[]).some(c=>gSwiss(c[0], c[1]))); }catch(e){ return false; } }
 function selectDay(i){
   if(mode==='sim') stopSim();
   persist(); loadDay(i); persist();
@@ -2113,9 +2119,11 @@ function renderLifts(){
   if(!liftStat){ dot.hidden=true; $('liftsPillTxt').textContent='Lifts'; $('liftsBig').textContent='No lift data yet'; $('liftsNote').textContent='Needs a connection. Checks every 30 minutes.'; $('liftRows').textContent=''; return; }
   const running=resortRunning(), off = liftStat.open/Math.max(1,liftStat.total) < 0.2;
   const pl = planLifts(), closed = pl.filter(x=>liftStatusOf(x.bi) && liftStatusOf(x.bi)!=='open');
-  if(off){ dot.classList.add('off'); $('liftsPillTxt').textContent='Lifts closed'; }
-  else if(closed.length){ dot.classList.add('part'); $('liftsPillTxt').textContent=closed.length+' plan lift'+(closed.length>1?'s':'')+' closed'; }
-  else { dot.classList.add('ok'); $('liftsPillTxt').textContent='Lifts open'; }
+  /* the home button stays short: the dot says it, the guide reads it out on tap */
+  const lp=$('liftsDot'); if(lp){ lp.className='ldot '+(off?'off':closed.length?'part':'ok'); }
+  if(off){ dot.classList.add('off'); $('liftsPillTxt').textContent='Lifts'; }
+  else if(closed.length){ dot.classList.add('part'); $('liftsPillTxt').textContent='Lifts · '+closed.length+' shut'; }
+  else { dot.classList.add('ok'); $('liftsPillTxt').textContent='Lifts'; }
   $('liftsBig').textContent = liftStat.open+' of '+liftStat.total+' lifts open';
   const when = new Date(liftStat.t); $('liftsUpdated').textContent='checked '+when.getHours()+':'+String(when.getMinutes()).padStart(2,'0');
   $('liftsNote').textContent = off ? 'The ski area is not running yet (season starts in December). Closures will show here and Plan from here will avoid them.' : (closed.length ? 'Some lifts in today’s plan are closed. Use Plan from here to go around them.' : 'Every lift in today’s plan is open.');
@@ -2167,7 +2175,23 @@ function renderWx(){
   const ul=$('wearList'); ul.textContent=''; wearFor(wx).forEach(t=>{ const li=document.createElement('li'); li.textContent=t; ul.appendChild(li); });
 }
 function openToday(){ renderWx(); renderLifts(); $('todaySheet').hidden=false; fetchWx(false); fetchLifts(false); }
-$('liftsPill').onclick=openToday;
+$('liftsPill').onclick=liftCheck;
+/* the Lifts button: fresh status, spoken every time; the change-of-plan clip first when a plan lift is closed */
+async function liftCheck(){
+  const b=$('liftsPill'); b.classList.add('busy');
+  try{ await fetchLifts(true); }catch(e){}
+  b.classList.remove('busy');
+  let line, shut=[];
+  if(!liftStat) line='I can’t reach the lift status right now. Try again with a connection.';
+  else if(!resortRunning()) line='The lifts aren’t running right now. The season starts in December.';
+  else { shut=planLifts().filter(x=>{ const v=liftStatusOf(x.bi); return v && v!=='open'; });
+    line = shut.length ? (shut.length===1 ? shut[0].s.name+' is closed. Tap Plan from here when you get there.' : shut.length+' lifts on today’s plan are closed: '+shut.slice(0,3).map(x=>x.s.name).join(', ')+'. Tap Plan from here when you get there.')
+                       : 'All '+planLifts().length+' lifts on today’s plan are open. '+liftStat.open+' of '+liftStat.total+' open across the area.'; }
+  toast(line);
+  const say_=()=>{ try{ speak([line]); }catch(e){} };
+  if(shut.length) playSfx('closed', say_); else say_();
+  return line;
+}
 $('closeToday').onclick=()=>{ $('todaySheet').hidden=true; };
 $('todaySheet').onclick=e=>{ if(e.target.id==='todaySheet') $('todaySheet').hidden=true; };
 $('todayRefresh').onclick=()=>{ fetchWx(true); fetchLifts(true); };
@@ -2452,7 +2476,8 @@ function renderFriendsPill(){
   if(!grp){ if(p) p.hidden=true; return; }
   if(!p){ p=document.createElement('button'); p.type='button'; p.id='friendsPill'; p.className='tpill friends'; p.onclick=()=>{ if(friendsOf().length) openPick(); else { openDrawer(); showGroup(true); } }; $('topPills').appendChild(p); }
   p.hidden=false; p.textContent='';
-  if(!others.length){ const s=document.createElement('span'); s.textContent='Invite'; s.style.marginLeft='0'; p.appendChild(s); p.setAttribute('aria-label','Invite friends'); return; }
+  { const t=$('groupBtnTxt'); if(t) t.textContent = others.length ? 'Group' : 'Invite'; }
+  if(!others.length){ p.hidden=true; return; }
   const vis=others.filter(shown); (vis.length?vis:others).slice(0,3).forEach(m=>{ const a=document.createElement('i'); a.className='av'; a.style.background=m.color; if(!vis.length) a.style.opacity=.4; p.appendChild(a); });
   const live=vis.filter(m=>m.pos && m.pos.age_s<300).length; const s=document.createElement('span'); s.textContent = vis.length===others.length ? 'All '+others.length : vis.length+' of '+others.length; p.appendChild(s);
   p.setAttribute('aria-label', 'Showing '+vis.length+' of '+others.length+' friends, '+live+' on the map now. Choose who to see');
@@ -2563,7 +2588,7 @@ function showBorder(fromFix){
     d.querySelector('.gzpos').textContent=k+1; const a=d.querySelector('.gzav'); a.style.background=r.color; a.textContent=initials(r.name); if(k===0) a.classList.add('flag');
     d.querySelector('b').textContent=r.name; d.querySelector('small').textContent = k===0 ? 'First across' : '+'+Math.max(1,Math.round((r.t-rows[0].t)/60000))+' min';
     d.querySelector('.gzval').textContent=hhmm(r.t); box.appendChild(d); });
-  games.shown['border:'+day]=1; saveGames(); $('borderSheet').hidden=false; playSfx('passport');
+  games.shown['border:'+day]=1; saveGames(); $('borderSheet').hidden=false;
   if(fromFix){ try{ navigator.vibrate && navigator.vibrate([200,100,200]); }catch(e){} }
 }
 $('borderOk').onclick=()=>{ $('borderSheet').hidden=true; };
@@ -2588,6 +2613,9 @@ function showKing(){
   games.shown['king:'+day]=1; saveGames(); $('kingSheet').hidden=false; playSfx('speedking');
 }
 $('kingOk').onclick=()=>{ $('kingSheet').hidden=true; };
+$('kingBtn').onclick=showKing;
+function renderKingBtn(){ const b=$('kingBtn'); if(!b) return; b.hidden=!games.on.speed; const k=speedRank(gDay())[0];
+  $('kingTop').textContent = k ? (k.me ? 'You' : initials(k.name)) : ''; b.setAttribute('aria-label', k ? 'Speed King: '+(k.me?'you':k.name)+', '+Math.round(speedOut(k.v))+(units==='imp'?' mph':' km/h') : 'Speed King: no top speeds yet today'); }
 /* badges: crown for yesterday's Speed King, red cross for today's first into Switzerland */
 function gBadges(){
   const day=gDay(), y=gDay(Date.now()-864e5), out={};
@@ -2621,7 +2649,7 @@ $('gStop').onclick=()=>{ games.on.stop=!games.on.stop; saveGames(); renderGames(
 $('gRounds').onclick=()=>{ games.rounds = games.rounds===false; saveGames(); gPost({rounds:games.rounds}, true); renderGames(); tellGamesNative(); };
 $('gBorder').onclick=()=>{ games.on.border=!games.on.border; saveGames(); renderGames(); tellGamesNative(); paintBadges(); };
 $('gSfx').onclick=()=>{ store.sfx = !sfxOn(); persist(); renderGames(); if(sfxOn()) playSfx('stoppp'); else if(sfx.el){ sfx.el.pause(); sfx.el=null; } };
-$('gSpeed').onclick=()=>{ games.on.speed=!games.on.speed; saveGames(); renderGames(); paintBadges(); };
+$('gSpeed').onclick=()=>{ games.on.speed=!games.on.speed; saveGames(); renderGames(); paintBadges(); renderKingBtn(); };
 /* the native apps watch for the long lift and the border while the phone is locked */
 let gNativeSent='';
 function tellGamesNative(){
@@ -2632,7 +2660,7 @@ function tellGamesNative(){
 /* after the day: Speed King at La Folie Douce (from 4:30 pm, once a day) */
 function gamesTick(){
   const now=new Date(), day=gDay();
-  tellGamesNative(); paintBadges();
+  tellGamesNative(); paintBadges(); renderKingBtn();
   if(games.on.speed && now.getHours()*60+now.getMinutes() >= 990 && now.getHours() < 21 && !games.shown['king:'+day] && speedRank(day).length && document.visibilityState==='visible' && $('stopSheet').hidden) showKing();
   if(games.on.border && !games.shown['border:'+day] && borderRank(day).length && document.visibilityState==='visible') showBorder(false);
 }
@@ -2863,8 +2891,6 @@ function sfxToday(){
   const d=todayStr(); if(store.sfxToday===d) return;
   store.sfxToday=d; persist(); playSfx('today');
 }
-setTimeout(sfxToday, 1800);
-document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='visible') setTimeout(sfxToday, 900); });
 /* a lift in today's plan just closed (checked every 30 minutes) */
 function sfxLiftCheck(){
   try{
@@ -2890,10 +2916,9 @@ function openBrief(auto){
   $('bWear').hidden=!f.wear; $('bWear').innerHTML='<b>Wear:</b> '; $('bWear').append(f.wear);
   const cap=$('bCap'); const show=i=>{ cap.textContent=''; S.forEach((t,k)=>{ if(k<i-1 || k>i+1) return; const el=document.createElement(k===i?'b':'span'); el.textContent=t+' '; cap.appendChild(el); }); };
   show(0); $('briefSheet').hidden=false; $('bPause').textContent='❚❚'; $('bPause').setAttribute('aria-label','Pause');
-  const firstToday = store.briefClip!==todayStr();
   store.briefHeard=todayStr(); store.briefClip=todayStr(); persist(); renderGuidePill();
   const go=()=>{ if(!$('briefSheet').hidden) speak(S, show, ()=>{ $('bPause').textContent='↻'; $('bPause').setAttribute('aria-label','Play again'); }); };
-  if(firstToday) playSfx('brief', go); else go();
+  playSfx('brief', go);
 }
 $('bClose').onclick=()=>{ stopSpeak(); $('briefSheet').hidden=true; };
 $('bPause').onclick=()=>{ if(!speakQ){ openBrief(); return; } const p=pauseSpeak(); $('bPause').textContent=p?'▶':'❚❚'; $('bPause').setAttribute('aria-label', p?'Resume':'Pause'); };
@@ -3013,11 +3038,11 @@ const TOUR=[
   { el:['goBtn'], el2:['wxPill'],
     say:()=>'Every morning at '+bset().time+' I play the brief, up top. Then tap Start skiing and put the phone away. I’ll call out every lift and run.',
     html:()=>'Every morning at '+esc(bset().time)+' I play <b>the brief</b> up top. Then tap <b>Start skiing</b> and put the phone away. I’ll call out every lift and run.' },
-  { el:['legend'], el2:['runsListBtn','progClose'], prog:true,
-    say:()=>'Runs shows the whole week. Each colour is a day, and the bars show what’s left to ski. Route plays the day on the map.',
-    html:()=>'<b>Runs</b> shows the whole week. Each colour is a day, and the bars show what’s left to ski. <b>Route</b> plays the day on the map.' },
-  { el:['fitBtn'], next:'Let’s ski',
-    say:()=>'Tap All to see the crew on the map. And three games run by themselves: STOPPP, the passport race, and Speed King.',
+  { el:['legend'], el2:['progClose'], prog:true,
+    say:()=>'Runs, in the menu, shows the whole week. Each colour is a day, and the bars show what’s left to ski. Today brings you back.',
+    html:()=>'<b>Runs</b>, in the menu, shows the whole week. Each colour is a day, and the bars show what’s left to ski. <b>‹ Today</b> brings you back.' },
+  { el:['fitBtn'], el2:['kingBtn'], next:'Let’s ski',
+    say:()=>'Tap All to see the crew on the map. And three games run by themselves: STOPPP, the passport race, and Speed King, right here under the crown.',
     html:()=>'Tap <b>ALL</b> to see the crew on the map. And 3 games run by themselves:',
     chips:['🥃 STOPPP','🇨🇭 Passport race','👑 Speed King'] }
 ];
@@ -3032,7 +3057,7 @@ function tourRect(ids){
 function tourPlace(){
   const S=TOUR[tour.i]; if(!S) return;
   const H=innerHeight, W=innerWidth, holes=$('tourHoles'), rings=$('tourRings'), bub=$('tourBub'), tail=$('tourTail');
-  holes.textContent=''; rings.textContent='';
+  holes.textContent=''; rings.textContent=''; bub.style.right='';
   const rs=[tourRect(S.el), tourRect(S.el2)].filter(Boolean);
   rs.forEach(r=>{ const rad=Math.min(18, r.h/2);
     const h=document.createElementNS('http://www.w3.org/2000/svg','rect'); h.setAttribute('x',r.x); h.setAttribute('y',r.y); h.setAttribute('width',r.w); h.setAttribute('height',r.h); h.setAttribute('rx',rad); holes.appendChild(h);
@@ -3051,6 +3076,10 @@ function tourPlace(){
     if(above && (!below || p.y+p.h/2 > H/2)){ y=above[1]-bh; side='down'; }
     else if(below){ y=below[0]; side='up'; }
     else if(fit.length){ const g=fit.sort((a,b)=>(b[1]-b[0])-(a[1]-a[0]))[0]; y=g[0]+(g[1]-g[0]-bh)/2; side=null; }
+    else if(Math.min(...rs.map(q=>q.x)) > W*0.6){
+      /* the targets sit in the right-hand column: narrow the bubble so it sits beside them */
+      bub.style.right=(W-Math.min(...rs.map(q=>q.x))+14)+'px'; const h2=bub.offsetHeight;
+      y=Math.max(top, Math.min(bot-h2, p.y+p.h/2-h2/2)); side=null; }
     else { y=Math.max(top, bot-bh); side=null; } }
   bub.style.top=y+'px';
   const bl=bub.getBoundingClientRect().left;
@@ -3079,7 +3108,6 @@ function tourEnd(){
   stopSpeak(); const S=TOUR[tour.i]; if(S && S.prog && view==='prog') closeProgress();
   tour.i=-1; $('onb').hidden=true;
   try{ localStorage.setItem(ONB,'1'); }catch(e){} persist(); scheduleBrief(); renderBriefRow();
-  sfxToday();   // inside the tap, so the browser lets it play
 }
 $('tourNext').onclick=()=>{ const S=TOUR[tour.i]; if(!S || tour.busy) return; tour.voice=true; stopSpeak(); if(S.go) S.go();
   if(tour.i>=TOUR.length-1){ tourEnd(); return; }
@@ -3102,7 +3130,7 @@ tellNative(); groupLoop(); refreshGroup(); renderFriendsPill();
 { const q=new URLSearchParams(location.search).get('join') || (location.hash.match(/join=([A-Za-z0-9-]+)/)||[])[1]; if(q) setTimeout(()=>startJoin(q), 300); }
 
 /* expose for automated tests */
-window.__ski = { map, st, tour, tourShow, tourEnd, sfx, playSfx, sfxToday, sfxLiftCheck, sfxKeys:()=>Object.keys(SFX_DATA), sfxSrc:k=>SFX_DATA[k], planLiftOids:()=>planLifts().map(x=>LIFTMAP[x.bi]||[]), get steps(){return steps;}, get cur(){return cur;}, get di(){return di;}, startSim, stopSim, onFix, setX:x=>simX=x, selectDay, groupStats, openProgress, closeProgress, get games(){return games;}, stopPlan, fireStop, showKing, showBorder, gamesOnFix, renderGames, tellGamesNative, panoView, skied:()=>skiedWays.size, recap:openRecap, openBrief, openAsk, buildBrief, askQ:q=>ask(q.toLowerCase()), showOnb, routeData, dailySet, trailFC, startJoin, refreshGroup, routeTo, get grp(){return grp;}, get gview(){return gview;}, openPick, get gstate(){return gstate;}, matchFix, get match(){return st.match;}, _mode(m){ mode=m; }, setSun, planFromHere, applySteps, get liftStat(){return liftStat;}, set liftStat(v){liftStat=v;}, renderLifts, wearFor, resetPlan, setWx(v){ wx=v; renderWx(); } };
+window.__ski = { map, st, liftCheck, daySwiss, renderKingBtn, tour, tourShow, tourEnd, sfx, playSfx, sfxToday, sfxLiftCheck, sfxKeys:()=>Object.keys(SFX_DATA), sfxSrc:k=>SFX_DATA[k], planLiftOids:()=>planLifts().map(x=>LIFTMAP[x.bi]||[]), get steps(){return steps;}, get cur(){return cur;}, get di(){return di;}, startSim, stopSim, onFix, setX:x=>simX=x, selectDay, groupStats, openProgress, closeProgress, get games(){return games;}, stopPlan, fireStop, showKing, showBorder, gamesOnFix, renderGames, tellGamesNative, panoView, skied:()=>skiedWays.size, recap:openRecap, openBrief, openAsk, buildBrief, askQ:q=>ask(q.toLowerCase()), showOnb, routeData, dailySet, trailFC, startJoin, refreshGroup, routeTo, get grp(){return grp;}, get gview(){return gview;}, openPick, get gstate(){return gstate;}, matchFix, get match(){return st.match;}, _mode(m){ mode=m; }, setSun, planFromHere, applySteps, get liftStat(){return liftStat;}, set liftStat(v){liftStat=v;}, renderLifts, wearFor, resetPlan, setWx(v){ wx=v; renderWx(); } };
 
 renderUnits(); renderDayBar(); renderStats(); renderStep(); applyView(); renderHome(); applySun();
 /* android: phone voice labels, no Personal Voice */
