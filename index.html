@@ -521,7 +521,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .tdots{display:flex;gap:5px}.tdots i{width:7px;height:7px;border-radius:4px;background:var(--line)}.tdots i.on{background:var(--ink)}.tdots i.cur{width:18px}
 .tstat{display:flex;align-items:center;gap:7px;font-size:.8rem;font-weight:700;color:var(--muted);min-height:18px}
 .twave{display:none;gap:2px;align-items:center;height:16px}.twave i{width:3px;border-radius:2px;background:#ff8a3d;height:6px}
-.onb.talking .twave{display:flex}.onb.talking .twave i{animation:twv .9s ease-in-out infinite}
+.onb.talking .twave{display:none}.onb.talking .twave i{animation:twv .9s ease-in-out infinite}
 .twave i:nth-child(2){animation-delay:.15s!important}.twave i:nth-child(3){animation-delay:.3s!important}.twave i:nth-child(4){animation-delay:.45s!important}
 @keyframes twv{0%,100%{height:5px}50%{height:16px}}
 .tskip{border:none;background:none;color:var(--muted);font:600 .95rem var(--f-ui);align-self:flex-start;padding:4px 0 8px 8px;min-height:36px}
@@ -797,7 +797,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
   <div class="gbottom">
     <div class="gchips" id="bChips"></div>
     <div class="gwear" id="bWear" hidden></div>
-    <div class="gbtns"><button class="btn ghost" id="bPause" type="button" aria-label="Pause">❚❚</button><button class="btn ghost" id="bAsk" type="button">Ask</button><button class="btn primary" id="bGo" type="button">Start skiing</button></div>
+    <div class="gbtns"><button class="btn ghost" id="bPause" type="button" aria-label="Pause" hidden>❚❚</button><button class="btn ghost" id="bAsk" type="button">Ask</button><button class="btn primary" id="bGo" type="button">Start skiing</button></div>
     <button class="btn ghost sm" id="bToday" type="button">Weather and lifts in detail</button>
   </div>
 </div>
@@ -842,12 +842,12 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 <div class="sheet" id="briefSet" hidden>
   <div class="sheetin" role="dialog" aria-label="Morning brief settings">
     <div class="sheethead"><h3>Morning brief</h3><button class="btn ghost sm" id="bsDone" type="button">Done</button></div>
-    <button class="grow toggle" id="bsOn" type="button" role="switch" aria-pressed="true"><span>Every trip morning<small>A notification; tap it to hear the brief</small></span><span class="sw"></span></button>
+    <button class="grow toggle" id="bsOn" type="button" role="switch" aria-pressed="true"><span>Every trip morning<small>A notification with today’s plan</small></span><span class="sw"></span></button>
     <label class="grow"><span>Time</span><input class="tinput" id="bsTime" type="time" value="08:30"></label>
-    <div class="grow col"><span>Voice</span><div class="seg" id="bsVoice"><button type="button" data-v="default" aria-pressed="true">iPhone voice</button><button type="button" data-v="personal" aria-pressed="false">My voice</button></div></div>
+    <div class="grow col" hidden><span>Voice</span><div class="seg" id="bsVoice"><button type="button" data-v="default" aria-pressed="true">iPhone voice</button><button type="button" data-v="personal" aria-pressed="false">My voice</button></div></div>
     <p class="note" id="bsVoiceNote" style="margin:0" hidden>“My voice” needs Personal Voice: iPhone Settings › Accessibility › Personal Voice.</p>
-    <p class="note" style="margin:0">Sounds robotic? Download a Premium voice: Settings › Accessibility › Spoken Content › Voices › English.</p>
-    <button class="btn primary" id="bsPlay" type="button">Play today’s brief</button>
+    
+    <button class="btn primary" id="bsPlay" type="button">Show today’s brief</button>
   </div>
 </div>
 
@@ -859,7 +859,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
     <span class="ttail" id="tourTail"></span>
     <div class="thead"><div class="tav"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="58" fill="#FFF4EA"/><path d="M18 120 Q22 96 46 92 L74 92 Q98 96 102 120 Z" fill="#D81F26"/><path d="M50 86 L70 86 L72 98 Q60 104 48 98 Z" fill="#C08A62"/><path d="M46 93 Q60 104 74 93 L78 99 Q60 112 42 99 Z" fill="#F2F2F2"/><ellipse cx="31" cy="64" rx="6" ry="9" fill="#C08A62"/><ellipse cx="89" cy="64" rx="6" ry="9" fill="#C08A62"/><path d="M32 58 Q32 28 60 28 Q88 28 88 58 L88 70 Q88 94 60 96 Q32 94 32 70 Z" fill="#D6A27A"/><path d="M31 56 Q28 26 58 22 Q86 20 90 50 Q86 40 76 37 Q66 33 52 36 Q38 38 34 52 Z" fill="#2B201B"/><path d="M33 66 Q34 84 46 92 Q60 100 74 92 Q86 84 87 66 Q84 76 78 80 Q70 74 60 74 Q50 74 42 80 Q36 76 33 66 Z" fill="#33261F"/><path d="M47 76 Q53 71 60 73 Q67 71 73 76 Q67 75 60 77 Q53 75 47 76 Z" fill="#33261F"/><path d="M58 58 Q55 68 58 69 Q60 70 63 68" stroke="#C08A62" stroke-width="2.4" fill="none" stroke-linecap="round"/><ellipse cx="48" cy="58" rx="3.6" ry="4" fill="#2B2420"/><ellipse cx="72" cy="58" rx="3.6" ry="4" fill="#2B2420"/><circle cx="49.2" cy="56.6" r="1.2" fill="#fff"/><circle cx="73.2" cy="56.6" r="1.2" fill="#fff"/><path d="M41 50 Q48 46 54 49" stroke="#2B201B" stroke-width="3.4" fill="none" stroke-linecap="round"/><path d="M66 49 Q72 46 79 50" stroke="#2B201B" stroke-width="3.4" fill="none" stroke-linecap="round"/><ellipse cx="60" cy="81" rx="6.5" ry="5" fill="#7A1F2B"/></svg></div><div class="tmeta"><div class="tdots" id="tourDots"></div><div class="tstat"><span class="twave"><i></i><i></i><i></i><i></i></span><span id="tourStat"></span></div></div><button class="tskip" id="tourSkip" type="button">Skip</button></div>
     <div class="ttxt" id="tourTxt" aria-live="polite"></div><div class="tnote" id="tourNote"></div><div class="tchips" id="tourChips"></div>
-    <div class="tbtns"><button class="btn ghost" id="tourReplay" type="button" aria-label="Say it again"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></button><button class="btn primary" id="tourNext" type="button">Next</button></div>
+    <div class="tbtns"><button class="btn ghost" id="tourReplay" type="button" aria-label="Say it again" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></button><button class="btn primary" id="tourNext" type="button">Next</button></div>
   </div>
 </div>
 
@@ -2875,7 +2875,9 @@ function buildBrief(){
 }
 /* voice: the iPhone speaks natively (AVSpeechSynthesizer, Personal Voice if chosen); the web uses the browser voice */
 let speakQ=null, speakIdx=-1, speakPaused=false;
+const VOICE=false;   // the robot voice is off; words show on screen, sound clips still play
 function speak(parts, onPart, onDone){
+  if(!VOICE){ stopSpeak(); parts.forEach((_,i)=>onPart&&onPart(i)); onDone&&onDone(); return; }
   stopSpeak(); speakQ={parts, onPart, onDone}; setTalking(true);
   if(NATIVE){ toNative({cmd:'speak', parts, voice:bset().voice}); return; }
   if(!('speechSynthesis' in window)){ parts.forEach((_,i)=>onPart&&onPart(i)); setTalking(false); onDone&&onDone(); return; }
@@ -2949,7 +2951,7 @@ function openBrief(auto){
   chip(f.first||'-', 'First move');
   chip(typeof wx!=='undefined' && wx ? tUnit(wx.now.temperature_2m) : '-', typeof wx!=='undefined' && wx ? (WX_CODES[wx.now.weather_code]||'') : 'No weather yet');
   $('bWear').hidden=!f.wear; $('bWear').innerHTML='<b>Wear:</b> '; $('bWear').append(f.wear);
-  const cap=$('bCap'); const show=i=>{ cap.textContent=''; S.forEach((t,k)=>{ if(k<i-1 || k>i+1) return; const el=document.createElement(k===i?'b':'span'); el.textContent=t+' '; cap.appendChild(el); }); };
+  const cap=$('bCap'); const show=i=>{ cap.textContent=''; S.forEach((t,k)=>{ if(VOICE && (k<i-1 || k>i+1)) return; const el=document.createElement(k===i?'b':'span'); el.textContent=t+' '; cap.appendChild(el); }); };
   show(0); $('briefSheet').hidden=false; $('bPause').textContent='❚❚'; $('bPause').setAttribute('aria-label','Pause');
   store.briefHeard=todayStr(); store.briefClip=todayStr(); persist(); renderGuidePill();
   const go=()=>{ if(!$('briefSheet').hidden) speak(S, show, ()=>{ $('bPause').textContent='↻'; $('bPause').setAttribute('aria-label','Play again'); }); };
@@ -3040,7 +3042,7 @@ function ask(t){
   if(has('folie','apres','après','end','finish','home','done for the day')){ const f=briefFacts(); return {say: f.end ? f.end+' at '+f.endTime+'.' : 'End of the day: '+DAY.arrive+'.'}; }
   if(has('start','let\'s go','go skiing')) return {say: mode==='off' ? 'Starting. Have fun!' : 'You’re already tracking.', actions: mode==='off' ? [{label:'Start skiing', fn:()=>startGPS()}] : null};
   if(has('stop','finish tracking','end tracking')) return {say: mode!=='off' ? 'Tap Stop when you’re done for the day.' : 'You’re not tracking right now.'};
-  if(has('brief','today','plan for today','what are we doing')) return {say:'Here’s today’s brief.', actions:[{label:'Play the brief', fn:()=>openBrief()}]};
+  if(has('brief','today','plan for today','what are we doing')) return {say:'Here’s today’s brief.', actions:[{label:'Show the brief', fn:()=>openBrief()}]};
   return null;
 }
 function focusStepIdx(i){ cur=i; persist(); renderStep(); if(typeof focusStep==='function') focusStep(); }
@@ -3050,7 +3052,7 @@ function renderBriefSet(){ const b=bset(); $('bsOn').setAttribute('aria-pressed'
 function scheduleBrief(){
   if(!NATIVE) return; const b=bset();
   const dates=(CONFIG.trip||[]).map(([y,m,d])=>[y,m+1,d]);
-  toNative({cmd:'briefSchedule', on:!!b.on, time:b.time, dates, title:'Your morning brief is ready', body:'Today’s plan, weather and what to wear. Tap to listen.'});
+  toNative({cmd:'briefSchedule', on:!!b.on, time:b.time, dates, title:'Your morning brief is ready', body:'Today’s plan, weather and what to wear.'});
 }
 $('bsOn').onclick=()=>{ const b=bset(); b.on=!b.on; persist(); renderBriefSet(); scheduleBrief(); };
 $('bsTime').onchange=()=>{ const b=bset(); if(/^\d\d:\d\d$/.test($('bsTime').value)){ b.time=$('bsTime').value; persist(); scheduleBrief(); } };
@@ -3072,7 +3074,7 @@ const TOUR=[
     html:()=>'<b>Today’s plan.</b> Follow the arrows to <b>'+esc(DAY.end.name)+'</b>.' },
   { el:['goBtn'], el2:['wxPill'],
     say:()=>'Brief at '+bset().time+'. Then Start skiing, phone in pocket. I’ll do the talking.',
-    html:()=>'<b>Brief</b> at '+esc(bset().time)+'. Then <b>Start skiing</b>, phone in pocket. I’ll do the talking.' },
+    html:()=>'<b>Brief</b> at '+esc(bset().time)+'. Then <b>Start skiing</b> and put the phone away.' },
   { el:['legend'], el2:['progClose'], prog:true,
     say:()=>'The whole week, one colour a day. Today takes you back.',
     html:()=>'<b>The whole week</b>, one colour a day. It lives in the menu. <b>‹ Today</b> takes you back.' },
