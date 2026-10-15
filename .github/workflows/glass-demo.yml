@@ -1,0 +1,88 @@
+name: Liquid Glass demo
+# Demo branch only: builds the iPhone app with the native Liquid Glass controls (iOS 26 SDK),
+# runs it in an iOS 26 Simulator and records the walk-through. Nothing is published or uploaded to TestFlight.
+on:
+  push:
+    branches: ['demo/**']
+concurrency:
+  group: glass-demo-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  demo:
+    runs-on: macos-26
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Tools
+        run: |
+          X=$(ls -d /Applications/Xcode_26*.app 2>/dev/null | sort -V | tail -1)
+          test -n "$X" || { echo "::error::no Xcode 26 on this runner"; exit 1; }
+          sudo xcode-select -s "$X"
+          brew install xcodegen && xcodebuild -version
+          xcrun simctl list runtimes
+      - name: Generate project
+        working-directory: ios
+        run: |
+          mkdir -p SkiNav/www
+          cp ../index.html SkiNav/www/index.html
+          cp ../nyc.html SkiNav/www/nyc.html
+          cp ../qa/tour.js SkiNav/www/qa-tour.js
+          xcodegen generate
+      - name: Build (simulator, no signing)
+        working-directory: ios
+        run: |
+          set -o pipefail
+          xcodebuild -project SkiNav.xcodeproj -scheme SkiNav -configuration Debug \
+            -destination 'generic/platform=iOS Simulator' -derivedDataPath dd CODE_SIGNING_ALLOWED=NO build 2>&1 | tee build.log | grep -E "error:|BUILD" || true
+          test -d dd/Build/Products/Debug-iphonesimulator/SkiNav.app
+      - name: Record the demo
+        run: |
+          set -x
+          OUT=demo-out; mkdir -p $OUT
+          APP=ios/dd/Build/Products/Debug-iphonesimulator/SkiNav.app; BUNDLE=com.alonmaltzov.SkiNav
+          UDID=$(xcrun simctl list devices available -j | python3 -c "
+          import json,sys
+          d=json.load(sys.stdin)['devices']
+          c=[x for k,v in d.items() if 'iOS-26' in k for x in v if x['name'].startswith('iPhone')]
+          pref=[x for x in c if x['name'] in ('iPhone 17 Pro','iPhone 16 Pro','iPhone 17')] or c
+          print(pref[0]['udid'])")
+          xcrun simctl list devices | grep "$UDID" | tee $OUT/device.txt
+          xcrun simctl boot "$UDID" || true
+          xcrun simctl bootstatus "$UDID" -b
+          xcrun simctl ui "$UDID" appearance light || true
+          xcrun simctl status_bar "$UDID" override --time "10:42" --batteryState charged --batteryLevel 100 --cellularBars 4 || true
+          xcrun simctl install "$UDID" "$APP"
+          xcrun simctl privacy "$UDID" grant location-always "$BUNDLE" || xcrun simctl privacy "$UDID" grant location "$BUNDLE" || true
+          xcrun simctl location "$UDID" set 46.193310,6.768150 || true
+          # still frames first: the home screen with the native glass controls
+          xcrun simctl launch --terminate-running-process "$UDID" "$BUNDLE" -glassDemo > $OUT/still.log 2>&1
+          sleep 14
+          xcrun simctl io "$UDID" screenshot $OUT/01-home-native.png
+          # then the walk-through, recorded
+          xcrun simctl terminate "$UDID" "$BUNDLE" || true
+          xcrun simctl io "$UDID" recordVideo --codec=h264 --force $OUT/glass-demo.mp4 &
+          REC=$!
+          sleep 2
+          xcrun simctl launch --console-pty --terminate-running-process "$UDID" "$BUNDLE" -glassDemo -glassDemoAuto > $OUT/log.txt 2>&1 &
+          LP=$!
+          start=$(date +%s); shots=0
+          while true; do
+            n=$(grep -c "\[demo\]" $OUT/log.txt 2>/dev/null); n=${n:-0}
+            while [ $shots -lt $n ]; do
+              shots=$((shots+1)); name=$(grep "\[demo\]" $OUT/log.txt | sed -n "${shots}p" | sed 's/.*\[demo\] //' | tr -cd 'a-zA-Z0-9 ' | tr ' ' '-')
+              sleep 1.2; xcrun simctl io "$UDID" screenshot "$OUT/$(printf %02d $((shots+1)))-$name.png" >/dev/null 2>&1 || true
+            done
+            grep -q "\[demo\] DONE" $OUT/log.txt && break
+            [ $(( $(date +%s) - start )) -gt 120 ] && break
+            sleep 0.3
+          done
+          sleep 1
+          kill -INT $REC; wait $REC || true
+          kill $LP 2>/dev/null || true
+          ls -la $OUT
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: glass-demo, path: demo-out }
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with: { name: build-log, path: ios/build.log }

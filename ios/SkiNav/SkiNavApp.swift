@@ -16,10 +16,20 @@ struct SkiNavApp: App {
         WindowGroup {
             if ProcessInfo.processInfo.arguments.contains("-qaGlances") {
                 GlanceGallery()
+            } else if ProcessInfo.processInfo.arguments.contains("-glassDemo"), let demo = glassDemo {
+                demo
             } else {
                 app
             }
         }
+    }
+
+    /// Liquid Glass demo (demo branch): native glass controls over the unchanged web map
+    private var glassDemo: AnyView? {
+        #if compiler(>=6.2)
+        if #available(iOS 26.0, *) { return AnyView(GlassDemoRoot()) }
+        #endif
+        return nil
     }
 
     private var app: some View {

@@ -173,6 +173,14 @@ struct WebAppView: UIViewRepresentable {
             config.userContentController.addUserScript(WKUserScript(source: "window.__QA_TOUR=true;", injectionTime: .atDocumentStart, forMainFrameOnly: true))
             config.userContentController.addUserScript(WKUserScript(source: "window.__QA_WAIT=2500;\n" + js, injectionTime: .atDocumentEnd, forMainFrameOnly: true))
         }
+        // Liquid Glass demo: the map stays exactly as it is; the web controls hide because native glass ones draw on top
+        if ProcessInfo.processInfo.arguments.contains("-glassDemo") {
+            let hide = "try{localStorage.setItem('skinav-onb','1')}catch(e){};" +
+                "document.addEventListener('DOMContentLoaded',()=>{const s=document.createElement('style');" +
+                "s.textContent='header.top,.floatmenu,.toppills,.mapbtns,#navPanel{display:none!important}.legend{bottom:calc(env(safe-area-inset-bottom) + 300px)!important}';" +
+                "document.head.appendChild(s)});"
+            config.userContentController.addUserScript(WKUserScript(source: hide, injectionTime: .atDocumentStart, forMainFrameOnly: true))
+        }
         config.allowsInlineMediaPlayback = true
         config.mediaTypesRequiringUserActionForPlayback = []   // sound clips play without a tap
         let web = WKWebView(frame: .zero, configuration: config)
