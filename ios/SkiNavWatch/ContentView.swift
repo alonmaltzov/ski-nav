@@ -34,7 +34,7 @@ struct NowView: View {
                     IdleView()
                 }
             }
-            .navigationTitle(g.map { String(format: "%.1f km", $0.km) } ?? "Ski Nav")
+            .navigationTitle(g.map { String(format: "%.1f km", $0.km) } ?? "Ski-Paz")
             .navigationBarTitleDisplayMode(.inline)
             .containerBackground(background(g).gradient, for: .tabView)
         }
@@ -158,7 +158,7 @@ struct IdleView: View {
                 Text("Start on your iPhone and this updates by itself.").font(.footnote).foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
             } else {
-                Text("Open Ski Nav on your iPhone to get today's plan.").font(.footnote).foregroundStyle(.secondary)
+                Text("Open Ski-Paz on your iPhone to get today's plan.").font(.footnote).foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
             }
         }
@@ -188,7 +188,7 @@ struct StepsView: View {
             } else {
                 VStack(spacing: 6) {
                     Image(systemName: "iphone").font(.title2).accessibilityHidden(true)
-                    Text("Open Ski Nav on your iPhone to send today's plan.").font(.footnote).multilineTextAlignment(.center)
+                    Text("Open Ski-Paz on your iPhone to send today's plan.").font(.footnote).multilineTextAlignment(.center)
                 }
             }
         }

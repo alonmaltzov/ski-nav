@@ -20,7 +20,7 @@
 
     <application
         android:name=".SkiNavApp"
-        android:label="Ski Nav"
+        android:label="Ski-Paz"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher"
         android:theme="@style/Theme.SkiNav"

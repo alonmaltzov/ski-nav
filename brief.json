@@ -1,6 +1,6 @@
 {
   "_help": "The guide's script: one opener and one joke a day. Edit freely; the app picks it up next time it opens online. Blanks: {me} {title} {km} {endTime}. Days 1 to 6 (Sun Jan 17 = 1). 'practice' is the NYC page.",
-  "name": "Snowy",
+  "name": "Shai",
   "days": {
     "1": {
       "open": "Morning {me}. Day one. Fresh legs, zero excuses.",

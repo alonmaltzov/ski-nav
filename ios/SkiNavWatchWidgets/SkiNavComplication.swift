@@ -39,7 +39,7 @@ struct SkiNavComplication: Widget {
         StaticConfiguration(kind: SkiFace.kind, provider: FaceProvider()) { e in
             ComplicationView(c: e.face.content(at: e.date)).containerBackground(.black, for: .widget)
         }
-        .configurationDisplayName("Ski Nav")
+        .configurationDisplayName("Ski-Paz")
         .description("Your ski day: the plan, live speed and run, lifts, and the day's totals.")
         .supportedFamilies([.accessoryCircular, .accessoryCorner, .accessoryRectangular, .accessoryInline])
     }
