@@ -130,7 +130,7 @@ function tourEnd(){
   stopSpeak(); const S=TOUR[tour.i]; if(S && S.prog && view==='prog') closeProgress();
   tour.i=-1; $('onb').hidden=true;
   try{ localStorage.setItem(ONB,'1'); }catch(e){} persist(); scheduleBrief(); renderBriefRow();
-  setTimeout(sfxToday, 300);
+  sfxToday();   // inside the tap, so the browser lets it play
 }
 $('tourNext').onclick=()=>{ const S=TOUR[tour.i]; tour.voice=true; stopSpeak(); if(S && S.go) S.go(); if(tour.i>=TOUR.length-1) tourEnd(); else setTimeout(()=>tourShow(tour.i+1), S && S.go ? 400 : 0); };
 $('tourSkip').onclick=tourEnd;
