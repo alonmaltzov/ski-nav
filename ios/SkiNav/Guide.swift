@@ -248,7 +248,7 @@ final class Guide: NSObject, AVSpeechSynthesizerDelegate, UNUserNotificationCent
         let hm = (body["time"] as? String ?? "08:30").split(separator: ":").compactMap { Int($0) }
         let hour = hm.first ?? 8, minute = hm.count > 1 ? hm[1] : 30
         let title = body["title"] as? String ?? "Your morning brief is ready"
-        let text = body["body"] as? String ?? "Tap to listen."
+        let text = body["body"] as? String ?? "Today’s plan, weather and what to wear."
         center.requestAuthorization(options: [.alert, .sound]) { ok, _ in
             guard ok else { return }
             for (i, d) in dates.prefix(21).enumerated() where d.count == 3 {

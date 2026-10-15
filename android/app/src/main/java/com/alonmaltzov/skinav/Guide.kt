@@ -137,7 +137,7 @@ class Guide(private val ctx: Context, private val emit: (JSONObject) -> Unit) {
         private fun pending(ctx: Context, i: Int, b: JSONObject): PendingIntent =
             PendingIntent.getBroadcast(ctx, 100 + i, Intent(ctx, BriefReceiver::class.java)
                 .putExtra("title", b.optString("title", "Your morning brief is ready"))
-                .putExtra("body", b.optString("body", "Tap to listen.")),
+                .putExtra("body", b.optString("body", "Today’s plan, weather and what to wear.")),
                 PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
     }
 }
@@ -149,7 +149,7 @@ class BriefReceiver : BroadcastReceiver() {
         val n = NotificationCompat.Builder(ctx, SkiNavApp.CH_BRIEF)
             .setSmallIcon(R.drawable.ic_stat)
             .setContentTitle(intent.getStringExtra("title") ?: "Your morning brief is ready")
-            .setContentText(intent.getStringExtra("body") ?: "Tap to listen.")
+            .setContentText(intent.getStringExtra("body") ?: "Today’s plan, weather and what to wear.")
             .setContentIntent(open)
             .setAutoCancel(true)
             .build()
