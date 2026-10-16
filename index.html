@@ -627,6 +627,131 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .rrun i{width:12px;height:12px;border-radius:3px;flex:none}
 .ractions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
 .ractions .btn.primary{background:var(--ink);color:var(--panel)}
+
+/* ===== liquid glass: frosted panels over the map (iPhone + Android, same page) ===== */
+:root{--glass:rgb(255 255 255/.6);--glass-2:rgb(255 255 255/.76);--glass-in:rgb(255 255 255/.55);--glass-brd:rgb(255 255 255/.75);--glass-hi:rgb(255 255 255/.95);--glass-sh:0 10px 30px rgb(11 22 32/.18);--glass-blur:blur(22px) saturate(180%);--glass-dim:rgb(11 22 32/.16);--pri:#0d1b26;--pri-ink:#fff}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--glass:rgb(24 34 44/.6);--glass-2:rgb(20 30 40/.78);--glass-in:rgb(255 255 255/.08);--glass-brd:rgb(255 255 255/.14);--glass-hi:rgb(255 255 255/.2);--glass-sh:0 10px 30px rgb(0 0 0/.45);--glass-dim:rgb(0 0 0/.3);--pri:#eaf1f6;--pri-ink:#0d1b26}}
+:root[data-theme="dark"]{--glass:rgb(24 34 44/.6);--glass-2:rgb(20 30 40/.78);--glass-in:rgb(255 255 255/.08);--glass-brd:rgb(255 255 255/.14);--glass-hi:rgb(255 255 255/.2);--glass-sh:0 10px 30px rgb(0 0 0/.45);--glass-dim:rgb(0 0 0/.3);--pri:#eaf1f6;--pri-ink:#0d1b26}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){:root{--glass:color-mix(in srgb,var(--panel) 94%,transparent);--glass-2:var(--panel);--glass-in:var(--bg)}}
+@media (prefers-reduced-transparency: reduce){:root{--glass:var(--panel);--glass-2:var(--panel);--glass-in:var(--bg);--glass-blur:none}}
+.floatmenu,.tpill,.mapbtns,.legend,.donechip,.app .bottom,.app.tracking .top,.sheetin,.drawerin,.tbub,.offroute,.homebanner,.toast{-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur)}
+.floatmenu,.tpill,.mapbtns,.legend,.donechip{background:var(--glass);border:1px solid var(--glass-brd);box-shadow:var(--glass-sh),inset 0 1px 1px var(--glass-hi);color:var(--ink)}
+/* the map fills the screen; the panels float on it */
+.app{grid-template-rows:auto 1fr auto}
+.mapwrap{grid-row:1/4;grid-column:1;margin-bottom:0}
+.app .top{grid-row:1;grid-column:1;position:relative;z-index:3}
+.app .bottom{grid-row:3;grid-column:1;position:relative;z-index:3}
+.app{grid-template-columns:minmax(0,1fr)}
+.app .bottom{margin:0 10px calc(10px + env(safe-area-inset-bottom,0px));border-radius:34px;background:var(--glass-2);border:1px solid var(--glass-brd);box-shadow:var(--glass-sh),inset 0 1px 1px var(--glass-hi);padding:18px 16px 16px}
+.app .bottom::before{display:none}
+.app.tracking .top{margin:calc(6px + env(safe-area-inset-top,0px)) 10px 0;border-radius:30px;background:var(--glass-2);border:1px solid var(--glass-brd);box-shadow:var(--glass-sh),inset 0 1px 1px var(--glass-hi);padding:12px 18px}
+.app.tracking .floatmenu,.app.tracking .mapbtns,.app.tracking .offroute,.app.tracking .placesbox{top:calc(var(--topovl,0px) + 10px)}
+.app.tracking .toppills{top:calc(var(--topovl,0px) + 10px)}
+.app.tracking .donechip{top:calc(var(--topovl,0px) + 70px)}
+.legend{bottom:calc(var(--botovl,0px) + 10px);border-radius:17px;padding:7px 12px}
+.app:not(.tracking) .legend{left:12px}
+/* map buttons: one glass column */
+.mapbtns{gap:0;border-radius:26px;padding:1px;overflow:hidden;max-height:calc(100% - var(--topovl,0px) - var(--botovl,0px) - 30px)}
+.mbtn{background:none;border:0;box-shadow:none;border-radius:24px;width:50px;height:50px;color:var(--ink);position:relative}
+.mbtn+.mbtn::before{content:"";position:absolute;top:0;left:12px;right:12px;height:1px;background:color-mix(in srgb,var(--ink) 12%,transparent)}
+.mbtn[aria-pressed="true"]{background:var(--accent);color:#fff}
+.mbtn[aria-pressed="true"]::before,.mbtn[aria-pressed="true"]+.mbtn::before{display:none}
+.mapwrap.short .mapbtns{gap:0}
+.floatmenu{border-radius:25px}
+.tpill{border-radius:25px}
+/* Shai: one pill, his status under the name, play badge */
+.guidepill{padding:0 6px 0 4px;gap:9px;min-width:0;flex:1 1 auto;max-width:250px;justify-content:flex-start}
+.guidepill .gtxt{flex:1}
+.gtxt small span{white-space:nowrap}
+.gplay{width:30px;height:30px;border-radius:15px;background:var(--pri);color:var(--pri-ink);display:grid;place-items:center;flex:none;margin-left:2px}
+.gplay svg{margin-left:2px}
+.app.tracking .guidepill .gplay{display:none}
+.app.tracking .guidepill{flex:none;width:50px;max-width:50px;padding:0;justify-content:center}
+.hubin{max-height:calc(100% - 30px - env(safe-area-inset-top,0px))}
+@media (max-height:720px){.hubface{width:54px;height:54px}.hub .gcap{font-size:1rem}.htile{min-height:96px;padding:12px;border-radius:22px}.hic{width:34px;height:34px}.hic svg{width:18px;height:18px}.hbig{font-size:1.6rem}.hub .gwear{display:none}}
+/* join flow and first-open tour */
+.jsheet{background:var(--glass-2);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);border-top:1px solid var(--glass-brd);border-radius:32px 32px 0 0}
+.jhero{background:radial-gradient(circle at 70% 20%,rgb(255 255 255/.18),transparent 50%),linear-gradient(#4d6f8c,#2e4a63)}
+.jcolors button[aria-pressed="true"]{box-shadow:0 0 0 3px var(--panel),0 0 0 6px var(--ink)}
+.jchecks{background:var(--glass-in);border:1px solid var(--glass-brd)}
+.tbub{border-radius:28px;box-shadow:var(--glass-sh),inset 0 1px 1px var(--glass-hi)}
+.tchips span{background:var(--glass-in);border:1px solid var(--glass-brd)}
+.tring{border-radius:28px}
+.app.tracking .guidepill .gmic{display:none}
+.guidepill.fresh .gplay{background:#ff8a3d;color:#0b1620}
+/* buttons */
+.btn{border-radius:999px}
+.btn.ghost{background:var(--glass-in);border:1px solid var(--glass-brd);box-shadow:inset 0 1px 1px var(--glass-hi)}
+.btn.primary{box-shadow:0 8px 20px color-mix(in srgb,var(--accent) 30%,transparent),inset 0 1px 0 rgb(255 255 255/.2)}
+.app:not(.tracking) #goBtn{border-radius:999px;background:linear-gradient(180deg,color-mix(in srgb,var(--pri) 88%,#fff),var(--pri));color:var(--pri-ink);box-shadow:0 8px 20px rgb(11 22 32/.3),inset 0 1px 0 rgb(255 255 255/.18);display:flex;align-items:center;justify-content:center;gap:10px}
+.glock{display:none}
+#goBtn.locked{background:color-mix(in srgb,var(--ink) 8%,transparent)!important;color:var(--muted)!important;box-shadow:none!important;min-height:52px!important;font-size:1.06rem!important}
+#goBtn.locked .glock{display:inline-flex}
+.passbtn{grid-column:1/-1;min-height:62px;display:flex;align-items:center;justify-content:center;gap:12px;background:linear-gradient(180deg,#E42A31,#C4141B);color:#fff;font-weight:800;font-size:1.2rem;box-shadow:0 8px 20px rgb(216 31 38/.35),inset 0 1px 0 rgb(255 255 255/.25)}
+.passbtn[hidden]{display:none}
+.pbk{display:inline-flex}
+.skip button{border-radius:28px;background:var(--glass-in);border:1px solid var(--glass-brd)}
+.badge{border-radius:16px}
+.xbtn{background:var(--glass-in);border:1px solid var(--glass-brd)}
+/* sheets: glass cards floating up from the bottom */
+.sheet{background:var(--glass-dim)}
+.sheetin{width:calc(100% - 16px);margin:0 8px calc(8px + env(safe-area-inset-bottom,0px));border-radius:36px;background:var(--glass-2);border:1px solid var(--glass-brd);box-shadow:var(--glass-sh),inset 0 1px 1px var(--glass-hi);padding:22px 18px 18px}
+.drawer{background:var(--glass-dim)}
+.drawerin{width:calc(100% - 16px);margin:0 8px calc(8px + env(safe-area-inset-bottom,0px));border-radius:36px;background:var(--glass-2);border:1px solid var(--glass-brd);box-shadow:var(--glass-sh),inset 0 1px 1px var(--glass-hi)}
+.tcard,.rtile,.rgoal,.picklist,.group,.goalcard,.gcard,.gtoggle,.gchips div,.gcode{background:var(--glass-in)!important;border:1px solid var(--glass-brd);box-shadow:inset 0 1px 1px var(--glass-hi);border-radius:22px}
+.group{overflow:hidden}
+.seg{background:color-mix(in srgb,var(--ink) 8%,transparent);border-radius:14px}
+.seg button{border-radius:11px}
+.ginput{background:var(--glass-in);border-color:var(--glass-brd)}
+.tbub{background:var(--glass-2);border:1px solid var(--glass-brd)}
+.ttail{background:var(--glass-2)}
+/* menu: Swiss days and their passport */
+.daycard.swiss .dt b::before{content:"";display:inline-block;width:15px;height:15px;border-radius:4px;margin-right:6px;vertical-align:-2px;background:#D81F26 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M4 1.5h2v2.5h2.5v2H6v2.5H4V6H1.5V4H4z' fill='white'/%3E%3C/svg%3E") center/11px no-repeat}
+.pchip{display:inline-flex;align-items:center;height:22px;padding:0 9px;border-radius:11px;font:700 .75rem var(--f-ui);font-style:normal;background:rgb(216 31 38/.12);color:#B3161C;margin-top:4px;width:max-content}
+.pchip.ok{background:rgb(22 163 74/.15);color:#15803d}
+.dt{display:flex;flex-direction:column;align-items:flex-start}
+/* Shai's hub */
+.hubin{gap:10px}
+.hubhead{display:flex;align-items:center;gap:14px}
+.hubface{width:70px;height:70px;border-radius:50%;overflow:hidden;flex:none;box-shadow:0 0 0 3px var(--glass-brd),0 4px 14px rgb(11 22 32/.18);transition:box-shadow .2s}
+.hub.talking .hubface{box-shadow:0 0 0 3px #0a84ff,0 0 0 9px rgb(10 132 255/.25)}
+.hubmeta{flex:1;display:grid;gap:6px;min-width:0}
+.hub .gbars{opacity:0;height:22px}
+.hub.talking .gbars{opacity:1}
+.hub .gbars i{background:#0a84ff}
+.hub .gcap{margin:2px 2px 0;font-size:1.12rem;line-height:1.4;text-align:left;min-height:0;color:var(--ink)}
+.hub .gcap:empty{min-height:3.6em}
+.hub .gcap span{opacity:.72}
+.hub .gwear{border-radius:16px;background:rgb(255 244 234/.8)}
+.hubagain{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;border:0;background:none;color:var(--muted);font:600 .95rem var(--f-ui);padding:2px 0;min-height:36px}
+.hubagain span{width:28px;height:28px;border-radius:14px;background:var(--pri);color:var(--pri-ink);display:grid;place-items:center}
+.hubagain[hidden]{display:none}
+.hubgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
+.htile{min-height:122px;border-radius:26px;padding:14px;box-sizing:border-box;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:6px;text-align:left;text-decoration:none;font:inherit;color:var(--ink);background:var(--glass-in);border:1px solid var(--glass-brd);box-shadow:inset 0 1px 1px var(--glass-hi)}
+.htile b{font-weight:800;font-size:1.08rem;line-height:1.15}
+.htile small{display:flex;align-items:center;gap:5px;font-size:.85rem;color:var(--muted);line-height:1.2}
+.htile.go{background:linear-gradient(180deg,color-mix(in srgb,var(--pri) 88%,#fff),var(--pri));color:var(--pri-ink);border-color:transparent;box-shadow:0 8px 20px rgb(11 22 32/.28)}
+.htile.go small{color:inherit;opacity:.75}
+.hic{width:42px;height:42px;border-radius:21px;display:grid;place-items:center;font-style:normal;background:rgb(255 255 255/.16)}
+.hic.call{background:#25A35A}.hic.split{background:#1AA39A}
+.htile.off .hic{filter:grayscale(1);opacity:.5}
+.hbig{font:800 2rem/1 var(--f-num)}
+/* full-screen moments: glass over a blurred map */
+.pfull,.gzfull{background:radial-gradient(circle at 50% 20%,rgb(216 31 38/.28),transparent 55%),rgb(11 22 32/.72);-webkit-backdrop-filter:blur(18px) saturate(140%);backdrop-filter:blur(18px) saturate(140%)}
+.gzfull{background:radial-gradient(circle at 50% 22%,rgb(255 138 61/.4),transparent 55%),rgb(11 22 32/.7)}
+#kingSheet{background:radial-gradient(circle at 50% 30%,rgb(255 194 26/.35),transparent 55%),rgb(11 22 32/.72)}
+.gzcard{background:rgb(255 255 255/.8);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid rgb(255 255 255/.7);border-radius:30px}
+.gzghost{background:rgb(255 255 255/.16);border:1px solid rgb(255 255 255/.3)}
+.ptrack{background:rgb(255 255 255/.14);border-color:rgb(255 255 255/.3)}
+.pknob{background:#fff;color:#D81F26;box-shadow:0 4px 14px rgb(0 0 0/.3)}
+.peb{color:#FFB4B4}
+#passGo{display:flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(180deg,color-mix(in srgb,var(--pri) 88%,#fff),var(--pri));color:var(--pri-ink)}
+#passGo[hidden]{display:none}
+/* Sun mode: solid, black on white, no glass */
+.app.sun .floatmenu,.app.sun .tpill,.app.sun .mapbtns,.app.sun .legend,.app.sun .bottom,.app.sun.tracking .top{-webkit-backdrop-filter:none;backdrop-filter:none;background:#fff;border:2px solid #000;box-shadow:0 4px 14px rgb(0 0 0/.25)}
+.app.sun.tracking .top{background:#000;color:#fff}
+.app.sun .mbtn{border:0}
+.app.sun .btn.ghost{background:#fff;border:2px solid #000}
 </style>
 
 <div class="app">
@@ -655,8 +780,8 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
     <div id="map" role="application" aria-label="Piste map"></div>
     <button class="floatmenu" id="menuBtn" type="button" aria-label="Week, places and settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     <div class="toppills" id="topPills">
-      <button class="tpill guidepill" id="wxPill" type="button" aria-label="Today's brief: the day, weather, what to wear and lifts"><span class="gpface"><svg class="gface" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="58" fill="#FFF4EA"/><path d="M18 120 Q22 96 46 92 L74 92 Q98 96 102 120 Z" fill="#D81F26"/><path d="M50 86 L70 86 L72 98 Q60 104 48 98 Z" fill="#C08A62"/><path d="M46 93 Q60 104 74 93 L78 99 Q60 112 42 99 Z" fill="#F2F2F2"/><ellipse cx="31" cy="64" rx="6" ry="9" fill="#C08A62"/><ellipse cx="89" cy="64" rx="6" ry="9" fill="#C08A62"/><path d="M32 58 Q32 28 60 28 Q88 28 88 58 L88 70 Q88 94 60 96 Q32 94 32 70 Z" fill="#D6A27A"/><path d="M31 56 Q28 26 58 22 Q86 20 90 50 Q86 40 76 37 Q66 33 52 36 Q38 38 34 52 Z" fill="#2B201B"/><path d="M33 66 Q34 84 46 92 Q60 100 74 92 Q86 84 87 66 Q84 76 78 80 Q70 74 60 74 Q50 74 42 80 Q36 76 33 66 Z" fill="#33261F"/><path d="M47 76 Q53 71 60 73 Q67 71 73 76 Q67 75 60 77 Q53 75 47 76 Z" fill="#33261F"/><path d="M58 58 Q55 68 58 69 Q60 70 63 68" stroke="#C08A62" stroke-width="2.4" fill="none" stroke-linecap="round"/><ellipse cx="48" cy="58" rx="3.6" ry="4" fill="#2B2420"/><ellipse cx="72" cy="58" rx="3.6" ry="4" fill="#2B2420"/><circle cx="49.2" cy="56.6" r="1.2" fill="#fff"/><circle cx="73.2" cy="56.6" r="1.2" fill="#fff"/><path d="M41 50 Q48 46 54 49" stroke="#2B201B" stroke-width="3.4" fill="none" stroke-linecap="round"/><path d="M66 49 Q72 46 79 50" stroke="#2B201B" stroke-width="3.4" fill="none" stroke-linecap="round"/><path class="gm-smile" d="M52 79 Q60 86 68 79 Q60 82 52 79 Z" fill="#7A1F2B"/><ellipse class="gm-talk" cx="60" cy="81" rx="6.5" ry="5" fill="#7A1F2B"/><ellipse class="gm-o" cx="60" cy="81" rx="3.5" ry="3.2" fill="#2B2420"/></svg><i class="gmic" aria-hidden="true"></i></span><span class="gtxt"><b>Shai</b><small><i class="ldot" id="wxLiftDot" hidden></i><span id="wxPillTxt">Today</span></small></span></button>
-      <button class="tpill" id="liftsPill" type="button" aria-label="Check slopes and lifts"><span class="gtxt"><b>Slopes</b><small><i class="ldot" id="liftsDot"></i><span id="liftsPillTxt">&amp; lifts</span></small></span></button>
+      <button class="tpill guidepill" id="wxPill" type="button" aria-label="Today's brief: the day, weather, what to wear and lifts"><span class="gpface"><svg class="gface" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="58" fill="#FFF4EA"/><path d="M18 120 Q22 96 46 92 L74 92 Q98 96 102 120 Z" fill="#D81F26"/><path d="M50 86 L70 86 L72 98 Q60 104 48 98 Z" fill="#C08A62"/><path d="M46 93 Q60 104 74 93 L78 99 Q60 112 42 99 Z" fill="#F2F2F2"/><ellipse cx="31" cy="64" rx="6" ry="9" fill="#C08A62"/><ellipse cx="89" cy="64" rx="6" ry="9" fill="#C08A62"/><path d="M32 58 Q32 28 60 28 Q88 28 88 58 L88 70 Q88 94 60 96 Q32 94 32 70 Z" fill="#D6A27A"/><path d="M31 56 Q28 26 58 22 Q86 20 90 50 Q86 40 76 37 Q66 33 52 36 Q38 38 34 52 Z" fill="#2B201B"/><path d="M33 66 Q34 84 46 92 Q60 100 74 92 Q86 84 87 66 Q84 76 78 80 Q70 74 60 74 Q50 74 42 80 Q36 76 33 66 Z" fill="#33261F"/><path d="M47 76 Q53 71 60 73 Q67 71 73 76 Q67 75 60 77 Q53 75 47 76 Z" fill="#33261F"/><path d="M58 58 Q55 68 58 69 Q60 70 63 68" stroke="#C08A62" stroke-width="2.4" fill="none" stroke-linecap="round"/><ellipse cx="48" cy="58" rx="3.6" ry="4" fill="#2B2420"/><ellipse cx="72" cy="58" rx="3.6" ry="4" fill="#2B2420"/><circle cx="49.2" cy="56.6" r="1.2" fill="#fff"/><circle cx="73.2" cy="56.6" r="1.2" fill="#fff"/><path d="M41 50 Q48 46 54 49" stroke="#2B201B" stroke-width="3.4" fill="none" stroke-linecap="round"/><path d="M66 49 Q72 46 79 50" stroke="#2B201B" stroke-width="3.4" fill="none" stroke-linecap="round"/><path class="gm-smile" d="M52 79 Q60 86 68 79 Q60 82 52 79 Z" fill="#7A1F2B"/><ellipse class="gm-talk" cx="60" cy="81" rx="6.5" ry="5" fill="#7A1F2B"/><ellipse class="gm-o" cx="60" cy="81" rx="3.5" ry="3.2" fill="#2B2420"/></svg><i class="gmic" aria-hidden="true"></i></span><span class="gtxt"><b>Shai</b><small><i class="ldot" id="wxLiftDot" hidden></i><span id="wxPillTxt">Today</span><span id="wxLiftTxt"></span></small></span><span class="gplay" aria-hidden="true"><svg viewBox="0 0 14 16" width="11" height="12" aria-hidden="true"><path d="M1 1.5v13a1 1 0 001.5.86l11-6.5a1 1 0 000-1.72l-11-6.5A1 1 0 001 1.5z" fill="currentColor"/></svg></span></button>
+      <button class="tpill" id="liftsPill" hidden type="button" aria-label="Check slopes and lifts"><span class="gtxt"><b>Slopes</b><small><i class="ldot" id="liftsDot"></i><span id="liftsPillTxt">&amp; lifts</span></small></span></button>
     </div>
     <div class="placesbox" id="placesBox" hidden><b>Show on map</b><div id="placeCats" style="display:grid;gap:6px"></div></div>
     <div class="homebanner" id="homeBanner" hidden></div>
@@ -693,7 +818,8 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
     </div>
     <div class="then" id="nThen"></div>
     <div class="actions">
-      <button class="btn primary" id="goBtn" type="button">Start skiing</button>
+      <button class="btn passbtn" id="passBtn" type="button" hidden><span class="pbk"><svg viewBox="0 0 60 76" width="20" height="25" aria-hidden="true"><rect x="2" y="2" width="56" height="72" rx="7" fill="#fff"/><path d="M24 18h12v10h10v12H36v10H24V40H14V28h10z" fill="#D81F26"/></svg></span>Passport check</button>
+      <button class="btn primary" id="goBtn" type="button"><span class="glock" aria-hidden="true"><svg viewBox="0 0 16 18" width="14" height="16" aria-hidden="true"><rect x="2" y="8" width="12" height="9" rx="2" fill="currentColor"/><path d="M4.5 8V5.5a3.5 3.5 0 017 0V8" fill="none" stroke="currentColor" stroke-width="2.2"/></svg></span><span id="goTxt">Start skiing</span></button>
       <button class="btn ghost" id="stepsBtn" type="button">Steps</button>
       <button class="btn ghost" id="replanBtn" type="button">Plan from here</button>
     </div>
@@ -813,17 +939,19 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
   </div>
 </div>
 
-<div class="gsheet" id="briefSheet" hidden role="dialog" aria-label="Morning brief">
-  <div class="gtop"><span id="bEyebrow">MORNING BRIEF</span><button class="xbtn gx" id="bClose" type="button" aria-label="Close">✕</button></div>
-  <div class="gstage"><div class="gbig" id="bFace"><svg class="gface" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="58" fill="#FFF4EA"/><path d="M18 120 Q22 96 46 92 L74 92 Q98 96 102 120 Z" fill="#D81F26"/><path d="M50 86 L70 86 L72 98 Q60 104 48 98 Z" fill="#C08A62"/><path d="M46 93 Q60 104 74 93 L78 99 Q60 112 42 99 Z" fill="#F2F2F2"/><ellipse cx="31" cy="64" rx="6" ry="9" fill="#C08A62"/><ellipse cx="89" cy="64" rx="6" ry="9" fill="#C08A62"/><path d="M32 58 Q32 28 60 28 Q88 28 88 58 L88 70 Q88 94 60 96 Q32 94 32 70 Z" fill="#D6A27A"/><path d="M31 56 Q28 26 58 22 Q86 20 90 50 Q86 40 76 37 Q66 33 52 36 Q38 38 34 52 Z" fill="#2B201B"/><path d="M33 66 Q34 84 46 92 Q60 100 74 92 Q86 84 87 66 Q84 76 78 80 Q70 74 60 74 Q50 74 42 80 Q36 76 33 66 Z" fill="#33261F"/><path d="M47 76 Q53 71 60 73 Q67 71 73 76 Q67 75 60 77 Q53 75 47 76 Z" fill="#33261F"/><path d="M58 58 Q55 68 58 69 Q60 70 63 68" stroke="#C08A62" stroke-width="2.4" fill="none" stroke-linecap="round"/><ellipse cx="48" cy="58" rx="3.6" ry="4" fill="#2B2420"/><ellipse cx="72" cy="58" rx="3.6" ry="4" fill="#2B2420"/><circle cx="49.2" cy="56.6" r="1.2" fill="#fff"/><circle cx="73.2" cy="56.6" r="1.2" fill="#fff"/><path d="M41 50 Q48 46 54 49" stroke="#2B201B" stroke-width="3.4" fill="none" stroke-linecap="round"/><path d="M66 49 Q72 46 79 50" stroke="#2B201B" stroke-width="3.4" fill="none" stroke-linecap="round"/><path class="gm-smile" d="M52 79 Q60 86 68 79 Q60 82 52 79 Z" fill="#7A1F2B"/><ellipse class="gm-talk" cx="60" cy="81" rx="6.5" ry="5" fill="#7A1F2B"/><ellipse class="gm-o" cx="60" cy="81" rx="3.5" ry="3.2" fill="#2B2420"/></svg></div><div class="gbars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+<div class="sheet hub" id="briefSheet" hidden><div class="sheetin hubin" role="dialog" aria-label="Shai">
+  <div class="hubhead"><span class="hubface"><svg class="gface" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="58" fill="#FFF4EA"/><path d="M18 120 Q22 96 46 92 L74 92 Q98 96 102 120 Z" fill="#D81F26"/><path d="M50 86 L70 86 L72 98 Q60 104 48 98 Z" fill="#C08A62"/><path d="M46 93 Q60 104 74 93 L78 99 Q60 112 42 99 Z" fill="#F2F2F2"/><ellipse cx="31" cy="64" rx="6" ry="9" fill="#C08A62"/><ellipse cx="89" cy="64" rx="6" ry="9" fill="#C08A62"/><path d="M32 58 Q32 28 60 28 Q88 28 88 58 L88 70 Q88 94 60 96 Q32 94 32 70 Z" fill="#D6A27A"/><path d="M31 56 Q28 26 58 22 Q86 20 90 50 Q86 40 76 37 Q66 33 52 36 Q38 38 34 52 Z" fill="#2B201B"/><path d="M33 66 Q34 84 46 92 Q60 100 74 92 Q86 84 87 66 Q84 76 78 80 Q70 74 60 74 Q50 74 42 80 Q36 76 33 66 Z" fill="#33261F"/><path d="M47 76 Q53 71 60 73 Q67 71 73 76 Q67 75 60 77 Q53 75 47 76 Z" fill="#33261F"/><path d="M58 58 Q55 68 58 69 Q60 70 63 68" stroke="#C08A62" stroke-width="2.4" fill="none" stroke-linecap="round"/><ellipse cx="48" cy="58" rx="3.6" ry="4" fill="#2B2420"/><ellipse cx="72" cy="58" rx="3.6" ry="4" fill="#2B2420"/><circle cx="49.2" cy="56.6" r="1.2" fill="#fff"/><circle cx="73.2" cy="56.6" r="1.2" fill="#fff"/><path d="M41 50 Q48 46 54 49" stroke="#2B201B" stroke-width="3.4" fill="none" stroke-linecap="round"/><path d="M66 49 Q72 46 79 50" stroke="#2B201B" stroke-width="3.4" fill="none" stroke-linecap="round"/><path class="gm-smile" d="M52 79 Q60 86 68 79 Q60 82 52 79 Z" fill="#7A1F2B"/><ellipse class="gm-talk" cx="60" cy="81" rx="6.5" ry="5" fill="#7A1F2B"/><ellipse class="gm-o" cx="60" cy="81" rx="3.5" ry="3.2" fill="#2B2420"/></svg></span><div class="hubmeta"><span class="eyebrow" id="bEyebrow">MORNING BRIEF</span><div class="gbars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div><button class="xbtn" id="bClose" type="button" aria-label="Close">✕</button></div>
   <p class="gcap" id="bCap" aria-live="polite"></p>
-  <div class="gbottom">
-    <div class="gchips" id="bChips"></div>
-    <div class="gwear" id="bWear" hidden></div>
-    <div class="gbtns"><button class="btn ghost" id="bPause" type="button" aria-label="Pause" hidden>❚❚</button><button class="btn ghost" id="bAsk" type="button">Ask</button><button class="btn primary" id="bGo" type="button">Start skiing</button></div>
-    <button class="btn ghost sm" id="bToday" type="button">Weather and lifts in detail</button>
+  <div class="gwear" id="bWear" hidden></div>
+  <button class="hubagain" id="bPause" type="button" hidden><span><svg viewBox="0 0 14 16" width="11" height="12" aria-hidden="true"><path d="M1 1.5v13a1 1 0 001.5.86l11-6.5a1 1 0 000-1.72l-11-6.5A1 1 0 001 1.5z" fill="currentColor"/></svg></span>Play again</button>
+  <div class="hubgrid">
+    <button class="htile go" id="bGo" type="button"><i class="hic"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="15" cy="4.5" r="2"/><path d="M4 20l16-6M8 11l4-3 3 4-4 3"/></svg></i><b id="bGoTxt">Start skiing</b><small id="bGoSub"></small></button>
+    <button class="htile" id="bToday" type="button"><span class="hbig" id="bTemp">--</span><b>Weather &amp; lifts</b><small><i class="ldot" id="bLiftDot"></i><span id="bLiftSub">Tap to check</span></small></button>
+    <a class="htile" id="hubCall" href="#"><i class="hic call"><svg viewBox="0 0 24 24" width="22" height="22" fill="#fff" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 006.6 6.6l2.2-2.2a1 1 0 011-.25 11.4 11.4 0 003.6.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.57a1 1 0 01-.25 1z"/></svg></i><b>Call the crew</b><small id="hubCallSub">WhatsApp group</small></a>
+    <a class="htile" id="hubSplit" href="#"><i class="hic split"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg></i><b>Splitwise</b><small id="hubSplitSub">Trip expenses</small></a>
   </div>
-</div>
+  <div class="gchips" id="bChips" hidden></div>
+</div></div>
 
 <div class="gsheet light" id="askSheet" hidden role="dialog" aria-label="Ask the guide">
   <div class="gtop"><span class="ahead"><span class="gmid" id="aFace"><svg class="gface" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="58" fill="#FFF4EA"/><path d="M18 120 Q22 96 46 92 L74 92 Q98 96 102 120 Z" fill="#D81F26"/><path d="M50 86 L70 86 L72 98 Q60 104 48 98 Z" fill="#C08A62"/><path d="M46 93 Q60 104 74 93 L78 99 Q60 112 42 99 Z" fill="#F2F2F2"/><ellipse cx="31" cy="64" rx="6" ry="9" fill="#C08A62"/><ellipse cx="89" cy="64" rx="6" ry="9" fill="#C08A62"/><path d="M32 58 Q32 28 60 28 Q88 28 88 58 L88 70 Q88 94 60 96 Q32 94 32 70 Z" fill="#D6A27A"/><path d="M31 56 Q28 26 58 22 Q86 20 90 50 Q86 40 76 37 Q66 33 52 36 Q38 38 34 52 Z" fill="#2B201B"/><path d="M33 66 Q34 84 46 92 Q60 100 74 92 Q86 84 87 66 Q84 76 78 80 Q70 74 60 74 Q50 74 42 80 Q36 76 33 66 Z" fill="#33261F"/><path d="M47 76 Q53 71 60 73 Q67 71 73 76 Q67 75 60 77 Q53 75 47 76 Z" fill="#33261F"/><path d="M58 58 Q55 68 58 69 Q60 70 63 68" stroke="#C08A62" stroke-width="2.4" fill="none" stroke-linecap="round"/><ellipse cx="48" cy="58" rx="3.6" ry="4" fill="#2B2420"/><ellipse cx="72" cy="58" rx="3.6" ry="4" fill="#2B2420"/><circle cx="49.2" cy="56.6" r="1.2" fill="#fff"/><circle cx="73.2" cy="56.6" r="1.2" fill="#fff"/><path d="M41 50 Q48 46 54 49" stroke="#2B201B" stroke-width="3.4" fill="none" stroke-linecap="round"/><path d="M66 49 Q72 46 79 50" stroke="#2B201B" stroke-width="3.4" fill="none" stroke-linecap="round"/><path class="gm-smile" d="M52 79 Q60 86 68 79 Q60 82 52 79 Z" fill="#7A1F2B"/><ellipse class="gm-talk" cx="60" cy="81" rx="6.5" ry="5" fill="#7A1F2B"/><ellipse class="gm-o" cx="60" cy="81" rx="3.5" ry="3.2" fill="#2B2420"/></svg></span><span><b id="aState">Ask me anything about today</b><small id="aSub">Works on your phone, no signal needed</small></span></span><button class="xbtn" id="aClose" type="button" aria-label="Close">✕</button></div>
@@ -863,7 +991,8 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
   <div class="pdhead"><span class="pdface"><svg class="gface" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="58" fill="#FFF4EA"/><path d="M18 120 Q22 96 46 92 L74 92 Q98 96 102 120 Z" fill="#D81F26"/><path d="M50 86 L70 86 L72 98 Q60 104 48 98 Z" fill="#C08A62"/><path d="M46 93 Q60 104 74 93 L78 99 Q60 112 42 99 Z" fill="#F2F2F2"/><ellipse cx="31" cy="64" rx="6" ry="9" fill="#C08A62"/><ellipse cx="89" cy="64" rx="6" ry="9" fill="#C08A62"/><path d="M32 58 Q32 28 60 28 Q88 28 88 58 L88 70 Q88 94 60 96 Q32 94 32 70 Z" fill="#D6A27A"/><path d="M31 56 Q28 26 58 22 Q86 20 90 50 Q86 40 76 37 Q66 33 52 36 Q38 38 34 52 Z" fill="#2B201B"/><path d="M33 66 Q34 84 46 92 Q60 100 74 92 Q86 84 87 66 Q84 76 78 80 Q70 74 60 74 Q50 74 42 80 Q36 76 33 66 Z" fill="#33261F"/><path d="M47 76 Q53 71 60 73 Q67 71 73 76 Q67 75 60 77 Q53 75 47 76 Z" fill="#33261F"/><path d="M58 58 Q55 68 58 69 Q60 70 63 68" stroke="#C08A62" stroke-width="2.4" fill="none" stroke-linecap="round"/><ellipse cx="48" cy="58" rx="3.6" ry="4" fill="#2B2420"/><ellipse cx="72" cy="58" rx="3.6" ry="4" fill="#2B2420"/><circle cx="49.2" cy="56.6" r="1.2" fill="#fff"/><circle cx="73.2" cy="56.6" r="1.2" fill="#fff"/><path d="M41 50 Q48 46 54 49" stroke="#2B201B" stroke-width="3.4" fill="none" stroke-linecap="round"/><path d="M66 49 Q72 46 79 50" stroke="#2B201B" stroke-width="3.4" fill="none" stroke-linecap="round"/><path class="gm-smile" d="M52 79 Q60 86 68 79 Q60 82 52 79 Z" fill="#7A1F2B"/><ellipse class="gm-talk" cx="60" cy="81" rx="6.5" ry="5" fill="#7A1F2B"/><ellipse class="gm-o" cx="60" cy="81" rx="3.5" ry="3.2" fill="#2B2420"/></svg></span><div><h3>Passport: on you ✓</h3><small id="passQuip"></small></div></div>
   <div id="passList"></div>
   <button class="btn ghost" id="passNudge" type="button">Nudge everyone who hasn’t</button>
-  <button class="btn primary" id="passOk" type="button">Done</button>
+  <button class="btn primary" id="passGo" type="button"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="15" cy="4.5" r="2"/><path d="M4 20l16-6M8 11l4-3 3 4-4 3"/></svg>Start skiing</button>
+  <button class="btn ghost" id="passOk" type="button">Done</button>
 </div></div>
 <div class="gzfull" id="kingSheet" hidden role="dialog" aria-label="Speed King">
   <div class="gzhead"><div class="gzeb light">LA FOLIE DOUCE</div><div class="gzname light">Speed King of the day</div><p class="gzsub left" id="kingLine"></p></div>
@@ -965,7 +1094,6 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
   <div class="sheetin" role="dialog" aria-label="Who is on your map">
     <div class="sheethead"><h3>On your map</h3><button class="btn ghost sm" id="pickDone" type="button">Done</button></div>
     <div class="seg pickseg" id="pickSeg"><button type="button" data-v="all" aria-pressed="true">Everyone</button><button type="button" data-v="choose" aria-pressed="false">Choose</button></div>
-    <div class="linkrow"><a class="btn primary callbtn" id="pickCall" href="#" hidden><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>Talk with the group</a><a class="btn splitbtn" id="pickSplit" href="#" hidden><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20M6 15h4"/></svg>Split costs</a></div>
     <div class="picklist" id="pickList"></div>
     <p class="note" style="margin:0;text-align:center">Tap a name to fly to them. ALL shows you, today's route and everyone you're showing. Only you see this choice.</p>
   </div>
@@ -1532,7 +1660,14 @@ const scopeBounds = [[scopeB[0],scopeB[1]],[scopeB[2],scopeB[3]]];
 
 /* ---------- views: route navigation vs runs progress ---------- */
 let progFilter='all';
-function fitMapBtns(){ const w=document.querySelector('.mapwrap'), b=document.querySelector('.mapbtns'); if(!w||!b) return; w.classList.remove('short'); if(b.offsetHeight + 24 > w.clientHeight) w.classList.add('short'); }
+function glassInsets(){ const A=document.querySelector('.app'); if(!A) return; const tr=A.classList.contains('tracking') && !A.classList.contains('prog-view');
+  const top=tr ? $('navPanel').parentElement.querySelector('.top') : null, bot=[$('navPanel'),$('progPanel')].find(x=>x && !x.hidden), H=A.clientHeight;
+  const t = top ? Math.round(top.getBoundingClientRect().bottom) : 0, b = bot ? Math.round(H - bot.getBoundingClientRect().top) : 0;
+  A.style.setProperty('--topovl', t+'px'); A.style.setProperty('--botovl', b+'px'); fitMapBtns();
+  try{ if(typeof map!=='undefined' && map.setPadding){ const cur=map.getPadding(); if(cur.top!==t || cur.bottom!==b){ if(map.isMoving()){ if(!glassInsets.wait){ glassInsets.wait=true; map.once('moveend', ()=>{ glassInsets.wait=false; glassInsets(); }); } } else map.setPadding({top:t, bottom:b, left:0, right:0}); } } }catch(e){} }
+try{ const ro=new ResizeObserver(()=>glassInsets()); ['navPanel','progPanel'].forEach(id=>$(id) && ro.observe($(id))); const tp=document.querySelector('.app .top'); tp && ro.observe(tp); ro.observe(document.querySelector('.app')); }catch(e){}
+new MutationObserver(()=>glassInsets()).observe(document.querySelector('.app'), {attributes:true, attributeFilter:['class']});
+function fitMapBtns(){ const w=document.querySelector('.mapwrap'), b=document.querySelector('.mapbtns'), A=document.querySelector('.app'); if(!w||!b) return; w.classList.remove('short'); const cs=getComputedStyle(A), room=w.clientHeight - (parseFloat(cs.getPropertyValue('--topovl'))||0) - (parseFloat(cs.getPropertyValue('--botovl'))||0) - 90; if(b.offsetHeight > room) w.classList.add('short'); }
 try{ new ResizeObserver(()=>fitMapBtns()).observe(document.querySelector('.mapwrap')); }catch(e){}
 function applyView(){
   const nav = view==='nav';
@@ -1615,7 +1750,8 @@ function renderMenu(){
     const [wd,,dn]=d.date.split(' ');
     b.innerHTML='<span class="dn"><small></small><b></b></span><span class="dt"><b></b></span><span class="dr"></span>';
     b.querySelector('.dn small').textContent=wd.toUpperCase(); b.querySelector('.dn b').textContent=dn;
-    b.querySelector('.dt b').textContent=d.title;
+    const sw=/^Switzerland/i.test(d.title); b.querySelector('.dt b').textContent=sw ? d.title.replace(/^Switzerland:\s*/i,'') : d.title;
+    if(sw){ b.classList.add('swiss'); const t=CONFIG.trip && CONFIG.trip[i]; const pk=t ? gDay(new Date(t[0],t[1],t[2])) : ''; const ok=!!(pk && typeof games!=='undefined' && games.pass[pk]); const c=document.createElement('i'); c.className='pchip'+(ok?' ok':''); c.textContent=ok?'✓ Passport':'Passport'; b.querySelector('.dt').appendChild(c); }
     const kmTxt=(units==='imp'?(d.km*0.6214).toFixed(1)+' mi':Math.round(d.km)+' km');
     if(i===ti || i===di){ const m=document.createElement('small'); if(i===ti) m.className='today'; m.textContent=(i===ti?'Today · ':'')+(sd.dist>500?'skied '+fmtLen(sd.dist):kmTxt+' · '+d.lifts+(d.lifts===1?' lift':' lifts')); b.querySelector('.dt').appendChild(m); }
     if(sd.dist>500) b.querySelector('.dr').innerHTML='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-label="Skied"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>'; else if(!(i===ti || i===di)) b.querySelector('.dr').textContent=kmTxt;
@@ -1632,12 +1768,12 @@ function renderMenu(){
 
   document.querySelectorAll('#unitSeg [data-v]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.v===units?'true':'false'));
 }
-function daySwiss(){ try{ return steps.some(st_=>(st_.coords||[]).some(c=>gSwiss(c[0], c[1]))); }catch(e){ return false; } }
+function daySwiss(){ try{ return /^Switzerland/i.test(DAY.title||''); }catch(e){ return false; } }
 function selectDay(i){
   if(mode==='sim') stopSim();
   persist(); loadDay(i); persist();
   routeBounds = dayBounds(); buildMarkers(); hideYou();
-  view='nav'; applyView(); renderDayBar(); renderStats(); renderStep();
+  view='nav'; applyView(); renderDayBar(); renderStats(); renderStep(); renderPassGate();
   setFollow(false); map.fitBounds(routeBounds,{padding:PAD, pitch: is3D?55:0});
   sendPlanToWatch();
 }
@@ -1970,13 +2106,13 @@ document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==
 function startGPS(){
   if(NATIVE){
     stopSim(); mode='gps'; st.last=null; st.sm=null; st.prevSp=null; st.ema=null; st.lastT=null; st.trailBreak=true;
-    setPill('Finding GPS…','live'); $('goBtn').textContent='Stop'; $('goBtn').classList.add('stop'); setTrackUI(true);
+    setPill('Finding GPS…','live'); goLabel('Stop'); $('goBtn').classList.add('stop'); setTrackUI(true);
     toNative({cmd:'start', base:{distM:st.dist||0, maxMps:st.max||0, vertM:st.vert||0, elapsedS:st.elapsed||0}}); nativeStepKey=null; nativeStep(); sendPlanToWatch(); keepAwake(); return;
   }
   if(!('geolocation' in navigator)){ setPill('No GPS here','err'); return; }
   stopSim();
   mode='gps'; st.last=null; st.sm=null; st.prevSp=null; st.ema=null; st.lastT=null; st.trailBreak=true;
-  setPill('Finding GPS…','live'); $('goBtn').textContent='Stop'; $('goBtn').classList.add('stop'); setTrackUI(true);
+  setPill('Finding GPS…','live'); goLabel('Stop'); $('goBtn').classList.add('stop'); setTrackUI(true);
   keepAwake();
   watchId = navigator.geolocation.watchPosition(pos=>{
     const c=pos.coords; setPill('GPS ±'+Math.round(c.accuracy)+' m', c.accuracy<=30?'live':'');
@@ -1986,15 +2122,20 @@ function startGPS(){
     if(err.code===1){ stopGPS(); $('nMeta').textContent='Location is blocked. Open this page in Safari and allow location, or use Test mode in the menu.'; }
   }, {enableHighAccuracy:true, maximumAge:0, timeout:20000});
 }
+function goLabel(t){ const x=$('goTxt'); if(x) x.textContent=t; else $('goBtn').textContent=t; renderPassGate(); }
 function stopGPS(){
   if(NATIVE) toNative({cmd:'stop'});
   if(watchId!=null) navigator.geolocation.clearWatch(watchId); watchId=null;
   st.lastT=null; st.speed=0; mode='off'; setPill('GPS off');
-  $('goBtn').textContent='Start skiing'; $('goBtn').classList.remove('stop'); setTrackUI(false);
+  goLabel('Start skiing'); $('goBtn').classList.remove('stop'); setTrackUI(false);
   try{ wakeLock && wakeLock.release(); }catch(e){} wakeLock=null;
   persist(); renderStats(); renderSchedule();
 }
-$('goBtn').onclick=()=>{ if(mode==='gps'){ playSfx('stop'); stopGPS(); if(st.elapsed > 60 || st.dist > 100) openRecap(); } else if(mode==='sim'){ playSfx('stop'); stopSim(); } else { playSfx('start'); startGPS(); showPass('start'); } };
+$('goBtn').onclick=()=>{ if(mode==='gps'){ playSfx('stop'); stopGPS(); if(st.elapsed > 60 || st.dist > 100) openRecap(); } else if(mode==='sim'){ playSfx('stop'); stopSim(); } else { if(passLocked()){ showPass('start'); return; } playSfx('start'); startGPS(); } };
+/* Swiss days: Start skiing waits for that day's passport slide */
+function passLocked(){ try{ return mode==='off' && daySwiss() && !games.pass[passKey()]; }catch(e){ return false; } }
+function renderPassGate(){ const l=passLocked(); const pb=$('passBtn'); if(pb) pb.hidden=!l; $('goBtn').classList.toggle('locked', l); $('goBtn').setAttribute('aria-label', l ? 'Start skiing (passport check first)' : ($('goTxt')?$('goTxt').textContent:'Start skiing')); }
+$('passBtn').onclick=()=>showPass('start');
 
 /* ---------- test replay ---------- */
 let simTimer=null, simX=30, simDrift=false, simClock=0, simTrack=null, simI=0, simSnap=null;
@@ -2021,7 +2162,7 @@ function startSim(){
   simTrack=buildTrack(); simI=0; mode='sim'; simDrift=false;
   st.dist=0; st.vert=0; st.max=0; st.elapsed=0; st.last=null; st.lastT=null; st.sm=null; st.altRef=null; st.onLift=false; altHist.length=0; st.ema=null; st.prevSp=null; st.stepDist=0; cur=0;
   simClock = new Date().setHours(Math.floor(CONFIG.dayStart/60), CONFIG.dayStart%60, 0, 0);
-  setPill('Test replay','sim'); $('goBtn').textContent='Stop test'; $('goBtn').classList.add('stop'); setTrackUI(true);
+  setPill('Test replay','sim'); goLabel('Stop test'); $('goBtn').classList.add('stop'); setTrackUI(true);
   setFollow(view==='nav'); renderStep();
   simTimer=setInterval(()=>{
     for(let k=0;k<simX/5 && simI<simTrack.length;k++){
@@ -2038,7 +2179,7 @@ let quietN=0;
 function onFixQuiet(p){ quietN++; const f=follow; if(quietN%3) follow=false; onFix(p); follow=f; }
 function stopSim(){
   if(simTimer) clearInterval(simTimer); simTimer=null;
-  if(mode==='sim'){ mode='off'; st.lastT=null; st.speed=0; $('goBtn').textContent='Start skiing'; $('goBtn').classList.remove('stop'); setTrackUI(false); setPill('GPS off'); renderStats(); }
+  if(mode==='sim'){ mode='off'; st.lastT=null; st.speed=0; goLabel('Start skiing'); $('goBtn').classList.remove('stop'); setTrackUI(false); setPill('GPS off'); renderStats(); }
 }
 $('simBtn').onclick=()=>{ closeDrawer(); $('simSheet').hidden=false; };
 $('closeSim').onclick=()=>{ $('simSheet').hidden=true; };
@@ -2198,14 +2339,14 @@ function planLifts(){ return steps.filter(s=>s.type==='lift').map(s=>({s, bi:ste
 function renderLifts(){
   if(!LIFT_FEED){ $('liftCard').hidden=true; return; }
   const dot=$('wxLiftDot'); dot.className='ldot'; dot.hidden=false;
-  if(!liftStat){ dot.hidden=true; $('liftsPillTxt').textContent='& lifts'; $('liftsBig').textContent='No lift data yet'; $('liftsNote').textContent='Needs a connection. Checks every 30 minutes.'; $('liftRows').textContent=''; return; }
+  if(!liftStat){ dot.hidden=true; $('wxLiftTxt').textContent=''; $('liftsPillTxt').textContent='& lifts'; $('liftsBig').textContent='No lift data yet'; $('liftsNote').textContent='Needs a connection. Checks every 30 minutes.'; $('liftRows').textContent=''; return; }
   const running=resortRunning(), off = liftStat.open/Math.max(1,liftStat.total) < 0.2;
   const pl = planLifts(), closed = pl.filter(x=>liftStatusOf(x.bi) && liftStatusOf(x.bi)!=='open').concat(planSlopes().filter(x=>x.st && x.st!=='open'));
   /* the home button stays short: the dot says it, the guide reads it out on tap */
   const lp=$('liftsDot'); if(lp){ lp.className='ldot '+(off?'off':closed.length?'part':'ok'); }
-  if(off){ dot.classList.add('off'); $('liftsPillTxt').textContent='& lifts'; }
-  else if(closed.length){ dot.classList.add('part'); $('liftsPillTxt').textContent=closed.length+' shut'; }
-  else { dot.classList.add('ok'); $('liftsPillTxt').textContent='& lifts'; }
+  if(off){ dot.classList.add('off'); $('liftsPillTxt').textContent='& lifts'; $('wxLiftTxt').textContent=' · lifts shut'; }
+  else if(closed.length){ dot.classList.add('part'); $('liftsPillTxt').textContent=closed.length+' shut'; $('wxLiftTxt').textContent=' · '+closed.length+' shut'; }
+  else { dot.classList.add('ok'); $('liftsPillTxt').textContent='& lifts'; $('wxLiftTxt').textContent=' · all open'; }
   const lab=v=>!v ? 'no data' : v==='open' ? 'Open' : v==='soon' ? 'Opening soon' : 'Closed', cls=v=>v==='open'?'open':v==='soon'?'soon':v?'closed':'';
   const items = pl.map(x=>({name:x.s.name, st:liftStatusOf(x.bi), kind:'lift'})).concat(planSlopes().map(x=>({name:x.name, st:x.st, kind:'run', color:x.color})));
   const shut=items.filter(x=>x.st && x.st!=='open'), open=items.filter(x=>x.st==='open'), unknown=items.filter(x=>!x.st);
@@ -2269,7 +2410,7 @@ function renderWx(){
   if(!CONFIG.wx){ return; }
   if(!wx){ $('wxPillTxt').textContent='Today'; $('wxCond').textContent='No weather yet (needs a connection)'; return; }
   const n=wx.now, d=wx.day, cond=WX_CODES[n.weather_code]||'';
-  $('wxPillTxt').textContent = tUnit(n.temperature_2m)+' '+(cond.split(' ').pop()||'').toLowerCase();
+  $('wxPillTxt').textContent = tUnit(n.temperature_2m);
   $('wxTemp').textContent = tUnit(n.temperature_2m); $('wxCond').textContent = cond + (CONFIG.wx.label?' · '+CONFIG.wx.label:'');
   $('wxRange').textContent = 'High '+tUnit(d.temperature_2m_max)+' · low '+tUnit(d.temperature_2m_min)+' · feels like '+tUnit(n.apparent_temperature);
   const row=$('wxRow'); row.textContent='';
@@ -2725,7 +2866,7 @@ const PASS_QUIPS=['Look at you, an adult.','The Swiss thank you.','Customs offic
 function passConfirm(){
   const k=passKey(), now=Date.now(); games.pass[k]=now; saveGames(); gPost({['pass:'+k]:now}, true);
   $('passSheet').hidden=true; $('passQuip').textContent='Shai: “'+PASS_QUIPS[Math.floor(Math.random()*PASS_QUIPS.length)]+'”';
-  renderPassList(k); $('passDoneSheet').hidden=false; }
+  renderPassList(k); $('passGo').hidden = mode!=='off'; $('passDoneSheet').hidden=false; renderPassGate(); renderMenu(); }
 function renderPassList(k){
   const box=$('passList'); box.textContent=''; const crew=passCrew(k);
   crew.forEach(x=>{ const r=document.createElement('div'); r.className='prow'; const i=document.createElement('i'); i.style.background=x.color; i.textContent=initials(x.name==='You'&&grp?grp.name:x.name);
@@ -2740,7 +2881,8 @@ function renderPassList(k){
   kb.addEventListener('pointerup', end); kb.addEventListener('pointercancel', end);
   kb.addEventListener('keydown', e=>{ if(e.key==='ArrowRight' || e.key==='Enter'){ e.preventDefault(); max=tr.clientWidth-68; set(max); setTimeout(passConfirm, 150); } });
 }
-$('passOk').onclick=()=>{ $('passDoneSheet').hidden=true; };
+$('passOk').onclick=()=>{ $('passDoneSheet').hidden=true; renderPassGate(); };
+$('passGo').onclick=()=>{ $('passDoneSheet').hidden=true; renderPassGate(); if(mode==='off'){ playSfx('start'); startGPS(); } };
 $('passNudge').onclick=()=>{ const k=passKey(); gPost({['nudge:'+k]:Date.now()}, true); $('passNudge').textContent='Nudged 👊'; $('passNudge').disabled=true; setTimeout(()=>{ $('passNudge').disabled=false; renderPassList(k); }, 4000); };
 /* someone nudged: the check comes back for whoever hasn't done it */
 function passNudgeCheck(){
@@ -2929,7 +3071,7 @@ $('fitBtn').onclick=()=>{
 const callLink = () => { const u = gstate && gstate.trip && gstate.trip.plan && gstate.trip.plan.call; return typeof u==='string' && /^https:\/\//.test(u) ? u : ''; };
 function renderCall(){
   const u = callLink();
-  for(const id of ['gCall','pickCall']){ const a=$(id); if(!a) continue; a.hidden=!u; a.href=u||'#';
+  for(const id of ['gCall','hubCall']){ const a=$(id); if(!a) continue; a.hidden=id==='gCall' && !u; a.href=u||'#';
     // in the iPhone app a plain link opens WhatsApp; in a browser keep Ski-Paz open in its tab
     if(NATIVE) a.removeAttribute('target'); else { a.target='_blank'; a.rel='noopener'; } }
   const owner = gstate && gstate.role==='owner';
@@ -2945,7 +3087,7 @@ $('gCallClear').onclick=async()=>{ try{ await savePlan({call:null}); $('gCallLin
 const splitLink = () => { const u = gstate && gstate.trip && gstate.trip.plan && gstate.trip.plan.split; return typeof u==='string' && /^https:\/\//.test(u) ? u : ''; };
 function renderSplit(){
   const u = splitLink();
-  for(const id of ['gSplit','pickSplit']){ const a=$(id); if(!a) continue; a.hidden=!u; a.href=u||'#';
+  for(const id of ['gSplit','hubSplit']){ const a=$(id); if(!a) continue; a.hidden=id==='gSplit' && !u; a.href=u||'#';
     if(NATIVE) a.removeAttribute('target'); else { a.target='_blank'; a.rel='noopener'; } }
   const owner = gstate && gstate.role==='owner';
   if($('gSplitSet')){ $('gSplitSet').hidden=!owner; if(owner && document.activeElement!==$('gSplitLink')) $('gSplitLink').value=u; $('gSplitClear').hidden=!u; }
@@ -3063,6 +3205,14 @@ function sfxLiftCheck(){
 }
 
 /* ---- brief sheet ---- */
+function renderHub(){
+  const on=mode!=='off'; $('bGoTxt').textContent = on ? 'Steps' : 'Start skiing';
+  $('bGoSub').textContent = on ? 'Where next' : (passLocked() ? 'Passport first 🇨🇭' : DAY.title.replace(/^Switzerland:\s*/i,'')+' · '+(units==='imp' ? (DAY.km*0.6214).toFixed(0)+' mi' : Math.round(DAY.km)+' km'));
+  $('bTemp').textContent = (typeof wx!=='undefined' && wx) ? tUnit(wx.now.temperature_2m) : '--';
+  $('bLiftSub').textContent = ($('wxLiftTxt').textContent||'').replace(/^ · /,'') || 'Tap to check'; $('bLiftDot').className=$('wxLiftDot').className; $('bLiftDot').hidden=$('wxLiftDot').hidden;
+  const c=callLink(), sp=splitLink(); $('hubCall').classList.toggle('off', !c); $('hubSplit').classList.toggle('off', !sp);
+  $('hubCallSub').textContent = c ? 'WhatsApp group' : 'Add the link in Group'; $('hubSplitSub').textContent = sp ? 'Trip expenses' : 'Add the link in Group';
+}
 function openBrief(auto){
   closeDrawer(); $('askSheet').hidden=true;
   const {S, f}=buildBrief();
@@ -3075,21 +3225,22 @@ function openBrief(auto){
   $('bWear').hidden=!f.wear; $('bWear').innerHTML='<b>Wear:</b> '; $('bWear').append(f.wear);
   /* the crew's clip plays first; Shai's lines appear once it's over */
   const cap=$('bCap'); const showAll=()=>{ cap.textContent=''; S.forEach((t,k)=>{ const el=document.createElement(k===0?'b':'span'); el.textContent=t+' '; cap.appendChild(el); }); };
-  cap.textContent=''; $('briefSheet').hidden=false; $('bPause').textContent='❚❚'; $('bPause').setAttribute('aria-label','Pause');
+  cap.textContent=''; $('briefSheet').hidden=false; $('bPause').hidden=true; renderHub();
   store.briefHeard=todayStr(); store.briefClip=todayStr(); persist(); renderGuidePill();
   setTalking(true);
-  const go=()=>{ setTalking(false); if($('briefSheet').hidden) return; showAll(); if(VOICE) speak(S, null, ()=>{ $('bPause').textContent='↻'; $('bPause').setAttribute('aria-label','Play again'); }); };
+  const go=()=>{ setTalking(false); if($('briefSheet').hidden) return; showAll(); $('bPause').hidden=false; if(VOICE) speak(S, null, ()=>{}); };
   playSfx('brief', go);
 }
 $('bClose').onclick=()=>{ stopSpeak(); $('briefSheet').hidden=true; };
-$('bPause').onclick=()=>{ if(!speakQ){ openBrief(); return; } const p=pauseSpeak(); $('bPause').textContent=p?'▶':'❚❚'; $('bPause').setAttribute('aria-label', p?'Resume':'Pause'); };
-$('bAsk').onclick=()=>{ stopSpeak(); $('briefSheet').hidden=true; openAsk(true); };
-$('bGo').onclick=()=>{ stopSpeak(); $('briefSheet').hidden=true; if(mode==='off'){ playSfx('start'); startGPS(); } };
-$('bToday').onclick=()=>{ stopSpeak(); $('briefSheet').hidden=true; openToday(); };
+$('bPause').onclick=()=>openBrief();
+$('bGo').onclick=()=>{ stopSpeak(); $('briefSheet').hidden=true; if(mode==='off') $('goBtn').click(); else $('stepsBtn').click(); };
+$('briefSheet').onclick=e=>{ if(e.target.id==='briefSheet'){ stopSpeak(); $('briefSheet').hidden=true; } };
+for(const [id,fn] of [['hubCall',()=>callLink()],['hubSplit',()=>splitLink()]]) $(id).addEventListener('click', e=>{ if(!fn()){ e.preventDefault(); stopSpeak(); $('briefSheet').hidden=true; openDrawer(); showGroup(true); } });
+$('bToday').onclick=()=>{ stopSpeak(); $('briefSheet').hidden=true; liftCheck(); };
 
 /* ---- the pill in the top row ---- */
 function renderGuidePill(){ const p=$('wxPill'); if(!p) return; p.hidden=false; p.classList.toggle('fresh', !heardToday() && new Date().getHours()>=5); }
-$('wxPill').onclick=()=>{ if(mode!=='off') openAsk(true); else openBrief(); };
+$('wxPill').onclick=()=>openBrief();
 
 /* ---- ask ---- */
 let listening=false, heardFinal=false;
@@ -3197,8 +3348,8 @@ const TOUR=[
     say:()=>'Today’s plan. Follow the arrows to '+DAY.end.name+'.',
     html:()=>'<b>Today’s plan.</b> Follow the arrows to <b>'+esc(DAY.end.name)+'</b>.' },
   { el:['goBtn'], el2:['wxPill'],
-    say:()=>'Brief at '+bset().time+'. Then Start skiing, phone in pocket. I’ll do the talking.',
-    html:()=>'<b>Brief</b> at '+esc(bset().time)+'. Then <b>Start skiing</b> and put the phone away.' },
+    say:()=>'Tap me for the brief, weather, lifts and the crew call. Then Start skiing, phone in pocket.',
+    html:()=>'<b>Tap me</b>: brief, weather, lifts, call the crew. Then <b>Start skiing</b> and put the phone away.' },
   { el:['legend'], el2:['progClose'], prog:true,
     say:()=>'The whole week, one colour a day. Today takes you back.',
     html:()=>'<b>The whole week</b>, one colour a day. It lives in the menu. <b>‹ Today</b> takes you back.' },
