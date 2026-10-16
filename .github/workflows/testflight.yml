@@ -5,7 +5,7 @@ name: TestFlight
 on:
   push:
     branches: [main, 'tf/**']
-    paths: ['ios/**', '.github/workflows/testflight.yml']
+    paths: ['ios/**', 'index.html', 'nyc.html', 'audio/**', '.github/workflows/testflight.yml']
   workflow_dispatch:
 concurrency:
   group: testflight
