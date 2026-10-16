@@ -12,7 +12,7 @@
   const $ = (id) => document.getElementById(id);
   const WAIT = window.__QA_WAIT || 2500;           // time on each screen so the runner can screenshot it
   const MIN = 44, MIN_FONT = 12;                  // Apple HIG: 44pt minimum hit target, 11-12pt minimum text
-  const GLOVE = { goBtn: 56, nextBtn: 56, prevBtn: 56, menuBtn: 48, followBtn: 48, compassBtn: 48, fitBtn: 48, dimBtn: 48, placesBtn: 48 }; // tapped mid-run with gloves
+  const GLOVE = { goBtn: 60, stepsBtn: 60, passBtn: 60, holdStop: 60, railShai: 60, menuBtn: 60, followBtn: 60, compassBtn: 60, fitBtn: 60, dimBtn: 60, kingBtn: 60, stopBtn: 60, wxPill: 60, replanBtn: 60 }; // tapped mid-run with gloves
 
   function visible(el) {
     if (el.closest('[hidden]')) return false;

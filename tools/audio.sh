@@ -5,8 +5,8 @@
 #   android/app/src/main/res/raw/sfx_<key>.mp3   notification channel sounds
 set -euo pipefail
 cd "$(dirname "$0")/.."
-declare -A SRC=( [passport]=efo_ze_val_tohrens [stoppp]=Stoppp [closed]=close_masage [speedking]=Avsha_ten_gazz
-                 [today]=Lama_Hacol_metochnan [start]=Za_Bayzim_Beseder [stop]=ze_yavor_li [brief]=Macnis_otu [steps]=Ani_Mastin )
+declare -A SRC=( [passport]=efo_ze_val_tohrens [stoppp]=Stoppp [closed]=close_masage_2 [speedking]=Avsha_ten_gazz
+                 [today]=Lama_Hacol_metochnan [start]=Za_Bayzim_Beseder [stop]=ze_yavor_li [brief]=Macnis_otu_2 [steps]=Ani_Mastin )
 NOTIFY="stoppp passport"
 mkdir -p audio ios/SkiNav/Sounds android/app/src/main/res/raw
 AF="silenceremove=start_periods=1:start_threshold=-55dB,acompressor=threshold=-20dB:ratio=3:attack=5:release=100:makeup=2,loudnorm=I=-15:TP=-1.5:LRA=11"

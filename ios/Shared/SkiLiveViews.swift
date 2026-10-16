@@ -1,25 +1,58 @@
 #if os(iOS)
 import SwiftUI
 
-/// Lock screen Live Activity: speed, km, what you're on, what's next. Nothing else.
+/// Lock screen Live Activity (v2): the next move first, speed on the right, the day underneath.
 struct LockScreenGlance: View {
     let g: SkiGlance
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            HStack(alignment: .firstTextBaseline) {
-                HStack(alignment: .firstTextBaseline, spacing: 4) {
-                    Text("\(g.speedKmh)").font(SkiStyle.big(64)).monospacedDigit()
-                        .foregroundStyle(g.onLift ? SkiStyle.muted : .white)
-                    Text("km/h").font(.subheadline.bold()).foregroundStyle(SkiStyle.muted)
-                }
-                Spacer()
-                Text(String(format: "%.1f km", g.km)).font(SkiStyle.big(30)).monospacedDigit().foregroundStyle(.white)
+            NextMove(g: g, box: 52, title: 21)
+            HStack {
+                Text(String(format: "%.1f km · max %d", g.km, g.maxKmh)).font(.subheadline.weight(.semibold)).monospacedDigit()
+                Spacer(minLength: 6)
+                if !g.then.isEmpty && !g.onLift { Text("then \(g.then)").font(.subheadline.weight(.semibold)).lineLimit(1).minimumScaleFactor(0.8) }
             }
-            NowRow(g: g)
+            .foregroundStyle(SkiStyle.muted)
         }
         .padding(.horizontal, 18).padding(.vertical, 14)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(g.spoken)
+    }
+}
+
+/// The direction card: a coloured box (lift orange, or the run's colour), what's next and how far, speed on the right.
+struct NextMove: View {
+    let g: SkiGlance
+    var box: CGFloat = 52
+    var title: CGFloat = 21
+    var eyebrow: String {
+        if g.onLift { return g.liftMin > 0 ? "ON A LIFT · TOP IN \(g.liftMin) MIN" : "ON A LIFT" }
+        if !g.nextLift.isEmpty { return g.nextLiftM >= 0 ? "NEXT · \(SkiText.km(Double(g.nextLiftM)).uppercased())" : "NEXT" }
+        return g.run.isEmpty ? "SKIING" : "ON A \(SkiText.colorWord(g.runColor).uppercased())"
+    }
+    var name: String {
+        if g.onLift { return g.liftName.isEmpty ? "On a lift" : g.liftName }
+        if !g.nextLift.isEmpty { return g.nextLift }
+        return g.run.isEmpty ? "Free skiing" : g.run
+    }
+    var body: some View {
+        HStack(spacing: 12) {
+            ZStack {
+                RoundedRectangle(cornerRadius: box * 0.3).fill(g.onLift || !g.nextLift.isEmpty ? SkiStyle.fill("orange") : SkiStyle.fill(g.runColor))
+                Image(systemName: g.onLift || !g.nextLift.isEmpty ? "cablecar.fill" : "figure.skiing.downhill")
+                    .font(.system(size: box * 0.46, weight: .bold)).foregroundStyle(.white)
+            }
+            .frame(width: box, height: box)
+            VStack(alignment: .leading, spacing: 1) {
+                Text(eyebrow).font(.caption2.weight(.heavy)).foregroundStyle(SkiStyle.muted).lineLimit(1)
+                Text(name).font(SkiStyle.big(title)).foregroundStyle(.white).lineLimit(1).minimumScaleFactor(0.75)
+            }
+            Spacer(minLength: 4)
+            VStack(alignment: .trailing, spacing: -2) {
+                Text("\(g.speedKmh)").font(SkiStyle.big(box * 0.72)).monospacedDigit().foregroundStyle(g.onLift ? SkiStyle.muted : SkiStyle.accent)
+                Text("KM/H").font(.caption2.weight(.heavy)).foregroundStyle(SkiStyle.muted)
+            }
+        }
     }
 }
 
@@ -51,49 +84,36 @@ struct NowRow: View {
     }
 }
 
-/// Expanded Dynamic Island: big speed, km with max and vertical, then the same "now" row.
+/// Expanded Dynamic Island (v2): the same direction card.
 struct IslandExpandedTop: View {
     let g: SkiGlance
-    var body: some View {
-        HStack(alignment: .bottom) {
-            HStack(alignment: .firstTextBaseline, spacing: 4) {
-                Text("\(g.speedKmh)").font(SkiStyle.big(52)).monospacedDigit().foregroundStyle(g.onLift ? SkiStyle.muted : .white)
-                Text("km/h").font(.caption.bold()).foregroundStyle(SkiStyle.muted)
-            }
-            Spacer()
-            VStack(alignment: .trailing, spacing: 0) {
-                Text(String(format: "%.1f km", g.km)).font(SkiStyle.big(26)).monospacedDigit()
-                Text("max \(g.maxKmh) · \(g.vertM.formatted()) m").font(.caption.weight(.semibold)).foregroundStyle(SkiStyle.muted)
-            }
-        }
-    }
+    var body: some View { NextMove(g: g, box: 48, title: 20) }
 }
 
-/// Compact island, leading side: run colour + speed, or a lift icon.
+/// Compact island, leading side: lift icon + metres to it (or minutes to the top), else the run colour + speed.
 struct IslandCompactLeading: View {
     let g: SkiGlance
     var body: some View {
         HStack(spacing: 5) {
             if g.onLift {
-                Image(systemName: "cablecar.fill")
-                Text("Lift").font(.subheadline.bold())
+                Image(systemName: "cablecar.fill").foregroundStyle(SkiStyle.accent)
+                Text(g.liftMin > 0 ? "\(g.liftMin) min" : "Lift").font(.subheadline.bold()).monospacedDigit()
+            } else if !g.nextLift.isEmpty && g.nextLiftM >= 0 {
+                Image(systemName: "cablecar.fill").foregroundStyle(SkiStyle.accent)
+                Text(SkiText.km(Double(g.nextLiftM))).font(.subheadline.bold()).monospacedDigit()
             } else {
                 RunBar(color: g.runColor, width: 6, height: 16)
-                Text("\(g.speedKmh)").font(SkiStyle.big(19)).monospacedDigit()
+                Text(String(format: "%.1f km", g.km)).font(.subheadline.bold()).monospacedDigit()
             }
         }
     }
 }
 
-/// Compact island, trailing side: km, or minutes to the top on a lift.
+/// Compact island, trailing side: speed.
 struct IslandCompactTrailing: View {
     let g: SkiGlance
     var body: some View {
-        if g.onLift && g.liftMin > 0 {
-            Text("top in \(g.liftMin) min").font(.subheadline.weight(.semibold)).foregroundStyle(SkiStyle.muted)
-        } else {
-            Text(String(format: "%.1f km", g.km)).font(SkiStyle.big(19)).monospacedDigit()
-        }
+        Text("\(g.speedKmh) km/h").font(SkiStyle.big(17)).monospacedDigit().foregroundStyle(g.onLift ? SkiStyle.muted : SkiStyle.accent)
     }
 }
 

@@ -1,5 +1,5 @@
 """First-time tour: 5 steps over the real screen, Skip, Replay from Settings, joiners greeted by name.
-Usage: python3 qa/tour_test.py -> qa-out/web-tour/ (log.txt + a screenshot per step, iPhone 16 and SE)"""
+Usage: python3 qa/tour_test.py -> qa-out/web-tour/ (log.txt + a screenshot per step, iPhone 16 and Galaxy S24/S25)"""
 import asyncio, datetime, json, os
 from playwright.async_api import async_playwright
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -44,7 +44,7 @@ async def device(p, name, vp):
     await pg.click('#menuBtn'); await pg.wait_for_timeout(500)
     if await pg.is_visible('#settingsBtn'): await pg.click('#settingsBtn'); await pg.wait_for_timeout(400)
     result(f'[{name}] Replay the tour is in Settings (Tour button)', await pg.is_visible('#tourBtn'))
-    if name == 'iphoneSE':
+    if name == 'galaxyS24':
         sb = await pg.evaluate("(()=>{ const e=document.getElementById('tourBtn'); const r=e.getBoundingClientRect(); return [r.bottom, innerHeight]; })()")
         result(f'[{name}] Settings still fit without scrolling', sb[0] <= sb[1], sb)
     await shot(pg, os.path.join(OUT, f'{name}-settings.png'))
@@ -63,7 +63,7 @@ async def device(p, name, vp):
     await b.close()
 async def main():
     async with async_playwright() as p:
-        await device(p, 'iphone16', {'width': 393, 'height': 852}); await device(p, 'iphoneSE', {'width': 375, 'height': 667})
+        await device(p, 'iphone16', {'width': 393, 'height': 852}); await device(p, 'galaxyS24', {'width': 360, 'height': 780})
     log.close()
     if fails: raise SystemExit(1)
 asyncio.run(main())

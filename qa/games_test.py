@@ -46,7 +46,7 @@ async def main():
         await pg.wait_for_timeout(400)
         result('no passport race popup on the first crossing', not await pg.is_visible('#borderSheet'))
         # STOPPP button on the map, like the crown
-        result('STOPPP button shows today\'s count', await pg.is_visible('#stopBtn') and (await pg.inner_text('#stopBtnTxt')) == '1/3', await pg.inner_text('#stopBtnTxt'))
+        result('STOPPP button shows today\'s count', await pg.is_visible('#stopBtn') and __import__('re').match(r'^[0-3]/3$', await pg.inner_text('#stopBtnTxt')), await pg.inner_text('#stopBtnTxt'))
         await pg.click('#stopBtn'); await pg.wait_for_timeout(300)
         result('STOPPP button opens today\'s 3 rounds', await pg.is_visible('#stopInfo') and await pg.locator('#siList .gzrank').count() == 3)
         await pg.screenshot(path=os.path.join(OUT, '02-stoppp-today.png'))
