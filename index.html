@@ -752,6 +752,10 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .app.sun.tracking .top{background:#000;color:#fff}
 .app.sun .mbtn{border:0}
 .app.sun .btn.ghost{background:#fff;border:2px solid #000}
+
+/* STOPPP button under the crown */
+.stopbtn{display:flex;flex-direction:column;gap:1px;align-items:center;justify-content:center}.stopbtn small{font:800 .68rem var(--f-ui);line-height:1}.stopbtn[hidden]{display:none}
+#siList{gap:0}
 </style>
 
 <div class="app">
@@ -795,6 +799,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
       <button class="mbtn" id="dimBtn" type="button" aria-pressed="false" title="Switch 2D / 3D">3D</button>
       <button class="mbtn" id="placesBtn" type="button" aria-pressed="false" title="Places on the map" aria-label="Places on the map"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 21s-6.5-6.2-6.5-11A6.5 6.5 0 0 1 18.5 10c0 4.8-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg></button>
       <button class="mbtn kingbtn" id="kingBtn" type="button" aria-label="Speed King"><svg viewBox="0 0 24 18" width="24" height="18" aria-hidden="true"><path d="M2 16 L1 4 L7 9 L12 1 L17 9 L23 4 L22 16 Z" fill="#FFC21A" stroke="#B7791F" stroke-width="1.4" stroke-linejoin="round"/></svg><small id="kingTop"></small></button>
+      <button class="mbtn stopbtn" id="stopBtn" type="button" aria-label="STOPPP"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 2.5h6v3l-1 1v1.2c2.4.6 4 2.3 4 4.8v6.5a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 6 19v-6.5c0-2.5 1.6-4.2 4-4.8V6.5l-1-1z" fill="#FF8A3D" stroke="#9A4A12" stroke-width="1.3" stroke-linejoin="round"/><path d="M8.5 14h7" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".85"/></svg><small id="stopBtnTxt"></small></button>
     </div>
   </div>
 
@@ -1000,13 +1005,19 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
   <div class="gzcard snail" id="kingSnail" hidden><div class="gzrow2"><i class="gzav" id="kingSnailAv"></i><span id="kingSnailTxt"></span><span class="gzsnail">Snail of the day 🐌</span></div></div>
   <div class="gzbtns"><button class="btn gzyellow" id="kingOk" type="button">Nice</button></div>
 </div>
+<div class="sheet" id="stopInfo" hidden><div class="sheetin" role="dialog" aria-label="STOPPP today">
+  <div class="sheethead"><div><span class="eyebrow">STOPPP · today</span><h3 id="siTitle">3 flask breaks</h3></div><button class="btn ghost sm" id="siDone" type="button">Done</button></div>
+  <p class="note" style="margin:0 0 4px">It goes off on a long lift (7+ min) in each window, so everyone stops together at the top.</p>
+  <div class="tcard" id="siList"></div>
+  <button class="btn primary" id="siTry" type="button">🥃 Try it now</button>
+  <p class="note" style="margin:0;text-align:center">A test: only on your phone, nobody's round.</p>
+</div></div>
 <div class="sheet" id="gamesSheet" hidden><div class="sheetin" role="dialog" aria-label="Games">
   <div class="sheethead"><h3>Games</h3><button class="btn ghost sm" id="gamesDone" type="button">Done</button></div>
   <div class="gzeb">TODAY’S ROUNDS</div><div id="gToday"></div>
   <div class="gzrow3"><span id="gKingNow"></span><button class="btn ghost sm" id="gKingShow" type="button">Podium</button></div>
   <button class="grow toggle" id="gStop" type="button" role="switch" aria-pressed="true"><span>STOPPP<small>3 flask breaks a day, on long lifts.</small></span><span class="sw"></span></button>
   <button class="grow toggle" id="gRounds" type="button" role="switch" aria-pressed="true"><span>Count me in for rounds<small>Off: you drink, you don’t pour.</small></span><span class="sw"></span></button>
-  <button class="grow toggle" id="gBorder" type="button" role="switch" aria-pressed="true"><span>Passport race<small>First into Switzerland wins.</small></span><span class="sw"></span></button>
   <button class="grow toggle" id="gSpeed" type="button" role="switch" aria-pressed="true"><span>Speed King<small>Fastest on reds and blues. Crowned at Folie Douce.</small></span><span class="sw"></span></button>
   <button class="grow toggle" id="gSfx" type="button" role="switch" aria-pressed="true"><span>Sound clips<small>The crew’s voice notes.</small></span><span class="sw"></span></button>
 </div></div>
@@ -2750,7 +2761,7 @@ function groupLoop(){ clearInterval(gTimer); gTimer=setInterval(()=>{ if(documen
  * through the group (set_games). */
 const GAMES_KEY='skinav-games';
 let games = (()=>{ try{ return JSON.parse(localStorage.getItem(GAMES_KEY))||{}; }catch(e){ return {}; } })();
-games.on = Object.assign({stop:true, border:true, speed:true}, games.on||{});
+games.on = Object.assign({stop:true, border:true, speed:true}, games.on||{}); games.on.border = false;   /* the passport race retired; the passport check stays */
 if(games.rounds==null) games.rounds = true;
 games.fired = games.fired||{}; games.top = games.top||{}; games.swiss = games.swiss||{}; games.shown = games.shown||{};
 const saveGames = () => { try{ localStorage.setItem(GAMES_KEY, JSON.stringify(games)); }catch(e){} };
@@ -2804,9 +2815,9 @@ function gamesOnFix(p, good){
     games.top[day]=st.speed; games.topRun=games.topRun||{}; games.topRun[day]=st.match.name; saveGames(); gPost({['top:'+day]:+st.speed.toFixed(2)}); }
 }
 function fireStop(s, loud){
-  const day=s.day; games.fired[day]=(games.fired[day]||[]).concat([s.n]); saveGames();
+  const day=s.day; if(!s.test){ games.fired[day]=(games.fired[day]||[]).concat([s.n]); saveGames(); renderStopBtn(); }
   const who=s.who||{name:'Someone'}; const mine=!!who.me;
-  $('stopNum').textContent='Stop number '+s.n+' of 3 today';
+  $('stopNum').textContent = s.test ? 'Test run · doesn’t count' : 'Stop number '+s.n+' of 3 today';
   $('stopWho').textContent= mine ? 'You' : who.name.split(' ')[0];
   const av=$('stopAv'); av.style.background=who.color; av.textContent=initials(who.name);
   $('stopWhere').textContent = (mine ? 'Your round: ' : who.name.split(' ')[0]+'’s round: ')+'flask out at the top'+(steps[cur] && steps[cur].type==='lift' ? ' of '+steps[cur].name : '')+'.';
@@ -2819,7 +2830,7 @@ function fireStop(s, loud){
   if(loud || document.visibilityState==='visible') playSfx('stoppp', say_); else say_();
 }
 $('stopOk').onclick=()=>{ $('stopSheet').hidden=true; };
-$('stopSkip').onclick=()=>{ $('stopSheet').hidden=true; games.rounds=false; saveGames(); gPost({rounds:false}, true); toast('You’re out of rounds today.'); renderGames(); tellGamesNative(); };
+$('stopSkip').onclick=()=>{ $('stopSheet').hidden=true; if($('stopNum').textContent.startsWith('Test')) return; games.rounds=false; saveGames(); gPost({rounds:false}, true); toast('You’re out of rounds today.'); renderGames(); tellGamesNative(); };
 /* who crossed into Switzerland first this morning */
 function borderRank(day){
   const rows=[]; const ms = gstate && gstate.members ? gstate.members : [];
@@ -2913,7 +2924,18 @@ function showKing(){
 }
 $('kingOk').onclick=()=>{ $('kingSheet').hidden=true; };
 $('kingBtn').onclick=showKing;
-function renderKingBtn(){ const b=$('kingBtn'); if(!b) return; b.hidden=!games.on.speed; const k=speedRank(gDay())[0];
+function renderStopBtn(){ const b=$('stopBtn'); if(!b) return; b.hidden=!games.on.stop; const n=(games.fired[gDay()]||[]).length; $('stopBtnTxt').textContent=n+'/3'; b.setAttribute('aria-label','STOPPP: '+n+' of 3 today'); }
+function stopRows(box){ box.textContent=''; const fired=games.fired[gDay()]||[], now=Date.now();
+  stopPlan().forEach(s=>{ const r=document.createElement('div'); r.className='gzrank';
+    r.innerHTML='<span class="gzpos"></span><i class="gzav"></i><div class="gznm"><b></b><small></small></div><span class="gzval"></span>';
+    r.querySelector('.gzpos').textContent=s.n; const a=r.querySelector('.gzav'); a.style.background=s.who.color; a.textContent=initials(s.who.name);
+    r.querySelector('b').textContent = s.who.me ? 'Your round' : s.who.name.split(' ')[0]+'’s round'; r.querySelector('small').textContent = 'between '+['11:00 and 12:20','12:20 and 1:40','1:40 and 3:00'][s.n-1];
+    r.querySelector('.gzval').textContent = fired.includes(s.n) ? 'Done 🥃' : (now > s.at ? 'Next long lift' : ''); box.appendChild(r); }); }
+$('stopBtn').onclick=()=>{ stopRows($('siList')); const n=(games.fired[gDay()]||[]).length; $('siTitle').textContent = n>=3 ? 'All 3 done. Legends.' : n ? n+' of 3 done' : '3 flask breaks'; $('stopInfo').hidden=false; };
+$('siDone').onclick=()=>{ $('stopInfo').hidden=true; };
+$('stopInfo').onclick=e=>{ if(e.target.id==='stopInfo') $('stopInfo').hidden=true; };
+$('siTry').onclick=()=>{ $('stopInfo').hidden=true; const p=stopPlan(); fireStop(Object.assign({}, p[0], {test:true}), true); };
+function renderKingBtn(){ renderStopBtn(); const b=$('kingBtn'); if(!b) return; b.hidden=!games.on.speed; const k=speedRank(gDay())[0];
   $('kingTop').textContent = k ? (k.me ? 'You' : initials(k.name)) : ''; b.setAttribute('aria-label', k ? 'Speed King: '+(k.me?'you':k.name)+', '+Math.round(speedOut(k.v))+(units==='imp'?' mph':' km/h') : 'Speed King: no top speeds yet today'); }
 /* badges: crown for yesterday's Speed King, red cross for today's first into Switzerland */
 function gBadges(){
@@ -2946,7 +2968,7 @@ $('gamesDone').onclick=()=>{ $('gamesSheet').hidden=true; };
 $('gKingShow').onclick=()=>{ $('gamesSheet').hidden=true; showKing(); };
 $('gStop').onclick=()=>{ games.on.stop=!games.on.stop; saveGames(); renderGames(); tellGamesNative(); };
 $('gRounds').onclick=()=>{ games.rounds = games.rounds===false; saveGames(); gPost({rounds:games.rounds}, true); renderGames(); tellGamesNative(); };
-$('gBorder').onclick=()=>{ games.on.border=!games.on.border; saveGames(); renderGames(); tellGamesNative(); paintBadges(); };
+
 $('gSfx').onclick=()=>{ store.sfx = !sfxOn(); persist(); renderGames(); if(sfxOn()) playSfx('stoppp'); else if(sfx.el){ sfx.el.pause(); sfx.el=null; } };
 $('gSpeed').onclick=()=>{ games.on.speed=!games.on.speed; saveGames(); renderGames(); paintBadges(); renderKingBtn(); };
 /* the native apps watch for the long lift and the border while the phone is locked */
@@ -3356,7 +3378,7 @@ const TOUR=[
   { el:['fitBtn'], el2:['kingBtn'], next:'Let’s ski',
     say:()=>'All shows the crew. The crown is Speed King. Games run by themselves.',
     html:()=>'<b>ALL</b> shows the crew. The crown is Speed King. Games run by themselves:',
-    chips:['🥃 STOPPP','🇨🇭 Passport race','👑 Speed King'] }
+    chips:['🥃 STOPPP','🇨🇭 Passport check','👑 Speed King'] }
 ];
 const tour={i:-1, o:{}, voice:false};
 function esc(t){ return String(t).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
