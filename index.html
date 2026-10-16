@@ -1955,10 +1955,15 @@ var foldOpen=false;
 $('clearHist').onclick=()=>{
   const b=$('clearHist');
   if(mode!=='off'){ toast('Stop tracking first, then clear.'); return; }
-  if(b.dataset.sure!=='1'){ b.dataset.sure='1'; b.textContent='Tap again: clears every day’s track, km and runs'; setTimeout(()=>{ b.dataset.sure=''; b.textContent='Clear tracking history'; }, 5000); return; }
+  if(b.dataset.sure!=='1'){ b.dataset.sure='1'; b.textContent='Tap again: clears tracks, km, runs, passports and games'; setTimeout(()=>{ b.dataset.sure=''; b.textContent='Clear tracking history'; }, 5000); return; }
   b.dataset.sure=''; b.textContent='Clear tracking history';
   store.vis={}; store.skied=[]; visFromStore();
   Object.assign(st, {trail:[], dist:0, vert:0, max:0, elapsed:0, last:null, onLift:false}); cur=0; store.days={};
+  /* passports, STOPPP rounds done and top speeds start over too; the crew sees your checks cleared */
+  try{ const out={}; Object.keys(games.pass||{}).forEach(k=>out['pass:'+k]=0); Object.keys(games.top||{}).forEach(k=>out['top:'+k]=0);
+    games.pass={}; games.fired={}; games.top={}; games.topRun={}; games.swiss={}; games.nudgeSeen={}; saveGames();
+    if(Object.keys(out).length && typeof gPost==='function') gPost(out, true);
+    renderPassGate(); renderStopBtn(); renderKingBtn(); tellGamesNative(); }catch(e){}
   try{ localStorage.setItem(KEY, JSON.stringify(store)); }catch(e){}
   if(NATIVE) toNative({cmd:'clear'});
   selectDay(di); drawTrail(true); paintSkied(); renderProgress(); renderMenu();
