@@ -11,13 +11,24 @@ p8, kid, iss = sys.argv[1], sys.argv[2], sys.argv[3]
 token = jwt.encode({'iss': iss, 'iat': int(time.time()), 'exp': int(time.time()) + 600, 'aud': 'appstoreconnect-v1'},
                    open(p8).read(), algorithm='ES256', headers={'kid': kid, 'typ': 'JWT'})
 def call(method, path):
-    req = urllib.request.Request('https://api.appstoreconnect.apple.com' + path, method=method,
-                                 headers={'Authorization': 'Bearer ' + token})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        body = r.read()
-        return json.loads(body) if body else {}
+    # Apple's API sometimes answers 500 or times out: try 4 times before giving up
+    for i, wait in enumerate((0, 10, 30, 60)):
+        time.sleep(wait)
+        try:
+            req = urllib.request.Request('https://api.appstoreconnect.apple.com' + path, method=method,
+                                         headers={'Authorization': 'Bearer ' + token})
+            with urllib.request.urlopen(req, timeout=60) as r:
+                body = r.read()
+                return json.loads(body) if body else {}
+        except Exception as e:
+            print(f'  Apple API {method} try {i + 1} failed: {e}')
+    raise RuntimeError('Apple API unavailable')
 
-certs = call('GET', '/v1/certificates?limit=200&fields[certificates]=name,certificateType,displayName')['data']
+try:
+    certs = call('GET', '/v1/certificates?limit=200&fields[certificates]=name,certificateType,displayName')['data']
+except RuntimeError:
+    # cleanup is housekeeping: an Apple outage shouldn't stop the build (the cap is far off)
+    print('::warning::could not reach Apple to clean up old CI certificates; building anyway'); sys.exit(0)
 n = 0
 for c in certs:
     a = c['attributes']
