@@ -879,6 +879,14 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 /* Galaxy S24/S25 height: the week and Settings fit without scrolling */
 @media (max-width:370px){.drawerhead .hbtns .xbtn{width:52px;height:52px}.drawerhead .hbtns{gap:6px}.drawerhead h2{font-size:1.3rem!important;white-space:nowrap!important}}
 @media (max-height:800px){#menuSettings .grow{min-height:50px}#menuSettings .seg button{min-height:44px}#menuMain .daycard{min-height:56px}#menuPlaces{min-height:54px}}
+
+/* top row: Shai keeps his name next to the crew faces */
+.toppills .guidepill{min-width:132px}
+#friendsPill{flex:none;padding:0 10px}
+#friendsPill .av{width:22px;height:22px;margin-left:-9px}
+#friendsPill span.all{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.toppills{gap:6px}
+@media (max-width:370px){.toppills{gap:4px}#friendsPill{padding:0 6px}#friendsPill .av{width:16px;height:16px;margin-left:-9px}#friendsPill .av:first-child{margin-left:0}.toppills .guidepill{min-width:150px}.toppills .guidepill .gplay{display:none}}
 </style>
 
 <div class="app">
@@ -1281,6 +1289,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
       <button type="button" id="simOff">Stop &amp; reset</button>
       <button type="button" id="simDrift">Simulate going off route</button>
     </div>
+    <button class="grow toggle" id="demoCrew" type="button" role="switch" aria-pressed="false" style="margin-top:10px"><span>Demo crew<small>Avsha, Kelner and Yuval ski today's route with you. Only on this phone.</small></span><span class="sw"></span></button>
   </div>
 </div>
 
@@ -2769,10 +2778,11 @@ const JOIN_BASE = 'https://alonmaltzov.github.io/ski-nav/join.html?c=';
 const GCOLORS = ["#C2410C", "#7C3AED", "#0F766E", "#BE185D", "#A16207", "#1D5FE0"];
 let grp = (()=>{ try{ return JSON.parse(localStorage.getItem(GKEY)||'null'); }catch(e){ return null; } })();
 let gstate = null, gTimer = 0, lastPost = 0, friendMarkers = new Map(), meetMarker = null, openFriend = null;
-const saveGrp = () => { try{ grp ? localStorage.setItem(GKEY, JSON.stringify(grp)) : localStorage.removeItem(GKEY); }catch(e){} };
+const saveGrp = () => { if(grp && grp.demo) return; try{ grp ? localStorage.setItem(GKEY, JSON.stringify(grp)) : localStorage.removeItem(GKEY); }catch(e){} };
 const initials = n => (n||'?').trim().split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase();
 const ago = s => s==null ? '' : s < 60 ? 'just now' : s < 3600 ? Math.round(s/60)+' min ago' : Math.round(s/3600)+' h ago';
 async function rpc(fn, args){
+  if(args && args.p_secret==='demo') return fn==='trip_state' ? demoState() : {};
   if(!GB || !GB.url) throw new Error('The group server isn’t set up yet.');
   const r = await fetch(GB.url.replace(/\/$/,'')+'/rest/v1/rpc/'+fn, {method:'POST', headers:{'apikey':GB.key, 'Authorization':'Bearer '+GB.key, 'Content-Type':'application/json'}, body:JSON.stringify(args||{})});
   const d = await r.json().catch(()=>null);
@@ -2782,7 +2792,7 @@ async function rpc(fn, args){
 const platform = () => NATIVE ? (window.__ANDROID ? 'android' : 'ios') : /android/i.test(navigator.userAgent) ? 'android-web' : 'web';
 /* sharing stops at 6 pm only during the trip itself; practice days (NYC tests) share any time */
 function stopHour(){ const t=gstate && gstate.trip, n=new Date(), d=n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0'); return t && t.starts_on && d>=t.starts_on && d<=t.ends_on ? 18 : 24; }
-function tellNative(){ if(NATIVE) toNative({cmd:'group', url:GB&&GB.url||'', key:GB&&GB.key||'', secret: grp ? grp.secret : '', sharing: !!(grp && grp.sharing!==false), stopHour: stopHour()}); }
+function tellNative(){ if(NATIVE) toNative({cmd:'group', url:GB&&GB.url||'', key:GB&&GB.key||'', secret: grp && !grp.demo ? grp.secret : '', sharing: !!(grp && grp.sharing!==false), stopHour: stopHour()}); }
 
 /* members, invite, sharing (menu > people button) */
 function showGroup(on){ $('menuMain').hidden=on; $('menuSettings').hidden=true; $('menuGroup').hidden=!on; if(on){ renderGroup(); refreshGroup(); } }
@@ -2892,12 +2902,12 @@ function renderFriendsPill(){
   { const t=$('groupBtnTxt'); if(t) t.textContent = others.length ? 'Group' : 'Invite'; }
   if(!others.length){ p.hidden=true; return; }
   const vis=others.filter(shown); (vis.length?vis:others).slice(0,3).forEach(m=>{ const a=document.createElement('i'); a.className='av'; a.style.background=m.color; if(!vis.length) a.style.opacity=.4; p.appendChild(a); });
-  const live=vis.filter(m=>m.pos && m.pos.age_s<300).length; const s=document.createElement('span'); s.textContent = vis.length===others.length ? 'All '+others.length : vis.length+' of '+others.length; p.appendChild(s);
+  const live=vis.filter(m=>m.pos && m.pos.age_s<300).length; const s=document.createElement('span'); s.textContent = vis.length===others.length ? 'All '+others.length : vis.length+' of '+others.length; if(vis.length===others.length) s.className='all'; p.appendChild(s);
   p.setAttribute('aria-label', 'Showing '+vis.length+' of '+others.length+' friends, '+live+' on the map now. Choose who to see');
 }
 async function refreshGroup(){
   if(!grp || !GB || !GB.url) return;
-  try{ gstate=await rpc('trip_state',{p_secret:grp.secret}); grp.role=gstate.role; saveGrp();
+  try{ gstate=await rpc('trip_state',{p_secret:grp.secret}); grp.role=gstate.role; saveGrp(); if(!grp.demo && store.demoCrew) addDemo(gstate);
     // the organizer's plan style is the group's plan style
     const pv=gstate.trip.plan && gstate.trip.plan.variant;
     if(gstate.role!=='owner' && pv && WEEKS[pv] && pv!==variant){ setVariant(pv); toast('Plan style set by the organizer.'); }
@@ -2907,6 +2917,34 @@ async function refreshGroup(){
   if(typeof paintBadges==='function'){ paintBadges(); tellGamesNative(); }
   if(typeof passNudgeCheck==='function') passNudgeCheck();
 }
+
+/* ---------- demo crew (Test mode): the full group experience before the friends join ---------- */
+const DEMO_CREW=[{id:'demo-avsha', name:'Avsha', color:'#7C3AED', platform:'android', lag:0.06, pass:true, top:19.4},
+                 {id:'demo-kelner', name:'Kelner', color:'#16A34A', platform:'android', lag:0.17, pass:false, top:18.1},
+                 {id:'demo-yuval', name:'Yuval', color:'#DC2626', platform:'ios', lag:0.31, pass:false, top:20.6}];
+function demoTrack(){ const pts=[]; (steps||[]).forEach(s=>{ if(s.type==='end') return; (s.coords||[]).forEach(c=>pts.push({c, s})); }); return pts; }
+function demoMembers(){
+  const pts=demoTrack(), n=pts.length, k=gDay(), t=Date.now()/1000;
+  return DEMO_CREW.map((d,i)=>{
+    const at = n ? pts[Math.floor(((t/6 + d.lag*n)) % n)] : null;
+    const g={rounds:true}; if(d.pass) (CONFIG.trip||[]).forEach((tr,j)=>{ if(/^Switzerland/i.test((WEEK[j]||{}).title||'')) g['pass:'+gDay(new Date(tr[0],tr[1],tr[2]))]=Date.now()-(40+i*7)*60000; }); g['top:'+k]=d.top;
+    return {id:d.id, name:d.name, color:d.color, role:'member', sharing:true, platform:d.platform, games:g, demo:true,
+      pos: at ? {lat:at.c[0], lon:at.c[1], acc:8, speed: at.s.type==='lift' ? 3 : 9+i, on_lift: at.s.type==='lift', run: at.s.type==='lift' ? '' : stepLabel(at.s).replace(/^Ski /,'').replace(/ \((blue|red|black|green)\).*$/,''), km: 4+i*2.5, age_s: 20+i*25} : null };
+  });
+}
+function demoState(){
+  const me={id:grp.member_id, name:grp.name||'Alon', color:grp.color||'#F5B700', role:'owner', sharing:true, platform: NATIVE ? 'ios' : 'web', games:{rounds: typeof games==='undefined' || games.rounds!==false}, pos: myPos() ? {lat:myPos()[0], lon:myPos()[1], acc:8, speed:0, on_lift:false, run:'', km:0, age_s:5} : null};
+  return {trip:{id:'demo', name:CONFIG.title, invite_code:'DEMO', plan:{}, starts_on:null, ends_on:null}, me:me.id, role:'owner', members:[me].concat(demoMembers()), meet:null};
+}
+function addDemo(gs){ const have=new Set(gs.members.map(m=>m.name.split(' ')[0].toLowerCase())); demoMembers().forEach(m=>{ if(!have.has(m.name.toLowerCase())) gs.members.push(m); }); }
+function setDemoCrew(on){
+  store.demoCrew=!!on; persist(); $('demoCrew').setAttribute('aria-pressed', on?'true':'false');
+  if(on && !grp){ grp={member_id:'demo-me', name:'Alon', color:'#F5B700', secret:'demo', role:'owner', sharing:true, demo:true}; }
+  if(!on && grp && grp.demo){ grp=null; gstate=null; clearFriends(); renderFriendsPill(); renderPick && renderPick(); toast('Demo crew off.'); return; }
+  refreshGroup(); if(on) toast('Demo crew on: Avsha, Kelner and Yuval.');
+}
+$('demoCrew').onclick=()=>setDemoCrew(store.demoCrew!==true);
+if(store.demoCrew){ $('demoCrew').setAttribute('aria-pressed','true'); if(!grp) grp={member_id:'demo-me', name:'Alon', color:'#F5B700', secret:'demo', role:'owner', sharing:true, demo:true}; setTimeout(()=>refreshGroup(), 800); }
 function groupLoop(){ clearInterval(gTimer); gTimer=setInterval(()=>{ if(document.visibilityState==='visible') refreshGroup(); }, 15000); }
 
 /* ---------- games: STOPPP flask breaks, passport check, Speed King ----------
