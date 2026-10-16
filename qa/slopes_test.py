@@ -30,7 +30,7 @@ async def main():
         ps = await pg.evaluate('window.__ski.planSlopes()')
         known = [x for x in ps if x['st']]
         result('most of today\'s runs are matched to the resort list', len(known) >= 0.7 * len(ps), f'{len(known)} of {len(ps)}')
-        await pg.click('#liftsPill'); await pg.wait_for_timeout(800)
+        await pg.evaluate("window.__ski.openBrief(); document.getElementById('bToday').click()"); await pg.wait_for_timeout(800)
         big = await pg.evaluate("document.querySelector('#liftCard .larea > summary').textContent")
         result('whole area: lifts and slopes like the official site', 'lifts' in big and 'slopes' in big, big)
         heads = await pg.evaluate("[...document.querySelectorAll('#liftRows .lsub')].map(x=>x.textContent)")

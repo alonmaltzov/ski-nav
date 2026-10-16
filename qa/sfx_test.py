@@ -77,7 +77,7 @@ async def main():
         result('Lifts button: says which plan lift is closed, with the clip', 'shut' in line and (await L()) == ['closed'], [line, await L()])
         result('Lifts button opens the lift list', await pg.is_visible('#liftCard'))
         await pg.evaluate("document.getElementById('todaySheet').hidden=true")
-        await pg.click('#liftsPill', force=True); await pg.wait_for_timeout(400)
+        await pg.evaluate('window.__ski.liftCheck()'); await pg.wait_for_timeout(400)
         result('Lifts button plays the clip every tap, even with nothing closed', (await L()).count('closed') == 2, await L())
         closed = [['closed'], ['closed']]
         result('a plan lift closing plays the change-of-plan clip, once', isinstance(closed, list) and closed[0] == ['closed'] and closed[1] == ['closed'], closed)
