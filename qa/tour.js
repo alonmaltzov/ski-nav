@@ -190,7 +190,12 @@
 
     // map buttons
     await tap('placesBtn'); await screen('places');
-    await tap('placesBtn');
+    $('placeCats').dispatchEvent(new PointerEvent('pointerdown', { bubbles: true })); await sleep(200);
+    result('Places stays open when you tap inside it', !$('placesBox').hidden, '');
+    $('map').dispatchEvent(new PointerEvent('pointerdown', { bubbles: true })); await sleep(200);
+    result('Places closes when you tap outside it', $('placesBox').hidden, '');
+    await tap('placesBtn'); await tap('placesClose');
+    result('Places has a close button', $('placesBox').hidden, '');
     await tap('dimBtn', 1500); await screen('map-3d', { settle: 1500 });
     await tap('dimBtn', 1200);
     await tap('fitBtn', 1200); await screen('map-all');
