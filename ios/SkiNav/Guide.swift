@@ -242,6 +242,7 @@ final class Guide: NSObject, AVSpeechSynthesizerDelegate, UNUserNotificationCent
     // MARK: Morning notification
 
     func schedule(_ body: [String: Any]) {
+        if ProcessInfo.processInfo.arguments.contains("-glassDemo") { return }   // demo recording: no permission prompt
         let center = UNUserNotificationCenter.current()
         center.removePendingNotificationRequests(withIdentifiers: (0..<21).map { "brief-\($0)" })
         guard body["on"] as? Bool ?? true, let dates = body["dates"] as? [[Int]], !dates.isEmpty else { return }

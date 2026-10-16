@@ -131,7 +131,8 @@ struct GlassDemoRoot: View {
     /// the scripted walk-through for the screen recording: tabs, then the route sheet, then Ask
     private func autoplay() async {
         func wait(_ s: Double) async { try? await Task.sleep(for: .seconds(s)) }
-        await wait(9)
+        await wait(48)   // the simulator draws the 3D map slowly; start once it's on screen
+        print("[demo] home"); await wait(3)
         print("[demo] tab week");   withAnimation { tab = 1 }; await wait(2.5)
         print("[demo] tab crew");   withAnimation { tab = 2 }; await wait(2.5)
         print("[demo] tab games");  withAnimation { tab = 3 }; await wait(2.5)

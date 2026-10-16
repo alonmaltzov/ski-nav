@@ -55,15 +55,6 @@ jobs:
           xcrun simctl install "$UDID" "$APP"
           xcrun simctl privacy "$UDID" grant location-always "$BUNDLE" || xcrun simctl privacy "$UDID" grant location "$BUNDLE" || true
           xcrun simctl location "$UDID" set 46.193310,6.768150 || true
-          # still frames first: the home screen with the native glass controls
-          xcrun simctl launch --console-pty --terminate-running-process "$UDID" "$BUNDLE" -glassDemo > $OUT/still.log 2>&1 &
-          SP=$!
-          sleep 12
-          xcrun simctl io "$UDID" screenshot $OUT/00-home-12s.png
-          sleep 14
-          xcrun simctl io "$UDID" screenshot $OUT/01-home-native.png
-          # then the walk-through, recorded
-          kill $SP 2>/dev/null; xcrun simctl terminate "$UDID" "$BUNDLE" || true
           xcrun simctl io "$UDID" recordVideo --codec=h264 --force $OUT/glass-demo.mp4 &
           REC=$!
           sleep 2
@@ -77,7 +68,7 @@ jobs:
               sleep 1.2; xcrun simctl io "$UDID" screenshot "$OUT/$(printf %02d $((shots+1)))-$name.png" >/dev/null 2>&1 || true
             done
             if grep -q "\[demo\] DONE" $OUT/log.txt; then break; fi
-            if [ $(( $(date +%s) - start )) -gt 120 ]; then break; fi
+            if [ $(( $(date +%s) - start )) -gt 180 ]; then break; fi
             sleep 0.3
           done
           sleep 1
