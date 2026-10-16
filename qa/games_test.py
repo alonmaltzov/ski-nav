@@ -39,14 +39,23 @@ async def main():
         result('only one STOPPP fires', sum(len(v) for v in json.loads(fired).values()) == 1, fired)
         await pg.evaluate('''t0 => window.__ski.gamesOnFix({lat:46.19, lon:6.77, acc:8, t:t0+250000}, true)''', t0)
         result('the same STOPPP does not fire twice', not await pg.is_visible('#stopSheet'))
-        # passport check at 10:05: a fix on the Swiss side
+        # the passport race is retired: crossing into Switzerland shows nothing
         await pg.clock.set_system_time(datetime.datetime(2027, 1, 20, 10, 5))
         tb = await pg.evaluate('Date.now()')
         await pg.evaluate('''t => { window.__ski.st.onLift=false; window.__ski.gamesOnFix({lat:46.1838, lon:6.8355, acc:8, t}, true); }''', tb)
         await pg.wait_for_timeout(400)
-        result('passport check after the first crossing', await pg.is_visible('#borderSheet'), await pg.inner_text('#borderLine'))
-        await pg.screenshot(path=os.path.join(OUT, '02-passport.png'))
-        await pg.click('#borderOk')
+        result('no passport race popup on the first crossing', not await pg.is_visible('#borderSheet'))
+        # STOPPP button on the map, like the crown
+        result('STOPPP button shows today\'s count', await pg.is_visible('#stopBtn') and (await pg.inner_text('#stopBtnTxt')) == '1/3', await pg.inner_text('#stopBtnTxt'))
+        await pg.click('#stopBtn'); await pg.wait_for_timeout(300)
+        result('STOPPP button opens today\'s 3 rounds', await pg.is_visible('#stopInfo') and await pg.locator('#siList .gzrank').count() == 3)
+        await pg.screenshot(path=os.path.join(OUT, '02-stoppp-today.png'))
+        before = await pg.evaluate('JSON.stringify(window.__ski.games.fired)')
+        await pg.click('#siTry'); await pg.wait_for_timeout(400)
+        result('Try it now: a test STOPPP that says so', await pg.is_visible('#stopSheet') and 'Test' in await pg.inner_text('#stopNum'), await pg.inner_text('#stopNum'))
+        result('the test doesn\'t count', await pg.evaluate('JSON.stringify(window.__ski.games.fired)') == before)
+        await pg.click('#stopSkip'); await pg.wait_for_timeout(200)
+        result('"Not me today" on a test keeps you in the rounds', await pg.evaluate('window.__ski.games.rounds') is not False)
         # Speed King
         await pg.evaluate('''() => { const g=window.__ski.games; const d=new Date(); const k=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); g.top[k]=20.6; window.__ski.showKing(); }''')
         await pg.wait_for_timeout(400)
