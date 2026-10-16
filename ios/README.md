@@ -63,3 +63,4 @@ There are three layers. You only need to do the last one by hand.
   Apple Developer account ($99/yr). Either get it, or remove HealthKit and the watch will only track
   while its screen is on.
 - After any update: `git pull`, then `./setup.sh`, then Run.
+
