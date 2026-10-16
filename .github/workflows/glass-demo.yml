@@ -38,6 +38,7 @@ jobs:
       - name: Record the demo
         run: |
           set -x
+          set +e
           OUT=demo-out; mkdir -p $OUT
           APP=ios/dd/Build/Products/Debug-iphonesimulator/SkiNav.app; BUNDLE=com.alonmaltzov.SkiNav
           UDID=$(xcrun simctl list devices available -j | python3 -c "
@@ -55,11 +56,14 @@ jobs:
           xcrun simctl privacy "$UDID" grant location-always "$BUNDLE" || xcrun simctl privacy "$UDID" grant location "$BUNDLE" || true
           xcrun simctl location "$UDID" set 46.193310,6.768150 || true
           # still frames first: the home screen with the native glass controls
-          xcrun simctl launch --terminate-running-process "$UDID" "$BUNDLE" -glassDemo > $OUT/still.log 2>&1
+          xcrun simctl launch --console-pty --terminate-running-process "$UDID" "$BUNDLE" -glassDemo > $OUT/still.log 2>&1 &
+          SP=$!
+          sleep 12
+          xcrun simctl io "$UDID" screenshot $OUT/00-home-12s.png
           sleep 14
           xcrun simctl io "$UDID" screenshot $OUT/01-home-native.png
           # then the walk-through, recorded
-          xcrun simctl terminate "$UDID" "$BUNDLE" || true
+          kill $SP 2>/dev/null; xcrun simctl terminate "$UDID" "$BUNDLE" || true
           xcrun simctl io "$UDID" recordVideo --codec=h264 --force $OUT/glass-demo.mp4 &
           REC=$!
           sleep 2
@@ -67,13 +71,13 @@ jobs:
           LP=$!
           start=$(date +%s); shots=0
           while true; do
-            n=$(grep -c "\[demo\]" $OUT/log.txt 2>/dev/null); n=${n:-0}
+            n=$(grep -c "\[demo\]" $OUT/log.txt 2>/dev/null || true); n=${n:-0}
             while [ $shots -lt $n ]; do
               shots=$((shots+1)); name=$(grep "\[demo\]" $OUT/log.txt | sed -n "${shots}p" | sed 's/.*\[demo\] //' | tr -cd 'a-zA-Z0-9 ' | tr ' ' '-')
               sleep 1.2; xcrun simctl io "$UDID" screenshot "$OUT/$(printf %02d $((shots+1)))-$name.png" >/dev/null 2>&1 || true
             done
-            grep -q "\[demo\] DONE" $OUT/log.txt && break
-            [ $(( $(date +%s) - start )) -gt 120 ] && break
+            if grep -q "\[demo\] DONE" $OUT/log.txt; then break; fi
+            if [ $(( $(date +%s) - start )) -gt 120 ]; then break; fi
             sleep 0.3
           done
           sleep 1

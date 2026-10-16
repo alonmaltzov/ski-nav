@@ -178,7 +178,9 @@ struct WebAppView: UIViewRepresentable {
             let hide = "try{localStorage.setItem('skinav-onb','1')}catch(e){};" +
                 "document.addEventListener('DOMContentLoaded',()=>{const s=document.createElement('style');" +
                 "s.textContent='header.top,.floatmenu,.toppills,.mapbtns,#navPanel{display:none!important}.legend{bottom:calc(env(safe-area-inset-bottom) + 300px)!important}';" +
-                "document.head.appendChild(s)});"
+                "document.head.appendChild(s)});" +
+                "[1500,4000,8000].forEach(t=>setTimeout(()=>{dispatchEvent(new Event('resize'));const m=document.getElementById('map'),c=document.querySelector('.maplibregl-canvas');" +
+                "console.warn('glassdemo map '+(m&&m.clientWidth)+'x'+(m&&m.clientHeight)+' canvas '+(c&&c.width)+'x'+(c&&c.height)+' win '+innerWidth+'x'+innerHeight)},t));"
             config.userContentController.addUserScript(WKUserScript(source: hide, injectionTime: .atDocumentStart, forMainFrameOnly: true))
         }
         config.allowsInlineMediaPlayback = true
