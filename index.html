@@ -761,10 +761,122 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .gphoto{object-fit:cover;border-radius:50%;-webkit-user-drag:none;pointer-events:none}
 .talking .gphoto,.listening .gphoto{animation:gbob .32s ease-in-out infinite alternate}
 @keyframes gbob{from{transform:scale(1)}to{transform:scale(1.06)}}
+
+/* ===== gloves first v2 ===== */
+/* glove sizes */
+.mbtn{width:60px;height:60px;border-radius:30px}
+.mapbtns{border-radius:31px}
+.floatmenu{width:60px;height:60px;border-radius:30px}
+.floatmenu svg{width:26px;height:26px}
+.tpill{height:60px;border-radius:30px}
+.toppills{left:82px;right:80px}
+.gpface{width:48px;height:48px}
+.gplay{width:40px;height:40px;border-radius:20px}
+.gtxt b{font-size:1.05rem}.gtxt small{font-size:.85rem}
+.btn{min-height:60px}
+.btn.sm{min-height:56px;padding:0 20px;font-size:1.05rem}
+.xbtn{width:56px;height:56px}
+.grow{min-height:60px;font-size:1.08rem}
+.daycard{min-height:64px}
+.seg button{min-height:52px}
+.legend{font-size:.85rem}
+#placesBtn{display:none!important}
+.railshai{display:none!important;padding:0}
+.railshai .gphoto{width:44px;height:44px}
+/* home: one big Start, Steps beside it */
+.app:not(.tracking) .actions{grid-template-columns:minmax(0,1fr) 112px;gap:10px}
+.app:not(.tracking) #goBtn,.app:not(.tracking) #stepsBtn{grid-column:auto;min-height:84px;border-radius:42px;font-size:1.3rem}
+.app:not(.tracking) #stepsBtn{font-weight:800}
+#goBtn.locked{min-height:84px!important;font-size:1.1rem!important}
+.passbtn{min-height:76px;font-size:1.25rem;border-radius:38px}
+.homesum h2{font-size:2rem}
+.homesum p{font-size:1.05rem}
+/* skiing: direction card on top (black, under the island), speed card at the bottom */
+.app.tracking #navPanel{grid-row:1;margin:calc(env(safe-area-inset-top,0px) + 4px) 8px 0;border-radius:38px;background:#07090b;color:#fff;border:0;box-shadow:0 12px 30px rgb(0 0 0/.35);-webkit-backdrop-filter:none;backdrop-filter:none;padding:16px 16px 16px;gap:8px}
+.app.tracking .top{grid-row:3;margin:0 8px calc(8px + env(safe-area-inset-bottom,0px));border-radius:40px;padding:8px 16px 16px;grid-template-columns:auto minmax(0,1fr) auto;column-gap:14px;row-gap:4px;align-items:center}
+.app.tracking .top .spgrab{grid-column:1/-1}
+.app.tracking .top .holdstop{grid-column:3;grid-row:2}
+.app.tracking .top .speedrow{grid-row:2}.app.tracking .top .stats{grid-row:2}
+.app.tracking #navPanel .next{grid-template-columns:auto minmax(0,1fr);gap:14px}
+.app.tracking #navPanel .badge{width:76px;height:76px;border-radius:24px;font-size:1.7rem}
+.app.tracking #navPanel .eyebrow{color:#9AA7B2;font-weight:800;letter-spacing:.07em;font-size:.78rem}
+.app.tracking #navPanel .nexttxt h2{color:#fff;font-size:1.45rem;line-height:1.12}
+.app.tracking #navPanel .nexttxt p{color:#C9D3DB;font-size:.9rem}
+.ndist{display:none}
+.app.tracking .ndist:not(:empty){display:block;font:800 2.1rem/1 var(--f-num);color:#fff;font-variant-numeric:tabular-nums;margin-top:2px}
+.app.tracking #navPanel .then{color:#9AA7B2}.app.tracking #navPanel .then b{color:#fff}
+.app.tracking #navPanel .skip,.app.tracking #goBtn,.app.tracking #stepsBtn{display:none!important}
+.app.tracking #navPanel .actions{display:none}
+.app.tracking.offr #navPanel{background:#5A0E12}
+.app.tracking.offr #navPanel .actions{display:grid;grid-template-columns:1fr}
+.app.tracking.offr #replanBtn{display:flex;align-items:center;justify-content:center;min-height:64px;border-radius:32px;background:#fff;color:#B3161C;border:0;font:800 1.2rem var(--f-ui)}
+.app.tracking .offroute{display:none}
+/* speed card contents */
+.spgrab{display:none}
+.app.tracking .spgrab{display:flex;flex-direction:column;align-items:center;gap:3px;border:0;background:none;padding:2px 0 4px;color:var(--muted);font:800 .7rem var(--f-ui);letter-spacing:.06em;text-transform:uppercase;min-height:30px}
+.spgrab i{width:44px;height:5px;border-radius:3px;background:color-mix(in srgb,var(--ink) 25%,transparent)}
+.app.tracking .speed{font-size:4.4rem}
+.app.tracking .stats{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:6px}
+.app.tracking .stat b{font-size:1.35rem}
+.holdstop{display:none}
+.app.tracking .holdstop{display:block;position:relative;width:80px;height:80px;border:0;background:none;padding:0;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.holdstop svg{position:absolute;inset:0;width:80px;height:80px;transform:rotate(-90deg)}
+.hs-track{fill:none;stroke:rgb(216 31 38/.18);stroke-width:6}
+.hs-ring{fill:none;stroke:#D81F26;stroke-width:6;stroke-linecap:round}
+.hs-in{position:absolute;inset:9px;border-radius:50%;background:#D81F26;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;transition:transform .15s}
+.hs-in i{width:16px;height:16px;border-radius:4px;background:#fff}
+.hs-in b{font:800 .62rem var(--f-ui);letter-spacing:.06em}
+.holdstop.on .hs-in{transform:scale(.92)}
+/* skiing: the map tools, Shai on top, no menu or pills over the map */
+.app.tracking .railshai{display:grid!important}
+.app.tracking #dimBtn,.app.tracking #compassBtn,.app.tracking .floatmenu{display:none!important}
+.app.tracking .toppills{left:12px;right:auto;top:calc(var(--topovl,0px) + 10px)}
+.app.tracking .donechip{top:calc(var(--topovl,0px) + 80px)!important}
+.app.tracking .legend{display:none}
+/* Sun mode while skiing: the speed card goes solid white with a black edge */
+.app.sun.tracking .top{background:#fff;color:#000;border:3px solid #000}
+.app.sun.tracking .speed small,.app.sun.tracking .stat span{color:#000}
+.app.sun.tracking .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+.app.sun.tracking .stat:nth-child(n+3){display:grid}
+.app.sun.tracking .speed{font-size:4.6rem}
+/* sheets: bigger rows and buttons */
+.sheetin .btn,.drawerin .btn{min-height:60px}
+.htile{min-height:140px}
+.hubagain{min-height:52px;font-size:1.05rem}
+.tbtns .btn{min-height:60px;padding:0 26px}
+.jcolors button{max-width:64px}
+.jbtn{min-height:68px}
+.pknob{width:64px;height:64px;border-radius:32px;left:6px;top:6px}
+.ptrack{height:78px;border-radius:39px}
+.plabel{inset:0 16px 0 80px}
+/* audit fixes: nothing under 12 px, the steps handle is a real target, Shai lives in the column while skiing */
+.app.tracking .toppills>#wxPill.guidepill.guidepill{display:none!important}
+.app.tracking .spgrab{min-height:44px;font-size:.78rem}
+.kingbtn small,.stopbtn small{font-size:.78rem!important}
+.hs-in b{font-size:.78rem}
+.app.tracking .stat span{font-size:.75rem}
+@media (max-width:370px){.drawerhead .invitebtn span{display:none}.drawerhead .hbtns .invitebtn.xbtn{width:56px;min-width:56px;flex:none;padding:0;justify-content:center}.drawerhead h2{font-size:1.45rem;white-space:normal!important}.drawerhead>div:first-child{min-width:0;flex:1}}
+/* not enough height: drop the compass, keep one column */
+.mapwrap.short .mapbtns{grid-template-columns:none!important;direction:ltr}
+.mapwrap.short #compassBtn{display:none!important}
+/* Galaxy S24 / S25 width (360): tighter speed card */
+@media (max-width:370px){.app.tracking .speed{font-size:3.5rem}.app.tracking .speed small{font-size:.8rem}.app.tracking .stat b{font-size:1.1rem}.app.tracking .stat span{font-size:.75rem}.app.tracking .top{column-gap:10px;padding:8px 12px 14px}.app.tracking .holdstop{width:72px;height:72px}.holdstop svg{width:72px;height:72px}.hs-in{inset:8px}.app.tracking #navPanel .badge{width:64px;height:64px}.app.tracking #navPanel .nexttxt h2{font-size:1.3rem}.app.tracking .ndist:not(:empty){font-size:1.9rem}}
+/* crew: big faces in Everyone mode, tap = go to them */
+.picklist.all{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;background:none!important;border:0!important;box-shadow:none!important}
+.picklist.all .prow{flex-direction:column;align-items:flex-start;gap:8px;border:1px solid var(--glass-brd);border-radius:26px;background:var(--glass-in);padding:14px;min-height:150px;box-sizing:border-box;position:relative}
+.picklist.all .prow .pav{width:56px;height:56px;font-size:1.2rem;line-height:56px}
+.picklist.all .prow .pwho b{font-size:1.15rem;font-weight:800}
+.picklist.all .prow .pwho::after{content:"";position:absolute;inset:0}
+.picklist.all .prow .pdist{color:var(--accent);font-size:1rem}
+.prow{min-height:64px}
+.prow .ptog .sw{width:60px;height:36px;border-radius:18px}.prow .ptog .sw::after{width:32px;height:32px}.prow .ptog[aria-pressed="true"] .sw::after{left:26px}
+.bigcall{min-height:72px!important;border-radius:36px!important;font-size:1.2rem;font-weight:800}
+#pickInvite{border-radius:32px}
 </style>
 
 <div class="app">
   <header class="top">
+    <button class="spgrab" id="spGrab" type="button" aria-label="Steps"><i></i><span>Swipe up · steps</span></button>
     <div class="daybar">
       
       <button class="daytitle" id="dayTitle" type="button"><span id="dayEyebrow">Day 1 · Sun Jan 17</span><b id="dayName">Avoriaz north</b></button>
@@ -783,6 +895,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
       <div class="stat"><b id="vert">0</b><span id="vertu">Vert m ↓</span></div>
       <div class="stat"><b id="clock">0:00</b><span>Time</span></div>
     </div>
+    <button class="holdstop" id="holdStop" type="button" aria-label="Hold to stop"><svg viewBox="0 0 80 80" aria-hidden="true"><circle cx="40" cy="40" r="35" class="hs-track"/><circle cx="40" cy="40" r="35" class="hs-ring" id="holdRing"/></svg><span class="hs-in"><i></i><b>HOLD</b></span></button>
   </header>
 
   <div class="mapwrap">
@@ -798,6 +911,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
     <div class="donechip" id="doneChip" hidden><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#15803d"/><path d="M7 12.5l3.2 3.2L17 8.8" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span></span></div>
     <div class="legend" id="legend" aria-hidden="true"><span><i class="lg-ahead"></i>Ahead</span><span><i class="lg-done"></i>Done</span><span><i class="lg-you"></i>You</span></div>
     <div class="mapbtns">
+      <button class="mbtn railshai" id="railShai" type="button" aria-label="Shai: brief, weather, lifts, call the crew"><img class="gface gphoto" src="data:image/jpeg;base64,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" alt="" aria-hidden="true" draggable="false"></button>
       <button class="mbtn" id="followBtn" type="button" aria-pressed="true" title="Follow my location">ME</button>
       <button class="mbtn" id="compassBtn" type="button" aria-pressed="false" title="Show which way I'm facing" aria-label="Compass"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z" fill="currentColor"/></svg></button>
       <button class="mbtn" id="fitBtn" type="button" title="Show whole route">ALL</button>
@@ -819,6 +933,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
       <div class="nexttxt">
         <span class="eyebrow" id="nEyebrow">Next</span>
         <h2 id="nTitle">Loading route</h2>
+        <b class="ndist" id="nDist"></b>
         <p id="nMeta"></p>
       </div>
       <div class="skip">
@@ -866,6 +981,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
         <span class="gline"><span class="big" id="goalBig">0 of 0</span><span class="sub" id="goalSub"></span></span>
         <div class="bar"><i class="b" id="goalBarDone"></i><i class="p" id="goalBarPlan"></i></div>
       </button>
+      <div class="group"><button class="grow link" id="menuPlaces" type="button"><span>Places on the map<small>Restaurants, cafés, snow parks, toilets</small></span></button></div>
       <div class="sect">Plan</div>
       <div class="group" id="dayList"></div>
     </div>
@@ -1111,6 +1227,8 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
     <div class="sheethead"><h3>On your map</h3><button class="btn ghost sm" id="pickDone" type="button">Done</button></div>
     <div class="seg pickseg" id="pickSeg"><button type="button" data-v="all" aria-pressed="true">Everyone</button><button type="button" data-v="choose" aria-pressed="false">Choose</button></div>
     <div class="picklist" id="pickList"></div>
+    <a class="btn callbtn bigcall" id="pickCall" href="#" hidden>Call the crew</a>
+    <button class="btn ghost" id="pickInvite" type="button">Invite a friend</button>
     <p class="note" style="margin:0;text-align:center">Tap a name to fly to them. ALL shows you, today's route and everyone you're showing. Only you see this choice.</p>
   </div>
 </div>
@@ -1677,13 +1795,29 @@ const scopeBounds = [[scopeB[0],scopeB[1]],[scopeB[2],scopeB[3]]];
 /* ---------- views: route navigation vs runs progress ---------- */
 let progFilter='all';
 function glassInsets(){ const A=document.querySelector('.app'); if(!A) return; const tr=A.classList.contains('tracking') && !A.classList.contains('prog-view');
-  const top=tr ? $('navPanel').parentElement.querySelector('.top') : null, bot=[$('navPanel'),$('progPanel')].find(x=>x && !x.hidden), H=A.clientHeight;
-  const t = top ? Math.round(top.getBoundingClientRect().bottom) : 0, b = bot ? Math.round(H - bot.getBoundingClientRect().top) : 0;
+  const H=A.clientHeight, sp=A.querySelector('.top'), nav=$('navPanel'), prog=$('progPanel');
+  const topEl = tr ? nav : null, botEl = tr ? sp : [nav,prog].find(x=>x && !x.hidden);
+  const t = topEl ? Math.round(topEl.getBoundingClientRect().bottom) : 0, b = botEl ? Math.round(H - botEl.getBoundingClientRect().top) : 0;
   A.style.setProperty('--topovl', t+'px'); A.style.setProperty('--botovl', b+'px'); fitMapBtns();
   try{ if(typeof map!=='undefined' && map.setPadding){ const cur=map.getPadding(); if(cur.top!==t || cur.bottom!==b){ if(map.isMoving()){ if(!glassInsets.wait){ glassInsets.wait=true; map.once('moveend', ()=>{ glassInsets.wait=false; glassInsets(); }); } } else map.setPadding({top:t, bottom:b, left:0, right:0}); } } }catch(e){} }
 try{ const ro=new ResizeObserver(()=>glassInsets()); ['navPanel','progPanel'].forEach(id=>$(id) && ro.observe($(id))); const tp=document.querySelector('.app .top'); tp && ro.observe(tp); ro.observe(document.querySelector('.app')); }catch(e){}
 new MutationObserver(()=>glassInsets()).observe(document.querySelector('.app'), {attributes:true, attributeFilter:['class']});
-function fitMapBtns(){ const w=document.querySelector('.mapwrap'), b=document.querySelector('.mapbtns'), A=document.querySelector('.app'); if(!w||!b) return; w.classList.remove('short'); const cs=getComputedStyle(A), room=w.clientHeight - (parseFloat(cs.getPropertyValue('--topovl'))||0) - (parseFloat(cs.getPropertyValue('--botovl'))||0) - 90; if(b.offsetHeight > room) w.classList.add('short'); }
+/* off route: the direction card turns red and offers Plan from here */
+new MutationObserver(()=>{ document.querySelector('.app').classList.toggle('offr', !$('offroute').hidden); }).observe($('offroute'), {attributes:true, attributeFilter:['hidden']});
+/* Hold to stop: 1.5 s, the ring fills; a glove or a pocket can't do it by accident */
+{ const hb=$('holdStop'), ring=$('holdRing'), C=2*Math.PI*35; let t0=0, raf=0;
+  ring.style.strokeDasharray=C; ring.style.strokeDashoffset=C;
+  const reset=()=>{ cancelAnimationFrame(raf); raf=0; t0=0; ring.style.strokeDashoffset=C; hb.classList.remove('on'); };
+  const tick=()=>{ const f=Math.min(1,(performance.now()-t0)/1500); ring.style.strokeDashoffset=C*(1-f); if(f>=1){ reset(); try{ navigator.vibrate && navigator.vibrate(60); }catch(e){} $('goBtn').click(); return; } raf=requestAnimationFrame(tick); };
+  hb.addEventListener('pointerdown', e=>{ e.preventDefault(); if(raf) return; t0=performance.now(); hb.classList.add('on'); raf=requestAnimationFrame(tick); });
+  ['pointerup','pointerleave','pointercancel'].forEach(ev=>hb.addEventListener(ev, ()=>{ if(raf && performance.now()-t0 < 1500){ if(performance.now()-t0 < 250) toast('Hold to stop'); reset(); } }));
+  hb.addEventListener('contextmenu', e=>e.preventDefault()); }
+/* the speed card: tap the handle or swipe it up for the steps */
+$('spGrab').onclick=()=>$('stepsBtn').click();
+{ const sp=document.querySelector('.app .top'); let y0=null; sp.addEventListener('touchstart', e=>{ y0=e.touches[0].clientY; }, {passive:true}); sp.addEventListener('touchmove', e=>{ if(y0!=null && y0-e.touches[0].clientY > 40){ y0=null; if(document.querySelector('.app').classList.contains('tracking')) $('stepsBtn').click(); } }, {passive:true}); sp.addEventListener('touchend', ()=>{ y0=null; }); }
+$('railShai').onclick=()=>openBrief();
+$('menuPlaces').onclick=()=>{ closeDrawer(); $('placesBtn').click(); };
+function fitMapBtns(){ const w=document.querySelector('.mapwrap'), b=document.querySelector('.mapbtns'), A=document.querySelector('.app'); if(!w||!b) return; w.classList.remove('short'); const cs=getComputedStyle(A), room=w.clientHeight - (parseFloat(cs.getPropertyValue('--topovl'))||0) - (parseFloat(cs.getPropertyValue('--botovl'))||0) - 30; if(b.offsetHeight > room) w.classList.add('short'); }
 try{ new ResizeObserver(()=>fitMapBtns()).observe(document.querySelector('.mapwrap')); }catch(e){}
 function applyView(){
   const nav = view==='nav';
@@ -1886,18 +2020,18 @@ function renderSchedule(){
 function renderStep(){
   const s = steps[cur];
   const b = $('nBadge'); b.className = 'badge ' + stepColor(s); b.textContent = cur+1;
-  $('nEyebrow').textContent = (s.type==='end' ? 'Finish' : (store.follow ? 'Now' : 'Suggested')) + ' · step '+(cur+1)+' of '+steps.length + (s.at ? ' · plan '+s.at : '');
+  $('nEyebrow').textContent = mode!=='off' ? (s.type==='end' ? 'Finish' : (s.type==='lift' ? 'Lift' : 'Next')) + ' · step '+(cur+1)+'/'+steps.length + (s.at ? ' · '+s.at : '') : (s.type==='end' ? 'Finish' : (store.follow ? 'Now' : 'Suggested')) + ' · step '+(cur+1)+' of '+steps.length + (s.at ? ' · plan '+s.at : '');
   $('nTitle').textContent = stepLabel(s);
-  let meta = stepMeta(s);
+  let meta = stepMeta(s), big='';
   if(s.type==='lift' && typeof liftClosed==='function' && liftClosed(stepLiftBi(s))) meta = 'Closed right now · tap Plan from here · ' + meta;
   else if(s.type==='run' && typeof runClosed==='function' && runClosed(s)) meta = 'Run closed · tap Plan from here · ' + meta;
   if(st.last && s.type!=='end'){
     const pt=[st.last.lat,st.last.lon], onIt = s.coords.length>1 && distToLine(pt, s.coords) < 40, d = hav(pt, s.coords[0]);
-    if(onIt){ const e=hav(pt, s.coords[s.coords.length-1]); meta = (s.type==='lift' ? 'Riding · ' : 'On it · ') + fmtLen(e) + ' to go' + (CONFIG.flat ? '' : (s.type==='lift' ? ' · top at '+fmtAlt(s.top) : ' · down to '+fmtAlt(s.bottom))); }
-    else if(d > 60) meta = fmtLen(d) + ' to start · ' + meta;
+    if(onIt){ const e=hav(pt, s.coords[s.coords.length-1]); big=fmtLen(e); meta = (s.type==='lift' ? 'Riding · ' : 'On it · ') + fmtLen(e) + ' to go' + (CONFIG.flat ? '' : (s.type==='lift' ? ' · top at '+fmtAlt(s.top) : ' · down to '+fmtAlt(s.bottom))); }
+    else if(d > 60){ big=fmtLen(d); meta = fmtLen(d) + ' to start · ' + meta; }
   }
   if(st.match && mode!=='off' && !String(st.match.id).startsWith('s')) meta = 'You\u2019re on ' + st.match.name + (st.match.color && st.match.color!=='lift' ? ' ('+st.match.color+')' : '') + ' · ' + meta;
-  $('nMeta').textContent = meta;
+  $('nMeta').textContent = meta; if($('nDist')) $('nDist').textContent = big;
   const n = steps[cur+1];
   $('nThen').textContent='';
   if(DAY.lunch===cur){ $('nThen').textContent='Then: sandwich stop (about 40 min)'; }
@@ -2227,7 +2361,7 @@ function renderHome(){
   if(!$('homeTitle')) return;
   const dateTxt = (DAY.date||'').toUpperCase();
   $('homeEyebrow').textContent = (dateTxt ? dateTxt+' · ' : '') + (store.follow ? "TODAY'S PLAN" : "TODAY'S SUGGESTION");
-  $('homeTitle').textContent = DAY.title;
+  const swT=/^Switzerland:\s*/i.test(DAY.title||''); $('homeTitle').textContent = DAY.title.replace(/^Switzerland:\s*/i,''); if(swT) $('homeEyebrow').textContent = (dateTxt ? dateTxt+' · ' : '') + '🇨🇭 SWISS DAY';
   const km = units==='imp' ? (DAY.km*0.6214).toFixed(1)+' mi' : DAY.km+' km';
   let meta = km+' of runs · '+DAY.lifts+(DAY.lifts===1?' lift':' lifts')+' · '+(CONFIG.flat && DAY.end && DAY.end.name ? DAY.end.name : CONFIG.endName)+' '+DAY.arrive;
   if(st.dist > 50) meta += ' · '+(units==='imp' ? (st.dist/1609.34).toFixed(1)+' mi' : (st.dist/1000).toFixed(1)+' km')+' skied so far';
@@ -3087,6 +3221,7 @@ function renderPick(){
 }
 $('pickSeg').querySelectorAll('button').forEach(b=>b.onclick=()=>{ gview.mode=b.dataset.v; saveGview(); renderPick(); renderFriends(); renderFriendsPill(); });
 $('pickDone').onclick=()=>{ $('pickSheet').hidden=true; };
+$('pickInvite').onclick=()=>{ $('pickSheet').hidden=true; openDrawer(); showGroup(true); };
 $('pickSheet').onclick=e=>{ if(e.target.id==='pickSheet') $('pickSheet').hidden=true; };
 /* ALL: me + today's route + everyone I'm showing */
 $('fitBtn').onclick=()=>{
@@ -3103,7 +3238,7 @@ $('fitBtn').onclick=()=>{
 const callLink = () => { const u = gstate && gstate.trip && gstate.trip.plan && gstate.trip.plan.call; return typeof u==='string' && /^https:\/\//.test(u) ? u : ''; };
 function renderCall(){
   const u = callLink();
-  for(const id of ['gCall','hubCall']){ const a=$(id); if(!a) continue; a.hidden=id==='gCall' && !u; a.href=u||'#';
+  for(const id of ['gCall','hubCall','pickCall']){ const a=$(id); if(!a) continue; a.hidden=id!=='hubCall' && !u; a.href=u||'#';
     // in the iPhone app a plain link opens WhatsApp; in a browser keep Ski-Paz open in its tab
     if(NATIVE) a.removeAttribute('target'); else { a.target='_blank'; a.rel='noopener'; } }
   const owner = gstate && gstate.role==='owner';

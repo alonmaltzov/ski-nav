@@ -4,7 +4,7 @@ from playwright.async_api import async_playwright
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.environ.get('QA_OUT', os.path.join(ROOT, 'qa-out'))
-DEVICES = {'iphone16': dict(width=393, height=852), 'iphoneSE': dict(width=375, height=667)}
+DEVICES = {'iphone16': dict(width=393, height=852), 'galaxyS24': dict(width=360, height=780)}
 TOUR = open(os.path.join(ROOT, 'qa', 'tour.js')).read()
 
 async def run(p, name, vp):
