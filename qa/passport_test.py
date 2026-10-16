@@ -35,6 +35,7 @@ async def main():
         result('Swiss day: the passport check opens', await pg.is_visible('#passSheet'))
         await pg.evaluate("document.getElementById('passSheet').hidden=true"); await pg.wait_for_timeout(200)
         result('Swiss day: Start skiing is locked, Passport check sits above it', await pg.evaluate("document.getElementById('goBtn').classList.contains('locked')") and await pg.is_visible('#passBtn'))
+        await pg.screenshot(path=os.path.join(OUT, '03-locked.png'))
         await pg.click('#goBtn'); await pg.wait_for_timeout(300)
         result('a locked Start skiing opens the check instead of starting', await pg.is_visible('#passSheet') and await pg.evaluate('window.__ski.st && !document.querySelector(".app").classList.contains("tracking")'))
         result('the passport clip plays', 'passport' in await pg.evaluate('window.__ski.sfx.log'))
