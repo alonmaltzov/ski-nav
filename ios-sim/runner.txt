@@ -1,0 +1,4 @@
+[runner] existing pairs pick: none
+[runner] watch runtime=com.apple.CoreSimulator.SimRuntime.watchOS-26-2 type=com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-6-40mm
+E8E944EC-F948-425F-ADB2-EBD59562C72C
+[runner] moving route started

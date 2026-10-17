@@ -1,0 +1,22 @@
+[web] QA RESULT {"check":"native engine matches web: Avoriaz day 1","ok":true,"detail":"swift 33.49 km, max 53.6 km/h, vert 5173 m vs web 33.49 km"}
+[web] QA RESULT {"check":"native engine matches web: NYC practice","ok":true,"detail":"swift 8.05 km, max 15.9 km/h, vert 42 m vs web 8.05 km"}
+[web] QA RESULT {"check":"watch can read the phone's plan: plan-avoriaz.json","ok":true,"detail":"OK 38"}
+[web] QA RESULT {"check":"watch can read the phone's plan: plan-nyc.json","ok":true,"detail":"OK 8"}
+[web] QA RESULT {"check":"glance: short name 'Chaux Fleuries'","ok":true,"detail":"Chaux Fleuries"}
+[web] QA RESULT {"check":"glance: short name 'Ardent gondola'","ok":true,"detail":"Ardent gondola"}
+[web] QA RESULT {"check":"glance: short name 'Chaux Fleurie chair'","ok":true,"detail":"Chaux Fleurie chair"}
+[web] QA RESULT {"check":"glance: short name 'Proclou'","ok":true,"detail":"Proclou"}
+[web] QA RESULT {"check":"glance: skiing","ok":true,"detail":"42 km/h Chaux Fleuries next Ardent gondola 1469 m"}
+[web] QA RESULT {"check":"glance: planned lift","ok":true,"detail":"Ardent gondola 59% 2 min then Parchets"}
+[web] QA RESULT {"check":"glance: unplanned lift","ok":true,"detail":"Lift '' 0"}
+[web] QA RESULT {"check":"glance: no plan","ok":true,"detail":"36 ''"}
+[web] QA RESULT {"check":"glance: phone to watch round trip","ok":true,"detail":"265 bytes"}
+[web] QA RESULT {"check":"glance: face: trip morning","ok":true,"detail":"morning Châtel side | 24 km planned · first lift 9:15 | DAY 3"}
+[web] QA RESULT {"check":"glance: face: skiing","ok":true,"detail":"42 ON A RED 12.4 of 24 km Next: Ardent gondola · 1.2 km"}
+[web] QA RESULT {"check":"glance: face: on a lift","ok":true,"detail":"4 top in 4 min Then: Lindarets, blue"}
+[web] QA RESULT {"check":"glance: face: live numbers go stale after 15 min","ok":true,"detail":"done"}
+[web] QA RESULT {"check":"glance: face: day done","ok":true,"detail":"Folie Douce till 6 26.1 km Tomorrow: Day 4"}
+[web] QA RESULT {"check":"glance: face: countdown","ok":true,"detail":"Avoriaz in 10 days"}
+[web] QA RESULT {"check":"glance: face: yesterday's totals don't show the next morning","ok":true,"detail":"morning"}
+[web] QA RESULT {"check":"glance: face: save round trip","ok":true,"detail":""}
+[web] QA DONE

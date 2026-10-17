@@ -1,0 +1,17 @@
+[web] QA RESULT {"check": "not a trip day: no check on open", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "the menu marks days 3, 4 and 6 as Swiss", "ok": true, "detail": "[False, False, True, True, False, True]"}
+[web] QA RESULT {"check": "French day: no check", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "French day: Start skiing is not locked", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "Swiss day: the passport check opens", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "Swiss day: Start skiing is locked, Passport check sits above it", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "a locked Start skiing opens the check instead of starting", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "the passport clip plays", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "it does not close by tapping or Escape", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "half a slide does not count", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "a full slide confirms", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "Start skiing sits right in the crew sheet", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "remembered for the day", "ok": true, "detail": "2027-01-19"}
+[web] QA RESULT {"check": "after the slide, Start skiing unlocks", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "once checked, it stays away", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "a nudge brings the check back", "ok": true, "detail": "Avsha says: passport. Now."}
+[web] QA RESULT {"check": "no page errors", "ok": true, "detail": "[]"}

@@ -1,0 +1,41 @@
+[web] QA RESULT {"check": "[iphone16] tour opens on first launch", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "[iphone16] no clip over the tour", "ok": true, "detail": "[]"}
+[web] QA RESULT {"check": "[iphone16] step 1: bubble on screen, nothing it points at is covered", "ok": true, "detail": "{'top': 250, 'bottom': 502.796875, 'h': 852, 'rings': 0, 'overlap': False}"}
+[web] QA RESULT {"check": "[iphone16] step 1: button says Allow location", "ok": true, "detail": "Allow location"}
+[web] QA RESULT {"check": "[iphone16] step 2: bubble on screen, nothing it points at is covered", "ok": true, "detail": "{'top': 346, 'bottom': 552.53125, 'h': 852, 'rings': 1, 'overlap': False}"}
+[web] QA RESULT {"check": "[iphone16] step 2: button says Next", "ok": true, "detail": "Next"}
+[web] QA RESULT {"check": "[iphone16] step 3: bubble on screen, nothing it points at is covered", "ok": true, "detail": "{'top': 490, 'bottom': 720.796875, 'h': 852, 'rings': 2, 'overlap': False}"}
+[web] QA RESULT {"check": "[iphone16] step 3: button says Next", "ok": true, "detail": "Next"}
+[web] QA RESULT {"check": "[iphone16] step 4: bubble on screen, nothing it points at is covered", "ok": true, "detail": "{'top': 116.265625, 'bottom': 347.0625, 'h': 852, 'rings': 2, 'overlap': False}"}
+[web] QA RESULT {"check": "[iphone16] step 4: button says Next", "ok": true, "detail": "Next"}
+[web] QA RESULT {"check": "[iphone16] step 4 opens the week", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "[iphone16] step 5: bubble on screen, nothing it points at is covered", "ok": true, "detail": "{'top': 468, 'bottom': 765.796875, 'h': 852, 'rings': 2, 'overlap': False}"}
+[web] QA RESULT {"check": "[iphone16] step 5: button says Let\u2019s ski", "ok": true, "detail": "Let\u2019s ski"}
+[web] QA RESULT {"check": "[iphone16] Let\u2019s ski closes the tour and remembers it", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "[iphone16] back on today, not the week", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "[iphone16] Replay the tour is in Settings (Tour button)", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "[iphone16] Replay starts at step 1", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "[iphone16] Skip on the week step closes the tour and the week", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "[iphone16] friends who join are greeted by name", "ok": true, "detail": "Hey Dana! Shai here. Couldn\u2019t make the trip, so I\u2019m in your "}
+[web] QA RESULT {"check": "[iphone16] no page errors", "ok": true, "detail": "[]"}
+[web] QA RESULT {"check": "[galaxyS24] tour opens on first launch", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "[galaxyS24] no clip over the tour", "ok": true, "detail": "[]"}
+[web] QA RESULT {"check": "[galaxyS24] step 1: bubble on screen, nothing it points at is covered", "ok": true, "detail": "{'top': 250, 'bottom': 502.796875, 'h': 780, 'rings': 0, 'overlap': False}"}
+[web] QA RESULT {"check": "[galaxyS24] step 1: button says Allow location", "ok": true, "detail": "Allow location"}
+[web] QA RESULT {"check": "[galaxyS24] step 2: bubble on screen, nothing it points at is covered", "ok": true, "detail": "{'top': 274, 'bottom': 480.53125, 'h': 780, 'rings': 1, 'overlap': False}"}
+[web] QA RESULT {"check": "[galaxyS24] step 2: button says Next", "ok": true, "detail": "Next"}
+[web] QA RESULT {"check": "[galaxyS24] step 3: bubble on screen, nothing it points at is covered", "ok": true, "detail": "{'top': 418, 'bottom': 648.796875, 'h': 780, 'rings': 2, 'overlap': False}"}
+[web] QA RESULT {"check": "[galaxyS24] step 3: button says Next", "ok": true, "detail": "Next"}
+[web] QA RESULT {"check": "[galaxyS24] step 4: bubble on screen, nothing it points at is covered", "ok": true, "detail": "{'top': 88.90625, 'bottom': 319.703125, 'h': 780, 'rings': 2, 'overlap': False}"}
+[web] QA RESULT {"check": "[galaxyS24] step 4: button says Next", "ok": true, "detail": "Next"}
+[web] QA RESULT {"check": "[galaxyS24] step 4 opens the week", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "[galaxyS24] step 5: bubble on screen, nothing it points at is covered", "ok": true, "detail": "{'top': 390, 'bottom': 712.0625, 'h': 780, 'rings': 2, 'overlap': False}"}
+[web] QA RESULT {"check": "[galaxyS24] step 5: button says Let\u2019s ski", "ok": true, "detail": "Let\u2019s ski"}
+[web] QA RESULT {"check": "[galaxyS24] Let\u2019s ski closes the tour and remembers it", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "[galaxyS24] back on today, not the week", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "[galaxyS24] Replay the tour is in Settings (Tour button)", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "[galaxyS24] Settings still fit without scrolling", "ok": true, "detail": "[116.59375, 780]"}
+[web] QA RESULT {"check": "[galaxyS24] Replay starts at step 1", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "[galaxyS24] Skip on the week step closes the tour and the week", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "[galaxyS24] friends who join are greeted by name", "ok": true, "detail": "Hey Dana! Shai here. Couldn\u2019t make the trip, so I\u2019m in your "}
+[web] QA RESULT {"check": "[galaxyS24] no page errors", "ok": true, "detail": "[]"}

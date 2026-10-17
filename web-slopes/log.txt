@@ -1,0 +1,11 @@
+[web] QA RESULT {"check": "slope status comes in with the lifts", "ok": true, "detail": "{'sl': 293, 'open': 8}"}
+[web] QA RESULT {"check": "most of today's runs are matched to the resort list", "ok": true, "detail": "29 of 33"}
+[web] QA RESULT {"check": "whole area: lifts and slopes like the official site", "ok": true, "detail": "9/182 lifts \u00b7 8/293 slopes open"}
+[web] QA RESULT {"check": "today's plan comes first, then the whole area", "ok": true, "detail": "['Today\u2019s plan', 'Whole area']"}
+[web] QA RESULT {"check": "the whole area opens into resorts", "ok": true, "detail": "['Avoriaz \u00b7 0/26 lifts \u00b7 0/41 slopes', 'Champ\u00e9ry \u00b7 Les Crosets \u00b7 1/16 lifts \u00b7 0/17 slopes', 'Ch\u00e2tel \u00b7 0/32 lifts \u00b7 0/35 slopes', 'La Chapelle \u00b7 0/10 lifts \u00b7 0/11 slopes']"}
+[web] QA RESULT {"check": "plan runs are listed with the lifts", "ok": true, "detail": "521"}
+[web] QA RESULT {"check": "a run can be marked closed", "ok": true, "detail": "[1, 'closed']"}
+[web] QA RESULT {"check": "the guide names the closed run", "ok": true, "detail": "Combe \u00e0 Floret is shut. Plan from here fixes it."}
+[web] QA RESULT {"check": "the plan step for that run says closed", "ok": true, "detail": "{'k': 2, 'cur': 0}"}
+[web] QA RESULT {"check": "back online: checks again right away", "ok": true, "detail": "3 -> 4"}
+[web] QA RESULT {"check": "no page errors", "ok": true, "detail": "[]"}

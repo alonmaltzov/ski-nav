@@ -1,0 +1,24 @@
+[web] QA RESULT {"check": "all 9 clips are in the page", "ok": true, "detail": "['brief', 'closed', 'passport', 'speedking', 'start', 'steps', 'stop', 'stoppp', 'today']"}
+[web] QA RESULT {"check": "clips decode", "ok": true, "detail": "2.07"}
+[web] QA RESULT {"check": "opening the app is quiet now", "ok": true, "detail": "[]"}
+[web] QA RESULT {"check": "the menu button plays today's plan", "ok": true, "detail": "['today']"}
+[web] QA RESULT {"check": "every time", "ok": true, "detail": "['today', 'today']"}
+[web] QA RESULT {"check": "picking a Swiss day plays the passport clip, a French day does not", "ok": true, "detail": "[['passport'], []]"}
+[web] QA RESULT {"check": "Steps plays its clip", "ok": true, "detail": "['steps']"}
+[web] QA RESULT {"check": "Shai's lines wait for the clip to finish", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "then all of them show at once", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "every brief plays the clip", "ok": true, "detail": "[['brief'], ['brief', 'brief']]"}
+[web] QA RESULT {"check": "Start skiing plays its clip", "ok": true, "detail": "['start']"}
+[web] QA RESULT {"check": "while skiing, Stop is a big Hold button", "ok": true, "detail": "{'x': 288, 'y': 746.6875, 'width': 80, 'height': 80}"}
+[web] QA RESULT {"check": "a short tap does not stop", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "holding 1.5 s stops, with its clip", "ok": true, "detail": "['start', 'stop']"}
+[web] QA RESULT {"check": "STOPPP plays its clip", "ok": true, "detail": "['stoppp']"}
+[web] QA RESULT {"check": "Speed King plays its clip (passport moved to picking the day)", "ok": true, "detail": "['speedking']"}
+[web] QA RESULT {"check": "a plan lift closing plays the change-of-plan clip, once", "ok": true, "detail": "[['closed'], ['closed']]"}
+[web] QA RESULT {"check": "Lifts button: says which plan lift is closed, with the clip", "ok": true, "detail": "['Proclou chair is shut. Plan from here fixes it.', ['closed']]"}
+[web] QA RESULT {"check": "Lifts button opens the lift list", "ok": true, "detail": ""}
+[web] QA RESULT {"check": "Lifts button plays the clip every tap, even with nothing closed", "ok": true, "detail": "['closed', 'closed']"}
+[web] QA RESULT {"check": "a plan lift closing plays the change-of-plan clip, once", "ok": true, "detail": "[['closed'], ['closed']]"}
+[web] QA RESULT {"check": "Plan from here plays the Steps clip", "ok": true, "detail": "['closed', 'closed', 'steps']"}
+[web] QA RESULT {"check": "Sound clips off: nothing plays", "ok": true, "detail": "[]"}
+[web] QA RESULT {"check": "no page errors", "ok": true, "detail": "[]"}

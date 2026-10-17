@@ -1,0 +1,215 @@
+Simulator: iPhone 16 Pro (DC4CD8B3-4457-4153-9087-A0D7A2F9BFD9)
+Monitoring boot status for iPhone 17 Pro (E952A9B0-CC78-435C-BF08-06AD47FE1076).
+[2026-10-17 02:11:54 +0000] Status=2, isTerminal=NO, Elapsed=00:33.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.-0LaunchServicesMigrator (00LaunchServicesMigrator.migrator, user-agnostic)
+		Migration Elapsed:00:22 seconds
+
+[2026-10-17 02:11:55 +0000] Status=2, isTerminal=NO, Elapsed=00:34.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.-0LaunchServicesMigrator (00LaunchServicesMigrator.migrator, user-agnostic)
+		Migration Elapsed:00:23 seconds
+
+[2026-10-17 02:11:56 +0000] Status=2, isTerminal=NO, Elapsed=00:35.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.-0LaunchServicesMigrator (00LaunchServicesMigrator.migrator, user-agnostic)
+		Migration Elapsed:00:24 seconds
+
+[2026-10-17 02:11:57 +0000] Status=2, isTerminal=NO, Elapsed=00:36.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.-0LaunchServicesMigrator (00LaunchServicesMigrator.migrator, user-agnostic)
+		Migration Elapsed:00:25 seconds
+
+[2026-10-17 02:11:58 +0000] Status=2, isTerminal=NO, Elapsed=00:37.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.-0LaunchServicesMigrator (00LaunchServicesMigrator.migrator, user-agnostic)
+		Migration Elapsed:00:26 seconds
+
+[2026-10-17 02:11:59 +0000] Status=2, isTerminal=NO, Elapsed=00:38.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.-0LaunchServicesMigrator (00LaunchServicesMigrator.migrator, user-agnostic)
+		Migration Elapsed:00:27 seconds
+
+[2026-10-17 02:12:00 +0000] Status=2, isTerminal=NO, Elapsed=00:39.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.-0LaunchServicesMigrator (00LaunchServicesMigrator.migrator, user-agnostic)
+		Migration Elapsed:00:28 seconds
+
+[2026-10-17 02:12:03 +0000] Status=2, isTerminal=NO, Elapsed=00:41.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.securityd.KeychainMigrator (KeychainMigrator.migrator, user-agnostic)
+		Migration Elapsed:00:29 seconds
+
+[2026-10-17 02:12:04 +0000] Status=2, isTerminal=NO, Elapsed=00:42.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.managedconfiguration.migrator (MCProfile.migrator, user-agnostic)
+		Migration Elapsed:00:31 seconds
+
+[2026-10-17 02:12:05 +0000] Status=2, isTerminal=NO, Elapsed=00:43.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.managedconfiguration.migrator (MCProfile.migrator, user-agnostic)
+		Migration Elapsed:00:32 seconds
+
+[2026-10-17 02:12:05 +0000] Status=2, isTerminal=NO, Elapsed=00:43.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.managedconfiguration.migrator (MCProfile.migrator, user-agnostic)
+		Migration Elapsed:00:33 seconds
+
+[2026-10-17 02:12:06 +0000] Status=2, isTerminal=NO, Elapsed=00:44.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.managedconfiguration.migrator (MCProfile.migrator, user-agnostic)
+		Migration Elapsed:00:33 seconds
+
+[2026-10-17 02:12:07 +0000] Status=2, isTerminal=NO, Elapsed=00:45.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.managedconfiguration.migrator (MCProfile.migrator, user-agnostic)
+		Migration Elapsed:00:34 seconds
+
+[2026-10-17 02:12:08 +0000] Status=2, isTerminal=NO, Elapsed=00:46.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.appleaccount.migrator (AppleAccountMigrator.migrator)
+		Migration Elapsed:00:35 seconds
+
+[2026-10-17 02:12:10 +0000] Status=2, isTerminal=NO, Elapsed=00:48.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.VideosMigrator (TVMigrator.migrator)
+		Migration Elapsed:00:36 seconds
+
+[2026-10-17 02:12:10 +0000] Status=4, isTerminal=NO, Elapsed=00:48.
+	Waiting on System App
+
+[2026-10-17 02:12:11 +0000] Status=4, isTerminal=NO, Elapsed=00:49.
+	Waiting on System App
+
+[2026-10-17 02:12:12 +0000] Status=4, isTerminal=NO, Elapsed=00:50.
+	Waiting on System App
+
+[2026-10-17 02:12:13 +0000] Status=4, isTerminal=NO, Elapsed=00:51.
+	Waiting on System App
+
+[2026-10-17 02:12:14 +0000] Status=4, isTerminal=NO, Elapsed=00:52.
+	Waiting on System App
+
+[2026-10-17 02:12:20 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:58.
+	Finished
+
+qa/sim_run.sh: line 106: 10916 Terminated: 15          ( for p in $(python3 qa/sim_waypoints.py 10);
+do
+    xcrun simctl location "$UDID" set "$p" > /dev/null 2>&1; sleep 0.5;
+done )
+Monitoring boot status for QA Watch (37C742C8-F548-4D3C-BC78-C4C00724EFEF).
+[2026-10-17 02:16:51 +0000] Status=2, isTerminal=NO, Elapsed=00:17.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.-0LaunchServicesMigrator (00LaunchServicesMigrator.migrator, user-agnostic)
+		Migration Elapsed:00:14 seconds
+
+[2026-10-17 02:16:53 +0000] Status=2, isTerminal=NO, Elapsed=00:19.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.securityd.KeychainMigrator (KeychainMigrator.migrator, user-agnostic)
+		Migration Elapsed:00:15 seconds
+
+[2026-10-17 02:16:54 +0000] Status=2, isTerminal=NO, Elapsed=00:20.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.managedconfiguration.migrator (MCProfile.migrator, user-agnostic)
+		Migration Elapsed:00:16 seconds
+
+[2026-10-17 02:16:54 +0000] Status=2, isTerminal=NO, Elapsed=00:20.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.managedconfiguration.migrator (MCProfile.migrator, user-agnostic)
+		Migration Elapsed:00:17 seconds
+
+[2026-10-17 02:16:55 +0000] Status=2, isTerminal=NO, Elapsed=00:22.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.managedconfiguration.migrator (MCProfile.migrator, user-agnostic)
+		Migration Elapsed:00:18 seconds
+
+[2026-10-17 02:16:56 +0000] Status=2, isTerminal=NO, Elapsed=00:22.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.managedconfiguration.migrator (MCProfile.migrator, user-agnostic)
+		Migration Elapsed:00:19 seconds
+
+[2026-10-17 02:16:57 +0000] Status=2, isTerminal=NO, Elapsed=00:23.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.managedconfiguration.migrator (MCProfile.migrator, user-agnostic)
+		Migration Elapsed:00:20 seconds
+
+[2026-10-17 02:16:59 +0000] Status=2, isTerminal=NO, Elapsed=00:25.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.managedconfiguration.migrator (MCProfile.migrator, user-agnostic)
+		Migration Elapsed:00:21 seconds
+
+[2026-10-17 02:17:00 +0000] Status=2, isTerminal=NO, Elapsed=00:26.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.managedconfiguration.migrator (MCProfile.migrator, user-agnostic)
+		Migration Elapsed:00:22 seconds
+
+[2026-10-17 02:17:01 +0000] Status=2, isTerminal=NO, Elapsed=00:27.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.managedconfiguration.migrator (MCProfile.migrator, user-agnostic)
+		Migration Elapsed:00:23 seconds
+
+[2026-10-17 02:17:01 +0000] Status=2, isTerminal=NO, Elapsed=00:27.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.managedconfiguration.migrator (MCProfile.migrator, user-agnostic)
+		Migration Elapsed:00:24 seconds
+
+[2026-10-17 02:17:02 +0000] Status=2, isTerminal=NO, Elapsed=00:28.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.managedconfiguration.migrator (MCProfile.migrator, user-agnostic)
+		Migration Elapsed:00:25 seconds
+
+[2026-10-17 02:17:04 +0000] Status=2, isTerminal=NO, Elapsed=00:31.
+	Waiting on Data Migration
+		Reason:Running plugin com.apple.managedconfiguration.cleanup.migrator (MCCleanup.migrator)
+		Migration Elapsed:00:26 seconds
+
+[2026-10-17 02:17:06 +0000] Status=4, isTerminal=NO, Elapsed=00:32.
+	Waiting on System App
+
+[2026-10-17 02:17:10 +0000] Status=4, isTerminal=NO, Elapsed=00:36.
+	Waiting on System App
+
+[2026-10-17 02:17:10 +0000] Status=4, isTerminal=NO, Elapsed=00:36.
+	Waiting on System App
+
+[2026-10-17 02:17:13 +0000] Status=4, isTerminal=NO, Elapsed=00:39.
+	Waiting on System App
+
+[2026-10-17 02:17:13 +0000] Status=4, isTerminal=NO, Elapsed=00:39.
+	Waiting on System App
+
+[2026-10-17 02:17:14 +0000] Status=4, isTerminal=NO, Elapsed=00:40.
+	Waiting on System App
+
+[2026-10-17 02:17:15 +0000] Status=4, isTerminal=NO, Elapsed=00:41.
+	Waiting on System App
+
+[2026-10-17 02:17:16 +0000] Status=4, isTerminal=NO, Elapsed=00:42.
+	Waiting on System App
+
+[2026-10-17 02:17:17 +0000] Status=4, isTerminal=NO, Elapsed=00:43.
+	Waiting on System App
+
+[2026-10-17 02:17:19 +0000] Status=4, isTerminal=NO, Elapsed=00:45.
+	Waiting on System App
+
+[2026-10-17 02:17:19 +0000] Status=4, isTerminal=NO, Elapsed=00:46.
+	Waiting on System App
+
+[2026-10-17 02:17:20 +0000] Status=4, isTerminal=NO, Elapsed=00:46.
+	Waiting on System App
+
+[2026-10-17 02:17:20 +0000] Status=4, isTerminal=NO, Elapsed=00:47.
+	Waiting on System App
+
+[2026-10-17 02:17:22 +0000] Status=4, isTerminal=NO, Elapsed=00:48.
+	Waiting on System App
+
+[2026-10-17 02:17:22 +0000] Status=4, isTerminal=NO, Elapsed=00:48.
+	Waiting on System App
+
+[2026-10-17 02:17:24 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:50.
+	Finished
+
+Watch app installed: com.alonmaltzov.SkiNav.watchkitapp
+QA screens captured: 21
